@@ -10,6 +10,8 @@ public abstract class Card {
 
     public Card(CardID cardID) {
         this.graphic = new Graphic();
+        this.rotationAngle = 0;
         this.cardID = cardID;
+
     }
 }
