@@ -1,6 +1,7 @@
 package src.ca.ucalgary.seng300.gamelogic;
 
 import src.ca.ucalgary.seng300.gamelogic.cards.CardID;
+import src.ca.ucalgary.seng300.gamelogic.cards.Location;
 import src.ca.ucalgary.seng300.gamelogic.players.PlayerID;
 import src.ca.ucalgary.seng300.graphics.Graphic;
 

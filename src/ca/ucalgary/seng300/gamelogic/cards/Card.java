@@ -3,15 +3,22 @@ package src.ca.ucalgary.seng300.gamelogic.cards;
 import src.ca.ucalgary.seng300.graphics.Graphic;
 
 public abstract class Card {
-    Graphic graphic;
-    // as fractions of 65535
-    int rotationAngle;
-    CardID cardID;
+    private Graphic graphic;
+    private CardID cardID;
 
     public Card(CardID cardID) {
         this.graphic = new Graphic();
-        this.rotationAngle = 0;
         this.cardID = cardID;
+    }
 
+    public CardID getCardID() {
+        return cardID;
+    }
+    public Graphic getGraphic() {
+        return graphic;
+    }
+
+    public String toString() {
+        return "Card(" + cardID.getCardID() + ")";
     }
 }
