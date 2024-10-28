@@ -1,0 +1,10 @@
+# Individual Project Files
+individual/
+
+# IntelliJ IDEA
+.idea
+*.iml
+out/
+
+# MacOS
+.DS_Store
