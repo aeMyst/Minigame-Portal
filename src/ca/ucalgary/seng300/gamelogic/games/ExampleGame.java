@@ -6,10 +6,7 @@ import src.ca.ucalgary.seng300.gamelogic.cards.*;
 import src.ca.ucalgary.seng300.gamelogic.players.PlayerID;
 import src.ca.ucalgary.seng300.graphics.Graphic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
 
 public class ExampleGame implements IGameLogic {
 
@@ -46,7 +43,7 @@ public class ExampleGame implements IGameLogic {
         for (int i = 0; i < numCards; i++) {
             this.deck.add(new CardID(i));
         }
-        Collections.shuffle(this.deck);
+        Collections.shuffle(this.deck, new Random(seed));
         return gameState;
     }
 
