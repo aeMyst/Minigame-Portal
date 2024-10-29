@@ -1,8 +1,5 @@
 package src.ca.ucalgary.seng300;
 
-import src.ca.ucalgary.seng300.gamelogic.cards.Card;
-import src.ca.ucalgary.seng300.gamelogic.cards.CardID;
-import src.ca.ucalgary.seng300.gamelogic.cards.HiddenCard;
 import src.ca.ucalgary.seng300.gamelogic.games.ExampleGame;
 
 public class Main {
