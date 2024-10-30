@@ -1,4 +1,4 @@
-package src.ca.ucalgary.seng300.Authentication.models;
+package src.ca.ucalgary.seng300.authentication.models;
 
 public class Profile {
 
@@ -18,8 +18,13 @@ public class Profile {
         this.status = "offline/or let's say invisible";
     }
 
+    // Getters and Setters
     public String getDisplayName() {
         return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public int getGamesPlayed() {
@@ -38,36 +43,21 @@ public class Profile {
         return rank;
     }
 
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
     public String getStatus() {
         return status;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public void incrementGamesPlayed() {
-        this.gamesPlayed++;
-    }
-
-    public void addWin() {
-        this.wins++;
-    }
-
-    public void addLoss() {
-        this.losses++;
-    }
-
-    public void updateRank(int rank) {
-        this.rank = rank;
-    }
-
-    public void updateStatus(String status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    //Typical toString format for op.gg game profile
+    @Override
     public String toString() {
-        return STR."Profile(displayName=\{displayName}, gamesPlayed=\{gamesPlayed}, wins=\{wins}, losses=\{losses}, rank=\{rank}, status=\{status})";
+        return String.format("Profile(displayName=%s, gamesPlayed=%d, wins=%d, losses=%d, rank=%d, status=%s)",
+                displayName, gamesPlayed, wins, losses, rank, status);
     }
 }
