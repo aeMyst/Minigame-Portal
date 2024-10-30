@@ -1,4 +1,4 @@
-package src.main.java.src.ca.ucalgary.seng300.gameApp;
+package src.ca.ucalgary.seng300.gameApp;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
