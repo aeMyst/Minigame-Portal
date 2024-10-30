@@ -1,6 +1,6 @@
 package src.main.java.src.ca.ucalgary.seng300.gameApp;
 
-public enum Player {
+public enum TTTPLayerState {
     X,
     O
 }

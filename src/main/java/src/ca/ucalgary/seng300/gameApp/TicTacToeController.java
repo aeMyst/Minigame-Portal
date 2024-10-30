@@ -23,8 +23,8 @@ public class TicTacToeController {
     Label GameState_Label;
     private Stage primaryStage;
     private Scene mainMenuScene;
-    private GameState gameState = GameState.ONGOING;
-    private Player currentPlayer = Player.X;
+    private TTTGameState gameState = TTTGameState.ONGOING;
+    private TTTPLayerState currentPlayer = TTTPLayerState.X;
 
     public void initialize(Stage primaryStage, Scene mainMenuScene) {
         this.primaryStage = primaryStage;
@@ -67,13 +67,13 @@ public class TicTacToeController {
     }
     @FXML
     private void handleTTTBoardButtonPress(ActionEvent event) {
-        if (gameState != GameState.ONGOING) {
+        if (gameState != TTTGameState.ONGOING) {
             return; // Ignore clicks if the game is over
         }
         Button clickedButton = (Button) event.getSource();
         clickedButton.setText(currentPlayer.toString());
         GameState_Label.setText("Game = " + gameState.toString());
         clickedButton.setDisable(true);
-        currentPlayer = (currentPlayer == Player.X) ? Player.O : Player.X;
+        currentPlayer = (currentPlayer == TTTPLayerState.X) ? TTTPLayerState.O : TTTPLayerState.X;
     }
 }
