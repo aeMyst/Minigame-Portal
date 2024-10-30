@@ -12,4 +12,10 @@ public class AuthService implements AuthInterface {
         // Login logic goes here
         return true;
     }
+
+    @Override
+    public boolean logout(String username) {
+        //logout logic goes here
+        return true;
+    }
 }
