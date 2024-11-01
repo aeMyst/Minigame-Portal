@@ -5,18 +5,25 @@ public class PlayerManager {
     private HumanPlayer player2;
     private HumanPlayer currentPlayer;
 
-    public PlayerManager(HumanPlayer play1, HumanPlayer player2) {
+    public PlayerManager(HumanPlayer player1, HumanPlayer player2) {
         this.player1 = player1;
         this.player2 = player2;
         this.currentPlayer = player1;
     }
 
-    public Player getCurrentPlayer() {
+    public HumanPlayer getCurrentPlayer() {
         return currentPlayer;
     }
 
     public void switchPlayer() {
-        // logic for switching turns
+        // Check if the currentPlayer is player1
+        if (currentPlayer == player1) {
+            // If currentPlayer is player1, switch to player2
+            currentPlayer = player2;
+        } else {
+            // Otherwise, switch to player1
+            currentPlayer = player1;
+        }
     }
 
 

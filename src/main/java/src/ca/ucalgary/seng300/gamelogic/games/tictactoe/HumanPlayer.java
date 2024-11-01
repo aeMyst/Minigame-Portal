@@ -1,8 +1,8 @@
 package src.ca.ucalgary.seng300.gamelogic.games.tictactoe;
 
-import java.util.Scanner;
+import java.io.Console;
 
-public class HumanPlayer implements Player {
+public class HumanPlayer implements IPlayer {
 
     private char symbol;
 
@@ -16,8 +16,16 @@ public class HumanPlayer implements Player {
     }
 
     @Override
-    public int[] getMove(Scanner scanner, Board board) {
-        // some row some column
-        return new int[0];
+    public int[] getMove(Board board) {
+        Console console = System.console();
+
+        // get user input
+        System.out.println("Enter row (1-3): ");
+        int row = Integer.parseInt(console.readLine()) - 1;
+        System.out.println("Enter column (1-3): ");
+        int col = Integer.parseInt(console.readLine()) - 1;
+
+        // when user finishes their input, this will return [x, y]
+        return new int[]{row, col};
     }
 }

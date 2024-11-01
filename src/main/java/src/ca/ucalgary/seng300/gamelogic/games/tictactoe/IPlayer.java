@@ -2,10 +2,10 @@ package src.ca.ucalgary.seng300.gamelogic.games.tictactoe;
 
 import java.util.Scanner;
 
-public interface Player {
+public interface IPlayer {
     char getSymbol();
 
-    int[] getMove(Scanner scanner, Board board);
+    int[] getMove(Board board);
 
 
 
