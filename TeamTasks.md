@@ -1,32 +1,45 @@
-**Team Members:** 
----
-**Name:**           
-Alexis Newell
-**UCID:**
-30205618
+**Team Members:**
+------------------------------------------
 
-**Name:**           
-Shezan Nanji
-**UCID:**
-30174900
+| Name               | UCID     |
+|---------------     |----------|
+| Peter Tran         | 30160145 |
+| Bailey Yao         | 30172880 |
+| Alexis Newell      | 30205618 |
+| Rydon Li Chit Khim | 30229665 |
+| Tanjib Riasat      | 30170130 |
+| Lucas Li           | 30163047 | 
 
-**Name:**           
-Bailey Yao
-**UCID:**
-30172880
+**Team Tasks & Goals**
+------------------------------------------
+**Game Responsibilities:**
 
-**Name:**           
-Rydon Li Chit Khim
-**UCID:**
-30229665
+**Tic-Tac-Toe** = Alexis Newell, Peter Tran 
 
-**Name:**           
-Lucas Li 
-**UCID:**
-30163047
+https://www.youtube.com/watch?v=USEjXNCTvcc
 
-**Name:**           
-Peter Tran
-**UCID:**
-30160145
----
+- [ ] create basic skeleton code (code structure and possibly how we will implement) 
+- [ ] use case diagrams (how will a person interact with the game)
+- [ ] class diagram (what are the relationship between the classes)
+
+**Connect Four** = Rydon Li Chit Khim, Lucas Li, Shezan Nanji
+
+https://www.youtube.com/watch?v=utXzIFEVPjA
+
+- [ ] create basic skeleton code (code structure and possibly how we will implement) 
+- [ ] use case diagrams (how will a person interact with the game)
+- [ ] class diagram (what are the relationship between the classes)
+
+**Checkers** = Bailey Yao, Peter Tran
+
+https://www.youtube.com/watch?v=ScKIdStgAfU
+
+- [ ] create basic skeleton code (code structure and possibly how we will implement) 
+- [ ] use case diagrams (how will a person interact with the game)
+- [ ] class diagram (what are the relationship between the classes)
+
+_*make note of any possible diagrams we made need before submission*_
+
+**GOAL:**
+- Get Everything finished by Nov 4th (Monday)
+
