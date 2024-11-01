@@ -2,15 +2,9 @@ package src.ca.ucalgary.seng300.gamelogic.games.Checkers;
 
 public class CheckersBoard {
 
-    public static void main(String[] args) {
-        int[][] board = CreateBoard();
-        printBoard(board);
-    }
-
-    public static int[][] CreateBoard() {
+    public static int[][] createBoard() {
         int size = 8; // Standard checkers board size is 8x8
         int[][] board = new int[size][size];
-
         initializeBoard(board);
         return board; // Return initialized board
     }
@@ -37,16 +31,5 @@ public class CheckersBoard {
         }
     }
 
-    // Print the board
-    public static void printBoard(int[][] board) {
-        int size = board.length;
-
-        for (int[] ints : board) {
-            for (int col = 0; col < size; col++) {
-                System.out.print(ints[col] + " ");
-            }
-            System.out.println(); // Move to the next line after printing a row
-        }
-    }
 }
 
