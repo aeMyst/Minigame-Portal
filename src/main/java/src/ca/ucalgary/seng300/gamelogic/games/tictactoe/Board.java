@@ -1,14 +1,26 @@
 package src.ca.ucalgary.seng300.gamelogic.games.tictactoe;
 
 public class Board {
+    //instance variables
+    private char[][] board;
 
-    public boolean hasX;
-    public boolean hasO;
+    // constructor method that initializes the board
+    public Board() {
+        // create board here
+    }
 
-    public String playGame(Board board){
+    public char[][] getBoard() {
+        return board;
+    }
+
+    public String printBoard(){
         return null;
     }
-    public String printBoard(){
+
+
+
+
+    public String playGame(Board board){
         return null;
     }
     public String printWinner(){

@@ -1,20 +1,12 @@
 package src.ca.ucalgary.seng300.gamelogic.games.tictactoe;
 
-public class Player {
-    public String[][] cells = {{"z","z","z"},{"z","z","z"},{"z","z","z"}};
-    public Player(char symbol, Board board){
+import java.util.Scanner;
 
-    }
-    public Board makeplay(Player player, Board board,int cell){
-        // amended board
-        return board;
-    }
+public interface Player {
+    char getSymbol();
 
-    public String getPlayer(Player player){
-        // x or o
-        return null;
+    int[] getMove(Scanner scanner, Board board);
 
-    }
 
 
 }
