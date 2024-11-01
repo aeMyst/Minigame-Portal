@@ -1,4 +1,4 @@
-package src.ca.ucalgary.seng300.gamelogic.tictactoe;
+package src.ca.ucalgary.seng300.gamelogic.games.tictactoe;
 
 public class Player {
     public String[][] cells = {{"z","z","z"},{"z","z","z"},{"z","z","z"}};

@@ -1,13 +1,10 @@
-package src.ca.ucalgary.seng300.gamelogic.games;
+package src.ca.ucalgary.seng300.gamelogic.games.tictactoe;
 
 import src.ca.ucalgary.seng300.gamelogic.GameState;
-import src.ca.ucalgary.seng300.gamelogic.GameState_tictactoe;
 import src.ca.ucalgary.seng300.gamelogic.IGameLogic;
 import src.ca.ucalgary.seng300.gamelogic.cards.CardID;
 import src.ca.ucalgary.seng300.gamelogic.cards.Location;
 import src.ca.ucalgary.seng300.gamelogic.players.PlayerID;
-import src.ca.ucalgary.seng300.gamelogic.tictactoe.Board;
-import src.ca.ucalgary.seng300.gamelogic.tictactoe.Player;
 import src.ca.ucalgary.seng300.graphics.Graphic;
 
 import java.util.ArrayList;

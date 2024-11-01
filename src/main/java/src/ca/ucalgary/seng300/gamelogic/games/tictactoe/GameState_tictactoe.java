@@ -1,7 +1,5 @@
 
-package src.ca.ucalgary.seng300.gamelogic;
-
-import src.ca.ucalgary.seng300.gamelogic.tictactoe.Player;
+package src.ca.ucalgary.seng300.gamelogic.games.tictactoe;
 
 import java.util.ArrayList;
 
