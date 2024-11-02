@@ -58,6 +58,7 @@ public class MainMenuApplication extends Application {
     private int player1Score = 0, player2Score = 0;
     private Label signLabel;
     private Label signInStatusLabel;
+    private boolean ifSignIn = false;
 
     @Override
     public void start(Stage primaryStage) {
@@ -69,12 +70,43 @@ public class MainMenuApplication extends Application {
         titleLabel.setFont(new Font("Arial", 24));
         titleLabel.setTextFill(Color.DARKBLUE);
 
-        signInStatusLabel = new Label("Guest");
+        Label usernameLabel = new Label("Username:");
+        usernameLabel.setFont(new Font("Arial", 14));
+        TextField usernameField = new TextField();
+        usernameField.setPromptText("Enter username");
+        usernameField.setFont(new Font("Arial", 14));
+        usernameField.setPrefWidth(150);
 
-        signLabel = new Label("Status: " + signInStatusLabel.getText());
-        signLabel.setFont(new Font("Arial", 14));
-        signLabel.setTextFill(Color.DARKGRAY);
-        signLabel.setPadding(new Insets(5, 0, 10, 0));
+        Label passwordLabel = new Label("Password:");
+        passwordLabel.setFont(new Font("Arial", 14));
+        PasswordField passwordField = new PasswordField();
+        passwordField.setPromptText("Enter password");
+        passwordField.setFont(new Font("Arial", 14));
+        passwordField.setPrefWidth(150);
+
+        Button signInButton = new Button("Sign In");
+        signInButton.setFont(new Font("Arial", 14));
+        signInButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+
+        Label signInFeedbackLabel = new Label();
+        signInFeedbackLabel.setFont(new Font("Arial", 14));
+        signInFeedbackLabel.setTextFill(Color.RED);
+
+        signInStatusLabel = new Label();
+        signInButton.setOnAction(e -> {
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+            if (username.isEmpty() || password.isEmpty()) {
+                signInFeedbackLabel.setText("Error: Username and password cannot be empty.");
+            } else  { // Replace with real auth logic
+                signInFeedbackLabel.setText("Sign-in successful! Welcome, " + username + ".");
+                signInFeedbackLabel.setTextFill(Color.GREEN); // Set text color to green for success
+                signInStatusLabel.setText("Signed in as " + username); // Update main menu sign-in status
+            }
+        });
+        HBox topLeftBox = new HBox(10, usernameLabel, usernameField, passwordLabel, passwordField, signInButton);
+        topLeftBox.setAlignment(Pos.CENTER_LEFT);
+        topLeftBox.setPadding(new Insets(10));
 
         Button gamesButton = new Button("Choose a Game");
         gamesButton.setFont(new Font("Arial", 16));
@@ -92,16 +124,19 @@ public class MainMenuApplication extends Application {
         settingsButton.setFont(new Font("Arial", 16));
         settingsButton.setPrefWidth(200);
         settingsButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        settingsButton.setOnAction(e -> {showSettingsMenu(stage);});
 
         Button leaderBoardButton = new Button("LeaderBoard");
         leaderBoardButton.setFont(new Font("Arial", 16));
         leaderBoardButton.setPrefWidth(200);
         leaderBoardButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        leaderBoardButton.setOnAction(e -> {showLeaderBoard(stage);});
 
         Button helpButton = new Button("Help");
         helpButton.setFont(new Font("Arial", 16));
         helpButton.setPrefWidth(200);
         helpButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        helpButton.setOnAction(e -> {showHelpMenu(stage);});
 
         Button exitButton = new Button("Exit");
         exitButton.setFont(new Font("Arial", 16));
@@ -109,15 +144,16 @@ public class MainMenuApplication extends Application {
         exitButton.setStyle("-fx-background-color: #4CAF50;");
         exitButton.setOnAction(e -> System.exit(0));
 
-        Button logInButton = new Button("Sign in");
-        logInButton.setOnAction(e -> showLogInMenu(stage));
-
-        VBox mainMenuLayout = new VBox(15, signLabel, logInButton, titleLabel, gamesButton, settingsButton, helpButton, leaderBoardButton, exitButton);
+        VBox mainMenuLayout = new VBox(15, titleLabel, signInFeedbackLabel, gamesButton, settingsButton, helpButton, leaderBoardButton, exitButton);
         mainMenuLayout.setAlignment(Pos.CENTER);
         mainMenuLayout.setPadding(new Insets(20));
         mainMenuLayout.setStyle("-fx-background-color: #f0f8ff;");
 
-        Scene mainMenuScene = new Scene(mainMenuLayout, 800, 600);
+        BorderPane mainMenuPane = new BorderPane();
+        mainMenuPane.setTop(topLeftBox);
+        mainMenuPane.setCenter(mainMenuLayout);
+
+        Scene mainMenuScene = new Scene(mainMenuPane, 800, 600);
         stage.setScene(mainMenuScene);
         stage.setTitle("Main Menu");
         stage.show();
@@ -187,6 +223,7 @@ public class MainMenuApplication extends Application {
         chatInput.setPromptText("Type your message...");
         chatInput.setPrefWidth(250);
         chatInput.setStyle("-fx-background-color: #e0e0e0;");
+        chatInput.setOnAction(e -> sendMessage());
 
         Button sendButton = new Button("Send");
         sendButton.setFont(new Font("Arial", 14));
@@ -214,27 +251,60 @@ public class MainMenuApplication extends Application {
         stage.setScene(gameScene);
         stage.setTitle("Tic-Tac-Toe");
     }
-    private void showLogInMenu(Stage stage) {
-        Label signInTitle = new Label("Sign In");
-        signInTitle.setFont(new Font("Arial", 24));
-        signInTitle.setTextFill(Color.DARKBLUE);
-        signInTitle.setPadding(new Insets(10, 0, 20, 0));
+    private void showLeaderBoard(Stage stage){
+        Label leaderBoardTitle = new Label("Leaderboard");
+        leaderBoardTitle.setFont(new Font("Arial", 24));
+        leaderBoardTitle.setTextFill(Color.DARKBLUE);
+        leaderBoardTitle.setPadding(new Insets(10, 0, 20, 0));
 
-        TextField usernameField = new TextField();
-        usernameField.setPromptText("Username");
-        usernameField.setFont(new Font("Arial", 14));
-        usernameField.setPrefWidth(250);
+        String[][] leaderboardData = {
+                {"1. Guy1", "1500"},
+                {"2. Guy2", "1300"},
+                {"3. Guy3", "1100"},
+                {"4. Girl1", "900"},
+                {"5. Girl2", "800"}
+        };
+        VBox leaderboardEntries = new VBox(10);
+        leaderboardEntries.setAlignment(Pos.CENTER_LEFT);
+        leaderboardEntries.setPadding(new Insets(20));
+        leaderboardEntries.setStyle("-fx-background-color: #ffffff; -fx-border-color: #4CAF50; -fx-border-width: 2px;");
+        for (String[] entry : leaderboardData) {
+            HBox entryBox = new HBox(15);
+            entryBox.setAlignment(Pos.CENTER_LEFT);
 
-        PasswordField passwordField = new PasswordField();
-        passwordField.setPromptText("Password");
-        passwordField.setFont(new Font("Arial", 14));
-        passwordField.setPrefWidth(250);
+            Label playerLabel = new Label(entry[0]);
+            playerLabel.setFont(new Font("Arial", 18));
+            playerLabel.setTextFill(Color.BLACK);
 
-        Button signInButton = new Button("Sign In");
-        signInButton.setFont(new Font("Arial", 16));
-        signInButton.setPrefWidth(200);
-        signInButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        signInButton.setOnAction(e -> handleSignIn(usernameField.getText(), passwordField.getText()));
+            Label scoreLabel = new Label(entry[1]);
+            scoreLabel.setFont(new Font("Arial", 18));
+            scoreLabel.setTextFill(Color.DARKGREEN);
+
+            entryBox.getChildren().addAll(playerLabel, scoreLabel);
+            leaderboardEntries.getChildren().add(entryBox);
+        }
+        Button backButton = new Button("Back to Main Menu");
+        backButton.setFont(new Font("Arial", 16));
+        backButton.setPrefWidth(200);
+        backButton.setStyle("-fx-background-color: #ff6347; -fx-text-fill: white;");
+        backButton.setOnAction(e -> showMainMenu(stage));
+
+        VBox leaderBoardLayout = new VBox(20, leaderBoardTitle, leaderboardEntries, backButton);
+        leaderBoardLayout.setAlignment(Pos.TOP_CENTER);
+        leaderBoardLayout.setPadding(new Insets(20));
+        leaderBoardLayout.setStyle("-fx-background-color: #f0f8ff;");
+
+        Scene leaderBoardScene = new Scene(leaderBoardLayout, 800, 600);
+        stage.setScene(leaderBoardScene);
+        stage.setTitle("Leaderboard");
+        stage.show();
+    }
+    private void showSettingsMenu(Stage stage){
+        Label settingsTitle = new Label("Settings");
+        settingsTitle.setFont(new Font("Arial", 24));
+        settingsTitle.setTextFill(Color.DARKGREEN);
+        settingsTitle.setPadding(new Insets(20));
+        settingsTitle.setStyle("-fx-background-color: #f5f5f5;");
 
         Button backButton = new Button("Back to Main Menu");
         backButton.setFont(new Font("Arial", 16));
@@ -242,14 +312,42 @@ public class MainMenuApplication extends Application {
         backButton.setStyle("-fx-background-color: #ff6347; -fx-text-fill: white;");
         backButton.setOnAction(e -> showMainMenu(stage));
 
-        VBox signInLayout = new VBox(15, signInTitle, usernameField, passwordField, signInButton, backButton);
-        signInLayout.setAlignment(Pos.CENTER);
-        signInLayout.setPadding(new Insets(20));
-        signInLayout.setStyle("-fx-background-color: #f0f8ff;");
+        VBox settingsLayout = new VBox(20, settingsTitle, backButton);
+        settingsLayout.setAlignment(Pos.TOP_CENTER);
+        settingsLayout.setPadding(new Insets(20));
+        settingsLayout.setStyle("-fx-background-color: #f0f8ff;");
 
-        Scene signInScene = new Scene(signInLayout, 800, 600);
-        stage.setScene(signInScene);
-        stage.setTitle("Sign In");
+        Scene settingsScene = new Scene(settingsLayout, 800, 600);
+        stage.setScene(settingsScene);
+        stage.setTitle("Settings");
+        stage.show();
+    }
+    private void showHelpMenu(Stage stage){
+        Label helpTitle = new Label("Help");
+        helpTitle.setFont(new Font("Arial", 24));
+        helpTitle.setTextFill(Color.DARKGREEN);
+        helpTitle.setPadding(new Insets(20));
+        helpTitle.setStyle("-fx-background-color: #f5f5f5;");
+
+        Button backButton = new Button("Back to Main Menu");
+        backButton.setFont(new Font("Arial", 16));
+        backButton.setPrefWidth(200);
+        backButton.setStyle("-fx-background-color: #ff6347; -fx-text-fill: white;");
+        backButton.setOnAction(e -> showMainMenu(stage));
+
+        Button aboutButton = new Button("About");
+        aboutButton.setFont(new Font("Arial", 16));
+        aboutButton.setPrefWidth(200);
+        aboutButton.setStyle("-fx-background-color: #ffffff; -fx-border-color: #4CAF50; -fx-border-width: 2px;");
+
+        VBox helpLayout = new VBox(20, helpTitle, aboutButton, backButton);
+        helpLayout.setAlignment(Pos.TOP_CENTER);
+        helpLayout.setPadding(new Insets(20));
+        helpLayout.setStyle("-fx-background-color: #f0f8ff;");
+
+        Scene helpScene = new Scene(helpLayout, 800, 600);
+        stage.setScene(helpScene);
+        stage.setTitle("Help");
         stage.show();
     }
     private void handleMove(int row, int col) {
@@ -302,8 +400,9 @@ public class MainMenuApplication extends Application {
             showAlert("Error", "Username and password cannot be empty.");
         }
         else  {
-            signInStatusLabel.setText("Signed in as " + username);
+            signInStatusLabel.setText("Signed in as " + username); // Update the label with the signed-in user
             showAlert("Success", "Welcome, " + username + "!");
+            showMainMenu((Stage) signInStatusLabel.getScene().getWindow());
         }
     }
     private void showAlert(String title, String message) {
