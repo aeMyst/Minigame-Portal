@@ -1,13 +1,13 @@
-package src.ca.ucalgary.seng300.leaderboard;
+package src.ca.ucalgary.seng300.leaderboard.logic;
 
-public class EloRating {
+public class EloData {
     private String playerID;
     private int elo;
     private int gamesPlayed;
     private int wins;
     private int losses;
 
-    public EloRating(String playerID, int elo, int gamesPlayed, int wins, int losses) {
+    public EloData(String playerID, int elo, int gamesPlayed, int wins, int losses) {
         this.playerID = playerID;
         this.elo = elo;
         this.gamesPlayed = gamesPlayed;

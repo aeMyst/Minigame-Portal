@@ -1,4 +1,4 @@
-package src.ca.ucalgary.seng300.leaderboard;
+package src.ca.ucalgary.seng300.leaderboard.logic;
 
 import src.ca.ucalgary.seng300.gamelogic.players.PlayerID;
 
