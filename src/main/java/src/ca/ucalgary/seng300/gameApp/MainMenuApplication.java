@@ -56,6 +56,8 @@ public class MainMenuApplication extends Application {
     private TextField chatInput;
     private Label player1ScoreLabel, player2ScoreLabel;
     private int player1Score = 0, player2Score = 0;
+    private Label signLabel;
+    private Label signInStatusLabel;
 
     @Override
     public void start(Stage primaryStage) {
@@ -66,6 +68,19 @@ public class MainMenuApplication extends Application {
         Label titleLabel = new Label("Main Menu");
         titleLabel.setFont(new Font("Arial", 24));
         titleLabel.setTextFill(Color.DARKBLUE);
+
+        signInStatusLabel = new Label("Guest");
+
+        signLabel = new Label("Status: " + signInStatusLabel.getText());
+        signLabel.setFont(new Font("Arial", 14));
+        signLabel.setTextFill(Color.DARKGRAY);
+        signLabel.setPadding(new Insets(5, 0, 10, 0));
+
+        Button gamesButton = new Button("Choose a Game");
+        gamesButton.setFont(new Font("Arial", 16));
+        gamesButton.setPrefWidth(200);
+        gamesButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        gamesButton.setOnAction(e -> {showGameMenu(stage);});
 
         Button playButton = new Button("Play Tic-Tac-Toe");
         playButton.setFont(new Font("Arial", 16));
@@ -94,7 +109,10 @@ public class MainMenuApplication extends Application {
         exitButton.setStyle("-fx-background-color: #4CAF50;");
         exitButton.setOnAction(e -> System.exit(0));
 
-        VBox mainMenuLayout = new VBox(15, titleLabel, playButton, settingsButton, helpButton, leaderBoardButton, exitButton);
+        Button logInButton = new Button("Sign in");
+        logInButton.setOnAction(e -> showLogInMenu(stage));
+
+        VBox mainMenuLayout = new VBox(15, signLabel, logInButton, titleLabel, gamesButton, settingsButton, helpButton, leaderBoardButton, exitButton);
         mainMenuLayout.setAlignment(Pos.CENTER);
         mainMenuLayout.setPadding(new Insets(20));
         mainMenuLayout.setStyle("-fx-background-color: #f0f8ff;");
@@ -102,6 +120,39 @@ public class MainMenuApplication extends Application {
         Scene mainMenuScene = new Scene(mainMenuLayout, 800, 600);
         stage.setScene(mainMenuScene);
         stage.setTitle("Main Menu");
+        stage.show();
+    }
+    private void showGameMenu(Stage stage) {
+        Label gameMenuTitle = new Label("Game Menu");
+        gameMenuTitle.setFont(new Font("Arial", 24));
+        gameMenuTitle.setTextFill(Color.DARKBLUE);
+        gameMenuTitle.setPadding(new Insets(10, 0, 20, 0));
+
+        Button startGameButton_TTT = new Button("Play TicTacToe");
+        startGameButton_TTT.setFont(new Font("Arial", 16));
+        startGameButton_TTT.setPrefWidth(200);
+        startGameButton_TTT.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        startGameButton_TTT.setOnAction(e -> showTicTacToeGame(stage));
+
+        Button startGameButton_connect4 = new Button("Play Connect4");
+        startGameButton_connect4.setFont(new Font("Arial", 16));
+        startGameButton_connect4.setPrefWidth(200);
+        startGameButton_connect4.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+
+        Button backButton = new Button("Back to Main Menu");
+        backButton.setFont(new Font("Arial", 16));
+        backButton.setPrefWidth(200);
+        backButton.setStyle("-fx-background-color: #ff6347; -fx-text-fill: white;");
+        backButton.setOnAction(e -> showMainMenu(stage));
+
+        VBox gameMenuLayout = new VBox(15, gameMenuTitle, startGameButton_TTT, startGameButton_connect4, backButton);
+        gameMenuLayout.setAlignment(Pos.CENTER);
+        gameMenuLayout.setPadding(new Insets(20));
+        gameMenuLayout.setStyle("-fx-background-color: #f0f8ff;");
+
+        Scene gameMenuScene = new Scene(gameMenuLayout, 800, 600);
+        stage.setScene(gameMenuScene);
+        stage.setTitle("Game Menu");
         stage.show();
     }
     private void showTicTacToeGame(Stage stage) {
@@ -163,6 +214,44 @@ public class MainMenuApplication extends Application {
         stage.setScene(gameScene);
         stage.setTitle("Tic-Tac-Toe");
     }
+    private void showLogInMenu(Stage stage) {
+        Label signInTitle = new Label("Sign In");
+        signInTitle.setFont(new Font("Arial", 24));
+        signInTitle.setTextFill(Color.DARKBLUE);
+        signInTitle.setPadding(new Insets(10, 0, 20, 0));
+
+        TextField usernameField = new TextField();
+        usernameField.setPromptText("Username");
+        usernameField.setFont(new Font("Arial", 14));
+        usernameField.setPrefWidth(250);
+
+        PasswordField passwordField = new PasswordField();
+        passwordField.setPromptText("Password");
+        passwordField.setFont(new Font("Arial", 14));
+        passwordField.setPrefWidth(250);
+
+        Button signInButton = new Button("Sign In");
+        signInButton.setFont(new Font("Arial", 16));
+        signInButton.setPrefWidth(200);
+        signInButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        signInButton.setOnAction(e -> handleSignIn(usernameField.getText(), passwordField.getText()));
+
+        Button backButton = new Button("Back to Main Menu");
+        backButton.setFont(new Font("Arial", 16));
+        backButton.setPrefWidth(200);
+        backButton.setStyle("-fx-background-color: #ff6347; -fx-text-fill: white;");
+        backButton.setOnAction(e -> showMainMenu(stage));
+
+        VBox signInLayout = new VBox(15, signInTitle, usernameField, passwordField, signInButton, backButton);
+        signInLayout.setAlignment(Pos.CENTER);
+        signInLayout.setPadding(new Insets(20));
+        signInLayout.setStyle("-fx-background-color: #f0f8ff;");
+
+        Scene signInScene = new Scene(signInLayout, 800, 600);
+        stage.setScene(signInScene);
+        stage.setTitle("Sign In");
+        stage.show();
+    }
     private void handleMove(int row, int col) {
         Button button = buttons[row][col];
         if (!button.getText().equals("-")) {
@@ -182,7 +271,6 @@ public class MainMenuApplication extends Application {
             turnIndicator.setText("Turn: Player " + currentPlayer);
         }
     }
-
     private boolean isWin() {
         for (int i = 0; i < 3; i++) {
             if (buttons[i][0].getText().equals(currentPlayer) && buttons[i][1].getText().equals(currentPlayer)
@@ -208,6 +296,22 @@ public class MainMenuApplication extends Application {
             }
         }
         return true;
+    }
+    private void handleSignIn(String username, String password) {
+        if (username.isEmpty() || password.isEmpty()) {
+            showAlert("Error", "Username and password cannot be empty.");
+        }
+        else  {
+            signInStatusLabel.setText("Signed in as " + username);
+            showAlert("Success", "Welcome, " + username + "!");
+        }
+    }
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
     private void updateScore() {
         if (currentPlayer.equals("X")) {
