@@ -1,8 +1,4 @@
-package src.ca.ucalgary.seng300.leaderboard.matchmaking;
-
-import src.ca.ucalgary.seng300.gamelogic.players.PlayerID;
-
-import java.util.HashMap;
+package src.ca.ucalgary.seng300.leaderboard;
 
 public class EloRating {
     private String playerID;
