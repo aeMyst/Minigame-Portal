@@ -1,60 +1,29 @@
 package src.ca.ucalgary.seng300.gamelogic.games.Connect4;
 
 public class Board {
+    protected int [][] board;
 
-    //method for creating the initial board
-    public static int[][] createBoard(int rows, int columns) {
-
-        return new int[rows][columns];
+    public Board() {
+        board = new int[6][7]; //creates 2D array with standard dimensions of connect 4 board
     }
 
-    //method for taking 2D array from createBoard and counting number of rows
-    public static int rowSetUp(int[][] board) {
-        return board.length;
+    public int[][] getBoard() {
+        return board;
     }
 
-    //method for taking 2D array from createBoard and counting number of columns
-    public static int columnSetUp(int[][] board) {
-        return board[0].length;
+    public static void printBoard(int[][] board) {
+        System.out.println("   1   2   3   4   5   6   7   "); //column labels, will figure out spacing later
+        System.out.println("   --------------------------   ");
+
+        for (int i = 0; i < board.length; i++) {
+            System.out.println(" | ");
+            for (int j = 0; j < board[i].length; j++) {
+                System.out.println(board[i][j] + " | ");
+            }
+        }
     }
 
-    //method for checking if any positions are empty in the column
-    public static boolean columnFull() {
-        return false;
-    }
 
-    //method for checking if any positions are empty in the board
-    public static boolean boardFull() {
-        return false;
-    }
 
-    //main method for placing pieces, looping until board is full or win condition is achieved
-    public static int placePiece() {
-        return 1;
-    }
 
-    //method for undoing last placed piece
-    public static int undoPiece() {
-        return 1;
-    }
-
-    //method for checking horizontal win condition is achieved
-    public static boolean horizontalWin() {
-        return false;
-    }
-
-    //method for checking vertical win condition is achieved
-    public static boolean verticalWin() {
-        return false;
-    }
-
-    //method for checking backslash win condition is achieved
-    public static boolean backslashWin() {
-        return false;
-    }
-
-    //method for checking forwardslash win condition is achieved
-    public static boolean forwardslashWin() {
-        return false;
-    }
 }
