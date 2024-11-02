@@ -2,7 +2,7 @@ package src.ca.ucalgary.seng300.gamelogic.games.Connect4;
 
 import java.io.Console;
 
-public class UserPiece {
+public class UserPiece implements IUserPiece {
     private int piece;
 
     public UserPiece(int piece) {
