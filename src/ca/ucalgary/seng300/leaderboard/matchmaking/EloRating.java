@@ -5,31 +5,42 @@ import src.ca.ucalgary.seng300.gamelogic.players.PlayerID;
 import java.util.HashMap;
 
 public class EloRating {
-    private HashMap<PlayerID, Integer> playerElo;
+    private String playerID;
+    private int elo;
+    private int gamesPlayed;
+    private int wins;
+    private int losses;
 
-    public EloRating() {
-        this.playerElo = new HashMap<>();
+    public EloRating(String playerID, int elo, int gamesPlayed, int wins, int losses) {
+        this.playerID = playerID;
+        this.elo = elo;
+        this.gamesPlayed = gamesPlayed;
+        this.wins = wins;
+        this.losses = losses;
     }
 
-    //method for setting player elo
-    public void setPlayerElo(PlayerID playerID, int elo) {
-        playerElo.put(playerID, elo);
+    public String getPlayerID() {
+        return playerID;
     }
 
-    //method for getting player elo
-    public int getPlayerElo(PlayerID playerID, int elo) {
-        return playerElo.getOrDefault(playerID,1);
+    public int getElo() {
+        return elo;
     }
 
-    //Method to set every player's pre-first game elo
-    public void firstGameElo(PlayerID playerID, int elo) {
-        playerElo.put(playerID, elo);
+    public void setElo(int elo) {
+        this.elo = elo;
     }
 
-    //Method to update a player's elo after win/loss
-    public void updatePlayerElo(PlayerID won, PlayerID lost){
-        int wonElo = playerElo.get(won);
-        int lostElo = playerElo.get(lost);
+    public int getGamesPlayed() {
+        return gamesPlayed;
     }
 
+    public int getWins() {
+        return wins;
+    }
+
+    public int getLosses() {
+        return losses;
+    }
 }
+
