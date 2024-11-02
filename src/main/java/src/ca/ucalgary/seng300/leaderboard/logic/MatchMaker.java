@@ -1,28 +1,28 @@
 package src.ca.ucalgary.seng300.leaderboard.logic;
 
-import src.ca.ucalgary.seng300.gamelogic.players.PlayerID;
+import src.ca.ucalgary.seng300.leaderboard.interfaces.IMatchmaker;
 
 import java.util.List;
 import java.util.ArrayList;
 
-public class MatchMaker {
-    private List<PlayerID> playersInQueue;
+public class MatchMaker implements IMatchmaker {
+    private ArrayList<EloData> queue = new ArrayList<>();
 
-    public MatchMaker() {
-        this.playersInQueue = new ArrayList<>();
+    //method for adding players to queue after we first parsed all info from csv
+    public void addPlayerToQueue(EloData player) {
+        queue.add(player);
+        findMatch();
     }
 
-    //Method for adding players into queue.
-    public void addPlayerToQueue(PlayerID playerID) {
-        playersInQueue.add(playerID);
+    public void findMatch() {
+        //some loop that goes through the players in queue, grabs first 2 of similar elos
 
     }
 
-    public void removePlayerFromQueue(PlayerID playerID) {
-        playersInQueue.remove(playerID);
+    private void createMatch(EloData player1, EloData player2) {
+        //two players gets added into match
     }
 
-    public List<PlayerID> getPlayersInQueue() {
-        return new ArrayList<>(playersInQueue);
-    }
+
+
 }
