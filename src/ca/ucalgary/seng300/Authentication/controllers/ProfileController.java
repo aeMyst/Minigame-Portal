@@ -1,7 +1,6 @@
 package src.ca.ucalgary.seng300.authentication.controllers;
 
 import src.ca.ucalgary.seng300.authentication.models.User;
-import src.ca.ucalgary.seng300.authentication.models.Profile;
 import src.ca.ucalgary.seng300.authentication.services.ProfileService;
 
 public class ProfileController {
@@ -17,25 +16,18 @@ public class ProfileController {
         profileService.viewProfile(user);
     }
 
-    public void updateProfile(User user, String displayName, String status) {
-        profileService.updateProfile(user, displayName, status);
+    // Update a user's profile (username, email, password)
+    public void updateProfile(User user, String newUsername, String newEmail, String newPassword) {
+        profileService.updateProfile(user, newUsername, newEmail, newPassword);
     }
 
     // Track game history (increment games played)
-    public void trackGameHistory(User user, Profile profile) {
-        profileService.trackGameHistory(user, profile);
+    public void trackGameHistory(User user) {
+        profileService.trackGameHistory(user);
     }
 
+    // Update ranking
     public void updateRanking(User user, int rank) {
         profileService.updateRanking(user, rank);
-    }
-
-    public void addWin(User user) {
-        profileService.addWin(user.getProfile());
-    }
-
-
-    public void addLoss(User user) {
-        profileService.addLoss(user.getProfile());
     }
 }

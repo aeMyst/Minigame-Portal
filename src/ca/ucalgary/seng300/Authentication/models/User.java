@@ -1,40 +1,45 @@
-package src.ca.ucalgary.seng300.Authentication.models;
+package src.ca.ucalgary.seng300.authentication.models;
+
 
 public class User {
 
     private String username;
-    private String passwordHash;
+    private String password;
     private String email;
-    private Profile profile;
 
-    public User(String username, String passwordHash, String email) {
+    public User(String username, String password, String email) {
         this.username = username;
-        this.passwordHash = passwordHash;
+        this.password = password;
         this.email = email;
-        this.profile = new Profile(username);
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public Profile getProfile() {
-        return profile;
+
+    public void setPassword(String newPassword) {
+        this.password = newPassword;
     }
 
-    public void updatePassword(String newPasswordHash) {
-        this.passwordHash = newPasswordHash;
-    }
-
+    @Override
     public String toString() {
-        return STR."User(username=\{username}, email=\{email})";
+        return "User(username=" + username + ", email=" + email + ")";
     }
 }

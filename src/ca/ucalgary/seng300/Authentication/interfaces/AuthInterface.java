@@ -1,4 +1,4 @@
-package src.ca.ucalgary.seng300.authentication.interfaces
+package src.ca.ucalgary.seng300.authentication.interfaces;
 
 
 public interface AuthInterface {

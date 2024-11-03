@@ -2,7 +2,6 @@ package src.ca.ucalgary.seng300.authentication.services;
 
 import src.ca.ucalgary.seng300.authentication.interfaces.ProfileInterface;
 import src.ca.ucalgary.seng300.authentication.models.User;
-import src.ca.ucalgary.seng300.authentication.models.Profile;
 
 public class ProfileService implements ProfileInterface {
 
@@ -13,28 +12,27 @@ public class ProfileService implements ProfileInterface {
     }
 
     @Override
-    public void updateProfile(User user, String displayName, String status) {
-        user.getProfile().setDisplayName(displayName);
-        user.getProfile().setStatus(status);
+    public void updateProfile(User user, String newUsername, String newEmail, String newPassword) {
+        if (newUsername != null && !newUsername.isEmpty()) {
+            user.setUsername(newUsername);
+        }
+
+        if (newEmail != null && !newEmail.isEmpty()) {
+            user.setEmail(newEmail);
+        }
+
+        if (newPassword != null && !newPassword.isEmpty()) {
+            user.setPassword(newPassword);
+        }
     }
 
     @Override
-    public void trackGameHistory(User user, Profile profile) {
-        profile.setGamesPlayed(profile.getGamesPlayed() + 1);
-
+    public void trackGameHistory(User user) {
+        user.getProfile().setGamesPlayed(user.getProfile().getGamesPlayed() + 1);
     }
 
     @Override
     public void updateRanking(User user, int rank) {
         user.getProfile().setRank(rank);
-    }
-
-    // wins/losses
-    public void addWin(Profile profile) {
-        profile.setWins(profile.getWins() + 1);
-    }
-
-    public void addLoss(Profile profile) {
-        profile.setLosses(profile.getLosses() + 1);
     }
 }
