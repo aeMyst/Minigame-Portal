@@ -1,8 +1,8 @@
 package src.ca.ucalgary.seng300.gamelogic.games.Connect4;
 
-public class Connect4Logic {
+public class Connect4Logic extends Connect4Board{
 
-    public static boolean valid(int[][] board, int row, int col) {
+    public boolean valid(int[][] board, int row, int col) {
         //the series of conditionals tests whether inputs are within board dimensions.
         if (row < 0 || row >= board.length) {
             return false;
@@ -15,7 +15,7 @@ public class Connect4Logic {
 
 
     //method for checking if any positions are empty in the board
-    public static boolean boardFull(int[][] board) {
+    public boolean boardFull(int[][] board) {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] == 0) {
@@ -27,7 +27,10 @@ public class Connect4Logic {
     }
 
     //main method for placing pieces, looping until board is full or win condition is achieved
-    public static boolean placePiece(int[][] board, int col, int piece) {
+    public boolean placePiece(int[][] board, int col, int piece) {
+        if (board[0][col] != 0) {
+            return false; //checks for full column
+        }
         for (int row = board.length - 1; row >= 0; row--) {
             if (board[row][col] == 0) {
                 board[row][col] = piece;
@@ -39,7 +42,7 @@ public class Connect4Logic {
 
 
     //method for checking horizontal win condition is achieved
-    public static boolean horizontalWin(int[][] board, int piece) {
+    public boolean horizontalWin(int[][] board, int piece) {
         for (int row = 0; row < board.length; row++) {
             int counter = 0;
             for (int col = 0; col < board[row].length; col++) {
@@ -57,7 +60,7 @@ public class Connect4Logic {
     }
 
     //method for checking vertical win condition is achieved
-    public static boolean verticalWin(int[][]board, int piece) {
+    public boolean verticalWin(int[][]board, int piece) {
         for (int col = 0; col < board[0].length; col++) {
             int counter = 0;
             for (int row = 0; row < board.length; row++) {
@@ -76,7 +79,7 @@ public class Connect4Logic {
 
     //method for checking backslash win condition is achieved
     //I'll figure out the logic for this later
-    public static boolean backslashWin(int[][] board, int piece) {
+    public boolean backslashWin(int[][] board, int piece) {
         //we loop only the first 2 rows as only they are capable of fitting a chain
         for (int row = 0; row <= board.length - 4; row++) {
             for (int col = 0; col <= board[0].length - 4; col++) {
@@ -89,7 +92,7 @@ public class Connect4Logic {
 
     //method for checking forwardslash win condition is achieved
     //I'll figure out the logic for this later
-    public static boolean forwardslashWin(int[][] board, int piece) {
+    public boolean forwardslashWin(int[][] board, int piece) {
         return false;
     }
 }
