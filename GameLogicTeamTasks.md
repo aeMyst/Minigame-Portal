@@ -18,15 +18,15 @@
 
 https://www.youtube.com/watch?v=USEjXNCTvcc
 
-- [ ] create basic skeleton code (code structure and possibly how we will implement) 
+- ~~create basic skeleton code~~
 - [ ] use case diagrams (how will a person interact with the game)
-- [ ] class diagram (what are the relationship between the classes)
+- ~~class diagram~~
 
 **Connect Four** = Rydon Li Chit Khim, Lucas Li, Shezan Nanji
 
 https://www.youtube.com/watch?v=utXzIFEVPjA
 
-- [ ] create basic skeleton code (code structure and possibly how we will implement) 
+- ~~create basic skeleton code~~
 - [ ] use case diagrams (how will a person interact with the game)
 - [ ] class diagram (what are the relationship between the classes)
 
@@ -34,9 +34,9 @@ https://www.youtube.com/watch?v=utXzIFEVPjA
 
 https://www.youtube.com/watch?v=ScKIdStgAfU
 
-- [ ] create basic skeleton code (code structure and possibly how we will implement) 
+- ~~create basic skeleton code~~ 
 - [ ] use case diagrams (how will a person interact with the game)
-- [ ] class diagram (what are the relationship between the classes)
+- ~~class diagram~~
 
 _*make note of any possible diagrams we made need before submission*_
 
