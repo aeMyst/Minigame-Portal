@@ -16,9 +16,9 @@ public class Connect4Board {
         System.out.println("   --------------------------   ");
 
         for (int i = 0; i < board.length; i++) {
-            System.out.println(" | ");
+            System.out.print(" | ");
             for (int j = 0; j < board[i].length; j++) {
-                System.out.println(board[i][j] + " | ");
+                System.out.print(board[i][j] + " | ");
             }
             System.out.println();
             System.out.println("   --------------------------   ");
