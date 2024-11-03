@@ -1,44 +1,52 @@
 package src.ca.ucalgary.seng300;
 
-/// This class is in the users instance
-/// so it doesn't have the database, auth and
-/// backend info, just has the url or way
-/// to ask a Server for new info
-public class Client {
+import src.ca.ucalgary.seng300.gamelogic.GameState;
+import src.ca.ucalgary.seng300.gamelogic.IGameLogic;
 
-    private void logInUser(String username, String password) {
-        // TODO: Implement
+public class Client implements IClient {
+
+    IGameLogic gameLogic;
+
+    AuthInterface auth;
+    ProfileInterface profile;
+
+    IMatchMaker matchMaker;
+    ILeaderboard leaderboard;
+    IElo elo;
+
+
+    public void logInUser(String username, String password) {
     }
 
-    private void logOutUser() {}
+    public void logOutUser() {}
 
 
 
-    private boolean registerUser(String username, String password, String email) {
+    public boolean registerUser(String username, String password, String email) {
         // TODO: Implement
         return false;
     }
 
-    private void findProfileInfo() {
+    public void findProfileInfo(String User) {
 
     }
 
 
-    private void newMove() {
+    public void newMove(GameState newState) {
     }
 
 
-    private void newGameInfo() {}
+    public void newGameInfo() {}
 
 
-    private void queueGame() {}
+    public void queueGame(String gameKind) {}
 
 
-    private void pingQueue() {}
+    public void pingQueue() {}
 
 
-    private void cancelQueue() {}
+    public void cancelQueue() {}
 
 
-    private void viewGame() {}
+    public void viewGame(int id) {}
 }
