@@ -20,6 +20,8 @@ public class Connect4Board {
             for (int j = 0; j < board[i].length; j++) {
                 System.out.println(board[i][j] + " | ");
             }
+            System.out.println();
+            System.out.println("   --------------------------   ");
         }
     }
 }
