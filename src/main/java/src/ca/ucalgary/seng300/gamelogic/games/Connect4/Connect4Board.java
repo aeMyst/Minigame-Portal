@@ -13,7 +13,7 @@ public class Connect4Board {
 
     public static void printBoard(int[][] board) {
         System.out.println("   1   2   3   4   5   6   7   "); //column labels, will figure out spacing later
-        System.out.println("   --------------------------   ");
+        System.out.println(" -----------------------------   ");
 
         for (int i = 0; i < board.length; i++) {
             System.out.print(" | ");
@@ -21,7 +21,7 @@ public class Connect4Board {
                 System.out.print(board[i][j] + " | ");
             }
             System.out.println();
-            System.out.println("   --------------------------   ");
+            System.out.println(" -----------------------------   ");
         }
     }
 }

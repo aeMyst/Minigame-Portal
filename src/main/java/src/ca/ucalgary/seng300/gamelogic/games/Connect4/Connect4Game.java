@@ -31,18 +31,23 @@ public class Connect4Game extends StartGame{
             }
 
             if (logicManager.horizontalWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-                System.out.println("Player " + currentPlayer.getPiece() + "wins!");
+                logicManager.printBoard(logicManager.getBoard());
+                System.out.println("Player " + currentPlayer.getPiece() + " wins!");
                 break;
             } else if (logicManager.verticalWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-                System.out.println("Player " + currentPlayer.getPiece() + "wins!");
+                logicManager.printBoard(logicManager.getBoard());
+                System.out.println("Player " + currentPlayer.getPiece() + " wins!");
                 break;
             } else if (logicManager.forwardslashWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-                System.out.println("Player " + currentPlayer.getPiece() + "wins!");
+                logicManager.printBoard(logicManager.getBoard());
+                System.out.println("Player " + currentPlayer.getPiece() + " wins!");
                 break;
             } else if (logicManager.backslashWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-                System.out.println("Player " + currentPlayer.getPiece() + "wins!");
+                logicManager.printBoard(logicManager.getBoard());
+                System.out.println("Player " + currentPlayer.getPiece() + " wins!");
                 break;
             } else if (logicManager.boardFull(logicManager.getBoard())) {
+                logicManager.printBoard(logicManager.getBoard());
                 System.out.println("Board is full. Tie game!");
                 break;
             }
