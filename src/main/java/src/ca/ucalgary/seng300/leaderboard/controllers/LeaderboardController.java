@@ -32,6 +32,7 @@ public class LeaderboardController {
     // using UI to add players
     public void addPlayer(EloData player) {
         // implement later
+        matchmaker.addPlayerToQueue(player);
     }
 
     // use UI to find match & create match
