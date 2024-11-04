@@ -1,0 +1,138 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1 Safari/605.1.15" version="24.8.3">
+  <diagram name="Page-1" id="u5YEfdnW1iWnqYzpXNXf">
+    <mxGraphModel dx="1990" dy="1078" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1920" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-1" value="EloData" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="100" width="420" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-2" value="-playerID: String&amp;nbsp;&lt;div&gt;-elo: int&amp;nbsp;&lt;/div&gt;&lt;div&gt;-gamesPlayed: int&amp;nbsp;&lt;/div&gt;&lt;div&gt;-wins: int&amp;nbsp;&lt;/div&gt;&lt;div&gt;-losses: int&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aeC7ui7vRPgSLl6If3OF-1">
+          <mxGeometry y="26" width="420" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="aeC7ui7vRPgSLl6If3OF-1">
+          <mxGeometry y="110" width="420" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-4" value="+EloData(playerID:String, elo:int, gamesPlayed:int, wins:int, losses:int): void&amp;nbsp;&lt;div&gt;+getPlayerID: void&amp;nbsp;&lt;/div&gt;&lt;div&gt;+getElo(): int&amp;nbsp;&lt;/div&gt;&lt;div&gt;+setElo(elo:int): void&amp;nbsp;&lt;/div&gt;&lt;div&gt;+getGamesPlayed(): int&amp;nbsp;&lt;/div&gt;&lt;div&gt;+getWins(): int&amp;nbsp;&lt;/div&gt;&lt;div&gt;+getLosses(): int &amp;nbsp;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aeC7ui7vRPgSLl6If3OF-1">
+          <mxGeometry y="118" width="420" height="122" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-5" value="EloRating" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="460" width="340" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-7" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="aeC7ui7vRPgSLl6If3OF-5">
+          <mxGeometry y="26" width="340" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-8" value="+calculateNewElo(myElo:int, enemyElo:int, won:boolean): int&lt;div&gt;+updateElo(winner:Elodata, loser:Elodata): void&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aeC7ui7vRPgSLl6If3OF-5">
+          <mxGeometry y="34" width="340" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-12" value="Leaderboard" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="460" width="240" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-13" value="-players: HashMap&amp;lt;String, EloData&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aeC7ui7vRPgSLl6If3OF-12">
+          <mxGeometry y="26" width="240" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-14" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="aeC7ui7vRPgSLl6If3OF-12">
+          <mxGeometry y="50" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-15" value="+loadPlayersFromCSV(): void&amp;nbsp;&lt;div&gt;+addPlayer(playerID:EloData): void&amp;nbsp;&lt;/div&gt;&lt;div&gt;+sortedLeaderboard(): List&amp;lt;EloData&amp;gt;&amp;nbsp;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aeC7ui7vRPgSLl6If3OF-12">
+          <mxGeometry y="58" width="240" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-16" value="MatchMaker" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="820" y="460" width="310" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-17" value="-queue: ArrayList&amp;lt;EloData&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aeC7ui7vRPgSLl6If3OF-16">
+          <mxGeometry y="26" width="310" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-18" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="aeC7ui7vRPgSLl6If3OF-16">
+          <mxGeometry y="50" width="310" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-19" value="+addPlayerToQueue(player:EloData): void&amp;nbsp;&lt;div&gt;+findMatch(): void&amp;nbsp;&lt;/div&gt;&lt;div&gt;+createMatch(player1:EloData, player2:EloData): void&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aeC7ui7vRPgSLl6If3OF-16">
+          <mxGeometry y="58" width="310" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-21" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;IEloRating&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+calculateNewElo(myElo:int, enemyElo:int, won:boolean): int&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+updateElo(winner:EloData, loser:EloData): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="397.5" y="670" width="345" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-23" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;IMatchMaker&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+addPlayerToQueue(player:EloData): void&amp;nbsp;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+findMatch(): void&amp;nbsp;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="802.5" y="670" width="345" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-24" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;ILeaderboard&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+loadPlayersFromCSV(): void&amp;nbsp;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+addPlayer(playerID:EloData): void&amp;nbsp;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+sortedLeaderboard(): List&amp;lt;EloData&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="27.5" y="670" width="345" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-25" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="aeC7ui7vRPgSLl6If3OF-24">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="199.38" y="580" as="sourcePoint" />
+            <mxPoint x="199.38" y="630.21" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-26" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="aeC7ui7vRPgSLl6If3OF-21">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="569.64" y="540" as="sourcePoint" />
+            <mxPoint x="569.64" y="590.21" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-27" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="aeC7ui7vRPgSLl6If3OF-23">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="974.64" y="580" as="sourcePoint" />
+            <mxPoint x="974.64" y="630.21" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-28" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;exitX=0.625;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.002;entryY=0.838;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="aeC7ui7vRPgSLl6If3OF-12" target="aeC7ui7vRPgSLl6If3OF-4">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="230" y="400" as="sourcePoint" />
+            <mxPoint x="280" y="320" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="230" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-29" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;exitX=0.471;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="aeC7ui7vRPgSLl6If3OF-5">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="560" y="390" as="sourcePoint" />
+            <mxPoint x="560" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-30" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;exitX=0.625;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="920" y="460" as="sourcePoint" />
+            <mxPoint x="780" y="320" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="920" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-31" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;entryX=0.07;entryY=0.997;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="aeC7ui7vRPgSLl6If3OF-4">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="350" y="670" as="sourcePoint" />
+            <mxPoint x="390" y="360" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="350" y="410" />
+              <mxPoint x="390" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-32" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;exitX=0.11;exitY=-0.017;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="aeC7ui7vRPgSLl6If3OF-23">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="820" y="660" as="sourcePoint" />
+            <mxPoint x="750" y="340" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="840" y="620" />
+              <mxPoint x="750" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aeC7ui7vRPgSLl6If3OF-33" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;entryX=0.146;entryY=1.013;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.122;exitY=-0.014;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="aeC7ui7vRPgSLl6If3OF-21" target="aeC7ui7vRPgSLl6If3OF-4">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="440" y="660" as="sourcePoint" />
+            <mxPoint x="419" y="360" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="440" y="570" />
+              <mxPoint x="380" y="570" />
+              <mxPoint x="380" y="430" />
+              <mxPoint x="420" y="430" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
