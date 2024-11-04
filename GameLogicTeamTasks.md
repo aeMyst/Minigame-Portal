@@ -8,7 +8,8 @@
 | Alexis Newell      | 30205618 |
 | Rydon Li Chit Khim | 30229665 |
 | Tanjib Riasat      | 30170130 |
-| Lucas Li           | 30163047 | 
+| Lucas Li           | 30163047 |
+| Shezan Nanji       | 30174900 | 
 
 **Team Tasks & Goals**
 ------------------------------------------
