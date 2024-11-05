@@ -16,7 +16,9 @@ public class ScreenController extends Application {
     }
 
     public void showMainMenu() {
+        this.primaryStage = primaryStage;
         MainMenuScreen mainMenu = new MainMenuScreen(primaryStage, this);
+        System.out.println(primaryStage.getTitle());
         primaryStage.setScene(mainMenu.getScene());
     }
 
@@ -28,11 +30,6 @@ public class ScreenController extends Application {
     public void showTictactoeGameScreen() {
         TictactoeGameScreen ticTacToe = new TictactoeGameScreen(primaryStage, this);
         primaryStage.setScene(ticTacToe.getScene());
-    }
-
-    public void showLeaderBoard() {
-        LeaderboardScreen leaderBoard = new LeaderboardScreen(primaryStage, this);
-        primaryStage.setScene(leaderBoard.getScene());
     }
 
     public void showProfileScreen() {
@@ -68,34 +65,21 @@ public class ScreenController extends Application {
 
     }
 
-    public void showTictactoeLB() {
-        TictactoeLB tictactoeLeaderboard = new TictactoeLB(primaryStage, this);
-        primaryStage.setScene(tictactoeLeaderboard.getScene());
-
-    }
-
     public void showConnect4Screen() {
         Connect4Screen connect4 = new Connect4Screen (primaryStage, this);
         primaryStage.setScene(connect4.getScene());
 
     }
 
-    public void showConnect4LB() {
-        Connect4LB connect4LB = new Connect4LB(primaryStage, this);
-        primaryStage.setScene(connect4LB.getScene());
-
+    public void showLeaderBoard() {
+        LeaderboardController leaderBoard = new LeaderboardController(primaryStage, this);
+        primaryStage.setScene(leaderBoard.getScene());
     }
 
     public void showCheckerScreen() {
         CheckerScreen checkers = new CheckerScreen(primaryStage, this);
         primaryStage.setScene(checkers.getScene());
     }
-
-    public void showCheckerLB() {
-        CheckerLB checkerLB = new CheckerLB(primaryStage, this);
-        primaryStage.setScene(checkerLB.getScene());
-    }
-
 
     public static void main(String[] args) {
         launch(args);
