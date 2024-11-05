@@ -27,3 +27,7 @@
 | Brie Tanghal          | 30188569 |
 | Vova Nguyen           | 30201859 |
 | Abrar Maheer Bin Arif | 30218259 |
+| :-                    | :-       |
+| GUI Team                         |
+| :-                    | :-       |
+| Sajid Khalid          | 30205767 |
