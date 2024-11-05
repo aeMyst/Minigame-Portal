@@ -1,11 +1,12 @@
 **Team Members:**
 ------------------------------------------
 
-| Name               | UCID     |
-|---------------     |----------|
-| Lucas Li           | 30163047 |
-| Arfa Raja          | 30177290 |
-| Brie Tanghal       | 30188569 |
-| Vova Nguyen        | 30201859 |
+| Name                  | UCID     |
+|-----------------------|----------|
+| Lucas Li              | 30163047 |
+| Arfa Raja             | 30177290 |
+| Brie Tanghal          | 30188569 |
+| Vova Nguyen           | 30201859 |
+| Abrar Maheer Bin Arif | 30218259 |
 
 
