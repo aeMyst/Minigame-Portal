@@ -5,32 +5,32 @@ import src.ca.ucalgary.seng300.gamelogic.GameState;
 public interface IClient {
 
 
-    /// Using the username anf password attempt to log in the user
+    /// Using the username and password attempt to log in the user
     void logInUser(String username, String password);
 
     /// Log out the user if they are currently logged in
-    void logOutUser();
+    void logoutUser();
 
     /// Attempt to register a new user with a new username, password and
     /// email returning false if there was an error
     boolean registerUser(String username, String password, String email);
 
     /// Find the profile info of a given user
-    void findProfileInfo(String user);
+    String findProfileInfo(String user);
 
     /// make a new move and send it over to the system
     void newMove(GameState newState);
 
+    /// queue for a specific game and return a starting game
+    GameState queueGame(String gameKind);
 
-    /// queue for a specific game
-    void queueGame(String gameKind);
-
-    /// ping the queue if a game has been found
-    void pingQueue();
+    /// If we are waiting for the next move ask for the next move in a game
+    GameState getNextMove(GameState gamestate);
     /// cancel the request to queue up
-    void cancelQueue();
-
     /// Spectate a game with a specific id
-    void viewGame(int id);
+    GameState viewGame(int id);
+
+    /// Get the current leaderboard
+    ILeaderBoard getLeaderBoard();
   
 }

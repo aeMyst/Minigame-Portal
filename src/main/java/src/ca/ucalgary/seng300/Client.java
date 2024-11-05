@@ -18,7 +18,7 @@ public class Client implements IClient {
     public void logInUser(String username, String password) {
     }
 
-    public void logOutUser() {}
+    public void logoutUser() {}
 
 
 
@@ -39,7 +39,14 @@ public class Client implements IClient {
     public void newGameInfo() {}
 
 
-    public void queueGame(String gameKind) {}
+    public GameState queueGame(String gameKind) {
+        return null;
+    }
+
+    @Override
+    public GameState getNextMove(GameState gamestate) {
+        return null;
+    }
 
 
     public void pingQueue() {}
@@ -48,5 +55,7 @@ public class Client implements IClient {
     public void cancelQueue() {}
 
 
-    public void viewGame(int id) {}
+    public GameState viewGame(int id) {
+        return null;
+    }
 }
