@@ -1,6 +1,7 @@
 package src.ca.ucalgary.seng300.authentication.services;
 
 import src.ca.ucalgary.seng300.authentication.interfaces.ProfileInterface;
+import src.ca.ucalgary.seng300.authentication.models.Profile;
 import src.ca.ucalgary.seng300.authentication.models.User;
 
 public class ProfileService implements ProfileInterface {
@@ -8,7 +9,7 @@ public class ProfileService implements ProfileInterface {
     @Override
     public void viewProfile(User user) {
         // Logic to view a user's profile
-        System.out.println(user.getProfile().toString());
+        
     }
 
     @Override
@@ -27,12 +28,12 @@ public class ProfileService implements ProfileInterface {
     }
 
     @Override
-    public void trackGameHistory(User user) {
-        user.getProfile().setGamesPlayed(user.getProfile().getGamesPlayed() + 1);
+    public void trackGameHistory(User user, Profile profile) {
+        //TrackGameHistory
     }
 
     @Override
     public void updateRanking(User user, int rank) {
-        user.getProfile().setRank(rank);
+        //update ranking
     }
 }

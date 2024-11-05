@@ -2,7 +2,7 @@ package src.ca.ucalgary.seng300.authentication.interfaces;
 
 import src.ca.ucalgary.seng300.authentication.models.User;
 import src.ca.ucalgary.seng300.authentication.models.Profile;
-import src.ca.ucalgary.seng300.authentication.models.Game;
+
 
 public interface ProfileInterface {
     void viewProfile(User user);

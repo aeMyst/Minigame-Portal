@@ -1,6 +1,6 @@
 package src.ca.ucalgary.seng300.authentication.controllers;
 
-import src.ca.ucalgary.seng300.authentication.interfaces.AuthInterface;
+import src.ca.ucalgary.seng300.authentication.models.User;
 import src.ca.ucalgary.seng300.authentication.services.AuthService;
 
 public class AuthController {
@@ -21,5 +21,9 @@ public class AuthController {
 
     public boolean logout(String username) {
         return true;
+    }
+
+    public User isLoggedIn() {
+        return authService.isLoggedIn();
     }
 }

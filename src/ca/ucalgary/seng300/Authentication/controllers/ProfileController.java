@@ -1,5 +1,6 @@
 package src.ca.ucalgary.seng300.authentication.controllers;
 
+import src.ca.ucalgary.seng300.authentication.models.Profile;
 import src.ca.ucalgary.seng300.authentication.models.User;
 import src.ca.ucalgary.seng300.authentication.services.ProfileService;
 
@@ -22,8 +23,8 @@ public class ProfileController {
     }
 
     // Track game history (increment games played)
-    public void trackGameHistory(User user) {
-        profileService.trackGameHistory(user);
+    public void trackGameHistory(User user, Profile profile) {
+        profileService.trackGameHistory(user, profile);
     }
 
     // Update ranking

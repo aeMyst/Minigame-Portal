@@ -1,8 +1,11 @@
 package src.ca.ucalgary.seng300.authentication.interfaces;
 
 
+import src.ca.ucalgary.seng300.authentication.models.User;
+
 public interface AuthInterface {
-    boolean register(String username, String password);
+    boolean register(String email,String username, String password);
     boolean login(String username, String password);
     boolean logout(String username);
+    User isLoggedIn();
 }
