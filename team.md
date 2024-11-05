@@ -20,9 +20,9 @@
 | Eric Trung            | 30161712 | Leaderboard & Matchmaking                        |
 | Sajid Khalid          | 30205767 | GUI                                              |
 | Mukhammad Ashurov     | 30191503 | GUI/Integration                                  |
-| Wish Li               | [fill]   | GUI                                              |
-| Adnan Shakib          | [fill]   | GUI                                              |
-| Weihan Song           | [fill]   | GUI                                              |
+| Wish Li               | 30069585 | GUI                                              |
+| Adnan Shakib          | 30191261 | GUI                                              |
+| Weihan Song           | 30132943 | GUI                                              |
 | Nicholas Allison      | 30119591 | Integration                                      |
 | Brian Heckel          | 30165243 | Network/Integration                              |
 | Swad Kazi             | 30217505 | Network                                          |
