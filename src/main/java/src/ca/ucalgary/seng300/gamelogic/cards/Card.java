@@ -1,6 +1,7 @@
 package src.ca.ucalgary.seng300.gamelogic.cards;
 
 import src.ca.ucalgary.seng300.graphics.Graphic;
+import src.ca.ucalgary.seng300.gamelogic.cards.CardID;
 
 public abstract class Card {
     private Graphic graphic;
