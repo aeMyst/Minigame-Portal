@@ -1,5 +1,7 @@
 package src.ca.ucalgary.seng300.gamelogic.cards;
 
+import src.ca.ucalgary.seng300.gamelogic.cards.CardID;
+
 import java.util.HashMap;
 
 public class Cards {
