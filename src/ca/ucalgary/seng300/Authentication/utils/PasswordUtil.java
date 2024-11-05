@@ -1,4 +1,4 @@
-package src.ca.ucalgary.seng300.Authentication.utils;
+package src.ca.ucalgary.seng300.authentication.utils;
 
 public class PasswordUtil {
 

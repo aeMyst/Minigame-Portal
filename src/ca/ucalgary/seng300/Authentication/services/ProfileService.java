@@ -7,9 +7,9 @@ import src.ca.ucalgary.seng300.authentication.models.User;
 public class ProfileService implements ProfileInterface {
 
     @Override
-    public void viewProfile(User user) {
+    public String viewProfile(Profile profile) {
         // Logic to view a user's profile
-        
+        return profile.getProfileDetails();
     }
 
     @Override

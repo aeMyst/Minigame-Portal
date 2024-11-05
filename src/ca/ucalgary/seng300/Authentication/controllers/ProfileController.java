@@ -13,8 +13,8 @@ public class ProfileController {
     }
 
     // View a user's profile
-    public void viewProfile(User user) {
-        profileService.viewProfile(user);
+    public String viewProfile(Profile profile) {
+       return profileService.viewProfile(profile);
     }
 
     // Update a user's profile (username, email, password)

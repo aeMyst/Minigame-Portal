@@ -38,7 +38,6 @@ public class User {
         this.password = newPassword;
     }
 
-    @Override
     public String toString() {
         return "User(username=" + username + ", email=" + email + ")";
     }

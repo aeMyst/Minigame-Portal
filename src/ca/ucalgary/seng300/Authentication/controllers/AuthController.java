@@ -19,11 +19,11 @@ public class AuthController {
         return authService.login(username, password);
     }
 
-    public boolean logout(String username) {
-        return true;
+    public boolean logout(User currentUser) {
+        return authService.logout(currentUser);
     }
 
-    public User isLoggedIn() {
-        return authService.isLoggedIn();
+    public User isLoggedIn(User currentUser){
+        return authService.isLoggedIn(currentUser);
     }
 }
