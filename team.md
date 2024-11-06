@@ -26,4 +26,4 @@
 | Nicholas Allison      | 30119591 | Integration                                      |
 | Brian Heckel          | 30165243 | Network/Integration                              |
 | Swad Kazi             | 30217505 | Network                                          |
-| Omer Khanzada         | N/A      | N/A                                              |
+| Omer Khanzada         | 30194175 | N/A                                              |
