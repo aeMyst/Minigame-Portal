@@ -17,7 +17,7 @@
 | Arfa Raja             | 30177290 | Leaderboard & Matchmaking                        |
 | Brie Tanghal          | 30188569 | Leaderboard & Matchmaking                        |
 | Vova Nguyen           | 30201859 | Leaderboard & Matchmaking                        |
-| Eric Trung            | 30161712 | Leaderboard & Matchmaking                        |
+| Eric Trung            | 30161712 | GUI                       |
 | Sajid Khalid          | 30205767 | GUI                                              |
 | Mukhammad Ashurov     | 30191503 | GUI/Integration                                  |
 | Wish Li               | 30069585 | GUI                                              |
