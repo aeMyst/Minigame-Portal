@@ -2,8 +2,8 @@ package src.ca.ucalgary.seng300.leaderboard.logic;
 
 import src.ca.ucalgary.seng300.leaderboard.interfaces.IMatchmaker;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MatchMaker implements IMatchmaker {
     private ArrayList<EloData> queue = new ArrayList<>();
@@ -23,6 +23,8 @@ public class MatchMaker implements IMatchmaker {
         //two players gets added into match
     }
 
-
-
+    public List<EloData> getQueue() {
+        return null;
+    }
 }
+
