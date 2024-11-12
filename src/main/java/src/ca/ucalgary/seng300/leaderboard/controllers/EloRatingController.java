@@ -27,4 +27,6 @@ public class EloRatingController {
         System.out.println("Wins: " + player.getWins());
         System.out.println("Losses: " + player.getLosses());
     }
+
+    //testing
 }
