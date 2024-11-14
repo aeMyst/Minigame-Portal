@@ -10,7 +10,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class FileManagement {
     public static Storage fileReading(File file) {
@@ -42,4 +41,19 @@ public class FileManagement {
         return storage;
     }
 
+    public static void fileWriting(Storage storage, File file) {
+        ArrayList<Player> players = storage.getPlayers();
+
+        try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file))) {
+            for (int i = 0; i < players.size(); i++) { //write info to the file in the format of "playerID, elo, wins, losses"
+                String[] player = {players.get(i).getPlayerID(), String.valueOf(players.get(i).getElo()), String.valueOf(players.get(i).getWins()), String.valueOf(players.get(i).getLosses())};
+                writerBuffer.write(String.join(",", player));
+                writerBuffer.newLine();
+            }
+
+        } catch (IOException error) {
+            System.out.println("Error writing file");
+            error.printStackTrace();
+        }
+    }
 }
