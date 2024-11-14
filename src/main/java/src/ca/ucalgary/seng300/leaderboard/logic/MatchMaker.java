@@ -15,14 +15,21 @@ public class MatchMaker implements IMatchmaker {
     }
 
     public void findMatch() {
-        //some loop that goes through the players in queue, grabs first 2 of similar elos
-
+        // some loop that goes through the players in queue, grabs first 2 of similar elos
+        for (int p1 = 0; p1 < queue.size(); p1++) {
+            for (int p2 = p1 + 1; p2 < queue.size(); p2++) {
+                // assuming a threshold of 150
+                if (queue.get(p1).getElo() - queue.get(p2).getElo() <= 150) {
+                    createMatch(queue.get(p1), queue.get(p2));
+                    queue.remove(p2);
+                    queue.remove(p1);
+                    return;
+                }
+            }
+        }
     }
 
     private void createMatch(EloData player1, EloData player2) {
-        //two players gets added into match
+        System.out.println("Match created between: " + player1.getPlayerID()+ " and " + player2.getPlayerID());
     }
-
-
-
 }
