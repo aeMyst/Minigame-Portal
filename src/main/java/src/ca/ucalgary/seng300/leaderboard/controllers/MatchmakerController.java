@@ -2,6 +2,8 @@ package src.ca.ucalgary.seng300.leaderboard.controllers;
 
 import src.ca.ucalgary.seng300.leaderboard.logic.EloData;
 import src.ca.ucalgary.seng300.leaderboard.logic.MatchMaker;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class MatchmakerController {
@@ -17,7 +19,8 @@ public class MatchmakerController {
 
     public List<EloData> getQueue() {
         // Assuming MatchMaker has a method to return the queue
-        return matchMaker.getQueue();
+//        return matchMaker.getQueue();
+        return new ArrayList<>();
     }
 
     public void findAndCreateMatch() {
