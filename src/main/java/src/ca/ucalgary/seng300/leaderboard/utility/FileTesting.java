@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class FileTesting {
     public static void main(String[] args) {
-        Player player1 = new Player("Lucas", 1200, 33, 11);
-        Player player2 = new Player("Vova", 999, 53, 37);
-        Player player3 = new Player("Brie", 320, 12, 9);
+        Player player1 = new Player("CONNECT4","Lucas", 1200, 33, 11, 2);
+        Player player2 = new Player("CONNECT4","Vova", 999, 53, 37, 11);
+        Player player3 = new Player("TICTACTOE","Brie", 320, 12, 9, 4);
 
         Storage storage = new Storage();
         storage.addPlayer(player1);

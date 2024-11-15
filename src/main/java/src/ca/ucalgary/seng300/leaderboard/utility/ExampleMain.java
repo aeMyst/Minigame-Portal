@@ -89,6 +89,21 @@ public class ExampleMain {
 
     // gets player input
     private static Player getPlayerInput(Scanner scanner) {
+        String gameType;
+        while (true) {
+            System.out.println("Enter Type of Game(CONNECT4, TICTACTOE, CHECKERS): ");
+            gameType = scanner.nextLine().toUpperCase();
+            if (gameType.equals("CONNECT4")) {
+                break;
+            } else if (gameType.equals("TICTACTOE")) {
+                break;
+            } else if (gameType.equals("CHECKERS")) {
+                break;
+            } else {
+                System.out.println("Invalid game type. Please enter CONNECT4, TICTACTOE, or CHECKERS.");
+            }
+        }
+
         System.out.print("Enter Player ID: ");
         String playerID = scanner.nextLine();
 
@@ -101,6 +116,9 @@ public class ExampleMain {
         System.out.print("Enter Losses: ");
         int losses = Integer.parseInt(scanner.nextLine());
 
-        return new Player(playerID, elo, wins, losses);
+        System.out.println("Enter Draws: ");
+        int draws = Integer.parseInt(scanner.nextLine());
+
+        return new Player(gameType, playerID, elo, wins, losses, draws);
     }
 }
