@@ -1,16 +1,28 @@
 package src.ca.ucalgary.seng300.leaderboard.data;
 
 public class Player {
+    private GameType gameType;
     private String playerID;
     private int elo;
     private int wins;
     private int losses;
+    private int ties;
 
-    public Player(String playerID, int elo, int wins, int losses) {
+    public Player(GameType gameType, String playerID, int elo, int wins, int losses, int ties) {
+        this.gameType = gameType;
         this.playerID = playerID;
         this.elo = elo;
         this.wins = wins;
         this.losses = losses;
+        this.ties = ties;
+    }
+
+    public void setGameType(GameType gameType) {
+        this.gameType = gameType;
+    }
+
+    public GameType getGameType() {
+        return gameType;
     }
 
     public void setPlayerID(String playerID) {
@@ -45,8 +57,21 @@ public class Player {
         return losses;
     }
 
+    public void setTies(int ties) {
+        this.ties = ties;
+    }
+
+    public int getTies() {
+        return ties;
+    }
+
     public String toString() {
-        return playerID + "\t" + elo + "\t" + wins + "\t" + losses;
+        return "GameType: " + gameType +
+                "\tPlayerID: " + playerID +
+                "\tElo: " + elo +
+                "\tWins: " + wins +
+                "\tLosses: " + losses +
+                "\tTies: " + ties;
     }
 
 }
