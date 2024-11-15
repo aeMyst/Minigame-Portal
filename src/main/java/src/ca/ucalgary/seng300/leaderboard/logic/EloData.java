@@ -1,5 +1,7 @@
 package src.ca.ucalgary.seng300.leaderboard.logic;
 
+
+//useless as of now, we will use Player.java class in the data folder
 public class EloData {
     private String playerID;
     private int elo;
