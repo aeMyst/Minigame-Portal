@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ILeaderboard {
     //we will be taking (String "whatever file path")
-    void loadPlayersFromCSV();
+    void loadPlayersFromCSV(String filename);
     void addPlayer(EloData playerID);
     List<EloData> sortedLeaderboard();
 }

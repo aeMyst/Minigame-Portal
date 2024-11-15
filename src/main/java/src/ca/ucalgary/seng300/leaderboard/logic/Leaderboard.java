@@ -1,18 +1,17 @@
 package src.ca.ucalgary.seng300.leaderboard.logic;
 
-import src.ca.ucalgary.seng300.gamelogic.players.PlayerID;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.ILeaderboard;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.io.*;
 
 public class Leaderboard implements ILeaderboard {
     private HashMap<String, EloData> players = new HashMap<>();
 
     @Override
-    public void loadPlayersFromCSV() {
+    public void loadPlayersFromCSV(String filename) {
         //we'll try bufferedReader and parse that values we need from the csv
+
+
     }
 
     @Override
