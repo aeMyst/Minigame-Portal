@@ -1,4 +1,5 @@
 package src.ca.ucalgary.seng300.leaderboard.utility;
+import src.ca.ucalgary.seng300.leaderboard.data.GameType;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.data.Storage;
 
@@ -20,8 +21,8 @@ public class FileManagement {
             String line = reader.readLine();
             while (line != null) {
                 String[] parts = line.split(","); //for reading csv files blah,13,13,11
-                if (parts.length == 4) {
-                    Player player = new Player(parts[0], Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3]));
+                if (parts.length == 6) {
+                    Player player = new Player(GameType.valueOf(parts[0]), parts[1], Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5]));
                     players.add(player);
                 } else {
                     throw new IllegalArgumentException("Invalid file format");
@@ -45,7 +46,7 @@ public class FileManagement {
         ArrayList<Player> players = storage.getPlayers();
 
         try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file))) {
-            for (int i = 0; i < players.size(); i++) { //write info to the file in the format of "playerID, elo, wins, losses"
+            for (int i = 0; i < players.size(); i++) { //write info to the file in the format of "type of game, playerID, elo, wins, losses, ties"
                 String[] player = {players.get(i).getPlayerID(), String.valueOf(players.get(i).getElo()), String.valueOf(players.get(i).getWins()), String.valueOf(players.get(i).getLosses())};
                 writerBuffer.write(String.join(",", player));
                 writerBuffer.newLine();
