@@ -19,7 +19,7 @@ public class LeaderboardController {
 
     // parsing csv file
     public void loadPlayers(String filename) {
-        leaderboard.loadPlayersFromCSV(); // depends on the loadPlayersFromCSV method 
+        leaderboard.loadPlayersFromCSV(filename); // depends on the loadPlayersFromCSV method
         displaySortedLeaderboard();
     }
     public void displaySortedLeaderboard() {
