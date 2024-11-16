@@ -43,6 +43,7 @@ public class Leaderboard implements ILeaderboard {
             }
 
             // checking for duplicate player IDs UNCONFIRMED DRAFT (if anyone asks, lucas said "don't bother")
+
 //            Set<String> checkID = new HashSet<>();
 //            for (String id : storeID) {
 //                if (!checkID.add(id)) {
@@ -59,15 +60,20 @@ public class Leaderboard implements ILeaderboard {
         players.put(playerID.getPlayerID(), playerID);
     }
 
-    //sorts names with corresponding elo values in order
+    // sorts names with corresponding elo values in order
     @Override
     public List<EloData> sortedLeaderboard() {
-        List<EloData> sortedLB = new List<EloData>() {
-        }
+        List<EloData> sortedLB = new ArrayList<>();
+
         List<HashMap.Entry<String, EloData>> sortPlayers = new ArrayList<>(players.entrySet());
+        // sorts the players according to descending elo ratings
         sortPlayers.sort((player1, player2) -> Integer.compare(player2.getValue().getElo(), player1.getValue().getElo()));
 
+        // adds each player from the sorted list to another list with the appropriate data type to be returned
+        for (HashMap.Entry<String, EloData> entry : sortPlayers) {
+            sortedLB.add(entry.getValue());
+        }
 
-        return sortedPlayers;
+        return sortedLB;
     }
 }
