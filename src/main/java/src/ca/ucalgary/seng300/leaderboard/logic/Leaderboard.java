@@ -42,13 +42,13 @@ public class Leaderboard implements ILeaderboard {
 
             }
 
-            // checking for duplicate player IDs
-            Set<String> checkID = new HashSet<>();
-            for (String id : storeID) {
-                if (!checkID.add(id)) {
-                    throw new IllegalArgumentException("ERROR: Duplicate player ID found: " + id);
-                }
-            }
+            // checking for duplicate player IDs UNCONFIRMED DRAFT (if anyone asks, lucas said "don't bother")
+//            Set<String> checkID = new HashSet<>();
+//            for (String id : storeID) {
+//                if (!checkID.add(id)) {
+//                    throw new IllegalArgumentException("ERROR: Duplicate player ID found: " + id);
+//                }
+//            }
         } catch (IOException e) {
             System.err.println("ERROR: Failed to read .csv file: " + e.getMessage());
         }
