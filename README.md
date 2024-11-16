@@ -1,13 +1,43 @@
-# seng300-f24-project
+**Please Read the Following for our Iteration 1 Submission:**
 
-## General Organization
+-----------------------------------------------------------------------------------------------------------------------
 
-The project has 2 main loops:
-1. The game loop
-2. The UI loop
+**File Overview:**
 
-The UI loop interacts with the main loop by querying IGameLogic interface
-The game state takes this as input as uses it's internal state to update the game state.
-At any point the UI should be able to query the GameLogic for an instance of GameState which it can use to display the board.
-The customization happens in different classes that implement the IGameLogic interface.
+**Files:**
+
+- Project_tracker.xlsx
+    - details project timeline with assigned teams, # of people, milestones, start/expected/finish dates, and notes.
+
+**Folders:**
+**additional_diagrams**    
+- Inside this folder, you will find any additional diagrams that were drawn to describe our system:
+    - project_architecture.png = total project architecture and plan
+    - sequence_diagram_eloData.png = eloData sequence diagram
+    - sequence_diagram_eloRating.png = eloRating sequence diagram
+    - sequence_diagram_leaderboard.png = leaderboard sequence diagram
+    - sequence_diagram_matchMaker.png = matchMaker sequence diagram
+    - state_machine_leaderboard.png = leaderboard state machine diagram
+
+
+**class_diagrams**
+- Inside this folder, you will find all class diagrams based on skeleton code in our system:
+    - class_diagram.png = GUI class diagram
+    - class_diagram_checkers.png = checkers game class diagram
+    - class_diagram_connect4.png = connect4 game class diagram
+    - class_diagram_leaderboard.png = leaderboard class diagram
+    - class_diagram_network.png = network class diagram
+    - class_diagram_profile.png = Profile & Authentication class diagram
+    - class_diagram_tictactoe.png = tictactoe game class diagram
+
+
+**use_case_descriptions**
+- Inside this folder, you will find use case descriptions and diagrams that outline the use cases of our system:
+    - use_case_descriptions.pdf =  includes use case diagram and descriptions of TicTacToe, Connect4, and checkers interactions
+    - use_case_descriptions_GUI.pdf = includes use case diagram and descriptions for GUI interactions
+    - use_case_descriptions_Leaderboard.pdf = includes use case diagram and descriptions for Leaderboard interactions
+    - use_case_descriptions_Profile.pdf = includes use case diagram and descritpions for Profile & Authentication interactions
+
+
+-----------------------------------------------------------------------------------------------------------------------
 
