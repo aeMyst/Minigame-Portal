@@ -56,14 +56,18 @@ public class Leaderboard implements ILeaderboard {
 
     @Override
     public void addPlayer(EloData playerID) {
-        //future logic implemented here
-
+        players.put(playerID.getPlayerID(), playerID);
     }
 
     //sorts names with corresponding elo values in order
     @Override
     public List<EloData> sortedLeaderboard() {
-        List<EloData> sortedPlayers = new ArrayList<>(players.values());
+        List<EloData> sortedLB = new List<EloData>() {
+        }
+        List<HashMap.Entry<String, EloData>> sortPlayers = new ArrayList<>(players.entrySet());
+        sortPlayers.sort((player1, player2) -> Integer.compare(player2.getValue().getElo(), player1.getValue().getElo()));
+
+
         return sortedPlayers;
     }
 }
