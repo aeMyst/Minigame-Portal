@@ -32,10 +32,13 @@ public class Leaderboard implements ILeaderboard {
                 String gameType = playerArr[0];
                 String playerID = playerArr[1];
                 storeID.add(playerID);
-                int elo = Integer.parseInt(playerArr[2]);
-                int wins = Integer.parseInt(playerArr[3]);
-                int losses = Integer.parseInt(playerArr[4]);
-                int ties = Integer.parseInt(playerArr[5]);
+                int elo = Integer.parseInt(playerArr[2].trim());
+                int wins = Integer.parseInt(playerArr[3].trim());
+                int losses = Integer.parseInt(playerArr[4].trim());
+                int ties = Integer.parseInt(playerArr[5].trim());
+
+                EloData playerData = new EloData(gameType, playerID, elo, wins, losses, ties);
+                addPlayer(playerData);
 
             }
 
