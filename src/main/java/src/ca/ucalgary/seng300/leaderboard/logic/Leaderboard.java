@@ -63,6 +63,9 @@ public class Leaderboard implements ILeaderboard {
     // sorts names with corresponding elo values in order
     @Override
     public List<EloData> sortedLeaderboard() {
+
+        // separate leaderboards for each game not yet created
+
         List<EloData> sortedLB = new ArrayList<>();
 
         List<HashMap.Entry<String, EloData>> sortPlayers = new ArrayList<>(players.entrySet());
