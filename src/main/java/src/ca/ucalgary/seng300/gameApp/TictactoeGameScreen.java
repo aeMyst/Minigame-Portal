@@ -1,5 +1,5 @@
 package src.ca.ucalgary.seng300.gameApp;
-import javafx.application.Application;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,24 +8,28 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-public class TictactoeGameScreen implements IScreen{
+
+public class TictactoeGameScreen implements IScreen {
     private Scene scene;
-    private String currentPlayer = "User";
-    private int userScore = 1;
-    private int playerScore = 0;
+    private String currentPlayer = "X";
     private Button[][] buttons = new Button[3][3];
     private Label turnIndicator;
     private TextArea chatArea;
     private TextField chatInput;
     private Label player1ScoreLabel, player2ScoreLabel;
     private int player1Score = 0, player2Score = 0;
+    private ScreenController controller;
 
     public TictactoeGameScreen(Stage stage, ScreenController controller) {
+        this.controller = controller;
+
+        // Initialize game board UI
         GridPane gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);
         gameBoard.setHgap(5);
         gameBoard.setVgap(5);
         gameBoard.setPadding(new Insets(10));
+
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 Button button = new Button("-");
@@ -38,6 +42,7 @@ public class TictactoeGameScreen implements IScreen{
                 gameBoard.add(button, col, row);
             }
         }
+
         player1ScoreLabel = new Label("Player X Score: " + player1Score);
         player2ScoreLabel = new Label("Player O Score: " + player2Score);
         player1ScoreLabel.setFont(new Font("Arial", 16));
@@ -59,6 +64,7 @@ public class TictactoeGameScreen implements IScreen{
         sendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         sendButton.setOnAction(e -> sendMessage());
 
+        // Set up the overall layout
         Button backToMenuButton = new Button("Back to Menu");
         backToMenuButton.setFont(new Font("Arial", 16));
         backToMenuButton.setPrefWidth(200);
@@ -78,84 +84,25 @@ public class TictactoeGameScreen implements IScreen{
 
         scene = new Scene(layout, 600, 800);
     }
+
     private void handleMove(int row, int col) {
         Button button = buttons[row][col];
-        if (!button.getText().equals("-")) {
-            return;
-        }
+        if (!button.getText().equals("-")) return;
+
         button.setText(currentPlayer);
         button.setStyle("-fx-background-color: #FFD700; -fx-text-fill: black;");
         if (isWin()) {
             showWinAlert(currentPlayer);
             updateScore();
-            resetBoard();
         } else if (isDraw()) {
             turnIndicator.setText("Draw!");
-            resetBoard();
+            controller.showEndGameScreen("Draw", player1Score, player2Score);
         } else {
             currentPlayer = currentPlayer.equals("X") ? "O" : "X";
             turnIndicator.setText("Turn: Player " + currentPlayer);
         }
     }
-    private boolean isWin() {
-        for (int i = 0; i < 3; i++) {
-            if (buttons[i][0].getText().equals(currentPlayer) && buttons[i][1].getText().equals(currentPlayer)
-                    && buttons[i][2].getText().equals(currentPlayer)) {
-                return true;
-            }
-            if (buttons[0][i].getText().equals(currentPlayer) && buttons[1][i].getText().equals(currentPlayer)
-                    && buttons[2][i].getText().equals(currentPlayer)) {
-                return true;
-            }
-        }
-        return buttons[0][0].getText().equals(currentPlayer) && buttons[1][1].getText().equals(currentPlayer)
-                && buttons[2][2].getText().equals(currentPlayer) ||
-                buttons[0][2].getText().equals(currentPlayer) && buttons[1][1].getText().equals(currentPlayer)
-                        && buttons[2][0].getText().equals(currentPlayer);
-    }
-    private boolean isDraw() {
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                if (buttons[row][col].getText().equals("-")) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-    private void updateScore() {
-        if (currentPlayer.equals("X")) {
-            player1Score++;
-            player1ScoreLabel.setText("Player X Score: " + player1Score);
-        } else {
-            player2Score++;
-            player2ScoreLabel.setText("Player O Score: " + player2Score);
-        }
-    }
-    private void resetBoard() {
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                buttons[row][col].setText("-");
-                buttons[row][col].setStyle("-fx-background-color: #87CEFA; -fx-text-fill: black;");
-            }
-        }
-        currentPlayer = "X";
-        turnIndicator.setText("Turn: Player " + currentPlayer);
-    }
-    private void sendMessage() {
-        String message = chatInput.getText();
-        if (!message.isEmpty()) {
-            chatArea.appendText("Player: " + message + "\n");
-            chatInput.clear();
-        }
-    }
+
     private void showWinAlert(String winner) {
         Alert winAlert = new Alert(Alert.AlertType.INFORMATION);
         winAlert.setTitle("Game Over");
@@ -171,17 +118,53 @@ public class TictactoeGameScreen implements IScreen{
         contentLabel.setTextFill(Color.DARKBLUE);
         winAlert.getDialogPane().setContent(contentLabel);
 
-        ButtonType playAgain = new ButtonType("Play Again");
-        ButtonType exit = new ButtonType("Exit");
-        winAlert.getButtonTypes().setAll(playAgain, exit);
+        ButtonType okButton = new ButtonType("OK");
+        winAlert.getButtonTypes().setAll(okButton);
         winAlert.showAndWait();
-        if (winAlert.getResult() == playAgain) {
-            resetBoard();
-        }
-        else {
-            System.exit(0);
+
+        // Show end game screen with the final results
+        controller.showEndGameScreen(winner, player1Score, player2Score);
+    }
+    private void sendMessage() {
+        String message = chatInput.getText();
+        if (!message.isEmpty()) {
+            chatArea.appendText("Player: " + message + "\n");
+            chatInput.clear();
         }
     }
+    private boolean isWin() {
+        // Check rows, columns, and diagonals for a win
+        for (int i = 0; i < 3; i++) {
+            if (buttons[i][0].getText().equals(currentPlayer) && buttons[i][1].getText().equals(currentPlayer)
+                    && buttons[i][2].getText().equals(currentPlayer)) return true;
+            if (buttons[0][i].getText().equals(currentPlayer) && buttons[1][i].getText().equals(currentPlayer)
+                    && buttons[2][i].getText().equals(currentPlayer)) return true;
+        }
+        return buttons[0][0].getText().equals(currentPlayer) && buttons[1][1].getText().equals(currentPlayer)
+                && buttons[2][2].getText().equals(currentPlayer)
+                || buttons[0][2].getText().equals(currentPlayer) && buttons[1][1].getText().equals(currentPlayer)
+                && buttons[2][0].getText().equals(currentPlayer);
+    }
+
+    private boolean isDraw() {
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                if (buttons[row][col].getText().equals("-")) return false;
+            }
+        }
+        return true;
+    }
+
+    private void updateScore() {
+        if (currentPlayer.equals("X")) {
+            player1Score++;
+            player1ScoreLabel.setText("Player X Score: " + player1Score);
+        } else {
+            player2Score++;
+            player2ScoreLabel.setText("Player O Score: " + player2Score);
+        }
+    }
+
     @Override
     public Scene getScene() {
         return scene;
