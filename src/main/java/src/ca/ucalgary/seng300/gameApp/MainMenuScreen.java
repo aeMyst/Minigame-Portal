@@ -21,7 +21,7 @@ public class MainMenuScreen implements IScreen {
         titleLabel.setTextFill(Color.DARKBLUE);
 
         // Button to navigate to the Game Menu
-        Button gamesButton = new Button("Choose a Game");
+        Button gamesButton = new Button("Play");
         gamesButton.setFont(new Font("Arial", 16));
         gamesButton.setPrefWidth(200);
         gamesButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
@@ -34,6 +34,13 @@ public class MainMenuScreen implements IScreen {
         leaderBoardButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         leaderBoardButton.setOnAction(e -> controller.showLeaderBoard());
 
+        // Button to search profile
+        Button searchProfileButton = new Button("Search Profile");
+        searchProfileButton.setFont(new Font("Arial", 16));
+        searchProfileButton.setPrefWidth(200);
+        searchProfileButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        searchProfileButton.setOnAction(e -> controller.showSearchProfileScreen());
+
         // Exit button
         Button exitButton = new Button("Exit");
         exitButton.setFont(new Font("Arial", 16));
@@ -42,7 +49,7 @@ public class MainMenuScreen implements IScreen {
         exitButton.setOnAction(e -> System.exit(0));
 
         // Layout for main menu buttons
-        VBox mainMenuLayout = new VBox(15, titleLabel, gamesButton, leaderBoardButton, exitButton);
+        VBox mainMenuLayout = new VBox(15, titleLabel, gamesButton, leaderBoardButton,searchProfileButton, exitButton);
         mainMenuLayout.setAlignment(Pos.CENTER);
         mainMenuLayout.setPadding(new Insets(20));
         mainMenuLayout.setStyle("-fx-background-color: #f0f8ff;");

@@ -111,9 +111,15 @@ public class ScreenController extends Application {
         primaryStage.setScene(checkers.getScene());
     }
 
+    public void showSearchProfileScreen() {
+        SearchProfileScreen searchProfileScreen = new SearchProfileScreen(primaryStage, this);
+        primaryStage.setScene(searchProfileScreen.getScene());
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
+
 
 
 }
