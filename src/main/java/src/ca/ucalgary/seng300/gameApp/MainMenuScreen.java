@@ -49,7 +49,7 @@ public class MainMenuScreen implements IScreen {
         exitButton.setOnAction(e -> System.exit(0));
 
         // Layout for main menu buttons
-        VBox mainMenuLayout = new VBox(15, titleLabel, gamesButton, leaderBoardButton,searchProfileButton, exitButton);
+        VBox mainMenuLayout = new VBox(15, titleLabel, gamesButton, leaderBoardButton, searchProfileButton, exitButton);
         mainMenuLayout.setAlignment(Pos.CENTER);
         mainMenuLayout.setPadding(new Insets(20));
         mainMenuLayout.setStyle("-fx-background-color: #f0f8ff;");
@@ -65,7 +65,6 @@ public class MainMenuScreen implements IScreen {
     public Scene getScene() {
         return scene;
     }
-
 
 
 }

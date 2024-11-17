@@ -57,6 +57,7 @@ public class ScreenController extends Application {
         primaryStage.setTitle("Manage Profile");
         primaryStage.setScene(manageProfile.getScene());
     }
+
     public void showSearchProfileScreen() {
         SearchProfileScreen searchProfile = new SearchProfileScreen(primaryStage, this);
         primaryStage.setTitle("Search Profile");
@@ -76,8 +77,9 @@ public class ScreenController extends Application {
         primaryStage.setScene(createProfile.getScene());
 
     }
+
     public void showConnect4Screen() {
-        Connect4Screen connect4 = new Connect4Screen (primaryStage, this);
+        Connect4Screen connect4 = new Connect4Screen(primaryStage, this);
         primaryStage.setTitle("Connect 4");
         primaryStage.setScene(connect4.getScene());
     }

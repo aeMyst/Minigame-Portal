@@ -1,6 +1,6 @@
 package src.ca.ucalgary.seng300.gamelogic.games.Connect4;
 
-public class Connect4Game extends StartGame{
+public class Connect4Game extends StartGame {
     private Connect4Logic logicManager;
     private TurnManager turnManager;
 

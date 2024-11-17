@@ -15,6 +15,7 @@ public abstract class Card {
     public CardID getCardID() {
         return cardID;
     }
+
     public Graphic getGraphic() {
         return graphic;
     }

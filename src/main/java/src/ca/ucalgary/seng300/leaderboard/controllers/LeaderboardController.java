@@ -1,6 +1,7 @@
 package src.ca.ucalgary.seng300.leaderboard.controllers;
 
 import src.ca.ucalgary.seng300.leaderboard.logic.*;
+
 import java.util.*;
 
 
@@ -22,6 +23,7 @@ public class LeaderboardController {
         leaderboard.loadPlayersFromCSV(); // depends on the loadPlayersFromCSV method 
         displaySortedLeaderboard();
     }
+
     public void displaySortedLeaderboard() {
         List<EloData> sorted = leaderboard.sortedLeaderboard();
         for (EloData player : sorted) {

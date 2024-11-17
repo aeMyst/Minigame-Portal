@@ -37,6 +37,7 @@ public class MainMenuApplication extends Application {
     }
 }
  */
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -98,7 +99,7 @@ public class MainMenuApplication extends Application {
             String password = passwordField.getText();
             if (username.isEmpty() || password.isEmpty()) {
                 signInFeedbackLabel.setText("Error: Username and password cannot be empty.");
-            } else  { // Replace with real auth logic
+            } else { // Replace with real auth logic
                 signInFeedbackLabel.setText("Sign-in successful! Welcome, " + username + ".");
                 signInFeedbackLabel.setTextFill(Color.GREEN); // Set text color to green for success
                 signInStatusLabel.setText("Signed in as " + username); // Update main menu sign-in status
@@ -112,7 +113,9 @@ public class MainMenuApplication extends Application {
         gamesButton.setFont(new Font("Arial", 16));
         gamesButton.setPrefWidth(200);
         gamesButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        gamesButton.setOnAction(e -> {showGameMenu(stage);});
+        gamesButton.setOnAction(e -> {
+            showGameMenu(stage);
+        });
 
         Button playButton = new Button("Play Tic-Tac-Toe");
         playButton.setFont(new Font("Arial", 16));
@@ -124,19 +127,25 @@ public class MainMenuApplication extends Application {
         settingsButton.setFont(new Font("Arial", 16));
         settingsButton.setPrefWidth(200);
         settingsButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        settingsButton.setOnAction(e -> {showSettingsMenu(stage);});
+        settingsButton.setOnAction(e -> {
+            showSettingsMenu(stage);
+        });
 
         Button leaderBoardButton = new Button("LeaderBoard");
         leaderBoardButton.setFont(new Font("Arial", 16));
         leaderBoardButton.setPrefWidth(200);
         leaderBoardButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        leaderBoardButton.setOnAction(e -> {showLeaderBoard(stage);});
+        leaderBoardButton.setOnAction(e -> {
+            showLeaderBoard(stage);
+        });
 
         Button helpButton = new Button("Help");
         helpButton.setFont(new Font("Arial", 16));
         helpButton.setPrefWidth(200);
         helpButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        helpButton.setOnAction(e -> {showHelpMenu(stage);});
+        helpButton.setOnAction(e -> {
+            showHelpMenu(stage);
+        });
 
         Button exitButton = new Button("Exit");
         exitButton.setFont(new Font("Arial", 16));
@@ -158,6 +167,7 @@ public class MainMenuApplication extends Application {
         stage.setTitle("Main Menu");
         stage.show();
     }
+
     private void showGameMenu(Stage stage) {
         Label gameMenuTitle = new Label("Game Menu");
         gameMenuTitle.setFont(new Font("Arial", 24));
@@ -191,6 +201,7 @@ public class MainMenuApplication extends Application {
         stage.setTitle("Game Menu");
         stage.show();
     }
+
     private void showTicTacToeGame(Stage stage) {
         GridPane gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);
@@ -251,7 +262,8 @@ public class MainMenuApplication extends Application {
         stage.setScene(gameScene);
         stage.setTitle("Tic-Tac-Toe");
     }
-    private void showLeaderBoard(Stage stage){
+
+    private void showLeaderBoard(Stage stage) {
         Label leaderBoardTitle = new Label("Leaderboard");
         leaderBoardTitle.setFont(new Font("Arial", 24));
         leaderBoardTitle.setTextFill(Color.DARKBLUE);
@@ -299,7 +311,8 @@ public class MainMenuApplication extends Application {
         stage.setTitle("Leaderboard");
         stage.show();
     }
-    private void showSettingsMenu(Stage stage){
+
+    private void showSettingsMenu(Stage stage) {
         Label settingsTitle = new Label("Settings");
         settingsTitle.setFont(new Font("Arial", 24));
         settingsTitle.setTextFill(Color.DARKGREEN);
@@ -322,7 +335,8 @@ public class MainMenuApplication extends Application {
         stage.setTitle("Settings");
         stage.show();
     }
-    private void showHelpMenu(Stage stage){
+
+    private void showHelpMenu(Stage stage) {
         Label helpTitle = new Label("Help");
         helpTitle.setFont(new Font("Arial", 24));
         helpTitle.setTextFill(Color.DARKGREEN);
@@ -350,6 +364,7 @@ public class MainMenuApplication extends Application {
         stage.setTitle("Help");
         stage.show();
     }
+
     private void handleMove(int row, int col) {
         Button button = buttons[row][col];
         if (!button.getText().equals("-")) {
@@ -369,6 +384,7 @@ public class MainMenuApplication extends Application {
             turnIndicator.setText("Turn: Player " + currentPlayer);
         }
     }
+
     private boolean isWin() {
         for (int i = 0; i < 3; i++) {
             if (buttons[i][0].getText().equals(currentPlayer) && buttons[i][1].getText().equals(currentPlayer)
@@ -385,6 +401,7 @@ public class MainMenuApplication extends Application {
                 buttons[0][2].getText().equals(currentPlayer) && buttons[1][1].getText().equals(currentPlayer)
                         && buttons[2][0].getText().equals(currentPlayer);
     }
+
     private boolean isDraw() {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
@@ -395,16 +412,17 @@ public class MainMenuApplication extends Application {
         }
         return true;
     }
+
     private void handleSignIn(String username, String password) {
         if (username.isEmpty() || password.isEmpty()) {
             showAlert("Error", "Username and password cannot be empty.");
-        }
-        else  {
+        } else {
             signInStatusLabel.setText("Signed in as " + username); // Update the label with the signed-in user
             showAlert("Success", "Welcome, " + username + "!");
             showMainMenu((Stage) signInStatusLabel.getScene().getWindow());
         }
     }
+
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -412,6 +430,7 @@ public class MainMenuApplication extends Application {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
     private void updateScore() {
         if (currentPlayer.equals("X")) {
             player1Score++;
@@ -421,6 +440,7 @@ public class MainMenuApplication extends Application {
             player2ScoreLabel.setText("Player O Score: " + player2Score);
         }
     }
+
     private void resetBoard() {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
@@ -431,6 +451,7 @@ public class MainMenuApplication extends Application {
         currentPlayer = "X";
         turnIndicator.setText("Turn: Player " + currentPlayer);
     }
+
     private void sendMessage() {
         String message = chatInput.getText();
         if (!message.isEmpty()) {
@@ -438,6 +459,7 @@ public class MainMenuApplication extends Application {
             chatInput.clear();
         }
     }
+
     private void showWinAlert(String winner) {
         Alert winAlert = new Alert(Alert.AlertType.INFORMATION);
         winAlert.setTitle("Game Over");
@@ -459,11 +481,11 @@ public class MainMenuApplication extends Application {
         winAlert.showAndWait();
         if (winAlert.getResult() == playAgain) {
             resetBoard();
-        }
-        else {
+        } else {
             System.exit(0);
         }
     }
+
     public static void main(String[] args) {
         launch(args);
     }
