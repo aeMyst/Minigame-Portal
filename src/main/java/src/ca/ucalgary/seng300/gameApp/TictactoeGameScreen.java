@@ -96,7 +96,7 @@ public class TictactoeGameScreen implements IScreen {
             updateScore();
         } else if (isDraw()) {
             turnIndicator.setText("Draw!");
-            controller.showEndGameScreen("Draw", player1Score, player2Score);
+            controller.showEndGameScreen();
         } else {
             currentPlayer = currentPlayer.equals("X") ? "O" : "X";
             turnIndicator.setText("Turn: Player " + currentPlayer);
@@ -123,7 +123,7 @@ public class TictactoeGameScreen implements IScreen {
         winAlert.showAndWait();
 
         // Show end game screen with the final results
-        controller.showEndGameScreen(winner, player1Score, player2Score);
+        controller.showEndGameScreen();
     }
     private void sendMessage() {
         String message = chatInput.getText();
