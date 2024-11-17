@@ -1,4 +1,4 @@
-package src.ca.ucalgary.seng300.authentication.models;
+package src.ca.ucalgary.seng300.Profile.models;
 
 
 public class User {

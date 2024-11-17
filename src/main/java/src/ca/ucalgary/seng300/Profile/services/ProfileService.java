@@ -1,8 +1,8 @@
-package src.ca.ucalgary.seng300.authentication.services;
+package src.ca.ucalgary.seng300.Profile.services;
 
-import src.ca.ucalgary.seng300.authentication.interfaces.ProfileInterface;
-import src.ca.ucalgary.seng300.authentication.models.Profile;
-import src.ca.ucalgary.seng300.authentication.models.User;
+import src.ca.ucalgary.seng300.Profile.interfaces.ProfileInterface;
+import src.ca.ucalgary.seng300.Profile.models.Profile;
+import src.ca.ucalgary.seng300.Profile.models.User;
 
 public class ProfileService implements ProfileInterface {
 

@@ -1,7 +1,7 @@
-package src.ca.ucalgary.seng300.authentication.services;
+package src.ca.ucalgary.seng300.Profile.services;
 
-import src.ca.ucalgary.seng300.authentication.interfaces.AuthInterface;
-import src.ca.ucalgary.seng300.authentication.models.User;
+import src.ca.ucalgary.seng300.Profile.interfaces.AuthInterface;
+import src.ca.ucalgary.seng300.Profile.models.User;
 
 public class AuthService implements AuthInterface {
     //Possibly to track the logged in user
