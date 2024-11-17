@@ -2,14 +2,6 @@ package src.ca.ucalgary.seng300.gameApp;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 public class ScreenController extends Application {
     private Stage primaryStage;
@@ -60,33 +52,11 @@ public class ScreenController extends Application {
         primaryStage.setScene(manageProfile.getScene());
 
     }
-    public void showEndGameScreen(String result, int player1Score, int player2Score) {
-        Label endGameLabel = new Label("Game Over");
-        endGameLabel.setFont(new Font("Arial", 24));
-        endGameLabel.setTextFill(Color.DARKBLUE);
 
-        Label resultLabel = new Label(result.equals("Draw") ? "It's a Draw!" : "Player " + result + " wins!");
-        resultLabel.setFont(new Font("Arial", 18));
-        resultLabel.setTextFill(Color.DARKGREEN);
+    public void showEndGameScreen() {
+        EndGameScreen endGame = new EndGameScreen(primaryStage, this);
+        primaryStage.setScene(endGame.getScene());
 
-        Label scoreLabel = new Label("Final Scores:\nPlayer X: " + player1Score + "\nPlayer O: " + player2Score);
-        scoreLabel.setFont(new Font("Arial", 16));
-
-        Button playAgainButton = new Button("Play Again");
-        playAgainButton.setFont(new Font("Arial", 16));
-        playAgainButton.setOnAction(e -> showTictactoeGameScreen());
-
-        Button backToMainMenuButton = new Button("Back to Main Menu");
-        backToMainMenuButton.setFont(new Font("Arial", 16));
-        backToMainMenuButton.setOnAction(e -> showMainMenu());
-
-        VBox layout = new VBox(20, endGameLabel, resultLabel, scoreLabel, playAgainButton, backToMainMenuButton);
-        layout.setAlignment(Pos.CENTER);
-        layout.setPadding(new Insets(20));
-        layout.setStyle("-fx-background-color: #f5f5f5;");
-
-        Scene endGameScene = new Scene(layout, 400, 300);
-        primaryStage.setScene(endGameScene);
     }
 
     public void showCreateProfileScreen() {
@@ -111,15 +81,9 @@ public class ScreenController extends Application {
         primaryStage.setScene(checkers.getScene());
     }
 
-    public void showSearchProfileScreen() {
-        SearchProfileScreen searchProfileScreen = new SearchProfileScreen(primaryStage, this);
-        primaryStage.setScene(searchProfileScreen.getScene());
-    }
-
     public static void main(String[] args) {
         launch(args);
     }
-
 
 
 }
