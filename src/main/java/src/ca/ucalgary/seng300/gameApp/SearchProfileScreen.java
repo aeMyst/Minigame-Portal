@@ -4,7 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class SearchProfileScreen implements IScreen{
+public class SearchProfileScreen implements IScreen {
     private Scene scene;
 
     public SearchProfileScreen(Stage stage, ScreenController controller) {

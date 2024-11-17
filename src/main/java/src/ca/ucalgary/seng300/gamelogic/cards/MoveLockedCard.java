@@ -13,6 +13,7 @@ public class MoveLockedCard extends Card {
     public Location getLocation() {
         return location;
     }
+
     public Rotation getRotation() {
         return rotation;
     }

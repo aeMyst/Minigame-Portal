@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class ServerConnectionScreen implements IScreen{
+public class ServerConnectionScreen implements IScreen {
     private Scene scene;
 
     public ServerConnectionScreen(Stage stage, ScreenController controller) {

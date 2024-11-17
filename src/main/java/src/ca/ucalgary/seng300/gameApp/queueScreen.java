@@ -4,7 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class queueScreen implements IScreen{
+public class queueScreen implements IScreen {
     private Scene scene;
 
     public queueScreen(Stage stage, ScreenController controller) {

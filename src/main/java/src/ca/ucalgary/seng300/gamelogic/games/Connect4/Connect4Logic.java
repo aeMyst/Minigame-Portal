@@ -1,6 +1,6 @@
 package src.ca.ucalgary.seng300.gamelogic.games.Connect4;
 
-public class Connect4Logic extends Connect4Board{
+public class Connect4Logic extends Connect4Board {
 
     public boolean valid(int[][] board, int row, int col) {
         //the series of conditionals tests whether inputs are within board dimensions.
@@ -19,7 +19,7 @@ public class Connect4Logic extends Connect4Board{
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] == 0) {
-                    return  false;
+                    return false;
                 }
             }
         }
@@ -60,7 +60,7 @@ public class Connect4Logic extends Connect4Board{
     }
 
     //method for checking vertical win condition is achieved
-    public boolean verticalWin(int[][]board, int piece) {
+    public boolean verticalWin(int[][] board, int piece) {
         for (int col = 0; col < board[0].length; col++) {
             int counter = 0;
             for (int row = 0; row < board.length; row++) {

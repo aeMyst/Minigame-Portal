@@ -1,7 +1,7 @@
 package src.ca.ucalgary.seng300.gamelogic.games.Connect4;
 
 public class Connect4Board {
-    protected int [][] board;
+    protected int[][] board;
 
     public Connect4Board() {
         board = new int[6][7]; //creates 2D array with standard dimensions of connect 4 board

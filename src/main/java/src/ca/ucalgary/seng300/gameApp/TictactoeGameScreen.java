@@ -22,8 +22,6 @@ public class TictactoeGameScreen implements IScreen {
 
     public TictactoeGameScreen(Stage stage, ScreenController controller) {
         this.controller = controller;
-
-        // Initialize game board UI
         GridPane gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);
         gameBoard.setHgap(5);
@@ -64,7 +62,6 @@ public class TictactoeGameScreen implements IScreen {
         sendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         sendButton.setOnAction(e -> sendMessage());
 
-        // Set up the overall layout
         Button backToMenuButton = new Button("Back to Menu");
         backToMenuButton.setFont(new Font("Arial", 16));
         backToMenuButton.setPrefWidth(200);
@@ -121,10 +118,9 @@ public class TictactoeGameScreen implements IScreen {
         ButtonType okButton = new ButtonType("OK");
         winAlert.getButtonTypes().setAll(okButton);
         winAlert.showAndWait();
-
-        // Show end game screen with the final results
         controller.showEndGameScreen();
     }
+
     private void sendMessage() {
         String message = chatInput.getText();
         if (!message.isEmpty()) {
@@ -132,8 +128,8 @@ public class TictactoeGameScreen implements IScreen {
             chatInput.clear();
         }
     }
+
     private boolean isWin() {
-        // Check rows, columns, and diagonals for a win
         for (int i = 0; i < 3; i++) {
             if (buttons[i][0].getText().equals(currentPlayer) && buttons[i][1].getText().equals(currentPlayer)
                     && buttons[i][2].getText().equals(currentPlayer)) return true;
