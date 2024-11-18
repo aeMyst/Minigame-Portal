@@ -13,19 +13,12 @@ import javafx.stage.Stage;
 
 public class MainMenuScreen implements IScreen {
     private Scene scene;
-    private String username;
 
     public MainMenuScreen(Stage stage, ScreenController controller) {
         // Title label
-        Label titleLabel = new Label("Welcome,");
+        Label titleLabel = new Label("Main Menu");
         titleLabel.setFont(new Font("Arial", 24));
         titleLabel.setTextFill(Color.DARKBLUE);
-
-        // Username label
-        username = "User"; // put username here
-        Label usernameLabel = new Label(username + "!");
-        usernameLabel.setFont(new Font("Arial", 24));
-        usernameLabel.setTextFill(Color.DARKBLUE);
 
         // Button to navigate to the Game Menu
         Button gamesButton = new Button("Play");
@@ -48,22 +41,15 @@ public class MainMenuScreen implements IScreen {
         searchProfileButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         searchProfileButton.setOnAction(e -> controller.showSearchProfileScreen());
 
-        // Button to view profile
-        Button viewProfileButton = new Button("View Profile");
-        viewProfileButton.setFont(new Font("Arial", 16));
-        viewProfileButton.setPrefWidth(200);
-        viewProfileButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        viewProfileButton.setOnAction(e -> controller.showUserProfileScreen());
-
-        // Log out button
-        Button logOutButton = new Button("Log Out");
-        logOutButton.setFont(new Font("Arial", 16));
-        logOutButton.setPrefWidth(200);
-        logOutButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        logOutButton.setOnAction(e -> controller.showSignInScreen());
+        // Exit button
+        Button exitButton = new Button("Exit");
+        exitButton.setFont(new Font("Arial", 16));
+        exitButton.setPrefWidth(200);
+        exitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        exitButton.setOnAction(e -> System.exit(0));
 
         // Layout for main menu buttons
-        VBox mainMenuLayout = new VBox(15, titleLabel, usernameLabel, gamesButton, leaderBoardButton, searchProfileButton, viewProfileButton, logOutButton);
+        VBox mainMenuLayout = new VBox(15, titleLabel, gamesButton, leaderBoardButton, searchProfileButton, exitButton);
         mainMenuLayout.setAlignment(Pos.CENTER);
         mainMenuLayout.setPadding(new Insets(20));
         mainMenuLayout.setStyle("-fx-background-color: #f0f8ff;");
