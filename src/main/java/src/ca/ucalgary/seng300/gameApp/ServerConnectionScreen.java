@@ -2,6 +2,7 @@ package src.ca.ucalgary.seng300.gameApp;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.VBox;
@@ -11,6 +12,7 @@ import javafx.stage.Stage;
 
 public class ServerConnectionScreen implements IScreen {
     private Scene scene;
+    private boolean canceled = false;
 
     public ServerConnectionScreen(Stage stage, ScreenController controller) {
         // Title label
@@ -22,8 +24,16 @@ public class ServerConnectionScreen implements IScreen {
         ProgressIndicator progressIndicator = new ProgressIndicator();
         progressIndicator.setPrefSize(100, 100);
 
+        // Button to cancel connection
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setFont(new Font("Arial", 16));
+        cancelButton.setPrefWidth(200);
+        cancelButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        cancelButton.setOnAction(e -> { canceled = true;
+                                        controller.showSignInScreen();});
+
         // Layout for connecting screen
-        VBox layout = new VBox(20, connectingLabel, progressIndicator);
+        VBox layout = new VBox(20, connectingLabel, progressIndicator, cancelButton);
         layout.setAlignment(Pos.CENTER);
 
         scene = new Scene(layout, 800, 600);
@@ -36,8 +46,10 @@ public class ServerConnectionScreen implements IScreen {
                 e.printStackTrace();
             }
 
-            // After connecting, switch to the main menu screen
-            javafx.application.Platform.runLater(() -> controller.showMainMenu());
+            // After connecting, if not canceled, switch to the main menu screen
+            if (!canceled) {
+                javafx.application.Platform.runLater(() -> controller.showMainMenu());
+            }
         }).start();
     }
 
