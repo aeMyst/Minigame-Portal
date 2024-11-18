@@ -31,4 +31,8 @@ public class ProfileController {
     public void updateRanking(User user, int rank) {
         profileService.updateRanking(user, rank);
     }
+
+    public String displayProfile(String username){
+        return profileService.displayProfileFromFile(username);
+    }
 }
