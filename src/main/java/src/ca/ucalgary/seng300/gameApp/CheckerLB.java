@@ -14,7 +14,7 @@ public class CheckerLB implements IScreen {
     private Scene scene;
 
     public CheckerLB(Stage stage, LeaderboardController controller) {
-        Label titleLabel = new Label("Tic-Tac-Toe Leaderboard");
+        Label titleLabel = new Label("Checkers Leaderboard");
         titleLabel.setFont(new Font("Arial", 24));
 
         VBox leaderboardEntries = new VBox(10);

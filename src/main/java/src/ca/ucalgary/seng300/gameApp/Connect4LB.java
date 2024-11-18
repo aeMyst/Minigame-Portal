@@ -14,7 +14,7 @@ public class Connect4LB implements IScreen {
     private Scene scene;
 
     public Connect4LB(Stage stage, LeaderboardController controller) {
-        Label titleLabel = new Label("Tic-Tac-Toe Leaderboard");
+        Label titleLabel = new Label("Connect4 Leaderboard");
         titleLabel.setFont(new Font("Arial", 24));
 
         VBox leaderboardEntries = new VBox(10);
