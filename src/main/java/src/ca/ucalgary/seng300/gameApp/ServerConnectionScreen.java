@@ -28,7 +28,7 @@ public class ServerConnectionScreen implements IScreen {
         Button cancelButton = new Button("Cancel");
         cancelButton.setFont(new Font("Arial", 16));
         cancelButton.setPrefWidth(200);
-        cancelButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        cancelButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: white;");
         cancelButton.setOnAction(e -> { canceled = true;
                                         controller.showSignInScreen();});
 

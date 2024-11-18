@@ -64,6 +64,14 @@ public class ScreenController extends Application {
         primaryStage.setScene(searchProfile.getScene());
     }
 
+    // needs an input to distinguish game type, since all games shares the same screen
+    public void showQueueScreen(int gameType) {
+        QueueScreen queue = new QueueScreen(primaryStage, this, gameType);
+        primaryStage.setTitle("Queue");
+        primaryStage.setScene(queue.getScene());
+
+    }
+
     public void showEndGameScreen() {
         EndGameScreen endGame = new EndGameScreen(primaryStage, this);
         primaryStage.setTitle("Game Over");

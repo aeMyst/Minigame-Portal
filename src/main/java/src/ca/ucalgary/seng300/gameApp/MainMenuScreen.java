@@ -59,7 +59,7 @@ public class MainMenuScreen implements IScreen {
         Button logOutButton = new Button("Log Out");
         logOutButton.setFont(new Font("Arial", 16));
         logOutButton.setPrefWidth(200);
-        logOutButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        logOutButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: white;");
         logOutButton.setOnAction(e -> controller.showSignInScreen());
 
         // Layout for main menu buttons
