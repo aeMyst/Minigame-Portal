@@ -34,7 +34,7 @@ public class ValidationUtils {
         return Pattern.matches(password_Regex, password);
     }
 
-    public static boolean isValidUserName(String username) {
+    public static boolean isValidUsername(String username) {
         if (username == null || username.isEmpty()) {
             return false;
         }
