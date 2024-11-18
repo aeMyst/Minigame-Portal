@@ -78,6 +78,13 @@ public class ScreenController extends Application {
 
     }
 
+    public void showUserProfileScreen() {
+        UserProfileScreen userProfile = new UserProfileScreen(primaryStage, this);
+        primaryStage.setTitle("Create Profile");
+        primaryStage.setScene(userProfile.getScene());
+
+    }
+
     public void showConnect4Screen() {
         Connect4Screen connect4 = new Connect4Screen(primaryStage, this);
         primaryStage.setTitle("Connect 4");
