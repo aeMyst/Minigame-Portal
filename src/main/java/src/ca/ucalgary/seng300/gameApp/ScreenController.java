@@ -35,10 +35,10 @@ public class ScreenController extends Application {
         primaryStage.setScene(ticTacToe.getScene());
     }
 
-    public void showProfileScreen() {
-        ProfileScreen profile = new ProfileScreen(primaryStage, this);
-        primaryStage.setTitle("User Profile");
-        primaryStage.setScene(profile.getScene());
+    public void showPlayerProfileScreen() {
+        PlayerProfileScreen playerProfile = new PlayerProfileScreen(primaryStage, this);
+        primaryStage.setTitle("View Player Profile");
+        primaryStage.setScene(playerProfile.getScene());
     }
 
     public void showServerConnectionScreen() {
@@ -88,7 +88,7 @@ public class ScreenController extends Application {
 
     public void showUserProfileScreen() {
         UserProfileScreen userProfile = new UserProfileScreen(primaryStage, this);
-        primaryStage.setTitle("Create Profile");
+        primaryStage.setTitle("View Profile");
         primaryStage.setScene(userProfile.getScene());
 
     }
