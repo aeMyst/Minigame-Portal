@@ -36,9 +36,9 @@ public class ScreenController extends Application {
     }
 
     public void showPlayerProfileScreen() {
-        PlayerProfileScreen profile = new PlayerProfileScreen(primaryStage, this);
-        primaryStage.setTitle("Player Profile");
-        primaryStage.setScene(profile.getScene());
+        PlayerProfileScreen playerProfile = new PlayerProfileScreen(primaryStage, this);
+        primaryStage.setTitle("View Player Profile");
+        primaryStage.setScene(playerProfile.getScene());
     }
 
     public void showServerConnectionScreen() {
@@ -88,7 +88,7 @@ public class ScreenController extends Application {
 
     public void showUserProfileScreen() {
         UserProfileScreen userProfile = new UserProfileScreen(primaryStage, this);
-        primaryStage.setTitle("Create Profile");
+        primaryStage.setTitle("View Profile");
         primaryStage.setScene(userProfile.getScene());
 
     }
