@@ -35,9 +35,9 @@ public class ScreenController extends Application {
         primaryStage.setScene(ticTacToe.getScene());
     }
 
-    public void showProfileScreen() {
-        ProfileScreen profile = new ProfileScreen(primaryStage, this);
-        primaryStage.setTitle("User Profile");
+    public void showPlayerProfileScreen() {
+        PlayerProfileScreen profile = new PlayerProfileScreen(primaryStage, this);
+        primaryStage.setTitle("Player Profile");
         primaryStage.setScene(profile.getScene());
     }
 
