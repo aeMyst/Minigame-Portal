@@ -17,10 +17,10 @@ public class LeaderboardController {
     }
 
     // parsing csv file
-    public void loadPlayers() {
-        leaderboard.loadPlayersFromCSV(); // depends on the loadPlayersFromCSV method
-        //displaySortedLeaderboard();
-    }
+//    public void loadPlayers() {
+//        leaderboard.loadPlayersFromCSV(); // depends on the loadPlayersFromCSV method
+//        //displaySortedLeaderboard();
+//    }
     public void displaySortedLeaderboard(String gameType) {
         List<List<String>> sorted = leaderboard.sortLeaderboard(gameType);
         for (List<String> player : sorted) {
