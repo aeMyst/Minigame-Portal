@@ -8,7 +8,7 @@ import java.util.*;
 import java.io.*;
 
 public class Leaderboard implements ILeaderboard {
-    private HashMap<String, EloData> players = new HashMap<>();
+    private HashMap<String, Player> players = new HashMap<>();
     private static final String FILE_PATH = "players_data.csv";
     private ArrayList<Player> loadPlayers = new ArrayList<>();
 
@@ -39,7 +39,7 @@ public class Leaderboard implements ILeaderboard {
 //    }
 
     // sorts names with corresponding elo values in order
-    @Override
+
     public List<List<String>> sortLeaderboard(String gameType) {
         List<List<String>> sortedLeaderboard = new ArrayList<>();
         File file = new File(FILE_PATH);
