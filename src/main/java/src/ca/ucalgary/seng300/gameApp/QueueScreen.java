@@ -41,7 +41,7 @@ public class QueueScreen implements IScreen {
         // Simulate a delay for connecting to the another player
         new Thread(() -> {
             try {
-                Thread.sleep(1000); // 1-second delay to simulate connecting
+                Thread.sleep(5000); // 1-second delay to simulate connecting
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

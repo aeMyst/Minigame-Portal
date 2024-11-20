@@ -17,15 +17,9 @@ public class MainMenuScreen implements IScreen {
 
     public MainMenuScreen(Stage stage, ScreenController controller) {
         // Title label
-        Label titleLabel = new Label("Welcome,");
+        Label titleLabel = new Label("Welcome " + username + "!");
         titleLabel.setFont(new Font("Arial", 24));
         titleLabel.setTextFill(Color.DARKBLUE);
-
-        // Username label
-        username = "User"; // put username here
-        Label usernameLabel = new Label(username + "!");
-        usernameLabel.setFont(new Font("Arial", 24));
-        usernameLabel.setTextFill(Color.DARKBLUE);
 
         // Button to navigate to the Game Menu
         Button gamesButton = new Button("Play");
@@ -42,11 +36,11 @@ public class MainMenuScreen implements IScreen {
         leaderBoardButton.setOnAction(e -> controller.showLeaderBoard());
 
         // Button to search profile
-        Button searchProfileButton = new Button("Search Profile");
-        searchProfileButton.setFont(new Font("Arial", 16));
-        searchProfileButton.setPrefWidth(200);
-        searchProfileButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        searchProfileButton.setOnAction(e -> controller.showSearchProfileScreen());
+        Button helpButton = new Button("Help");
+        helpButton.setFont(new Font("Arial", 16));
+        helpButton.setPrefWidth(200);
+        helpButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        helpButton.setOnAction(e -> controller.showHelpScreen());
 
         // Button to view profile
         Button viewProfileButton = new Button("View Profile");
@@ -63,7 +57,7 @@ public class MainMenuScreen implements IScreen {
         logOutButton.setOnAction(e -> controller.showSignInScreen());
 
         // Layout for main menu buttons
-        VBox mainMenuLayout = new VBox(15, titleLabel, usernameLabel, gamesButton, leaderBoardButton, searchProfileButton, viewProfileButton, logOutButton);
+        VBox mainMenuLayout = new VBox(15, titleLabel, gamesButton, leaderBoardButton, viewProfileButton, helpButton, logOutButton);
         mainMenuLayout.setAlignment(Pos.CENTER);
         mainMenuLayout.setPadding(new Insets(20));
         mainMenuLayout.setStyle("-fx-background-color: #f0f8ff;");

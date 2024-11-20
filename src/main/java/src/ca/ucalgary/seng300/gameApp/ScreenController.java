@@ -41,6 +41,12 @@ public class ScreenController extends Application {
         primaryStage.setScene(playerProfile.getScene());
     }
 
+    public void showLoadingScreen() {
+        LoadingScreen loadingScreen = new  LoadingScreen(primaryStage, this);
+        primaryStage.setTitle("View Player Profile");
+        primaryStage.setScene(loadingScreen.getScene());
+    }
+
     public void showServerConnectionScreen() {
         ServerConnectionScreen connection = new ServerConnectionScreen(primaryStage, this);
         primaryStage.setScene(connection.getScene());
@@ -58,10 +64,10 @@ public class ScreenController extends Application {
         primaryStage.setScene(manageProfile.getScene());
     }
 
-    public void showSearchProfileScreen() {
-        SearchProfileScreen searchProfile = new SearchProfileScreen(primaryStage, this);
-        primaryStage.setTitle("Search Profile");
-        primaryStage.setScene(searchProfile.getScene());
+    public void showHelpScreen() {
+        HelpScreen helpScreen = new HelpScreen(primaryStage, this);
+        primaryStage.setTitle("Help Screen");
+        primaryStage.setScene(helpScreen.getScene());
     }
 
     // needs an input to distinguish game type, since all games shares the same screen
