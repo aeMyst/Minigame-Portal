@@ -8,6 +8,5 @@ public interface IPlayer {
     int[] getMove(Board board);
 
 
-
 }
 

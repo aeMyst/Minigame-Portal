@@ -1,4 +1,6 @@
 module src.ca.ucalgary.seng300 {
+    exports src.ca.ucalgary.seng300.gameApp;
+    requires javafx.graphics;
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
