@@ -38,11 +38,6 @@ public class Leaderboard implements ILeaderboard {
 //
 //    }
 
-    @Override
-    public void addPlayer(EloData playerID) {
-        players.put(playerID.getPlayerID(), playerID);
-    }
-
     // sorts names with corresponding elo values in order
     @Override
     public List<List<String>> sortLeaderboard(String gameType) {
