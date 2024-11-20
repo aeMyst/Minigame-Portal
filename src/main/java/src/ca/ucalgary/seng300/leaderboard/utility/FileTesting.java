@@ -6,6 +6,8 @@ import src.ca.ucalgary.seng300.leaderboard.data.Storage;
 import java.io.File;
 import java.util.ArrayList;
 
+//For now, useless, please refer to ExampleMain where I show how functionality works.
+
 public class FileTesting {
     public static void main(String[] args) {
         Player player1 = new Player("CONNECT4","Lucas", 1200, 33, 11, 2);
