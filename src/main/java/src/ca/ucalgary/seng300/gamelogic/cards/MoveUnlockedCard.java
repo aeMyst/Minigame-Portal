@@ -13,12 +13,15 @@ public class MoveUnlockedCard extends Card {
     public Location getLocation() {
         return location;
     }
+
     public void setLocation(Location location) {
         this.location = location;
     }
+
     public Rotation getRotation() {
         return rotation;
     }
+
     public void setRotation(Rotation rotation) {
         this.rotation = rotation;
     }

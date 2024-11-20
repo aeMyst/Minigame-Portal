@@ -13,15 +13,16 @@ import javafx.stage.Stage;
 
 public class MainMenuScreen implements IScreen {
     private Scene scene;
+    private String username;
 
     public MainMenuScreen(Stage stage, ScreenController controller) {
         // Title label
-        Label titleLabel = new Label("Main Menu");
+        Label titleLabel = new Label("Welcome " + username + "!");
         titleLabel.setFont(new Font("Arial", 24));
         titleLabel.setTextFill(Color.DARKBLUE);
 
         // Button to navigate to the Game Menu
-        Button gamesButton = new Button("Choose a Game");
+        Button gamesButton = new Button("Play");
         gamesButton.setFont(new Font("Arial", 16));
         gamesButton.setPrefWidth(200);
         gamesButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
@@ -34,15 +35,29 @@ public class MainMenuScreen implements IScreen {
         leaderBoardButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         leaderBoardButton.setOnAction(e -> controller.showLeaderBoard());
 
-        // Exit button
-        Button exitButton = new Button("Exit");
-        exitButton.setFont(new Font("Arial", 16));
-        exitButton.setPrefWidth(200);
-        exitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        exitButton.setOnAction(e -> System.exit(0));
+        // Button to search profile
+        Button helpButton = new Button("Help");
+        helpButton.setFont(new Font("Arial", 16));
+        helpButton.setPrefWidth(200);
+        helpButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        helpButton.setOnAction(e -> controller.showHelpScreen());
+
+        // Button to view profile
+        Button viewProfileButton = new Button("View Profile");
+        viewProfileButton.setFont(new Font("Arial", 16));
+        viewProfileButton.setPrefWidth(200);
+        viewProfileButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        viewProfileButton.setOnAction(e -> controller.showUserProfileScreen());
+
+        // Log out button
+        Button logOutButton = new Button("Log Out");
+        logOutButton.setFont(new Font("Arial", 16));
+        logOutButton.setPrefWidth(200);
+        logOutButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: white;");
+        logOutButton.setOnAction(e -> controller.showSignInScreen());
 
         // Layout for main menu buttons
-        VBox mainMenuLayout = new VBox(15, titleLabel, gamesButton, leaderBoardButton, exitButton);
+        VBox mainMenuLayout = new VBox(15, titleLabel, gamesButton, leaderBoardButton, viewProfileButton, helpButton, logOutButton);
         mainMenuLayout.setAlignment(Pos.CENTER);
         mainMenuLayout.setPadding(new Insets(20));
         mainMenuLayout.setStyle("-fx-background-color: #f0f8ff;");
@@ -58,7 +73,6 @@ public class MainMenuScreen implements IScreen {
     public Scene getScene() {
         return scene;
     }
-
 
 
 }

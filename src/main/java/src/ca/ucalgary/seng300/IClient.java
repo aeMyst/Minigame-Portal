@@ -31,6 +31,6 @@ public interface IClient {
     GameState viewGame(int id);
 
     /// Get the current leaderboard
-    ILeaderBoard getLeaderBoard();
+    //ILeaderBoard getLeaderBoard();
   
 }

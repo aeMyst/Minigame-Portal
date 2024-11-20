@@ -47,7 +47,7 @@ public class TictactoeGame extends Game {
             playerManager.switchPlayer();
         }
     }
-            // some kind of work is being done here, but making game essentially
+    // some kind of work is being done here, but making game essentially
 }
 
 

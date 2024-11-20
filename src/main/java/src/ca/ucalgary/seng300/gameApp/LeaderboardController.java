@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class LeaderboardController implements IScreen {
@@ -16,15 +17,27 @@ public class LeaderboardController implements IScreen {
 
         // Buttons to navigate to each specific leaderboard screen
         Button ticTacToeButton = new Button("Tic-Tac-Toe Leaderboard");
+        ticTacToeButton.setFont(new Font("Arial", 16));
+        ticTacToeButton.setPrefWidth(300);
+        ticTacToeButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         ticTacToeButton.setOnAction(e -> showTicTacToeLeaderboard());
 
         Button checkersButton = new Button("Checkers Leaderboard");
+        checkersButton.setFont(new Font("Arial", 16));
+        checkersButton.setPrefWidth(300);
+        checkersButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         checkersButton.setOnAction(e -> showCheckersLeaderboard());
 
         Button connectFourButton = new Button("Connect Four Leaderboard");
+        connectFourButton.setFont(new Font("Arial", 16));
+        connectFourButton.setPrefWidth(300);
+        connectFourButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         connectFourButton.setOnAction(e -> showConnectFourLeaderboard());
 
         Button backButton = new Button("Back to Main Menu");
+        backButton.setFont(new Font("Arial", 16));
+        backButton.setPrefWidth(300);
+        backButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         backButton.setOnAction(e -> controller.showMainMenu());
 
         // Layout for the leaderboard menu
