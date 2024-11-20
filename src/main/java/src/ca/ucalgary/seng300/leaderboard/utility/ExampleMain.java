@@ -2,12 +2,12 @@ package src.ca.ucalgary.seng300.leaderboard.utility;
 
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.data.Storage;
+import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
-//Example main to show file reading, writing, and storage and Player are all functional for future use cases
+// Example main to show file reading, writing, and storage and Player are all functional for future use cases
 public class ExampleMain {
 
     private static final String FILE_PATH = "players_data.csv";
@@ -16,7 +16,7 @@ public class ExampleMain {
         File file = new File(FILE_PATH);
         Storage storage;
 
-        // checks if file is even there
+        // Check if the file exists
         if (file.exists()) {
             storage = FileManagement.fileReading(file);
             if (storage == null) {
@@ -32,49 +32,58 @@ public class ExampleMain {
 
         Scanner scanner = new Scanner(System.in);
         boolean continueRunning = true;
+        Leaderboard leaderboard = new Leaderboard(); // Create an instance of the Leaderboard class
 
         while (continueRunning) {
-            // shows you your options
+            // Show options
             System.out.println("\nSelect one of the following options below:");
             System.out.println("1. Show existing player data");
             System.out.println("2. Add a new player");
-            System.out.println("3. Exit");
+            System.out.println("3. Display sorted leaderboard by game type");
+            System.out.println("4. Exit");
 
-            System.out.print("Enter your choice (1, 2, or 3): ");
+            System.out.print("Enter your choice (1, 2, 3, or 4): ");
             String choice = scanner.nextLine().trim();
 
             switch (choice) {
                 case "1":
-                    // first option: display current data
+                    // Option 1: Display current data
                     System.out.println("\nCurrent Player Data:");
                     displayPlayerData(storage);
                     break;
 
                 case "2":
-                    // second option: get new player details and add to storage
+                    // Option 2: Get new player details and add to storage
                     Player newPlayer = getPlayerInput(scanner);
                     storage.addPlayer(newPlayer);
 
-                    // save updated data back to the file
+                    // Save updated data back to the file
                     FileManagement.fileWriting(storage, file);
                     System.out.println("Player added and data saved successfully.");
                     break;
 
                 case "3":
-                    // final option: exit program
+                    // Option 3: Display sorted leaderboard by game type
+                    System.out.print("Enter the game type (CONNECT4, TICTACTOE, CHECKERS): ");
+                    String gameType = scanner.nextLine().toUpperCase();
+                    displaySortedLeaderboard(leaderboard, gameType);
+                    break;
+
+                case "4":
+                    // Option 4: Exit program
                     continueRunning = false;
                     System.out.println("Exiting program.");
                     break;
 
                 default:
-                    System.out.println("Invalid choice. Please enter 1, 2, or 3.");
+                    System.out.println("Invalid choice. Please enter 1, 2, 3, or 4.");
             }
         }
 
         scanner.close();
     }
 
-    // shows player data
+    // Display player data
     private static void displayPlayerData(Storage storage) {
         ArrayList<Player> players = storage.getPlayers();
         if (players.isEmpty()) {
@@ -86,17 +95,13 @@ public class ExampleMain {
         }
     }
 
-    // gets player input
+    // Get player input
     private static Player getPlayerInput(Scanner scanner) {
         String gameType;
         while (true) {
-            System.out.println("Enter Type of Game(CONNECT4, TICTACTOE, CHECKERS): ");
+            System.out.print("Enter Type of Game (CONNECT4, TICTACTOE, CHECKERS): ");
             gameType = scanner.nextLine().toUpperCase();
-            if (gameType.equals("CONNECT4")) {
-                break;
-            } else if (gameType.equals("TICTACTOE")) {
-                break;
-            } else if (gameType.equals("CHECKERS")) {
+            if (gameType.equals("CONNECT4") || gameType.equals("TICTACTOE") || gameType.equals("CHECKERS")) {
                 break;
             } else {
                 System.out.println("Invalid game type. Please enter CONNECT4, TICTACTOE, or CHECKERS.");
@@ -115,9 +120,23 @@ public class ExampleMain {
         System.out.print("Enter Losses: ");
         int losses = Integer.parseInt(scanner.nextLine());
 
-        System.out.println("Enter Draws: ");
+        System.out.print("Enter Draws: ");
         int draws = Integer.parseInt(scanner.nextLine());
 
         return new Player(gameType, playerID, elo, wins, losses, draws);
+    }
+
+    // Display sorted leaderboard
+    private static void displaySortedLeaderboard(Leaderboard leaderboard, String gameType) {
+        String[][] sortedLeaderboard = leaderboard.sortLeaderboard(gameType);
+        if (sortedLeaderboard.length == 0) {
+            System.out.println("No players available for the specified game type.");
+        } else {
+            System.out.println("\nSorted Leaderboard for " + gameType + ":");
+            System.out.printf("%-15s %-10s %-10s%n", "Player ID", "Elo", "Wins");
+            for (String[] playerData : sortedLeaderboard) {
+                System.out.printf("%-15s %-10s %-10s%n", playerData[0], playerData[1], playerData[2]);
+            }
+        }
     }
 }
