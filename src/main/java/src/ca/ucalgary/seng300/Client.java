@@ -7,12 +7,12 @@ public class Client implements IClient {
 
     IGameLogic gameLogic;
 
-    AuthInterface auth;
-    ProfileInterface profile;
+    //AuthInterface auth;
+    //ProfileInterface profile;
 
-    IMatchMaker matchMaker;
-    ILeaderboard leaderboard;
-    IElo elo;
+    //IMatchMaker matchMaker;
+    //ILeaderboard leaderboard;
+    //IElo elo;
 
 
     public void logInUser(String username, String password) {
@@ -27,8 +27,9 @@ public class Client implements IClient {
         return false;
     }
 
-    public void findProfileInfo(String User) {
+    public String findProfileInfo(String User) {
 
+        return User;
     }
 
 
