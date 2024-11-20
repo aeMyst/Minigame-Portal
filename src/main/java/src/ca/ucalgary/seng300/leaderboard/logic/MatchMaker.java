@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class MatchMaker implements IMatchmaker {
     private ArrayList<Player> queue = new ArrayList<>();
-    private static final int THRESHOLD = 150;
+    private static final int THRESHOLD = 150; //it's good practice to set up the 150 here for future bug fix/code design
 
     //method for adding players to queue after we first parsed all info from csv
     @Override

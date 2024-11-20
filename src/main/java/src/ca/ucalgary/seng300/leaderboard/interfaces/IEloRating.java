@@ -1,8 +1,10 @@
 package src.ca.ucalgary.seng300.leaderboard.interfaces;
 
+import src.ca.ucalgary.seng300.leaderboard.data.Player;
+
 public interface IEloRating {
 
     int calculateNewElo(int myElo, int enemyElo, boolean won);
-    void updateElo(EloData winner, EloData loser);
 
+    void updateElo(Player winner, Player loser);
 }

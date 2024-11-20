@@ -1,5 +1,6 @@
 package src.ca.ucalgary.seng300.leaderboard.logic;
 
+import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.IEloRating;
 
 public class EloRating implements IEloRating {
@@ -30,7 +31,7 @@ public class EloRating implements IEloRating {
 
     //this will be updated after every match
     @Override
-    public void updateElo(EloData winner, EloData loser) {
+    public void updateElo(Player winner, Player loser) {
         int myNewElo = calculateNewElo(winner.getElo(), loser.getElo(), true);
         int enemyNewElo = calculateNewElo(loser.getElo(), winner.getElo(), false);
 
