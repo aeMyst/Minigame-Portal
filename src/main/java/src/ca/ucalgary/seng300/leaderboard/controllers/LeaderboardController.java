@@ -1,5 +1,6 @@
 package src.ca.ucalgary.seng300.leaderboard.controllers;
 
+import src.ca.ucalgary.seng300.leaderboard.data.GameType;
 import src.ca.ucalgary.seng300.leaderboard.logic.*;
 import java.util.*;
 
@@ -20,12 +21,12 @@ public class LeaderboardController {
     // parsing csv file
     public void loadPlayers(String filename) {
         leaderboard.loadPlayersFromCSV(filename); // depends on the loadPlayersFromCSV method
-        displaySortedLeaderboard();
+        //displaySortedLeaderboard();
     }
-    public void displaySortedLeaderboard() {
-        List<EloData> sorted = leaderboard.sortedLeaderboard();
-        for (EloData player : sorted) {
-            System.out.println("PlayerID: " + player.getPlayerID() + ", Elo: " + player.getElo());
+    public void displaySortedLeaderboard(String gameType) {
+        List<List<String>> sorted = leaderboard.sortLeaderboard(gameType);
+        for (List<String> player : sorted) {
+            System.out.println("PlayerID: " + player.get(0) + ", Elo: " + player.get(1));
         }
     }
 
