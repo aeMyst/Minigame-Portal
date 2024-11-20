@@ -1,5 +1,4 @@
 package src.ca.ucalgary.seng300.leaderboard.utility;
-import src.ca.ucalgary.seng300.leaderboard.data.GameType;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.data.Storage;
 
