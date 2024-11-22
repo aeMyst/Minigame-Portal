@@ -83,10 +83,13 @@ public class Connect4Logic extends Connect4Board {
         //we loop only the first 2 rows as only they are capable of fitting a chain
         for (int row = 0; row <= board.length - 4; row++) {
             for (int col = 0; col <= board[0].length - 4; col++) {
+                if (board[row][col] == piece) {
+                    if (board[row + 1][col + 1] == piece && board[row + 2][col + 2] == piece && board[row + 3][col + 3] == piece) {
+                        return true;
+                    }
+                }
             }
-
         }
-
         return false;
     }
 
