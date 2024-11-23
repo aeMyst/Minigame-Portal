@@ -1,6 +1,14 @@
 package src.ca.ucalgary.seng300.leaderboard.interfaces;
 
-public interface ILeaderboard {
+import src.ca.ucalgary.seng300.leaderboard.logic.EloData;
 
-    String[][] sortLeaderboard(String gameType);
+import java.util.List;
+
+public interface ILeaderboard {
+    //we will be taking (String "whatever file path")
+    void loadPlayersFromCSV();
+
+    void addPlayer(EloData playerID);
+
+    List<EloData> sortedLeaderboard();
 }
