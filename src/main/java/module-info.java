@@ -1,4 +1,6 @@
 module src.ca.ucalgary.seng300 {
+    exports src.ca.ucalgary.seng300.gameApp;
+    requires javafx.graphics;
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -10,7 +12,6 @@ module src.ca.ucalgary.seng300 {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
-
 //    opens src.ca.ucalgary.seng300 to javafx.fxml;
 //    exports src.ca.ucalgary.seng300;
 }

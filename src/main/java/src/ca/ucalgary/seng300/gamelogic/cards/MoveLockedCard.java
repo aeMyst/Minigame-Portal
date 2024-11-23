@@ -1,5 +1,7 @@
 package src.ca.ucalgary.seng300.gamelogic.cards;
 
+import src.ca.ucalgary.seng300.gamelogic.cards.CardID;
+
 public class MoveLockedCard extends Card {
     private Location location;
     private Rotation rotation;
@@ -11,6 +13,7 @@ public class MoveLockedCard extends Card {
     public Location getLocation() {
         return location;
     }
+
     public Rotation getRotation() {
         return rotation;
     }

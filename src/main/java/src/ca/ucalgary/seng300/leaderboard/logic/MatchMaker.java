@@ -3,8 +3,8 @@ package src.ca.ucalgary.seng300.leaderboard.logic;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.IMatchmaker;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MatchMaker implements IMatchmaker {
     private ArrayList<Player> queue = new ArrayList<>();
