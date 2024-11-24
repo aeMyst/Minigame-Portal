@@ -1,39 +1,48 @@
 package src.ca.ucalgary.seng300.gameApp;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
+import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.*;
 
-public class TictactoeGameScreen implements IScreen {
+public class TictactoeGameScreen {
     private Scene scene;
     private String currentPlayer = "X";
     private Button[][] buttons = new Button[3][3];
     private Label turnIndicator;
-    private TextArea chatArea;
-    private TextField chatInput;
-    private Label player1ScoreLabel, player2ScoreLabel;
-    private int player1Score = 0, player2Score = 0;
-    private ScreenController controller;
+    private Label gameOverMessage; // Label for game over message
+    private HBox endGameControls; // Buttons for replay and exit
+    private TextArea chatArea; // Chat display area
+    private TextField chatInput; // Chat input field
+    private BoardManager boardManager;
+    private PlayerManager playerManager;
+    private Client client;
+    private Stage stage;
+    private String status = "ONGOING";
 
-    public TictactoeGameScreen(Stage stage, ScreenController controller) {
-        this.controller = controller;
+    public TictactoeGameScreen(Stage stage, ScreenController controller, Client client) {
+        this.stage = stage;
+        this.client = client;
+
+        boardManager = new BoardManager();
+        playerManager = new PlayerManager(new HumanPlayer('X'), new HumanPlayer('O'));
+
+        // Game Board
         GridPane gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);
         gameBoard.setHgap(5);
         gameBoard.setVgap(5);
-        gameBoard.setPadding(new Insets(10));
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
-                Button button = new Button("-");
-                button.setFont(new Font("Arial", 24));
+                Button button = new Button(" ");
+                button.setFont(new Font("Impact", 32));
                 button.setPrefSize(100, 100);
-                button.setStyle("-fx-background-color: #87CEFA; -fx-text-fill: black;");
                 final int r = row, c = col;
                 button.setOnAction(e -> handleMove(r, c));
                 buttons[row][col] = button;
@@ -41,127 +50,156 @@ public class TictactoeGameScreen implements IScreen {
             }
         }
 
-        player1ScoreLabel = new Label("Player X Score: " + player1Score);
-        player2ScoreLabel = new Label("Player O Score: " + player2Score);
-        player1ScoreLabel.setFont(new Font("Arial", 16));
-        player2ScoreLabel.setFont(new Font("Arial", 16));
+        // game title
+        Label title = new Label("Tic-Tac-Toe Game");
+        title.setFont(new Font("Arial", 24));
+        title.setTextFill(Color.DARKBLUE);
 
-        chatArea = new TextArea();
-        chatArea.setEditable(false);
-        chatArea.setPrefHeight(150);
-        chatArea.setStyle("-fx-control-inner-background: #f8f8ff; -fx-text-fill: black; -fx-font-size: 14px;");
-
-        chatInput = new TextField();
-        chatInput.setPromptText("Type your message...");
-        chatInput.setPrefWidth(250);
-        chatInput.setStyle("-fx-background-color: #e0e0e0;");
-        chatInput.setOnAction(e -> sendMessage());
-
-        Button sendButton = new Button("Send");
-        sendButton.setFont(new Font("Arial", 14));
-        sendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        sendButton.setOnAction(e -> sendMessage());
-
-        Button backToMenuButton = new Button("Back to Menu");
-        backToMenuButton.setFont(new Font("Arial", 16));
-        backToMenuButton.setPrefWidth(200);
-        backToMenuButton.setOnAction(e -> controller.showMainMenu());
-
-        HBox chatBox = new HBox(5, chatInput, sendButton);
-        chatBox.setAlignment(Pos.CENTER);
-
+        // Turn Indicator
         turnIndicator = new Label("Turn: Player " + currentPlayer);
         turnIndicator.setFont(new Font("Arial", 18));
         turnIndicator.setTextFill(Color.DARKGREEN);
 
-        VBox layout = new VBox(15, turnIndicator, gameBoard, player1ScoreLabel, player2ScoreLabel, chatArea, chatBox, backToMenuButton);
+        // Game Over Message
+        gameOverMessage = new Label();
+        gameOverMessage.setFont(new Font("Arial", 20));
+        gameOverMessage.setTextFill(Color.DARKRED);
+        gameOverMessage.setVisible(false);
+
+        // End Game Controls
+        Button playAgainButton = new Button("Play Again");
+        playAgainButton.setFont(new Font("Arial", 16));
+        playAgainButton.setPrefWidth(200);
+        playAgainButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        playAgainButton.setOnAction(e -> {
+            System.out.println("Restarting Game...");
+            try {
+                Thread.sleep(2000);
+            } catch (Exception error) {
+                error.printStackTrace();
+            }
+            this.status = "ONGOING";
+            resetGame();
+        });
+
+        Button exitButton = new Button("Exit");
+        exitButton.setFont(new Font("Arial", 16));
+        exitButton.setPrefWidth(200);
+        exitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        exitButton.setOnAction(e -> {
+            this.status = "SUSPENDED";
+            client.disconnectGameSession();
+            controller.showMainMenu();
+        });
+
+        endGameControls = new HBox(10, playAgainButton, exitButton);
+        endGameControls.setAlignment(Pos.CENTER);
+        endGameControls.setVisible(false);
+
+        // Chatroom
+        chatArea = new TextArea();
+        chatArea.setEditable(false);
+        chatArea.setPrefHeight(150);
+        chatArea.setWrapText(true);
+        chatArea.setStyle("-fx-control-inner-background: #f8f8ff; -fx-text-fill: black; -fx-font-size: 14px;");
+
+        chatInput = new TextField();
+        chatInput.setPromptText("Type your message...");
+        chatInput.setOnAction(e -> sendMessage());
+
+        Button sendButton = new Button("Send");
+        sendButton.setFont(new Font("Arial", 16));
+        sendButton.setPrefWidth(100);
+        sendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        sendButton.setOnAction(e -> sendMessage());
+
+        HBox chatBox = new HBox(10, chatInput, sendButton);
+        chatBox.setAlignment(Pos.CENTER);
+
+        VBox chatLayout = new VBox(10, chatArea, chatBox);
+        chatLayout.setAlignment(Pos.CENTER);
+        chatLayout.setPadding(new Insets(10));
+
+        // Main Layout
+        VBox layout = new VBox(15, title, turnIndicator, gameBoard, gameOverMessage, endGameControls, chatLayout);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
-        layout.setStyle("-fx-background-color: #f5f5f5;");
-
-        scene = new Scene(layout, 600, 800);
+        scene = new Scene(layout, 800, 600); // Fixed size
     }
 
     private void handleMove(int row, int col) {
-        Button button = buttons[row][col];
-        if (!button.getText().equals("-")) return;
+        if (!boardManager.isValidMove(row, col)) return;
 
-        button.setText(currentPlayer);
-        button.setStyle("-fx-background-color: #FFD700; -fx-text-fill: black;");
-        if (isWin()) {
-            showWinAlert(currentPlayer);
-            updateScore();
-        } else if (isDraw()) {
-            turnIndicator.setText("Draw!");
-            controller.showEndGameScreen();
-        } else {
-            currentPlayer = currentPlayer.equals("X") ? "O" : "X";
-            turnIndicator.setText("Turn: Player " + currentPlayer);
+        HumanPlayer currentPlayerObj = playerManager.getCurrentPlayer();
+
+        boardManager.placeSymbol(currentPlayerObj.getSymbol(), row, col);
+
+        client.sendMoveToServer(boardManager, playerManager, status, () -> {
+            // Update GUI after "server acknowledgment"
+            buttons[row][col].setText(String.valueOf(currentPlayerObj.getSymbol()));
+            buttons[row][col].setDisable(true);
+
+            // Check for game outcomes
+            if (boardManager.isWinner(currentPlayerObj.getSymbol())) {
+                showEndGameMessage("Player " + currentPlayerObj.getSymbol() + " wins!");
+                this.status = "DONE";
+                System.out.println("Winner Found, Game Status: " + status);
+                System.out.println("==========================");
+            } else if (boardManager.isTie()) {
+                showEndGameMessage("It's a tie!");
+                this.status = "DONE";
+                System.out.println("Tie Found, Game Status: " + status);
+                System.out.println("==========================");
+            } else {
+                playerManager.switchPlayer();
+                currentPlayer = String.valueOf(playerManager.getCurrentPlayer().getSymbol());
+                turnIndicator.setText("Turn: Player " + currentPlayer);
+            }
+        });
+    }
+
+    private void showEndGameMessage(String message) {
+        gameOverMessage.setText(message);
+        gameOverMessage.setVisible(true);
+        endGameControls.setVisible(true);
+        turnIndicator.setVisible(false);
+
+        // Disable all buttons on the board
+        for (Button[] row : buttons) {
+            for (Button button : row) {
+                button.setDisable(true);
+            }
         }
     }
 
-    private void showWinAlert(String winner) {
-        Alert winAlert = new Alert(Alert.AlertType.INFORMATION);
-        winAlert.setTitle("Game Over");
+    private void resetGame() {
+        // Reset game state
+        boardManager = new BoardManager();
+        playerManager = new PlayerManager(new HumanPlayer('X'), new HumanPlayer('O'));
+        this.currentPlayer = "X";
+        turnIndicator.setText("Turn: Player " + this.currentPlayer);
+        turnIndicator.setVisible(true);
 
-        Label headerLabel = new Label(" Congratulations! ");
-        headerLabel.setFont(new Font("Arial", 20));
-        headerLabel.setTextFill(Color.DARKGREEN);
-        winAlert.setHeaderText(null);
-        winAlert.getDialogPane().setHeader(headerLabel);
-
-        Label contentLabel = new Label("Player " + winner + " wins!");
-        contentLabel.setFont(new Font("Arial", 16));
-        contentLabel.setTextFill(Color.DARKBLUE);
-        winAlert.getDialogPane().setContent(contentLabel);
-
-        ButtonType okButton = new ButtonType("OK");
-        winAlert.getButtonTypes().setAll(okButton);
-        winAlert.showAndWait();
-        controller.showEndGameScreen();
+        // Reset GUI board
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                buttons[row][col].setText(" ");
+                buttons[row][col].setDisable(false);
+            }
+        }
+        // Hide game over message and controls
+        gameOverMessage.setVisible(false);
+        endGameControls.setVisible(false);
     }
 
     private void sendMessage() {
-        String message = chatInput.getText();
+        String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
             chatArea.appendText("Player: " + message + "\n");
             chatInput.clear();
         }
     }
 
-    private boolean isWin() {
-        for (int i = 0; i < 3; i++) {
-            if (buttons[i][0].getText().equals(currentPlayer) && buttons[i][1].getText().equals(currentPlayer)
-                    && buttons[i][2].getText().equals(currentPlayer)) return true;
-            if (buttons[0][i].getText().equals(currentPlayer) && buttons[1][i].getText().equals(currentPlayer)
-                    && buttons[2][i].getText().equals(currentPlayer)) return true;
-        }
-        return buttons[0][0].getText().equals(currentPlayer) && buttons[1][1].getText().equals(currentPlayer)
-                && buttons[2][2].getText().equals(currentPlayer)
-                || buttons[0][2].getText().equals(currentPlayer) && buttons[1][1].getText().equals(currentPlayer)
-                && buttons[2][0].getText().equals(currentPlayer);
-    }
-
-    private boolean isDraw() {
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                if (buttons[row][col].getText().equals("-")) return false;
-            }
-        }
-        return true;
-    }
-
-    private void updateScore() {
-        if (currentPlayer.equals("X")) {
-            player1Score++;
-            player1ScoreLabel.setText("Player X Score: " + player1Score);
-        } else {
-            player2Score++;
-            player2ScoreLabel.setText("Player O Score: " + player2Score);
-        }
-    }
-
-    @Override
     public Scene getScene() {
         return scene;
     }

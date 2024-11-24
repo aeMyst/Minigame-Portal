@@ -10,12 +10,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
 
 public class MainMenuScreen implements IScreen {
     private Scene scene;
     private String username;
 
-    public MainMenuScreen(Stage stage, ScreenController controller) {
+    public MainMenuScreen(Stage stage, ScreenController controller, Client client) {
         // Title label
         Label titleLabel = new Label("Welcome " + username + "!");
         titleLabel.setFont(new Font("Arial", 24));
@@ -54,7 +55,7 @@ public class MainMenuScreen implements IScreen {
         logOutButton.setFont(new Font("Arial", 16));
         logOutButton.setPrefWidth(200);
         logOutButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: white;");
-        logOutButton.setOnAction(e -> controller.showSignInScreen());
+        logOutButton.setOnAction(e -> controller.showServerConnectionScreen(true));
 
         // Layout for main menu buttons
         VBox mainMenuLayout = new VBox(15, titleLabel, gamesButton, leaderBoardButton, viewProfileButton, helpButton, logOutButton);

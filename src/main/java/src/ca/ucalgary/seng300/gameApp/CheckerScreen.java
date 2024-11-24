@@ -8,6 +8,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
 
 public class CheckerScreen implements IScreen {
     private Scene scene;
@@ -20,7 +21,7 @@ public class CheckerScreen implements IScreen {
     private int blueScore = 0, redScore = 0;
     private ScreenController controller;
 
-    public CheckerScreen(Stage stage, ScreenController controller) {
+    public CheckerScreen(Stage stage, ScreenController controller, Client client) {
         this.controller = controller;
         GridPane gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);

@@ -9,15 +9,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
 
 public class GameMenuScreen implements IScreen {
     private Scene scene;
-    // define game type as int
-    private int ticTacToe = Integer.MIN_VALUE;
-    private int connect4 = Integer.MIN_VALUE + 1;
-    private int checkers = Integer.MIN_VALUE + 2;
 
-    public GameMenuScreen(Stage stage, ScreenController controller) {
+    public GameMenuScreen(Stage stage, ScreenController controller, Client client) {
         // Title label for the game menu
         Label titleLabel = new Label("Choose a Game");
         titleLabel.setFont(new Font("Arial", 24));
@@ -28,21 +25,21 @@ public class GameMenuScreen implements IScreen {
         ticTacToeButton.setFont(new Font("Arial", 16));
         ticTacToeButton.setPrefWidth(200);
         ticTacToeButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        ticTacToeButton.setOnAction(e -> controller.showQueueScreen(ticTacToe));
+        ticTacToeButton.setOnAction(e -> controller.showMatchmakeChoiceScreen(0));
 
         // Button to navigate to Connect 4 game
         Button connectFourButton = new Button("Play Connect 4");
         connectFourButton.setFont(new Font("Arial", 16));
         connectFourButton.setPrefWidth(200);
         connectFourButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        connectFourButton.setOnAction(e -> controller.showQueueScreen(connect4));
+        connectFourButton.setOnAction(e -> controller.showMatchmakeChoiceScreen(1));
 
         // Button to navigate to Checkers game
         Button checkersButton = new Button("Play Checkers");
         checkersButton.setFont(new Font("Arial", 16));
         checkersButton.setPrefWidth(200);
         checkersButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        checkersButton.setOnAction(e -> controller.showQueueScreen(checkers));
+        checkersButton.setOnAction(e -> controller.showMatchmakeChoiceScreen(2));
 
         // Button to go back to main menu
         Button backButton = new Button("Back");

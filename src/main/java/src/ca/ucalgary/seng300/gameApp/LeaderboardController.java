@@ -7,12 +7,13 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
 
 public class LeaderboardController implements IScreen {
     private Scene scene;
     private Stage stage;
 
-    public LeaderboardController(Stage stage, ScreenController controller) {
+    public LeaderboardController(Stage stage, ScreenController controller, Client client) {
         this.stage = stage;
 
         // Buttons to navigate to each specific leaderboard screen

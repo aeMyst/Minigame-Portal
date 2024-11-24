@@ -10,11 +10,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
 
 public class SignInScreen implements IScreen {
     private Scene scene;
 
-    public SignInScreen(Stage stage, ScreenController controller) {
+    public SignInScreen(Stage stage, ScreenController controller, Client client) {
         Label titleLabel = new Label("SIGN IN");
         titleLabel.setFont(new Font("Arial", 36));
         titleLabel.setTextFill(Color.DARKBLUE);
@@ -55,7 +56,7 @@ public class SignInScreen implements IScreen {
             // Verify username and password with authentication logic
             if (!username.isEmpty() && !password.isEmpty()) {
                 // Simulate successful login by showing the connecting screen
-                controller.showServerConnectionScreen();
+                controller.showServerConnectionScreen(false);
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "All fields are required.");
                 System.out.println("Username and password cannot be empty.");
@@ -73,7 +74,7 @@ public class SignInScreen implements IScreen {
         Button exitButton = new Button("Exit");
         exitButton.setFont(new Font("Arial", 16));
         exitButton.setPrefWidth(200);
-        exitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        exitButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: white;");;
         exitButton.setOnAction(e -> System.exit(0));
 
         // Combine Everything in a VBox
