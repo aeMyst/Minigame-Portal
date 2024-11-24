@@ -9,12 +9,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
 
 public class LoadingScreen implements IScreen {
     private Scene scene;
     private boolean canceled = false;
 
-    public LoadingScreen(Stage stage, ScreenController controller) {
+    public LoadingScreen(Stage stage, ScreenController controller, Client client) {
         // Title label
         Label connectingLabel = new Label("Finding User...");
         connectingLabel.setFont(new Font("Arial", 24));

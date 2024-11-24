@@ -9,11 +9,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
 
 public class CreateProfileScreen implements IScreen {
     private Scene scene;
 
-    public CreateProfileScreen(Stage stage, ScreenController controller) {
+    public CreateProfileScreen(Stage stage, ScreenController controller, Client client) {
         // Title label
         Label titleLabel = new Label("Create Profile");
         titleLabel.setFont(new Font("Arial", 24));
@@ -59,7 +60,6 @@ public class CreateProfileScreen implements IScreen {
         backToSignInButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         backToSignInButton.setOnAction(e -> {
             // Handle navigation to the sign-in screen
-            System.out.println("Back to Sign In clicked");
             controller.showSignInScreen();
         });
 

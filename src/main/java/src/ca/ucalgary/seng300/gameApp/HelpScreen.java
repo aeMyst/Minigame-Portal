@@ -10,11 +10,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
 
 public class HelpScreen implements IScreen {
     private Scene scene;
 
-    public HelpScreen(Stage stage, ScreenController controller) {
+    public HelpScreen(Stage stage, ScreenController controller, Client client) {
 
         Label information = new Label("Some kind of Information Here");
         information.setFont(new Font("Arial", 24));

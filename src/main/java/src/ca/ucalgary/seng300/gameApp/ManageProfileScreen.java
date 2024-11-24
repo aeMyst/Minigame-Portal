@@ -9,11 +9,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
 
 public class ManageProfileScreen implements IScreen {
     private Scene scene;
 
-    public ManageProfileScreen(Stage stage, ScreenController controller) {
+    public ManageProfileScreen(Stage stage, ScreenController controller, Client client) {
         // Label for Manage Profile title
         Label titleLabel = new Label("Manage Profile");
         titleLabel.setFont(new Font("Arial", 24));

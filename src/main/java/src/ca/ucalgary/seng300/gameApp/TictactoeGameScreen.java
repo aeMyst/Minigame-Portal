@@ -23,12 +23,14 @@ public class TictactoeGameScreen {
     private PlayerManager playerManager;
     private Client client;
     private Stage stage;
+    private String status = "ONGOING";
 
-    public TictactoeGameScreen(Stage stage, ScreenController controller) {
+    public TictactoeGameScreen(Stage stage, ScreenController controller, Client client) {
         this.stage = stage;
+        this.client = client;
+
         boardManager = new BoardManager();
         playerManager = new PlayerManager(new HumanPlayer('X'), new HumanPlayer('O'));
-        client = new Client();
 
         // Game Board
         GridPane gameBoard = new GridPane();
@@ -69,13 +71,26 @@ public class TictactoeGameScreen {
         playAgainButton.setFont(new Font("Arial", 16));
         playAgainButton.setPrefWidth(200);
         playAgainButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        playAgainButton.setOnAction(e -> resetGame());
+        playAgainButton.setOnAction(e -> {
+            System.out.println("Restarting Game...");
+            try {
+                Thread.sleep(2000);
+            } catch (Exception error) {
+                error.printStackTrace();
+            }
+            this.status = "ONGOING";
+            resetGame();
+        });
 
         Button exitButton = new Button("Exit");
         exitButton.setFont(new Font("Arial", 16));
         exitButton.setPrefWidth(200);
         exitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        exitButton.setOnAction(e -> controller.showMainMenu());
+        exitButton.setOnAction(e -> {
+            this.status = "SUSPENDED";
+            client.disconnectGameSession();
+            controller.showMainMenu();
+        });
 
         endGameControls = new HBox(10, playAgainButton, exitButton);
         endGameControls.setAlignment(Pos.CENTER);
@@ -117,18 +132,24 @@ public class TictactoeGameScreen {
 
         HumanPlayer currentPlayerObj = playerManager.getCurrentPlayer();
 
-        client.sendMoveToServer(boardManager, playerManager, "ONGOING", () -> {
+        boardManager.placeSymbol(currentPlayerObj.getSymbol(), row, col);
+
+        client.sendMoveToServer(boardManager, playerManager, status, () -> {
             // Update GUI after "server acknowledgment"
             buttons[row][col].setText(String.valueOf(currentPlayerObj.getSymbol()));
             buttons[row][col].setDisable(true);
 
-            boardManager.placeSymbol(currentPlayerObj.getSymbol(), row, col);
-
             // Check for game outcomes
             if (boardManager.isWinner(currentPlayerObj.getSymbol())) {
                 showEndGameMessage("Player " + currentPlayerObj.getSymbol() + " wins!");
+                this.status = "DONE";
+                System.out.println("Winner Found, Game Status: " + status);
+                System.out.println("==========================");
             } else if (boardManager.isTie()) {
                 showEndGameMessage("It's a tie!");
+                this.status = "DONE";
+                System.out.println("Tie Found, Game Status: " + status);
+                System.out.println("==========================");
             } else {
                 playerManager.switchPlayer();
                 currentPlayer = String.valueOf(playerManager.getCurrentPlayer().getSymbol());

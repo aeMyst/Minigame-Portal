@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
 import src.ca.ucalgary.seng300.gamelogic.games.Connect4.*;
 
 public class Connect4Screen implements IScreen {
@@ -27,7 +28,7 @@ public class Connect4Screen implements IScreen {
     private TextArea chatArea;
     private TextField chatInput;
 
-    public Connect4Screen(Stage stage, ScreenController controller) {
+    public Connect4Screen(Stage stage, ScreenController controller, Client client) {
 
         Label title = new Label("Connect4");
         title.setFont(new Font("Arial", 24));

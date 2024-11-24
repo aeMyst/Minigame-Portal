@@ -8,11 +8,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
 
 public class EndGameScreen implements IScreen {
     private Scene scene;
 
-    public EndGameScreen(Stage stage, ScreenController controller) {
+    public EndGameScreen(Stage stage, ScreenController controller, Client client) {
         Label titleLabel = new Label("End of Match");
         titleLabel.setFont(new Font("Arial", 24));
 

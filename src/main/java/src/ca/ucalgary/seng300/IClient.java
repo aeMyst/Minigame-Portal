@@ -19,7 +19,7 @@ public interface IClient {
     String findProfileInfo(String user);
 
     /// queue for a specific game and return a starting game
-    GameState queueGame(String gameKind);
+    void queueGame();
 
     /// If we are waiting for the next move ask for the next move in a game
     GameState getNextMove(GameState gamestate);

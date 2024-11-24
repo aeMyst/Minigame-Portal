@@ -12,11 +12,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
 
 public class UserProfileScreen implements IScreen {
     private Scene scene;
 
-    public UserProfileScreen(Stage stage, ScreenController controller) {
+    public UserProfileScreen(Stage stage, ScreenController controller, Client client) {
         // User Profile Title
         Label userProfileTitle = new Label("USER PROFILE");
         userProfileTitle.setFont(new Font("Arial", 32));

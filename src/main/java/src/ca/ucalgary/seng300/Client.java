@@ -6,9 +6,10 @@ import src.ca.ucalgary.seng300.gamelogic.IGameLogic;
 import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.BoardManager;
 import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.PlayerManager;
 import java.util.Random;
+import java.net.InetAddress;
 
 public class Client implements IClient {
-
+    private volatile boolean isQueueCanceled = false;
 
     IGameLogic gameLogic;
 
@@ -19,13 +20,16 @@ public class Client implements IClient {
     //ILeaderboard leaderboard;
     //IElo elo;
 
+    public Client() {
+        System.out.println("Server Started");
+        System.out.println("Waiting for Request...");
+        System.out.println("==========================");
+    }
 
     public void logInUser(String username, String password) {
     }
 
     public void logoutUser() {}
-
-
 
     public boolean registerUser(String username, String password, String email) {
         // TODO: Implement
@@ -37,6 +41,94 @@ public class Client implements IClient {
         return User;
     }
 
+    // ###################################Connect-Disconnect to Server Methods########################################//
+    public void connectServer() {
+        try {
+            InetAddress host = InetAddress.getLocalHost();
+            System.out.println("Request to Connect to Server Initiated");
+            Thread.sleep(2000);
+            System.out.println(host + " is now Connected to Server");
+            System.out.println("==========================");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void disconnectServer() {
+        try {
+            InetAddress host = InetAddress.getLocalHost();
+            System.out.println("Request to Disconnect from Server Initiated");
+            Thread.sleep(2000);
+            System.out.println(host + " is now disconnected from Server");
+            System.out.println("==========================");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    // ###################################Connect-Disconnect to Server Methods########################################//
+
+    // ############################################Queue Server Methods###############################################//
+    public void queueGame() {
+        try {
+            System.out.println("Queueing...");
+
+            // Check if the queue was canceled during the first delay
+            Thread.sleep(1000);
+            if (isQueueCanceled) {
+                return;
+            }
+
+            Thread.sleep(2000); // Continue the remaining delay
+            if (isQueueCanceled) {
+                return;
+            }
+
+            createGameSession(); // creating fake game session being created
+
+            // Check again before announcing connection
+            Thread.sleep(2000);
+            if (isQueueCanceled) {
+                return;
+            }
+
+            System.out.println("Success! Connecting to game session...");
+            System.out.println("==========================");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createGameSession() {
+        System.out.println("Game Session Created");
+    }
+
+    public void cancelQueue() {
+        try {
+            isQueueCanceled = true;
+            System.out.println("Canceling Queue Now...");
+            Thread.sleep(1000);
+            System.out.println("Queue Canceled");
+            System.out.println("==========================");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void disconnectGameSession() {
+        try {
+            System.out.println("Game Session Disconnecting...");
+            Thread.sleep(2000);
+            System.out.println("Disconnected from Game Session, returning to home screen...");
+            System.out.println("==========================");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    // ############################################Queue Server Methods###############################################//
+
+    // ###########################################Tic-Tac-Toe Server Methods##########################################//
     public void newMoveTTT(BoardManager boardManager, PlayerManager playerManager, String status) {
         System.out.println("Game Status: " + status);
         System.out.println("Current Player: " + playerManager.getCurrentPlayer().getSymbol());
@@ -63,13 +155,11 @@ public class Client implements IClient {
             }
         }).start();
     }
+    // ###########################################Tic-Tac-Toe Server Methods##########################################//
+
+    public void WinnerACK() {}
 
     public void newGameInfo() {}
-
-
-    public GameState queueGame(String gameKind) {
-        return null;
-    }
 
     @Override
     public GameState getNextMove(GameState gamestate) {
@@ -78,9 +168,6 @@ public class Client implements IClient {
 
 
     public void pingQueue() {}
-
-
-    public void cancelQueue() {}
 
 
     public GameState viewGame(int id) {
