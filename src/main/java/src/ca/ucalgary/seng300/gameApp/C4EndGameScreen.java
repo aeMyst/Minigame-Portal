@@ -6,14 +6,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.Client;
 
-public class EndGameScreen implements IScreen {
+public class C4EndGameScreen implements IScreen{
     private Scene scene;
 
-    public EndGameScreen(Stage stage, ScreenController controller, Client client) {
+    public C4EndGameScreen(Stage stage, ScreenController controller, Client client) {
         Label titleLabel = new Label("End of Match");
         titleLabel.setFont(new Font("Arial", 24));
 
@@ -25,7 +27,7 @@ public class EndGameScreen implements IScreen {
 
         Button playAgainButton = new Button("Play Again");
         playAgainButton.setFont(new Font("Arial", 14));
-        playAgainButton.setOnAction(e -> controller.showTictactoeGameScreen());
+        playAgainButton.setOnAction(e -> controller.showConnect4Screen());
 
         Button returnToMenuButton = new Button("Return to Game Menu");
         returnToMenuButton.setFont(new Font("Arial", 14));
@@ -35,11 +37,12 @@ public class EndGameScreen implements IScreen {
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
         layout.setStyle("-fx-background-color: #f5f5f5;");
-        scene = new Scene(layout, 400, 300);
+        scene = new Scene(layout, 800, 600);
     }
 
     @Override
     public Scene getScene() {
         return scene;
     }
+
 }

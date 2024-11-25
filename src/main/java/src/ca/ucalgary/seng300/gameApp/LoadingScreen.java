@@ -11,21 +11,15 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.Client;
 
-public class ServerConnectionScreen implements IScreen {
+public class LoadingScreen implements IScreen {
     private Scene scene;
     private boolean canceled = false;
 
-    public ServerConnectionScreen(Stage stage, ScreenController controller, Client client, boolean disconnectCheck) {
+    public LoadingScreen(Stage stage, ScreenController controller, Client client) {
         // Title label
-        Label connectingLabel = new Label();
+        Label connectingLabel = new Label("Finding User...");
         connectingLabel.setFont(new Font("Arial", 24));
         connectingLabel.setTextFill(Color.DARKBLUE);
-
-        if (disconnectCheck) {
-            connectingLabel.setText("Disconnecting From Server...");
-        } else {
-            connectingLabel.setText("Connecting to Server...");
-        }
 
         // Progress indicator (imitates a loading spinner)
         ProgressIndicator progressIndicator = new ProgressIndicator();
@@ -37,12 +31,7 @@ public class ServerConnectionScreen implements IScreen {
         cancelButton.setPrefWidth(200);
         cancelButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: white;");
         cancelButton.setOnAction(e -> { canceled = true;
-            if (disconnectCheck) {
-                controller.showMainMenu();
-            } else {
-                controller.showSignInScreen();
-            }
-        });
+            controller.showUserProfileScreen();});
 
         // Layout for connecting screen
         VBox layout = new VBox(20, connectingLabel, progressIndicator, cancelButton);
@@ -58,13 +47,9 @@ public class ServerConnectionScreen implements IScreen {
                 e.printStackTrace();
             }
 
-            // After connecting, if not canceled, switch to the main menu screen
-            if (!canceled && !disconnectCheck) {
-                client.connectServer();
-                javafx.application.Platform.runLater(() -> controller.showMainMenu());
-            } else if (!canceled && disconnectCheck) {
-                client.disconnectServer();
-                javafx.application.Platform.runLater(() -> controller.showSignInScreen());
+            // After connecting, if not canceled, switch to the userProfileScreen
+            if (!canceled) {
+                javafx.application.Platform.runLater(() -> controller.showUserProfileScreen());
             }
         }).start();
     }

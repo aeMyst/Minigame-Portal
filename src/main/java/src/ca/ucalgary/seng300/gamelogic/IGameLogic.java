@@ -9,10 +9,14 @@ import java.util.Optional;
 
 public interface IGameLogic {
     Graphic getGraphic();
+
     GameState getGameState();
+
     int getNumPlayers();
 
     Optional<CardID> playerGrabbedCard(Location location, PlayerID playerID);
+
     void playerMovedCard(Location location, CardID cardID, PlayerID playerID);
+
     void playerReleasedCard(Location location, CardID cardID, PlayerID playerID);
 }

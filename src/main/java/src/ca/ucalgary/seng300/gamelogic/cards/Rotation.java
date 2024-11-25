@@ -11,6 +11,7 @@ public class Rotation {
     public int getRotationAsInt() {
         return rotation;
     }
+
     // as fractions of 2^32
     public int setRotationAsInt(int rotation) {
         return rotation;
