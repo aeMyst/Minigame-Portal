@@ -22,13 +22,22 @@ public class Connect4Screen implements IScreen {
     private UserPiece user2 = new UserPiece(2);
     private UserPiece currentPlayer = user1;
     private Connect4Logic logicManager = new Connect4Logic();
-
+    private TurnManager turnManager;
+    private Client client;
+    private String status;
+    private Stage stage;
     private Button[][] gameButtons = new Button[6][7];
     private Label turnIndicator;
     private TextArea chatArea;
     private TextField chatInput;
 
     public Connect4Screen(Stage stage, ScreenController controller, Client client) {
+
+        this.stage = stage;
+        this.client = client;
+
+        logicManager = new Connect4Logic();
+        turnManager = new TurnManager(user1, user2);
 
         Label title = new Label("Connect4");
         title.setFont(new Font("Arial", 24));
@@ -88,11 +97,19 @@ public class Connect4Screen implements IScreen {
         scene = new Scene(layout, 800, 600);
     }
 
+    private boolean moveInProgress = false;
+
     // handle move attempted by player when button on game board is clicked
     private void gameButtonClicked(int column, ScreenController controller) {
+        if (moveInProgress) {
+            return;
+        }
+
+        moveInProgress = true;
+        disableBoard();
+
         //check for and make valid move
         if (logicManager.placePiece(logicManager.getBoard(), column, currentPlayer.getPiece())) {
-
             // find piece just placed to change corresponding button (i.e., place piece in GUI board)
             for (int rowCheck = 0; rowCheck < logicManager.getBoard().length; rowCheck++) {
                 if (logicManager.getBoard()[rowCheck][column] == currentPlayer.getPiece()) {
@@ -103,40 +120,50 @@ public class Connect4Screen implements IScreen {
                     break;
                 }
             }
-
-            //check game end conditions
-            if (logicManager.horizontalWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-//                chatArea.appendText("Player " + currentPlayer.getPiece() + " wins!");
-                controller.showEndGameScreen();
-
-            } else if (logicManager.verticalWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-//                chatArea.appendText("Player " + currentPlayer.getPiece() + " wins!");
-                controller.showEndGameScreen();
-
-            } else if (logicManager.forwardslashWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-//                chatArea.appendText("Player " + currentPlayer.getPiece() + " wins!");
-                controller.showEndGameScreen();
-
-            } else if (logicManager.backslashWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-//                chatArea.appendText("Player " + currentPlayer.getPiece() + " wins!");
-                controller.showEndGameScreen();
-
-            } else if (logicManager.boardFull(logicManager.getBoard())) {
-//                chatArea.appendText("Board is full. Tie game!");
-                controller.showEndGameScreen();
-            }
-
-            //change turns after valid move
-            if (currentPlayer == user1) {
-                currentPlayer = user2;
-                turnIndicator.setText("Player turn: Player " + currentPlayer.getPiece() + " (BLUE)");
-
-            } else {
-                currentPlayer = user1;
-                turnIndicator.setText("Player turn: Player " + currentPlayer.getPiece() + " (RED)");
-            }
+            client.sendC4MoveToServer(logicManager, turnManager, status, () -> {
+                if (logicManager.horizontalWin(logicManager.getBoard(), currentPlayer.getPiece())) {
+                    controller.showC4EndGameScreen();
+                } else if (logicManager.verticalWin(logicManager.getBoard(), currentPlayer.getPiece())) {
+                    controller.showC4EndGameScreen();
+                } else if (logicManager.forwardslashWin(logicManager.getBoard(), currentPlayer.getPiece())) {
+                    controller.showC4EndGameScreen();
+                } else if (logicManager.backslashWin(logicManager.getBoard(), currentPlayer.getPiece())) {
+                    controller.showC4EndGameScreen();
+                } else if (logicManager.boardFull(logicManager.getBoard())) {
+                    // tie if board is full
+                    status = "DONE";
+                    controller.showC4EndGameScreen();
+                }
+                if (currentPlayer == user1) {
+                    currentPlayer = user2;
+                    turnIndicator.setText("Player turn: Player " + currentPlayer.getPiece() + " (BLUE)");
+                } else {
+                    currentPlayer = user1;
+                    turnIndicator.setText("Player turn: Player " + currentPlayer.getPiece() + " (RED)");
+                }
+                enableBoard();
+                moveInProgress = false;
+            });
         } else {
             chatArea.appendText("Please make a valid move.\n");
+            enableBoard();
+            moveInProgress = false;
+        }
+    }
+
+    private void disableBoard() {
+        for (int i = 0; i < gameButtons.length; i++) {
+            for (int j = 0; j < gameButtons[i].length; j++) {
+                gameButtons[i][j].setDisable(true);
+            }
+        }
+    }
+
+    private void enableBoard() {
+        for (int i = 0; i < gameButtons.length; i++) {
+            for (int j = 0; j < gameButtons[i].length; j++) {
+                gameButtons[i][j].setDisable(false);
+            }
         }
     }
 
