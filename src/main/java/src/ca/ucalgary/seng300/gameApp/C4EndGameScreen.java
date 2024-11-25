@@ -37,7 +37,7 @@ public class C4EndGameScreen implements IScreen{
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
         layout.setStyle("-fx-background-color: #f5f5f5;");
-        scene = new Scene(layout, 400, 300);
+        scene = new Scene(layout, 800, 600);
     }
 
     @Override
