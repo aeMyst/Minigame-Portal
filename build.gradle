@@ -26,7 +26,7 @@ tasks.withType(JavaCompile) {
 
 application {
     mainModule = 'src.ca.ucalgary.seng300'
-    mainClass = 'src.ca.ucalgary.seng300.Main'
+    mainClass = 'src.ca.ucalgary.seng300.gameApp.ScreenController'
 }
 
 javafx {
