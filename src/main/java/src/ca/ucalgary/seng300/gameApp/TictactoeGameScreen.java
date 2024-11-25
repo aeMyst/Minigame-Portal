@@ -15,8 +15,6 @@ public class TictactoeGameScreen {
     private String currentPlayer = "X";
     private Button[][] buttons = new Button[3][3];
     private Label turnIndicator;
-    private Label gameOverMessage; // Label for game over message
-    private HBox endGameControls; // Buttons for replay and exit
     private TextArea chatArea; // Chat display area
     private TextField chatInput; // Chat input field
     private BoardManager boardManager;
@@ -38,13 +36,14 @@ public class TictactoeGameScreen {
         gameBoard.setHgap(5);
         gameBoard.setVgap(5);
 
+        // create interactables for game
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 Button button = new Button(" ");
                 button.setFont(new Font("Impact", 32));
                 button.setPrefSize(100, 100);
                 final int r = row, c = col;
-                button.setOnAction(e -> handleMove(r, c));
+                button.setOnAction(e -> handleMove(r, c, controller));
                 buttons[row][col] = button;
                 gameBoard.add(button, col, row);
             }
@@ -59,42 +58,6 @@ public class TictactoeGameScreen {
         turnIndicator = new Label("Turn: Player " + currentPlayer);
         turnIndicator.setFont(new Font("Arial", 18));
         turnIndicator.setTextFill(Color.DARKGREEN);
-
-        // Game Over Message
-        gameOverMessage = new Label();
-        gameOverMessage.setFont(new Font("Arial", 20));
-        gameOverMessage.setTextFill(Color.DARKRED);
-        gameOverMessage.setVisible(false);
-
-        // End Game Controls
-        Button playAgainButton = new Button("Play Again");
-        playAgainButton.setFont(new Font("Arial", 16));
-        playAgainButton.setPrefWidth(200);
-        playAgainButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        playAgainButton.setOnAction(e -> {
-            System.out.println("Restarting Game...");
-            try {
-                Thread.sleep(2000);
-            } catch (Exception error) {
-                error.printStackTrace();
-            }
-            this.status = "ONGOING";
-            resetGame();
-        });
-
-        Button exitButton = new Button("Exit");
-        exitButton.setFont(new Font("Arial", 16));
-        exitButton.setPrefWidth(200);
-        exitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        exitButton.setOnAction(e -> {
-            this.status = "SUSPENDED";
-            client.disconnectGameSession();
-            controller.showMainMenu();
-        });
-
-        endGameControls = new HBox(10, playAgainButton, exitButton);
-        endGameControls.setAlignment(Pos.CENTER);
-        endGameControls.setVisible(false);
 
         // Chatroom
         chatArea = new TextArea();
@@ -120,76 +83,81 @@ public class TictactoeGameScreen {
         chatLayout.setAlignment(Pos.CENTER);
         chatLayout.setPadding(new Insets(10));
 
+        Button forfeitButton = new Button("Forfeit");
+        forfeitButton.setFont(new Font("Arial", 16));
+        forfeitButton.setPrefWidth(200);
+        forfeitButton.setStyle("-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF;");
+        forfeitButton.setOnAction(e -> controller.showMainMenu());
+
         // Main Layout
-        VBox layout = new VBox(15, title, turnIndicator, gameBoard, gameOverMessage, endGameControls, chatLayout);
+        VBox layout = new VBox(15, title, turnIndicator, gameBoard, chatLayout, forfeitButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
         scene = new Scene(layout, 800, 600); // Fixed size
     }
 
-    private void handleMove(int row, int col) {
-        if (!boardManager.isValidMove(row, col)) return;
+    private boolean moveInProgress = false;
+
+    private void handleMove(int row, int col, ScreenController controller) {
+        if (moveInProgress) {
+            return;
+        }
+
+        moveInProgress = true;
+        disableBoard();
 
         HumanPlayer currentPlayerObj = playerManager.getCurrentPlayer();
 
-        boardManager.placeSymbol(currentPlayerObj.getSymbol(), row, col);
+        if (boardManager.isValidMove(row, col)) {
+            boardManager.placeSymbol(currentPlayerObj.getSymbol(), row, col);
 
-        client.sendMoveToServer(boardManager, playerManager, status, () -> {
-            // Update GUI after "server acknowledgment"
-            buttons[row][col].setText(String.valueOf(currentPlayerObj.getSymbol()));
-            buttons[row][col].setDisable(true);
+            client.sendMoveToServer(boardManager, playerManager, status, () -> {
+                // Update GUI after "server acknowledgment"
+                buttons[row][col].setText(String.valueOf(currentPlayerObj.getSymbol()));
 
-            // Check for game outcomes
-            if (boardManager.isWinner(currentPlayerObj.getSymbol())) {
-                showEndGameMessage("Player " + currentPlayerObj.getSymbol() + " wins!");
-                this.status = "DONE";
-                System.out.println("Winner Found, Game Status: " + status);
-                System.out.println("==========================");
-            } else if (boardManager.isTie()) {
-                showEndGameMessage("It's a tie!");
-                this.status = "DONE";
-                System.out.println("Tie Found, Game Status: " + status);
-                System.out.println("==========================");
-            } else {
-                playerManager.switchPlayer();
-                currentPlayer = String.valueOf(playerManager.getCurrentPlayer().getSymbol());
-                turnIndicator.setText("Turn: Player " + currentPlayer);
-            }
-        });
+                // Check for game outcomes
+                if (boardManager.isWinner(currentPlayerObj.getSymbol())) {
+                    this.status = "DONE";
+                    System.out.println("Winner Found, Game Status: " + status);
+                    System.out.println("==========================");
+                    controller.showEndGameScreen(0, boardManager, null, null);
+
+                } else if (boardManager.isTie()) {
+                    this.status = "DONE";
+                    System.out.println("Tie Found, Game Status: " + status);
+                    System.out.println("==========================");
+                    controller.showEndGameScreen(0, boardManager, null, null);
+
+                } else {
+                    playerManager.switchPlayer();
+                    currentPlayer = String.valueOf(playerManager.getCurrentPlayer().getSymbol());
+                    turnIndicator.setText("Turn: Player " + currentPlayer);
+                }
+
+                moveInProgress = false;
+                enableBoard();
+            });
+        } else {
+            chatArea.appendText("Server: Please make a valid move.\n");
+            moveInProgress = false;
+            enableBoard();
+        }
     }
 
-    private void showEndGameMessage(String message) {
-        gameOverMessage.setText(message);
-        gameOverMessage.setVisible(true);
-        endGameControls.setVisible(true);
-        turnIndicator.setVisible(false);
-
-        // Disable all buttons on the board
-        for (Button[] row : buttons) {
-            for (Button button : row) {
-                button.setDisable(true);
+    private void disableBoard() {
+        for (int i = 0; i < buttons.length; i++) {
+            for (int j = 0; j < buttons[i].length; j++) {
+                buttons[i][j].setDisable(true);
             }
         }
     }
 
-    private void resetGame() {
-        // Reset game state
-        boardManager = new BoardManager();
-        playerManager = new PlayerManager(new HumanPlayer('X'), new HumanPlayer('O'));
-        this.currentPlayer = "X";
-        turnIndicator.setText("Turn: Player " + this.currentPlayer);
-        turnIndicator.setVisible(true);
-
-        // Reset GUI board
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                buttons[row][col].setText(" ");
-                buttons[row][col].setDisable(false);
+    private void enableBoard() {
+        for (int i = 0; i < buttons.length; i++) {
+            for (int j = 0; j < buttons[i].length; j++) {
+                buttons[i][j].setDisable(false);
             }
         }
-        // Hide game over message and controls
-        gameOverMessage.setVisible(false);
-        endGameControls.setVisible(false);
     }
 
     private void sendMessage() {
