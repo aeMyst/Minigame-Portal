@@ -167,7 +167,7 @@ public class Client implements IClient {
         System.out.println("   1   2   3   4   5   6   7");
         System.out.println("   --------------------------");
 
-        for (int[] row : logicManager.getBoard()) {
+        for (int[] row : board) {
             for (int cell : row) {
                 System.out.print((cell == 0 ? " " : cell) + " | ");
             }
