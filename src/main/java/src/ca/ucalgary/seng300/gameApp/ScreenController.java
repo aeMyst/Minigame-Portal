@@ -86,6 +86,12 @@ public class ScreenController extends Application {
 
     }
 
+    public void showC4EndGameScreen() {
+        C4EndGameScreen c4EndGame = new C4EndGameScreen(primaryStage, this, client);
+        primaryStage.setTitle("Game Over");
+        primaryStage.setScene(c4EndGame.getScene());
+    }
+
     public void showCreateProfileScreen() {
         CreateProfileScreen createProfile = new CreateProfileScreen(primaryStage, this, client);
         primaryStage.setTitle("Create Profile");
