@@ -97,7 +97,7 @@ public class Connect4Logic extends Connect4Board {
     //I'll figure out the logic for this later
     public boolean forwardslashWin(int[][] board, int piece) {
         for (int row = 0; row <= board.length - 4; row++) {
-            for (int col = 3; col <= board[0].length - 4; col++) {
+            for (int col = 3; col < board[0].length; col++) {
                 if (board[row][col] == piece) {
                     if (board[row + 1][col - 1] == piece && board[row + 2][col - 2] == piece && board[row + 3][col - 3] == piece) {
                         return true;
