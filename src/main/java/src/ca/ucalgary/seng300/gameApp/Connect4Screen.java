@@ -97,11 +97,19 @@ public class Connect4Screen implements IScreen {
         scene = new Scene(layout, 800, 600);
     }
 
+    private boolean moveInProgress = false;
+
     // handle move attempted by player when button on game board is clicked
     private void gameButtonClicked(int column, ScreenController controller) {
+        if (moveInProgress) {
+            return;
+        }
+
+        moveInProgress = true;
+        disableBoard();
+
         //check for and make valid move
         if (logicManager.placePiece(logicManager.getBoard(), column, currentPlayer.getPiece())) {
-
             // find piece just placed to change corresponding button (i.e., place piece in GUI board)
             for (int rowCheck = 0; rowCheck < logicManager.getBoard().length; rowCheck++) {
                 if (logicManager.getBoard()[rowCheck][column] == currentPlayer.getPiece()) {
@@ -113,34 +121,49 @@ public class Connect4Screen implements IScreen {
                 }
             }
             client.sendC4MoveToServer(logicManager, turnManager, status, () -> {
-                // check for game outcomes
-                if (logicManager.horizontalWin(logicManager.getBoard(), currentPlayer.getPiece()) ||
-                        logicManager.verticalWin(logicManager.getBoard(), currentPlayer.getPiece()) ||
-                        logicManager.forwardslashWin(logicManager.getBoard(), currentPlayer.getPiece()) ||
-                        logicManager.backslashWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-                    // notify end of game
-                    status = "DONE";
+                if (logicManager.horizontalWin(logicManager.getBoard(), currentPlayer.getPiece())) {
+                    controller.showMainMenu();
+                } else if (logicManager.verticalWin(logicManager.getBoard(), currentPlayer.getPiece())) {
                     controller.showEndGameScreen();
-
+                } else if (logicManager.forwardslashWin(logicManager.getBoard(), currentPlayer.getPiece())) {
+                    controller.showEndGameScreen();
+                } else if (logicManager.backslashWin(logicManager.getBoard(), currentPlayer.getPiece())) {
+                    controller.showEndGameScreen();
                 } else if (logicManager.boardFull(logicManager.getBoard())) {
                     // tie if board is full
                     status = "DONE";
                     controller.showEndGameScreen();
-
-                } else {
-                    // change turns after valid move
-                    if (currentPlayer == user1) {
-                        currentPlayer = user2;
-                        turnIndicator.setText("Player turn: Player " + currentPlayer.getPiece() + " (BLUE)");
-
-                    } else {
-                        currentPlayer = user1;
-                        turnIndicator.setText("Player turn: Player " + currentPlayer.getPiece() + " (RED)");
-                    }
                 }
+                if (currentPlayer == user1) {
+                    currentPlayer = user2;
+                    turnIndicator.setText("Player turn: Player " + currentPlayer.getPiece() + " (BLUE)");
+                } else {
+                    currentPlayer = user1;
+                    turnIndicator.setText("Player turn: Player " + currentPlayer.getPiece() + " (RED)");
+                }
+                enableBoard();
+                moveInProgress = false;
             });
         } else {
             chatArea.appendText("Please make a valid move.\n");
+            enableBoard();
+            moveInProgress = false;
+        }
+    }
+
+    private void disableBoard() {
+        for (int i = 0; i < gameButtons.length; i++) {
+            for (int j = 0; j < gameButtons[i].length; j++) {
+                gameButtons[i][j].setDisable(true);
+            }
+        }
+    }
+
+    private void enableBoard() {
+        for (int i = 0; i < gameButtons.length; i++) {
+            for (int j = 0; j < gameButtons[i].length; j++) {
+                gameButtons[i][j].setDisable(false);
+            }
         }
     }
 
