@@ -257,5 +257,21 @@ public class Client implements IClient {
             System.out.println("   -----------------------------");
         }
     }
+
+    public void sendC4MoveToServer(Connect4Logic logicManager, TurnManager turnManager, String status, Runnable callback) {
+        Random rand = new Random();
+        int time = rand.nextInt(1000); // delay
+        new Thread(() -> {
+            try {
+                Thread.sleep(time); // simulate server delay
+                System.out.println("Server Communication now...");
+                System.out.println("Move acknowledged by server: " + status);
+                newMoveC4(logicManager, turnManager, status); // updates the board and game state
+                Platform.runLater(callback); // calls the callback after the fake server responds
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
     //.
 }

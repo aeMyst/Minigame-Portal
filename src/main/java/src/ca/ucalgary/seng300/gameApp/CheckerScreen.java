@@ -8,33 +8,33 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import src.ca.ucalgary.seng300.Client;
+import src.ca.ucalgary.seng300.gamelogic.games.Checkers.CheckersGameLogic;
 
 public class CheckerScreen implements IScreen {
     private Scene scene;
-    private String currentPlayer = "Blue";
-    private Button[][] buttons = new Button[8][8];
+    private final CheckersGameLogic gameLogic;
     private Label turnIndicator;
     private TextArea chatArea;
     private TextField chatInput;
-    private Label blueScoreLabel, redScoreLabel;
-    private int blueScore = 0, redScore = 0;
+    private Button[][] boardButtons;
     private final ScreenController controller;
+    private int selectedRow = -1;
+    private int selectedCol = -1;
 
-    public CheckerScreen(Stage stage, ScreenController controller, Client client) {
+    public CheckerScreen(Stage stage, ScreenController controller, CheckersGameLogic gameLogic) {
         this.controller = controller;
-        GridPane gameBoard = new GridPane();
-        gameBoard.setAlignment(Pos.CENTER);
-        gameBoard.setHgap(5);
-        gameBoard.setVgap(5);
-        gameBoard.setPadding(new Insets(10));
+        this.gameLogic = gameLogic;
 
-        initializeBoard(gameBoard);
+        Label titleLabel = new Label("Checkers");
+        titleLabel.setFont(new Font("Arial", 24));
+        titleLabel.setTextFill(Color.DARKBLUE);
 
-        blueScoreLabel = new Label("Blue Score: " + blueScore);
-        redScoreLabel = new Label("Red Score: " + redScore);
-        blueScoreLabel.setFont(new Font("Arial", 16));
-        redScoreLabel.setFont(new Font("Arial", 16));
+        turnIndicator = new Label("Turn: Player " + gameLogic.getCurrentPlayer());
+        turnIndicator.setFont(new Font("Arial", 18));
+        turnIndicator.setTextFill(Color.DARKGREEN);
+
+        boardButtons = new Button[8][8];
+        GridPane gameBoard = createGameBoard();
 
         chatArea = new TextArea();
         chatArea.setEditable(false);
@@ -43,7 +43,6 @@ public class CheckerScreen implements IScreen {
 
         chatInput = new TextField();
         chatInput.setPromptText("Type your message...");
-        chatInput.setPrefWidth(250);
         chatInput.setStyle("-fx-background-color: #e0e0e0;");
         chatInput.setOnAction(e -> sendMessage());
 
@@ -52,27 +51,30 @@ public class CheckerScreen implements IScreen {
         sendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         sendButton.setOnAction(e -> sendMessage());
 
-        Button backToMenuButton = new Button("Back to Menu");
-        backToMenuButton.setFont(new Font("Arial", 16));
-        backToMenuButton.setPrefWidth(200);
-        backToMenuButton.setOnAction(e -> controller.showMainMenu());
+        Button backButton = new Button("Back to Menu");
+        backButton.setFont(new Font("Arial", 16));
+        backButton.setStyle("-fx-background-color: #FF0000; -fx-text-fill: white;");
+        backButton.setOnAction(e -> controller.showMainMenu());
 
-        HBox chatBox = new HBox(5, chatInput, sendButton);
+        HBox chatBox = new HBox(10, chatInput, sendButton);
         chatBox.setAlignment(Pos.CENTER);
 
-        turnIndicator = new Label("Turn: " + currentPlayer);
-        turnIndicator.setFont(new Font("Arial", 18));
-        turnIndicator.setTextFill(Color.DARKGREEN);
-
-        VBox layout = new VBox(15, turnIndicator, gameBoard, blueScoreLabel, redScoreLabel, chatArea, chatBox, backToMenuButton);
+        VBox layout = new VBox(15, titleLabel, turnIndicator, gameBoard, chatArea, chatBox, backButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
         layout.setStyle("-fx-background-color: #f5f5f5;");
 
-        scene = new Scene(layout, 800, 800);
+        scene = new Scene(layout, 800, 600);
     }
 
-    private void initializeBoard(GridPane gameBoard) {
+    private GridPane createGameBoard() {
+        GridPane gameBoard = new GridPane();
+        gameBoard.setAlignment(Pos.CENTER);
+        gameBoard.setHgap(5);
+        gameBoard.setVgap(5);
+        gameBoard.setPadding(new Insets(10));
+
+        int[][] board = gameLogic.getBoard();
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 Button button = new Button();
@@ -81,36 +83,92 @@ public class CheckerScreen implements IScreen {
                     button.setStyle("-fx-background-color: #FFFFFF;");
                 } else {
                     button.setStyle("-fx-background-color: #000000;");
-                    if (row < 3) {
+                    if (board[row][col] == 1) {
                         button.setText("B");
                         button.setTextFill(Color.BLUE);
-                    } else if (row > 4) {
+                    } else if (board[row][col] == 2) {
                         button.setText("R");
                         button.setTextFill(Color.RED);
                     }
                 }
                 final int r = row, c = col;
-                button.setOnAction(e -> handleMove(r, c));
-                buttons[row][col] = button;
+                button.setOnAction(e -> handleSquareClick(r, c));
+                boardButtons[row][col] = button;
                 gameBoard.add(button, col, row);
+            }
+        }
+        return gameBoard;
+    }
+
+    private void handleSquareClick(int row, int col) {
+        if (selectedRow == -1 && selectedCol == -1) {
+            if (gameLogic.playerSelectedPiece(row, col, gameLogic.getCurrentPlayer())) {
+                selectedRow = row;
+                selectedCol = col;
+                highlightPossibleMoves(row, col);
+            } else {
+                chatArea.appendText("Invalid piece selection. Try again.\n");
+            }
+        } else {
+            if (gameLogic.playerMovedPiece(selectedRow, selectedCol, row, col, gameLogic.getCurrentPlayer())) {
+                clearHighlights();
+                updateBoard();
+                gameLogic.switchPlayer();
+                turnIndicator.setText("Turn: Player " + gameLogic.getCurrentPlayer());
+            } else {
+                chatArea.appendText("Invalid move. Try again.\n");
+                clearHighlights();
+            }
+            selectedRow = -1;
+            selectedCol = -1;
+        }
+    }
+
+    private void highlightPossibleMoves(int row, int col) {
+        int[][] board = gameLogic.getBoard();
+        for (int r = 0; r < 8; r++) {
+            for (int c = 0; c < 8; c++) {
+                if (gameLogic.isValidMove(row, col, r, c, gameLogic.getCurrentPlayer())) {
+                    boardButtons[r][c].setStyle("-fx-background-color: #00FF00;");
+                }
             }
         }
     }
 
-    private void handleMove(int row, int col) {
-        Button button = buttons[row][col];
-        if (button.getText().isEmpty() || !button.getText().equals(currentPlayer.charAt(0) + "")) {
-            chatArea.appendText("Invalid move. Try again.\n");
-            return;
+    private void clearHighlights() {
+        for (int r = 0; r < 8; r++) {
+            for (int c = 0; c < 8; c++) {
+                if ((r + c) % 2 == 0) {
+                    boardButtons[r][c].setStyle("-fx-background-color: #FFFFFF;");
+                } else {
+                    boardButtons[r][c].setStyle("-fx-background-color: #000000;");
+                }
+            }
         }
-        currentPlayer = currentPlayer.equals("Blue") ? "Red" : "Blue";
-        turnIndicator.setText("Turn: " + currentPlayer);
+    }
+
+    private void updateBoard() {
+        int[][] board = gameLogic.getBoard();
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Button button = boardButtons[row][col];
+                if (board[row][col] == 1) {
+                    button.setText("B");
+                    button.setTextFill(Color.BLUE);
+                } else if (board[row][col] == 2) {
+                    button.setText("R");
+                    button.setTextFill(Color.RED);
+                } else {
+                    button.setText("");
+                }
+            }
+        }
     }
 
     private void sendMessage() {
         String message = chatInput.getText();
         if (!message.isEmpty()) {
-            chatArea.appendText(currentPlayer + ": " + message + "\n");
+            chatArea.appendText(gameLogic.getCurrentPlayer() + ": " + message + "\n");
             chatInput.clear();
         }
     }

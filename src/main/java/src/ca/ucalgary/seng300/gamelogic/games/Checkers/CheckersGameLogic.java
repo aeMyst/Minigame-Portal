@@ -86,7 +86,7 @@ public class CheckersGameLogic implements ICheckers {
         }
     }
 
-    private boolean isValidMove(int fromRow, int fromCol, int toRow, int toCol, PlayerID playerID) {
+    public boolean isValidMove(int fromRow, int fromCol, int toRow, int toCol, PlayerID playerID) {
         if (!isWithinBounds(fromRow, fromCol) || !isWithinBounds(toRow, toCol)) return false;
         if (board[toRow][toCol] != 0) return false;
 
