@@ -6,7 +6,7 @@ public interface IClient {
 
 
     /// Using the username and password attempt to log in the user
-    void logInUser(String username, String password);
+    boolean logInUser(String username, String password);
 
     /// Log out the user if they are currently logged in
     void logoutUser();

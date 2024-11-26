@@ -53,13 +53,14 @@ public class SignInScreen implements IScreen {
             String username = usernameField.getText();
             String password = passwordField.getText();
 
+            boolean isLoggedIn = client.logInUser(username, password);
             // Verify username and password with authentication logic
-            if (!username.isEmpty() && !password.isEmpty()) {
+            if (isLoggedIn) {
                 // Simulate successful login by showing the connecting screen
                 controller.showServerConnectionScreen(false);
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "All fields are required.");
-                System.out.println("Username and password cannot be empty.");
+                showAlert(Alert.AlertType.ERROR, "Error", "Invalid Login");
+                System.out.println("Not Logged In");
             }
         });
 
