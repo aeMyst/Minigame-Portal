@@ -119,24 +119,33 @@ public class CheckerScreen implements IScreen {
             int toCol = col;
             PlayerID currentPlayer = gameLogic.getCurrentPlayer();
 
-            client.sendCheckerMoveToServer(gameLogic, fromRow, fromCol, toRow, toCol,currentPlayer, () -> {
-                clearHighlights();
+            if (gameLogic.isValidCapture(fromRow, fromCol, toRow, toCol, currentPlayer)) {
+                gameLogic.playerCapturedPiece(fromRow, fromCol, toRow, toCol, currentPlayer);
                 updateBoard();
                 gameLogic.switchPlayer();
                 turnIndicator.setText("Turn: Player " + gameLogic.getCurrentPlayer());
-            });
+            } else if (gameLogic.isValidMove(fromRow, fromCol, toRow, toCol, currentPlayer)) {
+                gameLogic.playerMovedPiece(fromRow, fromCol, toRow, toCol, currentPlayer);
+                updateBoard();
+                gameLogic.switchPlayer();
+                turnIndicator.setText("Turn: Player " + gameLogic.getCurrentPlayer());
+            } else {
+                chatArea.appendText("Invalid move. Try again.\n");
+            }
 
+            clearHighlights();
             selectedRow = -1;
             selectedCol = -1;
         }
     }
-
     private void highlightPossibleMoves(int row, int col) {
         int[][] board = gameLogic.getBoard();
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
                 if (gameLogic.isValidMove(row, col, r, c, gameLogic.getCurrentPlayer())) {
-                    boardButtons[r][c].setStyle("-fx-background-color: #00FF00;");
+                    boardButtons[r][c].setStyle("-fx-background-color: #00FF00;"); // Green for normal moves
+                } else if (gameLogic.isValidCapture(row, col, r, c, gameLogic.getCurrentPlayer())) {
+                    boardButtons[r][c].setStyle("-fx-background-color: #FF0000;"); // Red for captures
                 }
             }
         }
@@ -164,6 +173,12 @@ public class CheckerScreen implements IScreen {
                     button.setTextFill(Color.BLUE);
                 } else if (board[row][col] == 2) {
                     button.setText("R");
+                    button.setTextFill(Color.RED);
+                } else if (board[row][col] == 3) { // King for Player 1
+                    button.setText("BK");
+                    button.setTextFill(Color.BLUE);
+                } else if (board[row][col] == 4) { // King for Player 2
+                    button.setText("RK");
                     button.setTextFill(Color.RED);
                 } else {
                     button.setText("");

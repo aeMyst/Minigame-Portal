@@ -102,7 +102,7 @@ public class CheckersGameLogic implements ICheckers {
         return rowDiff == 1 && colDiff == 1;
     }
 
-    private boolean isValidCapture(int fromRow, int fromCol, int toRow, int toCol, PlayerID playerID) {
+    public boolean isValidCapture(int fromRow, int fromCol, int toRow, int toCol, PlayerID playerID) {
         if (!isWithinBounds(fromRow, fromCol) || !isWithinBounds(toRow, toCol)) return false;
         if (board[toRow][toCol] != 0) return false;
 
