@@ -87,7 +87,6 @@ public class ScreenController extends Application {
         EndGameScreen endGame = new EndGameScreen(primaryStage, this, client, gameType, boardManager, connect4Logic, checkersGameLogic);
         primaryStage.setTitle("End Game Screen");
         primaryStage.setScene(endGame.getScene());
-
     }
 
     public void showCreateProfileScreen() {

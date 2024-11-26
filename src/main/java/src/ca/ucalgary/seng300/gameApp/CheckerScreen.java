@@ -155,6 +155,9 @@ public class CheckerScreen implements IScreen {
                         clearHighlights();
                         highlightPossibleMoves(toRow, toCol);
                     } else {
+                        if (checkGameState()) {
+                            return;
+                        }
                         selectedRow = -1;
                         selectedCol = -1;
                         clearHighlights();
@@ -267,6 +270,31 @@ public class CheckerScreen implements IScreen {
             chatArea.appendText(gameLogic.getCurrentPlayer() + ": " + message + "\n");
             chatInput.clear();
         }
+    }
+    private boolean checkGameState() {
+        int whiteCount = 0;
+        int blackCount = 0;
+
+        int[][] board = gameLogic.getBoard();
+        for (int[] row : board) {
+            for (int cell : row) {
+                if (cell == 1 || cell == 3) {
+                    whiteCount++;
+                } else if (cell == 2 || cell == 4) {
+                    blackCount++;
+                }
+            }
+        }
+
+        if (whiteCount == 0) {
+            controller.showEndGameScreen(2, null, null, gameLogic); // Adjust game type accordingly
+            return true;
+        } else if (blackCount == 0) {
+            controller.showEndGameScreen(2, null, null, gameLogic); // Adjust game type accordingly
+            return true;
+        }
+
+        return false;
     }
 
     @Override

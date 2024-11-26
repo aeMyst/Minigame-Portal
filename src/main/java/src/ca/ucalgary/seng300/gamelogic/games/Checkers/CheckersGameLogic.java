@@ -59,7 +59,6 @@ public class CheckersGameLogic implements ICheckers {
         if (checkKingPromotion(toRow, toCol, playerID)) {
             promoteToKing(toRow, toCol, playerID);
         }
-
         graphic.update(board);
         return true;
     }
@@ -79,7 +78,6 @@ public class CheckersGameLogic implements ICheckers {
         if (checkKingPromotion(toRow, toCol, playerID)) {
             promoteToKing(toRow, toCol, playerID);
         }
-
         graphic.update(board);
         return true;
     }
