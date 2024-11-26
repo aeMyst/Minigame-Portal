@@ -47,7 +47,7 @@ public class Client implements IClient {
     }
 
     public boolean registerUser(String username, String password, String email) {
-        return auth.register(username, password, email);
+        return auth.register(email, username, password);
     }
 
     public String findProfileInfo(String User) {
