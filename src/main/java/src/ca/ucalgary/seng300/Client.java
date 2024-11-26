@@ -232,7 +232,7 @@ public class Client implements IClient {
             }
         }).start();
     }
-    // ###########################################Tic-Tac-Toe Server Methods##########################################//
+    // ###########################################Connect 4 Server Methods##########################################//
 
     /**
      * connect 4 move setup

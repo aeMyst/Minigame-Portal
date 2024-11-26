@@ -45,7 +45,7 @@ public class QueueScreen implements IScreen {
         // Simulate a delay for connecting to another player
         new Thread(() -> {
             try {
-                Thread.sleep(5000); // 5-second delay to simulate connecting
+                Thread.sleep(5); // 5-second delay to simulate connecting
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -56,7 +56,7 @@ public class QueueScreen implements IScreen {
 
                 // Additional delay before setting up the game
                 try {
-                    Thread.sleep(2000); // 2-second delay to display "Player Found!"
+                    Thread.sleep(5); // 2-second delay to display "Player Found!"
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -67,7 +67,7 @@ public class QueueScreen implements IScreen {
 
                     // Delay before transitioning to the game screen
                     try {
-                        Thread.sleep(2000); // 2-second delay to display "Setting up game..."
+                        Thread.sleep(5); // 2-second delay to display "Setting up game..."
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
