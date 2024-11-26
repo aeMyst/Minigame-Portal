@@ -19,7 +19,7 @@ public class CheckerScreen implements IScreen {
     private TextField chatInput;
     private Label blueScoreLabel, redScoreLabel;
     private int blueScore = 0, redScore = 0;
-    private ScreenController controller;
+    private final ScreenController controller;
 
     public CheckerScreen(Stage stage, ScreenController controller, Client client) {
         this.controller = controller;
@@ -29,28 +29,8 @@ public class CheckerScreen implements IScreen {
         gameBoard.setVgap(5);
         gameBoard.setPadding(new Insets(10));
 
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                Button button = new Button();
-                button.setPrefSize(80, 80);
-                if ((row + col) % 2 == 0) {
-                    button.setStyle("-fx-background-color: #FFFFFF;");
-                } else {
-                    button.setStyle("-fx-background-color: #000000;");
-                }
-                if (row < 3 && (row + col) % 2 != 0) {
-                    button.setText("B");
-                    button.setTextFill(Color.BLUE);
-                } else if (row > 4 && (row + col) % 2 != 0) {
-                    button.setText("R");
-                    button.setTextFill(Color.RED);
-                }
-                final int r = row, c = col;
-                button.setOnAction(e -> handleMove(r, c));
-                buttons[row][col] = button;
-                gameBoard.add(button, col, row);
-            }
-        }
+        initializeBoard(gameBoard);
+
         blueScoreLabel = new Label("Blue Score: " + blueScore);
         redScoreLabel = new Label("Red Score: " + redScore);
         blueScoreLabel.setFont(new Font("Arial", 16));
@@ -92,12 +72,37 @@ public class CheckerScreen implements IScreen {
         scene = new Scene(layout, 800, 800);
     }
 
+    private void initializeBoard(GridPane gameBoard) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Button button = new Button();
+                button.setPrefSize(80, 80);
+                if ((row + col) % 2 == 0) {
+                    button.setStyle("-fx-background-color: #FFFFFF;");
+                } else {
+                    button.setStyle("-fx-background-color: #000000;");
+                    if (row < 3) {
+                        button.setText("B");
+                        button.setTextFill(Color.BLUE);
+                    } else if (row > 4) {
+                        button.setText("R");
+                        button.setTextFill(Color.RED);
+                    }
+                }
+                final int r = row, c = col;
+                button.setOnAction(e -> handleMove(r, c));
+                buttons[row][col] = button;
+                gameBoard.add(button, col, row);
+            }
+        }
+    }
+
     private void handleMove(int row, int col) {
         Button button = buttons[row][col];
-        if (!button.getText().isEmpty() && !button.getText().equals(currentPlayer.charAt(0) + "")) {
+        if (button.getText().isEmpty() || !button.getText().equals(currentPlayer.charAt(0) + "")) {
+            chatArea.appendText("Invalid move. Try again.\n");
             return;
         }
-        //move logic
         currentPlayer = currentPlayer.equals("Blue") ? "Red" : "Blue";
         turnIndicator.setText("Turn: " + currentPlayer);
     }
@@ -105,7 +110,7 @@ public class CheckerScreen implements IScreen {
     private void sendMessage() {
         String message = chatInput.getText();
         if (!message.isEmpty()) {
-            chatArea.appendText("Player: " + message + "\n");
+            chatArea.appendText(currentPlayer + ": " + message + "\n");
             chatInput.clear();
         }
     }
