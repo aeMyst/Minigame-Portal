@@ -8,10 +8,13 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
 import src.ca.ucalgary.seng300.gamelogic.games.Checkers.CheckersGameLogic;
+import src.ca.ucalgary.seng300.gamelogic.games.Checkers.PlayerID;
 
 public class CheckerScreen implements IScreen {
     private Scene scene;
+    private Client client;
     private final CheckersGameLogic gameLogic;
     private Label turnIndicator;
     private TextArea chatArea;
@@ -92,7 +95,7 @@ public class CheckerScreen implements IScreen {
                     }
                 }
                 final int r = row, c = col;
-                button.setOnAction(e -> handleSquareClick(r, c));
+                button.setOnAction(e -> handleMove(r, c));
                 boardButtons[row][col] = button;
                 gameBoard.add(button, col, row);
             }
@@ -100,7 +103,7 @@ public class CheckerScreen implements IScreen {
         return gameBoard;
     }
 
-    private void handleSquareClick(int row, int col) {
+    private void handleMove(int row, int col) {
         if (selectedRow == -1 && selectedCol == -1) {
             if (gameLogic.playerSelectedPiece(row, col, gameLogic.getCurrentPlayer())) {
                 selectedRow = row;
@@ -110,15 +113,19 @@ public class CheckerScreen implements IScreen {
                 chatArea.appendText("Invalid piece selection. Try again.\n");
             }
         } else {
-            if (gameLogic.playerMovedPiece(selectedRow, selectedCol, row, col, gameLogic.getCurrentPlayer())) {
+            int fromRow = selectedRow;
+            int fromCol = selectedCol;
+            int toRow = row;
+            int toCol = col;
+            PlayerID currentPlayer = gameLogic.getCurrentPlayer();
+
+            client.sendCheckerMoveToServer(gameLogic, fromRow, fromCol, toRow, toCol,currentPlayer, () -> {
                 clearHighlights();
                 updateBoard();
                 gameLogic.switchPlayer();
                 turnIndicator.setText("Turn: Player " + gameLogic.getCurrentPlayer());
-            } else {
-                chatArea.appendText("Invalid move. Try again.\n");
-                clearHighlights();
-            }
+            });
+
             selectedRow = -1;
             selectedCol = -1;
         }
@@ -164,6 +171,8 @@ public class CheckerScreen implements IScreen {
             }
         }
     }
+
+
 
     private void sendMessage() {
         String message = chatInput.getText();
