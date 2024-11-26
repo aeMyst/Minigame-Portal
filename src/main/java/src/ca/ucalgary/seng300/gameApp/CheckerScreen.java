@@ -82,18 +82,28 @@ public class CheckerScreen implements IScreen {
             for (int col = 0; col < 8; col++) {
                 Button button = new Button();
                 button.setPrefSize(80, 80);
+
+                // Set button background color
                 if ((row + col) % 2 == 0) {
                     button.setStyle("-fx-background-color: #FFFFFF;");
                 } else {
                     button.setStyle("-fx-background-color: #000000;");
-                    if (board[row][col] == 1) {
+                    int piece = board[row][col];
+                    if (piece == 1) {
                         button.setText("B");
                         button.setTextFill(Color.BLUE);
-                    } else if (board[row][col] == 2) {
+                    } else if (piece == 2) {
                         button.setText("R");
+                        button.setTextFill(Color.RED);
+                    } else if (piece == 3) { // Player 1 King
+                        button.setText("BK");
+                        button.setTextFill(Color.BLUE);
+                    } else if (piece == 4) { // Player 2 King
+                        button.setText("RK");
                         button.setTextFill(Color.RED);
                     }
                 }
+
                 final int r = row, c = col;
                 button.setOnAction(e -> handleMove(r, c));
                 boardButtons[row][col] = button;
@@ -105,6 +115,7 @@ public class CheckerScreen implements IScreen {
 
     private void handleMove(int row, int col) {
         if (selectedRow == -1 && selectedCol == -1) {
+            // No piece is currently selected
             if (gameLogic.playerSelectedPiece(row, col, gameLogic.getCurrentPlayer())) {
                 selectedRow = row;
                 selectedCol = col;
@@ -113,43 +124,105 @@ public class CheckerScreen implements IScreen {
                 chatArea.appendText("Invalid piece selection. Try again.\n");
             }
         } else {
-            int fromRow = selectedRow;
-            int fromCol = selectedCol;
-            int toRow = row;
-            int toCol = col;
-            PlayerID currentPlayer = gameLogic.getCurrentPlayer();
-
-            if (gameLogic.isValidCapture(fromRow, fromCol, toRow, toCol, currentPlayer)) {
-                gameLogic.playerCapturedPiece(fromRow, fromCol, toRow, toCol, currentPlayer);
-                updateBoard();
-                gameLogic.switchPlayer();
-                turnIndicator.setText("Turn: Player " + gameLogic.getCurrentPlayer());
-            } else if (gameLogic.isValidMove(fromRow, fromCol, toRow, toCol, currentPlayer)) {
-                gameLogic.playerMovedPiece(fromRow, fromCol, toRow, toCol, currentPlayer);
-                updateBoard();
-                gameLogic.switchPlayer();
-                turnIndicator.setText("Turn: Player " + gameLogic.getCurrentPlayer());
+            // A piece is already selected
+            if (selectedRow == row && selectedCol == col) {
+                // Deselect the piece if the player clicks on it again
+                selectedRow = -1;
+                selectedCol = -1;
+                clearHighlights();
+            } else if (gameLogic.playerSelectedPiece(row, col, gameLogic.getCurrentPlayer())) {
+                // Select a different piece
+                selectedRow = row;
+                selectedCol = col;
+                clearHighlights();
+                highlightPossibleMoves(row, col);
             } else {
-                chatArea.appendText("Invalid move. Try again.\n");
-            }
+                // Attempt to move to the selected square
+                int fromRow = selectedRow;
+                int fromCol = selectedCol;
+                int toRow = row;
+                int toCol = col;
+                PlayerID currentPlayer = gameLogic.getCurrentPlayer();
 
-            clearHighlights();
-            selectedRow = -1;
-            selectedCol = -1;
-        }
-    }
-    private void highlightPossibleMoves(int row, int col) {
-        int[][] board = gameLogic.getBoard();
-        for (int r = 0; r < 8; r++) {
-            for (int c = 0; c < 8; c++) {
-                if (gameLogic.isValidMove(row, col, r, c, gameLogic.getCurrentPlayer())) {
-                    boardButtons[r][c].setStyle("-fx-background-color: #00FF00;"); // Green for normal moves
-                } else if (gameLogic.isValidCapture(row, col, r, c, gameLogic.getCurrentPlayer())) {
-                    boardButtons[r][c].setStyle("-fx-background-color: #FF0000;"); // Red for captures
+                if (gameLogic.isValidCapture(fromRow, fromCol, toRow, toCol, currentPlayer)) {
+                    gameLogic.playerCapturedPiece(fromRow, fromCol, toRow, toCol, currentPlayer);
+                    updateBoard();
+
+                    // Check for additional captures
+                    if (gameLogic.hasValidCapture(toRow, toCol, currentPlayer)) {
+                        selectedRow = toRow;
+                        selectedCol = toCol;
+                        clearHighlights();
+                        highlightPossibleMoves(toRow, toCol);
+                    } else {
+                        selectedRow = -1;
+                        selectedCol = -1;
+                        clearHighlights();
+                        gameLogic.switchPlayer();
+                        turnIndicator.setText("Turn: Player " + gameLogic.getCurrentPlayer());
+                    }
+                } else if (gameLogic.isValidMove(fromRow, fromCol, toRow, toCol, currentPlayer)) {
+                    if (gameLogic.hasAnyValidCaptures(currentPlayer)) {
+                        chatArea.appendText("You must capture if possible.\n");
+                        clearHighlights();
+                        selectedRow = -1;
+                        selectedCol = -1;
+                    } else {
+                        gameLogic.playerMovedPiece(fromRow, fromCol, toRow, toCol, currentPlayer);
+                        updateBoard();
+                        selectedRow = -1;
+                        selectedCol = -1;
+                        clearHighlights();
+                        gameLogic.switchPlayer();
+                        turnIndicator.setText("Turn: Player " + gameLogic.getCurrentPlayer());
+                    }
+                } else {
+                    chatArea.appendText("Invalid move. Try again.\n");
+                    // Keep the selected piece highlighted
                 }
             }
         }
     }
+
+
+
+    private void highlightPossibleMoves(int row, int col) {
+        PlayerID currentPlayer = gameLogic.getCurrentPlayer();
+        boolean mustCapture = gameLogic.hasAnyValidCaptures(currentPlayer);
+        boolean pieceHasCapture = gameLogic.hasValidCapture(row, col, currentPlayer);
+
+        clearHighlights(); // Clear previous highlights
+
+        boolean hasValidMove = false;
+
+        if (mustCapture && !pieceHasCapture) {
+            chatArea.appendText("You must capture with a piece that can capture.\n");
+            selectedRow = -1;
+            selectedCol = -1;
+            return;
+        }
+
+        for (int r = 0; r < 8; r++) {
+            for (int c = 0; c < 8; c++) {
+                if (pieceHasCapture && gameLogic.isValidCapture(row, col, r, c, currentPlayer)) {
+                    boardButtons[r][c].setStyle("-fx-background-color: #FF0000;"); // Red for captures
+                    hasValidMove = true;
+                } else if (!mustCapture && gameLogic.isValidMove(row, col, r, c, currentPlayer)) {
+                    boardButtons[r][c].setStyle("-fx-background-color: #00FF00;"); // Green for moves
+                    hasValidMove = true;
+                }
+            }
+        }
+
+        if (!hasValidMove) {
+            chatArea.appendText("No valid moves available for the selected piece.\n");
+            selectedRow = -1;
+            selectedCol = -1;
+            clearHighlights();
+        }
+    }
+
+
 
     private void clearHighlights() {
         for (int r = 0; r < 8; r++) {
@@ -168,16 +241,17 @@ public class CheckerScreen implements IScreen {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 Button button = boardButtons[row][col];
-                if (board[row][col] == 1) {
+                int piece = board[row][col];
+                if (piece == 1) {
                     button.setText("B");
                     button.setTextFill(Color.BLUE);
-                } else if (board[row][col] == 2) {
+                } else if (piece == 2) {
                     button.setText("R");
                     button.setTextFill(Color.RED);
-                } else if (board[row][col] == 3) { // King for Player 1
+                } else if (piece == 3) { // Player 1 King
                     button.setText("BK");
                     button.setTextFill(Color.BLUE);
-                } else if (board[row][col] == 4) { // King for Player 2
+                } else if (piece == 4) { // Player 2 King
                     button.setText("RK");
                     button.setTextFill(Color.RED);
                 } else {
@@ -186,8 +260,6 @@ public class CheckerScreen implements IScreen {
             }
         }
     }
-
-
 
     private void sendMessage() {
         String message = chatInput.getText();

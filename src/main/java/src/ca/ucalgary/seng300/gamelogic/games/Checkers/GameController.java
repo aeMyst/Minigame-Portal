@@ -39,9 +39,12 @@ public class GameController {
                     System.out.println("Piece promoted to King.");
                 }
 
-                if (isGameOver()) {
+                // Check for a winner
+                PlayerID winner = checkForWinner();
+                if (winner != null) {
                     gameStateHandler.setState(GameState.GAME_OVER);
-                    System.out.println("Game Over! Player " + (gameLogic.getCurrentPlayer() == PlayerID.PLAYER1 ? "Black" : "White") + " wins!");
+                    String winnerColor = (winner == PlayerID.PLAYER1) ? "White" : "Black";
+                    System.out.println("Game Over! Player " + winnerColor + " wins!");
                 } else {
                     // Only switch players if the game is not over
                     gameLogic.switchPlayer();
@@ -54,21 +57,7 @@ public class GameController {
         }
     }
 
-    /**
-     * Handles a single player's turn and returns the coordinates of the piece moved.
-     *
-     * @param currentPlayer The current player making the move.
-     * @return An array containing the row and column of the piece moved, or null if the move was unsuccessful.
-     */
-    private int[] handlePlayerTurn(PlayerID currentPlayer) {
-        // Logic to handle a single turn
-        PlayerInteraction playerInteraction = new PlayerInteraction(gameLogic);
-
-        // Returns the coordinates of the moved piece if successful, or null if no move was made
-        return playerInteraction.handlePlayerTurn(currentPlayer);
-    }
-
-    private boolean isGameOver() {
+    private PlayerID checkForWinner() {
         int whiteCount = 0;
         int blackCount = 0;
 
@@ -78,6 +67,13 @@ public class GameController {
                 else if (cell == 2 || cell == 4) blackCount++;
             }
         }
-        return whiteCount == 0 || blackCount == 0;
+
+        if (whiteCount == 0) {
+            return PlayerID.PLAYER2; // Black wins
+        } else if (blackCount == 0) {
+            return PlayerID.PLAYER1; // White wins
+        } else {
+            return null; // No winner yet
+        }
     }
 }
