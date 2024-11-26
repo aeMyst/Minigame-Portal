@@ -1,6 +1,7 @@
 package src.ca.ucalgary.seng300;
 
 import src.ca.ucalgary.seng300.gamelogic.GameState;
+import src.ca.ucalgary.seng300.leaderboard.interfaces.ILeaderboard;
 
 public interface IClient {
 
@@ -22,7 +23,7 @@ public interface IClient {
     void newMove(GameState newState);
 
     /// queue for a specific game and return a starting game
-    GameState queueGame(String gameKind);
+    void  queueGame();
 
     /// If we are waiting for the next move ask for the next move in a game
     GameState getNextMove(GameState gamestate);
@@ -31,6 +32,6 @@ public interface IClient {
     GameState viewGame(int id);
 
     /// Get the current leaderboard
-    ILeaderBoard getLeaderBoard();
+    ILeaderboard getLeaderBoard();
   
 }
