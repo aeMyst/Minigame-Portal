@@ -12,6 +12,6 @@ module src.ca.ucalgary.seng300 {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
-//    opens src.ca.ucalgary.seng300 to javafx.fxml;
-//    exports src.ca.ucalgary.seng300;
+   opens src.ca.ucalgary.seng300 to javafx.fxml;
+    exports src.ca.ucalgary.seng300;
 }

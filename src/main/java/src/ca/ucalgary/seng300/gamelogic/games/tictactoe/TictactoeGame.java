@@ -8,6 +8,10 @@ public class TictactoeGame extends Game {
     private PlayerManager playerManager;
 
     // constructor
+
+    /**
+     * initializes a new board and sets the players
+     **/
     public TictactoeGame() {
         // initialization of board, and players
         boardManager = new BoardManager();
@@ -15,6 +19,12 @@ public class TictactoeGame extends Game {
     }
 
     // method to start game
+
+    /**
+     * starts the game and initializes the actions of the first move
+     * switches the current player to keep the game going
+     * print prompts for players as the game progresses
+     */
     @Override
     public void start() {
         while (true) {

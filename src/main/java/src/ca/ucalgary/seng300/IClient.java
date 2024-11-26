@@ -18,8 +18,11 @@ public interface IClient {
     /// Find the profile info of a given user
     String findProfileInfo(String user);
 
+    /// make a new move and send it over to the system
+    void newMove(GameState newState);
+
     /// queue for a specific game and return a starting game
-    void queueGame();
+    GameState queueGame(String gameKind);
 
     /// If we are waiting for the next move ask for the next move in a game
     GameState getNextMove(GameState gamestate);
@@ -28,6 +31,6 @@ public interface IClient {
     GameState viewGame(int id);
 
     /// Get the current leaderboard
-    //ILeaderBoard getLeaderBoard();
+    ILeaderBoard getLeaderBoard();
   
 }
