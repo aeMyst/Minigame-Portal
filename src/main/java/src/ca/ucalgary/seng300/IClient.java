@@ -15,6 +15,10 @@ public interface IClient {
     /// email returning false if there was an error
     boolean registerUser(String username, String password, String email);
 
+    /// Gets the username of the current user if logged in
+    /// not logged in returns null
+    String getCurrentUsername();
+
     /// Find the profile info of a given user
     String findProfileInfo(String user);
 

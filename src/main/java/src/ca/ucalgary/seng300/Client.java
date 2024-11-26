@@ -50,6 +50,15 @@ public class Client implements IClient {
         return auth.register(email, username, password);
     }
 
+    @Override
+    public String getCurrentUsername() {
+        User cur_user = auth.isLoggedIn();
+        if (cur_user == null) {
+            return null;
+        }
+        return cur_user.getUsername();
+    }
+
     public String findProfileInfo(String User) {
         return User;
     }
