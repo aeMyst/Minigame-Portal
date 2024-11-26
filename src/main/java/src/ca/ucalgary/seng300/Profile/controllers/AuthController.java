@@ -23,7 +23,7 @@ public class AuthController {
         return authService.logout(currentUser);
     }
 
-    public User isLoggedIn(User currentUser){
-        return authService.isLoggedIn(currentUser);
+    public User isLoggedIn(){
+        return authService.isLoggedIn();
     }
 }
