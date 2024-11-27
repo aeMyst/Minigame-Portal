@@ -1,4 +1,4 @@
-package tiktaktoe;
+package test.tiktaktoe;
 
 public class HumanPlayerTest {
 }
