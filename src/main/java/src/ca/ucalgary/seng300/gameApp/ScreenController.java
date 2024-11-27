@@ -117,7 +117,7 @@ public class ScreenController extends Application {
 
     public void showCheckerScreen() {
         CheckersGameLogic gameLogic = new CheckersGameLogic(new Graphic());
-        CheckerScreen checkers = new CheckerScreen(primaryStage, this, gameLogic);
+        CheckerScreen checkers = new CheckerScreen(primaryStage, this, gameLogic , client);
         primaryStage.setTitle("Checkers");
         primaryStage.setScene(checkers.getScene());
     }

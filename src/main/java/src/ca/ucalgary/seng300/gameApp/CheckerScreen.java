@@ -24,9 +24,10 @@ public class CheckerScreen implements IScreen {
     private int selectedRow = -1;
     private int selectedCol = -1;
 
-    public CheckerScreen(Stage stage, ScreenController controller, CheckersGameLogic gameLogic) {
+    public CheckerScreen(Stage stage, ScreenController controller, CheckersGameLogic gameLogic, Client client) {
         this.controller = controller;
         this.gameLogic = gameLogic;
+        this.client = client;
 
         Label titleLabel = new Label("Checkers");
         titleLabel.setFont(new Font("Arial", 24));
@@ -126,7 +127,7 @@ public class CheckerScreen implements IScreen {
         } else {
             // A piece is already selected
             if (selectedRow == row && selectedCol == col) {
-                // Deselect the piece if the player clicks on it again
+                // Deselect the currently selected piece
                 selectedRow = -1;
                 selectedCol = -1;
                 clearHighlights();
@@ -143,26 +144,29 @@ public class CheckerScreen implements IScreen {
                 int toRow = row;
                 int toCol = col;
                 PlayerID currentPlayer = gameLogic.getCurrentPlayer();
+
                 if (gameLogic.isValidCapture(fromRow, fromCol, toRow, toCol, currentPlayer)) {
                     gameLogic.playerCapturedPiece(fromRow, fromCol, toRow, toCol, currentPlayer);
                     updateBoard();
+                    clearHighlights(); // Clear highlights after capture
 
-                    // Check for additional captures
-                    if (gameLogic.hasValidCapture(toRow, toCol, currentPlayer)) {
-                        selectedRow = toRow;
-                        selectedCol = toCol;
-                        clearHighlights();
-                        highlightPossibleMoves(toRow, toCol);
-                    } else {
-                        if (checkGameState()) {
-                            return;
+                    client.sendCheckerMoveToServer(gameLogic, fromRow, fromCol, toRow, toCol, currentPlayer, () -> {
+                        if (gameLogic.hasValidCapture(toRow, toCol, currentPlayer)) {
+                            selectedRow = toRow;
+                            selectedCol = toCol;
+                            highlightPossibleMoves(toRow, toCol);
+                        } else {
+                            if (checkGameState()) {
+                                return;
+                            }
+                            selectedRow = -1;
+                            selectedCol = -1;
+                            clearHighlights();
+                            gameLogic.switchPlayer();
+                            turnIndicator.setText("Turn: Player " + gameLogic.getCurrentPlayer());
                         }
-                        selectedRow = -1;
-                        selectedCol = -1;
-                        clearHighlights();
-                        gameLogic.switchPlayer();
-                        turnIndicator.setText("Turn: Player " + gameLogic.getCurrentPlayer());
-                    }
+                    });
+
                 } else if (gameLogic.isValidMove(fromRow, fromCol, toRow, toCol, currentPlayer)) {
                     if (gameLogic.hasAnyValidCaptures(currentPlayer)) {
                         chatArea.appendText("You must capture if possible.\n");
@@ -172,19 +176,23 @@ public class CheckerScreen implements IScreen {
                     } else {
                         gameLogic.playerMovedPiece(fromRow, fromCol, toRow, toCol, currentPlayer);
                         updateBoard();
-                        selectedRow = -1;
-                        selectedCol = -1;
-                        clearHighlights();
-                        gameLogic.switchPlayer();
-                        turnIndicator.setText("Turn: Player " + gameLogic.getCurrentPlayer());
+                        clearHighlights(); // Clear highlights after a valid move
+
+                        client.sendCheckerMoveToServer(gameLogic, fromRow, fromCol, toRow, toCol, currentPlayer, () -> {
+                            selectedRow = -1;
+                            selectedCol = -1;
+                            clearHighlights();
+                            gameLogic.switchPlayer();
+                            turnIndicator.setText("Turn: Player " + gameLogic.getCurrentPlayer());
+                        });
                     }
                 } else {
                     chatArea.appendText("Invalid move. Try again.\n");
-                    // Keep the selected piece highlighted
                 }
             }
         }
     }
+
 
 
 

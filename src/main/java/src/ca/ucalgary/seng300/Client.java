@@ -262,7 +262,7 @@ public class Client implements IClient {
 
     public void sendC4MoveToServer(Connect4Logic logicManager, TurnManager turnManager, String status, Runnable callback) {
         Random rand = new Random();
-        int time = rand.nextInt(1000); // delay
+        int time = rand.nextInt(0); // delay
         new Thread(() -> {
             try {
                 Thread.sleep(time); // simulate server delay
@@ -287,13 +287,6 @@ public class Client implements IClient {
                 Thread.sleep(time); // Simulate server processing time
                 System.out.println("Server Communication: Processing move...");
                 System.out.printf("Move acknowledged by server: [%d, %d] -> [%d, %d]\n", fromRow, fromCol, toRow, toCol);
-
-                // Simulate server updating the game logic
-                if (gameLogic.playerMovedPiece(fromRow, fromCol, toRow, toCol, playerID)) {
-                    System.out.println("Move successful!");
-                } else {
-                    System.out.println("Invalid move, rejected by server.");
-                }
 
                 Platform.runLater(callback); // Execute the callback on the JavaFX thread
             } catch (InterruptedException e) {
