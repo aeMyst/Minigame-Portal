@@ -143,7 +143,12 @@ public class CheckerScreen implements IScreen {
                 int toRow = row;
                 int toCol = col;
                 PlayerID currentPlayer = gameLogic.getCurrentPlayer();
-
+                client.sendCheckerMoveToServer(gameLogic, fromRow, fromCol, toRow, toCol,currentPlayer, () -> {
+                    clearHighlights();
+                    updateBoard();
+                    gameLogic.switchPlayer();
+                    turnIndicator.setText("Turn: Player " + gameLogic.getCurrentPlayer());
+                });
                 if (gameLogic.isValidCapture(fromRow, fromCol, toRow, toCol, currentPlayer)) {
                     gameLogic.playerCapturedPiece(fromRow, fromCol, toRow, toCol, currentPlayer);
                     updateBoard();
