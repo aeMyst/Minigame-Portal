@@ -1,4 +1,4 @@
-package test.tiktaktoe;
+package tiktaktoe;
 
-public class GameTest {
+public class TictactoeGameTest {
 }
