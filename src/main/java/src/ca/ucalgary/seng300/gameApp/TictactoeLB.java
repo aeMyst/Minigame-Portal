@@ -46,18 +46,6 @@ public class TictactoeLB implements IScreen {
         });
 
 
-        client.sendC4LeaderboardToServer(leaderboard.getCheckersLeaderboard(), () -> {
-            if (leaderboard.getCheckersLeaderboard()!=null) {
-                System.out.println("\n" + "Checkers Leaderboard successfully updated");
-                System.out.println("==========================");
-            } else {
-                System.out.println("Checkers Leaderboard is empty");
-                System.out.println("==========================");
-            }
-        });
-
-
-
         // Back Button
         Button backButton = createButton("Back to LeaderBoard Menu", 16, 300, "#4CAF50", e -> controller.showLeaderBoardMenu());
 

@@ -234,9 +234,53 @@ public class Client implements IClient {
 
 
 
-    public void sendTTTLeaderboardToserver() {}
+    public void sendTTTLeaderboardToServer(String[][] leaderboard, Runnable callback) {
+        Random rand = new Random();
+        int time = rand.nextInt(1000); // simulate server delay
 
-    public void sendCheckersLeaderboardToServer() {}
+        new Thread(() -> {
+            try {
+                Thread.sleep(time);
+                System.out.println("Server Communication for Leaderboard...");
+                System.out.println("Leaderboard for Tic-Tac-Toe being updated..." + "\n");
+
+                System.out.println("Sorted Leaderboard for Tic-Tac-Toe:");
+                for (String[] entry : leaderboard) {
+                    System.out.println("Player ID: " + entry[0] + ", Elo: " + entry[1] + ", Wins: " + entry[2]);
+                }
+
+                // update the GUI
+                Platform.runLater(callback);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    public void sendCheckersLeaderboardToServer(String [][] leaderboard, Runnable callback) {
+        Random rand = new Random();
+        int time = rand.nextInt(1000); // simulate server delay
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(time);
+                System.out.println("Server Communication for Checkers...");
+                System.out.println("Leaderboard for Checkers being updated..." + "\n");
+
+                System.out.println("Sorted Leaderboard for Checkers:");
+                for (String[] entry : leaderboard) {
+                    System.out.println("Player ID: " + entry[0] + ", Elo: " + entry[1] + ", Wins: " + entry[2]);
+                }
+
+                // update the GUI
+                Platform.runLater(callback);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
 
     @Override
     public GameState getNextMove(GameState gamestate) {
