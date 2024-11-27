@@ -20,9 +20,9 @@ public class Connect4LB implements IScreen {
         // Leaderboard Entries Section
         VBox leaderboardEntries = createLeaderboardEntries(
                 new String[][] {
-                        {"1. PlayerX", "1200"},
-                        {"2. PlayerY", "1100"},
-                        {"3. PlayerZ", "1000"}
+                        {"1. Arfa", "1200", "33"}, //it goes PlayerID, ELO, WINS
+                        {"2. Abrar", "1100", "22"},
+                        {"3. Vova", "1000", "11"}
                 }
         );
 
