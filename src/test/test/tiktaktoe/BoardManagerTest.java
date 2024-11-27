@@ -2,9 +2,8 @@ package tiktaktoe;
 
 import org.junit.jupiter.api.Test;
 import org.junit.*;
-import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.Board;
-import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.BoardManager;
-import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.Game;
+import src.ca.ucalgary.seng300.gamelogic.tictactoe.Board;
+import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

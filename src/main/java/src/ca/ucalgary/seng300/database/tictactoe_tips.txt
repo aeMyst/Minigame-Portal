@@ -1,0 +1,5 @@
+Try to control the center square.
+Block your opponent's winning moves.
+Think two moves ahead.
+Force your opponent to defend.
+Take the corner for an advantage.
