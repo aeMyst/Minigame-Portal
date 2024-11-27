@@ -22,4 +22,5 @@ module src.ca.ucalgary.seng300 {
     exports src.ca.ucalgary.seng300.gameApp.extraScreens;
     exports src.ca.ucalgary.seng300.network;
     opens src.ca.ucalgary.seng300.network to javafx.fxml;
+    exports src.ca.ucalgary.seng300.gameApp.Utility;
 }

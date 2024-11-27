@@ -7,6 +7,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.gameApp.Utility.ChatUtility;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
@@ -25,6 +26,8 @@ public class TictactoeGameScreen {
     private Client client;
     private Stage stage;
     private String status = "ONGOING";
+    private boolean isEmojiOpen = false;
+    private boolean moveInProgress = false;
 
     public TictactoeGameScreen(Stage stage, ScreenController controller, Client client) {
         this.stage = stage;
@@ -75,11 +78,25 @@ public class TictactoeGameScreen {
 
         Button sendButton = new Button("Send");
         sendButton.setFont(new Font("Arial", 16));
-        sendButton.setPrefWidth(100);
+        sendButton.setPrefWidth(150);
         sendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         sendButton.setOnAction(e -> sendMessage());
 
-        HBox chatBox = new HBox(10, chatInput, sendButton);
+
+        Button emojiButton = new Button("Emoji Menu");
+        emojiButton.setFont(new Font("Arial", 16));
+        emojiButton.setPrefWidth(150);
+        emojiButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        emojiButton.setOnAction(e -> {
+            if (!isEmojiOpen) {
+                ChatUtility.showEmojiMenu(chatInput, stage, () -> isEmojiOpen = false);
+                isEmojiOpen = true;
+            } else {
+                chatArea.appendText("Server: Please select an Emoji or close the menu.\n");
+            }
+        });
+
+        HBox chatBox = new HBox(10, chatInput, emojiButton, sendButton);
         chatBox.setAlignment(Pos.CENTER);
 
         VBox chatLayout = new VBox(10, chatArea, chatBox);
@@ -98,8 +115,6 @@ public class TictactoeGameScreen {
         layout.setPadding(new Insets(20));
         scene = new Scene(layout, 1280, 900); // Fixed size
     }
-
-    private boolean moveInProgress = false;
 
     private void handleMove(int row, int col, ScreenController controller) {
         if (moveInProgress) {
@@ -166,7 +181,8 @@ public class TictactoeGameScreen {
     private void sendMessage() {
         String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
-            chatArea.appendText("Player: " + message + "\n");
+            String responseFromServer = client.sendMessageToServer(message);
+            chatArea.appendText("Player: " + responseFromServer + "\n");
             chatInput.clear();
         }
     }

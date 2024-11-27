@@ -10,12 +10,12 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.gameApp.Utility.ChatUtility;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.PlayerID;
-
 import java.io.FileInputStream;
 
 public class CheckerScreen implements IScreen {
@@ -29,8 +29,10 @@ public class CheckerScreen implements IScreen {
     private final ScreenController controller;
     private int selectedRow = -1;
     private int selectedCol = -1;
+    private boolean isEmojiOpen = false;
 
     // Paths to images
+    // https://www.tutorialspoint.com/javafx/javafx_images.htm
     private final String WHITE_PIECE_IMAGE_PATH = "src/main/java/src/ca/ucalgary/seng300/images/white_piece.png";
     private final String BLACK_PIECE_IMAGE_PATH = "src/main/java/src/ca/ucalgary/seng300/images/black_piece.png";
     private final String WHITE_KING_IMAGE_PATH = "src/main/java/src/ca/ucalgary/seng300/images/white_king_piece.png";
@@ -63,16 +65,31 @@ public class CheckerScreen implements IScreen {
         chatInput.setOnAction(e -> sendMessage());
 
         Button sendButton = new Button("Send");
-        sendButton.setFont(new Font("Arial", 14));
+        sendButton.setFont(new Font("Arial", 16));
+        sendButton.setPrefWidth(150);
         sendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         sendButton.setOnAction(e -> sendMessage());
+
+        Button emojiButton = new Button("Emoji Menu");
+        emojiButton.setFont(new Font("Arial", 16));
+        emojiButton.setPrefWidth(150);
+        emojiButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        emojiButton.setOnAction(e -> {
+            if (!isEmojiOpen) {
+                isEmojiOpen = true;
+                ChatUtility.showEmojiMenu(chatInput, stage, () -> isEmojiOpen = false);
+            } else {
+                chatArea.appendText("Server: Please select an Emoji or close the menu.\n");
+            }
+        });
+
 
         Button backButton = new Button("Forfeit");
         backButton.setFont(new Font("Arial", 16));
         backButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: white;");
         backButton.setOnAction(e -> controller.showMainMenu());
 
-        HBox chatBox = new HBox(10, chatInput, sendButton);
+        HBox chatBox = new HBox(10, chatInput, emojiButton, sendButton);
         chatBox.setAlignment(Pos.CENTER);
 
         VBox layout = new VBox(15, titleLabel, turnIndicator, gameBoard, chatArea, chatBox, backButton);
@@ -249,9 +266,10 @@ public class CheckerScreen implements IScreen {
     }
 
     private void sendMessage() {
-        String message = chatInput.getText();
+        String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
-            chatArea.appendText(gameLogic.getCurrentPlayer() + ": " + message + "\n");
+            String responseFromServer = client.sendMessageToServer(message);
+            chatArea.appendText(gameLogic.getCurrentPlayer() + ": " + responseFromServer + "\n");
             chatInput.clear();
         }
     }

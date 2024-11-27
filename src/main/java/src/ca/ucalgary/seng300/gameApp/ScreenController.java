@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.leaderboardScreens.LeaderboardController;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.accountScreens.*;
-import src.ca.ucalgary.seng300.gameApp.extraScreens.EndGameScreen;
+import src.ca.ucalgary.seng300.gameApp.gameScreens.EndGameScreen;
 import src.ca.ucalgary.seng300.gameApp.extraScreens.HelpScreen;
 import src.ca.ucalgary.seng300.gameApp.gameScreens.*;
 import src.ca.ucalgary.seng300.gameApp.loadingScreens.LoadingScreen;

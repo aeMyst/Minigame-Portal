@@ -1,4 +1,4 @@
-package src.ca.ucalgary.seng300.gameApp.extraScreens;
+package src.ca.ucalgary.seng300.gameApp.gameScreens;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

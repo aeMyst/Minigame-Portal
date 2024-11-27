@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import src.ca.ucalgary.seng300.Profile.interfaces.AuthInterface;
 import src.ca.ucalgary.seng300.Profile.models.User;
 import src.ca.ucalgary.seng300.Profile.services.AuthService;
+import src.ca.ucalgary.seng300.gameApp.Utility.ChatUtility;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.PlayerID;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Logic;
@@ -33,6 +34,13 @@ public class Client implements IClient {
     public void disconnect() {
         System.out.println("Disconnection Successful. Application will now Safely Close.");
     };
+
+    public String sendMessageToServer(String message) {
+        String filteredMessage = ChatUtility.filterMessage(message);
+        System.out.println("Sending Message to Server: " + message);
+        System.out.println("==========================");
+        return filteredMessage;
+    }
 
     public boolean logInUser(String username, String password) {
         return auth.login(username, password);

@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.gameApp.Utility.ChatUtility;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
@@ -34,6 +35,7 @@ public class Connect4Screen implements IScreen {
     private Label turnIndicator;
     private TextArea chatArea;
     private TextField chatInput;
+    private boolean isEmojiOpen = false;
 
     public Connect4Screen(Stage stage, ScreenController controller, Client client) {
 
@@ -81,9 +83,24 @@ public class Connect4Screen implements IScreen {
         chatInput.setOnAction(e -> sendMessage());
 
         Button sendButton = new Button("Send");
-        sendButton.setFont(new Font("Arial", 14));
+        sendButton.setFont(new Font("Arial", 16));
+        sendButton.setPrefWidth(150);
         sendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         sendButton.setOnAction(e -> sendMessage());
+
+        Button emojiButton = new Button("Emoji Menu");
+        emojiButton.setFont(new Font("Arial", 16));
+        emojiButton.setPrefWidth(150);
+        emojiButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        emojiButton.setOnAction(e -> {
+            if (!isEmojiOpen) {
+                isEmojiOpen = true;
+                ChatUtility.showEmojiMenu(chatInput, stage, () -> isEmojiOpen = false);
+            } else {
+                chatArea.appendText("Server: Please select an Emoji or close the menu.\n");
+            }
+        });
+
 
         Button backToMenuButton = new Button("Forfeit");
         backToMenuButton.setFont(new Font("Arial", 16));
@@ -91,7 +108,7 @@ public class Connect4Screen implements IScreen {
         backToMenuButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: #FFFFFF;");
         backToMenuButton.setOnAction(e -> controller.showMainMenu());
 
-        HBox chatBox = new HBox(5, chatInput, sendButton);
+        HBox chatBox = new HBox(5, chatInput, emojiButton, sendButton);
         chatBox.setAlignment(Pos.CENTER);
 
         VBox layout = new VBox(15, title, turnIndicator, gameBoard, chatArea, chatBox, backToMenuButton);
@@ -173,9 +190,10 @@ public class Connect4Screen implements IScreen {
     }
 
     private void sendMessage() {
-        String message = chatInput.getText();
+        String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
-            chatArea.appendText("Player: " + message + "\n");
+            String responseFromServer = client.sendMessageToServer(message);
+            chatArea.appendText("Player: " + responseFromServer + "\n");
             chatInput.clear();
         }
     }
