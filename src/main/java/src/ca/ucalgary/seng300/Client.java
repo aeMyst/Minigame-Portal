@@ -3,6 +3,8 @@ package src.ca.ucalgary.seng300;
 import javafx.application.Platform;
 import src.ca.ucalgary.seng300.gamelogic.GameState;
 import src.ca.ucalgary.seng300.gamelogic.IGameLogic;
+import src.ca.ucalgary.seng300.gamelogic.games.Checkers.CheckersGameLogic;
+import src.ca.ucalgary.seng300.gamelogic.games.Checkers.PlayerID;
 import src.ca.ucalgary.seng300.gamelogic.games.Connect4.Connect4Logic;
 import src.ca.ucalgary.seng300.gamelogic.games.Connect4.TurnManager;
 import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.BoardManager;
@@ -232,7 +234,7 @@ public class Client implements IClient {
             }
         }).start();
     }
-    // ###########################################Tic-Tac-Toe Server Methods##########################################//
+    // ###########################################Connect 4 Server Methods##########################################//
 
     /**
      * connect 4 move setup
@@ -256,6 +258,64 @@ public class Client implements IClient {
             System.out.println();
             System.out.println("   -----------------------------");
         }
+    }
+
+    public void sendC4MoveToServer(Connect4Logic logicManager, TurnManager turnManager, String status, Runnable callback) {
+        Random rand = new Random();
+        int time = rand.nextInt(0); // delay
+        new Thread(() -> {
+            try {
+                Thread.sleep(time); // simulate server delay
+                System.out.println("Server Communication now...");
+                System.out.println("Move acknowledged by server: " + status);
+                newMoveC4(logicManager, turnManager, status); // updates the board and game state
+                Platform.runLater(callback); // calls the callback after the fake server responds
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+    //.
+    // ###########################################Checkers 4 Server Methods##########################################//
+
+    public void sendCheckerMoveToServer(CheckersGameLogic gameLogic, int fromRow, int fromCol, int toRow, int toCol,PlayerID playerID, Runnable callback) {
+        Random rand = new Random();
+        int time = rand.nextInt(1000) + 500; // Simulate random delay between 500ms and 1500ms
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(time); // Simulate server processing time
+                System.out.println("Server Communication: Processing move...");
+                System.out.printf("Move acknowledged by server: [%d, %d] -> [%d, %d]\n", fromRow, fromCol, toRow, toCol);
+
+                Platform.runLater(callback); // Execute the callback on the JavaFX thread
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    public void newMoveCheckers(CheckersGameLogic logicManager, PlayerID currentPlayer, String status) {
+        System.out.println("Game Status: " + status);
+        System.out.println("Current Player: " + (currentPlayer == PlayerID.PLAYER1 ? "Player 1 (White)" : "Player 2 (Black)"));
+
+        int[][] board = logicManager.getBoard();
+        System.out.println("     1  2  3  4  5  6  7  8");
+        System.out.println("   +------------------------+");
+        for (int row = 0; row < board.length; row++) {
+            System.out.print((row + 1) + " | ");
+            for (int col = 0; col < board[row].length; col++) {
+                switch (board[row][col]) {
+                    case 1 -> System.out.print("W  "); // White piece
+                    case 2 -> System.out.print("B  "); // Black piece
+                    case 3 -> System.out.print("WK "); // White king
+                    case 4 -> System.out.print("BK "); // Black king
+                    default -> System.out.print(".  "); // Empty square
+                }
+            }
+            System.out.println("|");
+        }
+        System.out.println("   +------------------------+");
     }
 
 }

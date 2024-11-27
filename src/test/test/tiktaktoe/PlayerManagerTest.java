@@ -1,4 +1,4 @@
-package tiktaktoe;
+package test.tiktaktoe;
 
 import org.junit.Before;
 import org.junit.jupiter.api.Test;

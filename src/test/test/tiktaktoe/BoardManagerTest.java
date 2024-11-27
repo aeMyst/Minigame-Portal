@@ -1,4 +1,4 @@
-package tiktaktoe;
+package test.tiktaktoe;
 
 import org.junit.jupiter.api.Test;
 import org.junit.*;
@@ -13,14 +13,14 @@ public class BoardManagerTest {
     BoardManager boardManager;
     private char[][] board;
     @Before
-    private void setup(){
+    public void setup(){
         Board board1=new Board();
         board= board1.getBoard();
         boardManager = new BoardManager();
 
     }
     @Test
-    private void isValidMoveTest(){
+    public void isValidMoveTest(){
         assertTrue(boardManager.isValidMove(2,2));
         assertFalse(boardManager.isValidMove(-1,4));
         boardManager.placeSymbol('X',1,2);

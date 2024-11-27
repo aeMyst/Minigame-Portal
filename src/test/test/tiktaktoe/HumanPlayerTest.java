@@ -1,4 +1,4 @@
-package tiktaktoe;
+package test.tiktaktoe;
 
 import org.junit.jupiter.api.Test;
 import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.HumanPlayer;

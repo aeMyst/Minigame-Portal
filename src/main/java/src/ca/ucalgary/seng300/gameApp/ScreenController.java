@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.Client;
 import src.ca.ucalgary.seng300.gamelogic.games.Checkers.CheckersGameLogic;
+import src.ca.ucalgary.seng300.gamelogic.games.Checkers.Graphic;
 import src.ca.ucalgary.seng300.gamelogic.games.Connect4.Connect4Logic;
 import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.BoardManager;
 
@@ -86,7 +87,6 @@ public class ScreenController extends Application {
         EndGameScreen endGame = new EndGameScreen(primaryStage, this, client, gameType, boardManager, connect4Logic, checkersGameLogic);
         primaryStage.setTitle("End Game Screen");
         primaryStage.setScene(endGame.getScene());
-
     }
 
     public void showCreateProfileScreen() {
@@ -116,7 +116,8 @@ public class ScreenController extends Application {
     }
 
     public void showCheckerScreen() {
-        CheckerScreen checkers = new CheckerScreen(primaryStage, this, client);
+        CheckersGameLogic gameLogic = new CheckersGameLogic(new Graphic());
+        CheckerScreen checkers = new CheckerScreen(primaryStage, this, gameLogic , client);
         primaryStage.setTitle("Checkers");
         primaryStage.setScene(checkers.getScene());
     }
