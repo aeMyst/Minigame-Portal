@@ -12,32 +12,6 @@ public class Leaderboard implements ILeaderboard {
     private static final String FILE_PATH = "players_data.csv";
     private ArrayList<Player> loadPlayers = new ArrayList<>();
 
-//    @Override
-//    public void loadPlayersFromCSV() {
-//        // we'll try bufferedReader and parse that values we need from the csv
-//        File file = new File(FILE_PATH);
-//        Storage storage;
-//
-//        if (file.exists()) {
-//            storage = FileManagement.fileReading(file);
-//            if (storage == null) {
-//                storage = new Storage();
-//                System.out.println("[ERROR] Failed to read file. Starting with an empty player list.");
-//            } else {
-//                loadPlayers = storage.getPlayers();
-//                System.out.println("Loading existing player data from file.");
-//            }
-//        } else {
-//            storage = new Storage();
-//            System.out.println("[ERROR] No existing file found. Starting with an empty player list.");
-//        }
-//
-//        for (Player player : loadPlayers) {
-//            EloData eloPlayer = new EloData(player.getGameType(), player.getPlayerID(), player.getElo(), player.get)
-//        }
-//
-//    }
-
     // sorts names with corresponding elo values in order
 
     public String[][] sortLeaderboard(String gameType) {
@@ -76,8 +50,5 @@ public class Leaderboard implements ILeaderboard {
             System.out.println("[ERROR] File does not exist.");
             return new String[0][3];
         }
-
-
-
     }
 }

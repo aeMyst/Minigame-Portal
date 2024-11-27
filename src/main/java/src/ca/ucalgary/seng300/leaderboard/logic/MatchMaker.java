@@ -1,6 +1,8 @@
 package src.ca.ucalgary.seng300.leaderboard.logic;
 
+import src.ca.ucalgary.seng300.gamelogic.games.Connect4.Connect4Game;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
+import src.ca.ucalgary.seng300.leaderboard.data.Storage;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.IMatchmaker;
 
 import java.util.ArrayList;
@@ -9,6 +11,11 @@ import java.util.List;
 public class MatchMaker implements IMatchmaker {
     private ArrayList<Player> queue = new ArrayList<>();
     private static final int THRESHOLD = 150; //it's good practice to set up the 150 here for future bug fix/code design
+    private Storage storage;
+
+    public MatchMaker(Storage storage){
+        this.storage = storage;
+    }
 
     //method for adding players to queue after we first parsed all info from csv
     @Override
@@ -36,5 +43,8 @@ public class MatchMaker implements IMatchmaker {
     @Override
     public void createMatch(Player player1, Player player2) {
         System.out.println("Match created between: " + player1.getPlayerID()+ " and " + player2.getPlayerID());
+
+        Connect4Game game = new Connect4Game(player1, player2, storage);
+        game.startGame();;
     }
 }
