@@ -200,7 +200,7 @@ public class Client implements IClient {
         }).start();
     }
 
-    public void sendC4LeaderboardToServer(Leaderboard leaderboard, Runnable callback) {
+    public void sendC4LeaderboardToServer(String[][] leaderboard, Runnable callback) {
         Random rand = new Random();
         int time = rand.nextInt(1000); // simulate server delay
 
@@ -208,13 +208,11 @@ public class Client implements IClient {
             try {
                 Thread.sleep(time);
                 System.out.println("Server Communication for Leaderboard...");
-                System.out.println("Leaderboard for Connect 4 being updated...");
+                System.out.println("Leaderboard for Connect 4 being updated..." + "\n");
 
-                // we grab the Connect 4 leaderboard
-                String[][] sortedLeaderboard = leaderboard.getC4Leaderboard();
 
                 System.out.println("Sorted Leaderboard for Connect 4:");
-                for (String[] entry : sortedLeaderboard) {
+                for (String[] entry : leaderboard) {
                     System.out.println("Player ID: " + entry[0] + ", Elo: " + entry[1] + ", Wins: " + entry[2]);
                 }
 

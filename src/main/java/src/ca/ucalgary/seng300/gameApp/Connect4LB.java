@@ -12,13 +12,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
 import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
 
 public class Connect4LB implements IScreen {
     private Scene scene;
 
 
-    public Connect4LB(Stage stage, LeaderboardController controller) {
+    public Connect4LB(Stage stage, LeaderboardController controller, Client client) {
         // Title Label
         Label titleLabel = createLabel("Connect4 Leaderboard", 24, Pos.CENTER);
         Leaderboard leaderboard = new Leaderboard();
@@ -33,6 +34,15 @@ public class Connect4LB implements IScreen {
 //        );
 
         VBox leaderboardEntries = createLeaderboardEntries(leaderboard.getC4Leaderboard());
+        client.sendC4LeaderboardToServer(leaderboard.getC4Leaderboard(), () -> {
+            if (leaderboard.getC4Leaderboard()!=null) {
+                System.out.println("\n" + "Connect 4 Leaderboard successfully updated.");
+                System.out.println("==========================");
+            } else {
+                System.out.println("Connect 4 Leaderboard is empty.");
+                System.out.println("==========================");
+            }
+        });
 
         // Back Button
         Button backButton = createButton("Back to LeaderBoard Menu", 16, 300, "#4CAF50", e -> controller.showLeaderBoardMenu());
