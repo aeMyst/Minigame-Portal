@@ -24,15 +24,6 @@ public class TictactoeLB implements IScreen {
 
         // Leaderboard Entries Section
 
-
-//        VBox leaderboardEntries = createLeaderboardEntries(
-//                new String[][]{
-//                        {"1. PlayerX", "1200"},
-//                        {"2. PlayerY", "1100"},
-//                        {"3. PlayerZ", "1000"}
-//                }
-//        );
-
         VBox leaderboardEntries = createLeaderboardEntries(leaderboard.getTicTacToeLeaderboard());
 
         client.sendTTTLeaderboardToServer(leaderboard.getTicTacToeLeaderboard(), () -> {
@@ -113,7 +104,7 @@ public class TictactoeLB implements IScreen {
                 entryBox.setStyle("-fx-padding: 5; -fx-background-color: lightgrey; -fx-background-radius: 0 0 10 10;");
 
             }
-//            entryBox.setAlignment(Pos.BASELINE_CENTER);
+
             entryBox.setAlignment(Pos.BASELINE_LEFT);
 
             Label playerLabel = new Label(entry[0]);

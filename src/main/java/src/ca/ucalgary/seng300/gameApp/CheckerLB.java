@@ -22,15 +22,6 @@ public class CheckerLB implements IScreen {
         Label titleLabel = createLabel("Checkers Leaderboard", 24, Pos.CENTER);
         Leaderboard leaderboard = new Leaderboard();
 
-        // Leaderboard Entries Section
-//        VBox leaderboardEntries = createLeaderboardEntries(
-//                new String[][]{
-//                        {"1. PlayerX", "1200"},
-//                        {"2. PlayerY", "1100"},
-//                        {"3. PlayerZ", "1000"}
-//                }
-//        );
-
         VBox leaderboardEntries = createLeaderboardEntries(leaderboard.getCheckersLeaderboard());
 
         client.sendCheckersLeaderboardToServer(leaderboard.getCheckersLeaderboard(), () -> {
@@ -111,7 +102,7 @@ public class CheckerLB implements IScreen {
                 entryBox.setStyle("-fx-padding: 5; -fx-background-color: lightgrey; -fx-background-radius: 0 0 10 10;");
 
             }
-//            entryBox.setAlignment(Pos.BASELINE_CENTER);
+
             entryBox.setAlignment(Pos.BASELINE_LEFT);
 
             Label playerLabel = new Label(entry[0]);
