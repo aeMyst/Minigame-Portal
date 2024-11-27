@@ -33,7 +33,7 @@ public class CheckerLB implements IScreen {
 
         VBox leaderboardEntries = createLeaderboardEntries(leaderboard.getCheckersLeaderboard());
 
-        client.sendC4LeaderboardToServer(leaderboard.getCheckersLeaderboard(), () -> {
+        client.sendCheckersLeaderboardToServer(leaderboard.getCheckersLeaderboard(), () -> {
             if (leaderboard.getCheckersLeaderboard()!=null) {
                 System.out.println("\n" + "Checkers Leaderboard successfully updated");
                 System.out.println("==========================");
