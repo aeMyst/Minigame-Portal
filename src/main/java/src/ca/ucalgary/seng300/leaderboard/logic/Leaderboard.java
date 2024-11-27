@@ -125,6 +125,38 @@ public class Leaderboard implements ILeaderboard {
     }
 
     public String[][] getCheckersLeaderboard() {
+        Storage storage;
+        int count = 0;
+        int sortedCount = 0;
+        List<Player> CheckersPlayers = new ArrayList<>();
 
+        if (file.exists()) {
+            storage = FileManagement.fileReading(file);
+
+            for (Player player : storage.getPlayers()) {
+                String type = player.getGameType();
+                if (type.equals("CONNECT4")) {
+                    CheckersPlayers.add(player);
+                    count++;
+                } if (count >= 10) {
+                    break;
+                }
+            }
+            // sorting C4 players LB
+            CheckersPlayers.sort((player1, player2) -> Integer.compare(player2.getElo(), player1.getElo()));
+
+            String[][] sortedCheckersLB = new String[count][3];
+
+            for (Player player : CheckersPlayers) {
+                sortedCheckersLB[sortedCount][0] = player.getPlayerID();
+                sortedCheckersLB[sortedCount][1] = String.valueOf(player.getElo());
+                sortedCheckersLB[sortedCount][2] = (String.valueOf(player.getWins()));
+                sortedCount++;
+            }
+            return sortedCheckersLB;
+        } else {
+            System.err.println("[ERROR] File does not exist.");
+            return new String[0][];
+        }
     }
 }
