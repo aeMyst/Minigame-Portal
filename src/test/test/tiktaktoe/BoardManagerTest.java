@@ -1,7 +1,7 @@
-package test.tiktaktoe;
+package tiktaktoe;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.*;
 import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.Board;
 import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.BoardManager;
 import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.Game;
