@@ -119,7 +119,7 @@ public class TictactoeLB implements IScreen {
             Label playerLabel = new Label(entry[0]);
             playerLabel.setFont(Font.font("Arial", FontWeight.BOLD,16));
             playerLabel.setPrefWidth(160);
-            playerLabel.setAlignment(Pos.CENTER_LEFT);
+            playerLabel.setAlignment(Pos.CENTER);
 
             Label eloLabel = new Label(entry[1]);
             eloLabel.setFont(new Font("Arial", 16));
