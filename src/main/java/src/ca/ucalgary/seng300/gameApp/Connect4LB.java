@@ -55,11 +55,13 @@ public class Connect4LB implements IScreen {
     private VBox createLeaderboardEntries(String[][] data) {
         VBox entriesBox = new VBox(10);
         entriesBox.setAlignment(Pos.CENTER);
-        entriesBox.setPadding(new Insets(20));
+        entriesBox.setPadding(new Insets(10));
 
-        HBox headerBox = new HBox(15);
+        HBox headerBox = new HBox(10);
         headerBox.setAlignment(Pos.CENTER);
-        headerBox.setStyle("-fx-background-color: lightgray; -fx-padding: 10; -fx-border-color: black; -fx-border-width: 1;");
+        headerBox.setMaxWidth(400);
+        headerBox.setPrefWidth(400);
+        headerBox.setStyle("-fx-background-color: lightgray; -fx-padding: 10;");
 
         Label nameHeader = new Label("NAME");
         nameHeader.setFont(Font.font("Arial",FontWeight.BOLD,20));
@@ -80,12 +82,18 @@ public class Connect4LB implements IScreen {
         entriesBox.getChildren().add(headerBox);
 
         for (String[] entry : data) {
-            HBox entryBox = new HBox(15);
-            entryBox.setAlignment(Pos.CENTER);
+            HBox entryBox = new HBox(5);
+            entryBox.setSpacing(40);
+            entryBox.setStyle("-fx-padding: 5; -fx-border-color: lightgrey; -fx-border-width: 1;");
+            entryBox.setPrefWidth(400);
+            entryBox.setMinWidth(400);
+            entryBox.setMaxWidth(400);
+//            entryBox.setAlignment(Pos.BASELINE_CENTER);
+            entryBox.setAlignment(Pos.BASELINE_LEFT);
 
             Label playerLabel = new Label(entry[0]);
             playerLabel.setFont(Font.font("Arial", FontWeight.BOLD,16));
-            playerLabel.setPrefWidth(150);
+            playerLabel.setPrefWidth(160);
             playerLabel.setAlignment(Pos.CENTER_LEFT);
 
             Label eloLabel = new Label(entry[1]);
