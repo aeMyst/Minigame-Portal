@@ -7,6 +7,8 @@ import src.ca.ucalgary.seng300.gamelogic.games.Connect4.Connect4Logic;
 import src.ca.ucalgary.seng300.gamelogic.games.Connect4.TurnManager;
 import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.BoardManager;
 import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.PlayerManager;
+import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
+
 import java.util.Random;
 import java.net.InetAddress;
 
@@ -198,7 +200,32 @@ public class Client implements IClient {
         }).start();
     }
 
-    public void sendC4LeaderboardToServer() {}
+    public void sendC4LeaderboardToServer(Leaderboard leaderboard, Runnable callback) {
+        Random rand = new Random();
+        int time = rand.nextInt(1000); // simulate server delay
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(time);
+                System.out.println("Server Communication for Leaderboard...");
+                System.out.println("Leaderboard for Connect 4 being updated...");
+
+                // we grab the Connect 4 leaderboard
+                String[][] sortedLeaderboard = leaderboard.getC4Leaderboard();
+
+                System.out.println("Sorted Leaderboard for Connect 4:");
+                for (String[] entry : sortedLeaderboard) {
+                    System.out.println("Player ID: " + entry[0] + ", Elo: " + entry[1] + ", Wins: " + entry[2]);
+                }
+
+                // update the GUI
+                Platform.runLater(callback);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
 
     // ###########################################Connect4 Server Methods##########################################//
 
