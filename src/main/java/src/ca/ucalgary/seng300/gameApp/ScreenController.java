@@ -2,6 +2,7 @@ package src.ca.ucalgary.seng300.gameApp;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.gameApp.leaderboardScreens.LeaderboardController;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.accountScreens.*;
 import src.ca.ucalgary.seng300.gameApp.extraScreens.EndGameScreen;
@@ -35,7 +36,7 @@ public final class ScreenController extends Application {
 
     @Override
     public void stop() {
-        System.out.println("Application is Closing...");
+        System.out.println("Closing Connection to Server...");
         client.disconnect();
         System.exit(0);
     }

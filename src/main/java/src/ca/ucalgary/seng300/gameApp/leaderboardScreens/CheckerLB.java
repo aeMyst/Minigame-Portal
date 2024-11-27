@@ -10,7 +10,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
-import src.ca.ucalgary.seng300.gameApp.LeaderboardController;
 
 public class CheckerLB implements IScreen {
     private Scene scene;

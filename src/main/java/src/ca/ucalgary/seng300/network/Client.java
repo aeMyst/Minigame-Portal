@@ -31,7 +31,7 @@ public class Client implements IClient {
     }
 
     public void disconnect() {
-        System.out.println("Application will now Safely Close.");
+        System.out.println("Disconnection Successful. Application will now Safely Close.");
     };
 
     public boolean logInUser(String username, String password) {

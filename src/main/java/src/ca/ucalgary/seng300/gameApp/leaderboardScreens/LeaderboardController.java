@@ -1,4 +1,4 @@
-package src.ca.ucalgary.seng300.gameApp;
+package src.ca.ucalgary.seng300.gameApp.leaderboardScreens;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -7,10 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.gameApp.IScreen;
+import src.ca.ucalgary.seng300.gameApp.ScreenController;
 import src.ca.ucalgary.seng300.network.Client;
-import src.ca.ucalgary.seng300.gameApp.leaderboardScreens.CheckerLB;
-import src.ca.ucalgary.seng300.gameApp.leaderboardScreens.Connect4LB;
-import src.ca.ucalgary.seng300.gameApp.leaderboardScreens.TictactoeLB;
 
 public class LeaderboardController implements IScreen {
     private Scene scene;
