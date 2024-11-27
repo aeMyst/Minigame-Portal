@@ -63,6 +63,8 @@ public class ServerConnectionScreen implements IScreen {
                 client.connectServer();
                 javafx.application.Platform.runLater(() -> controller.showMainMenu());
             } else if (!canceled && disconnectCheck) {
+                // logout user if logged in then disconnect
+                client.logoutUser();
                 client.disconnectServer();
                 javafx.application.Platform.runLater(() -> controller.showSignInScreen());
             }

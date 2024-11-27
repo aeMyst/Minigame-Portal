@@ -7,7 +7,7 @@ public interface IClient {
 
 
     /// Using the username and password attempt to log in the user
-    void logInUser(String username, String password);
+    boolean logInUser(String username, String password);
 
     /// Log out the user if they are currently logged in
     void logoutUser();
@@ -15,6 +15,10 @@ public interface IClient {
     /// Attempt to register a new user with a new username, password and
     /// email returning false if there was an error
     boolean registerUser(String username, String password, String email);
+
+    /// Gets the username of the current user if logged in
+    /// not logged in returns null
+    String getCurrentUsername();
 
     /// Find the profile info of a given user
     String findProfileInfo(String user);

@@ -18,6 +18,7 @@ public class MainMenuScreen implements IScreen {
 
     public MainMenuScreen(Stage stage, ScreenController controller, Client client) {
         // Title label
+        username = client.getCurrentUsername();
         Label titleLabel = new Label("Welcome " + username + "!");
         titleLabel.setFont(new Font("Arial", 24));
         titleLabel.setTextFill(Color.DARKBLUE);

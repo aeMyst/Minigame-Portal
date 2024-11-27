@@ -1,6 +1,9 @@
 package src.ca.ucalgary.seng300;
 
 import javafx.application.Platform;
+import src.ca.ucalgary.seng300.Profile.interfaces.AuthInterface;
+import src.ca.ucalgary.seng300.Profile.models.User;
+import src.ca.ucalgary.seng300.Profile.services.AuthService;
 import src.ca.ucalgary.seng300.gamelogic.GameState;
 import src.ca.ucalgary.seng300.gamelogic.IGameLogic;
 import src.ca.ucalgary.seng300.gamelogic.games.Checkers.CheckersGameLogic;
@@ -18,8 +21,7 @@ public class Client implements IClient {
     private volatile boolean isQueueCanceled = false;
 
     IGameLogic gameLogic;
-
-    //AuthInterface auth;
+    AuthInterface auth;
     //ProfileInterface profile;
 
     //IMatchMaker matchMaker;
@@ -33,26 +35,38 @@ public class Client implements IClient {
         System.out.println("Server Started");
         System.out.println("Waiting for Request...");
         System.out.println("==========================");
+        auth = new AuthService();
     }
 
-    /**
-     * user login
-     * @param username
-     * @param password
-     */
-    public void logInUser(String username, String password) {
+    public boolean logInUser(String username, String password) {
+        return auth.login(username, password);
     }
-// log out user
+
     public void logoutUser() {
+        // first check that the user is currently logged in
+        User cur_user = auth.isLoggedIn();
+        if (cur_user == null) {
+            // if not just return as the user is logged out
+            return;
+        }
+        // logout user
+        auth.logout(cur_user);
     }
-// register user return true if successful
+
     public boolean registerUser(String username, String password, String email) {
-        // TODO: Implement
-        return false;
+        return auth.register(email, username, password);
+    }
+
+    @Override
+    public String getCurrentUsername() {
+        User cur_user = auth.isLoggedIn();
+        if (cur_user == null) {
+            return null;
+        }
+        return cur_user.getUsername();
     }
 // search for and return a profile
     public String findProfileInfo(String User) {
-
         return User;
     }
 // new move
