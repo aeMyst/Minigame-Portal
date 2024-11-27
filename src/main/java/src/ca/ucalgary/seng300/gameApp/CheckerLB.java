@@ -8,7 +8,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
 
 public class CheckerLB implements IScreen {
     private Scene scene;
@@ -16,15 +18,19 @@ public class CheckerLB implements IScreen {
     public CheckerLB(Stage stage, LeaderboardController controller) {
         // Title Label
         Label titleLabel = createLabel("Checkers Leaderboard", 24, Pos.CENTER);
+        Leaderboard leaderboard = new Leaderboard();
 
         // Leaderboard Entries Section
-        VBox leaderboardEntries = createLeaderboardEntries(
-                new String[][]{
-                        {"1. PlayerX", "1200"},
-                        {"2. PlayerY", "1100"},
-                        {"3. PlayerZ", "1000"}
-                }
-        );
+//        VBox leaderboardEntries = createLeaderboardEntries(
+//                new String[][]{
+//                        {"1. PlayerX", "1200"},
+//                        {"2. PlayerY", "1100"},
+//                        {"3. PlayerZ", "1000"}
+//                }
+//        );
+
+        VBox leaderboardEntries = createLeaderboardEntries(leaderboard.getCheckersLeaderboard());
+
 
         // Back Button
         Button backButton = createButton("Back to LeaderBoard Menu", 16, 300, "#4CAF50", e -> controller.showLeaderBoardMenu());
@@ -47,20 +53,60 @@ public class CheckerLB implements IScreen {
 
     private VBox createLeaderboardEntries(String[][] data) {
         VBox entriesBox = new VBox(10);
-        entriesBox.setAlignment(Pos.CENTER_LEFT);
-        entriesBox.setPadding(new Insets(20));
+        entriesBox.setAlignment(Pos.CENTER);
+        entriesBox.setPadding(new Insets(10));
+
+        HBox headerBox = new HBox(10);
+        headerBox.setAlignment(Pos.CENTER);
+        headerBox.setMaxWidth(400);
+        headerBox.setPrefWidth(400);
+        headerBox.setStyle("-fx-background-color: lightgray; -fx-padding: 10;");
+
+        Label nameHeader = new Label("NAME");
+        nameHeader.setFont(Font.font("Arial", FontWeight.BOLD,20));
+        nameHeader.setPrefWidth(220);
+        nameHeader.setAlignment(Pos.CENTER);
+
+        Label eloHeader = new Label("SCORE");
+        eloHeader.setFont(Font.font("Arial",FontWeight.BOLD,20));
+        eloHeader.setPrefWidth(90);
+        eloHeader.setAlignment(Pos.CENTER);
+
+        Label winsHeader = new Label("WINS");
+        winsHeader.setFont(Font.font("Arial",FontWeight.BOLD,20));
+        winsHeader.setPrefWidth(80);
+        winsHeader.setAlignment(Pos.CENTER);
+
+        headerBox.getChildren().addAll(nameHeader,eloHeader,winsHeader);
+        entriesBox.getChildren().add(headerBox);
 
         for (String[] entry : data) {
-            HBox entryBox = new HBox(15);
-            entryBox.setAlignment(Pos.CENTER_LEFT);
+            HBox entryBox = new HBox(5);
+            entryBox.setSpacing(40);
+            entryBox.setStyle("-fx-padding: 5; -fx-border-color: lightgrey; -fx-border-width: 1;");
+            entryBox.setPrefWidth(400);
+            entryBox.setMinWidth(400);
+            entryBox.setMaxWidth(400);
+//            entryBox.setAlignment(Pos.BASELINE_CENTER);
+            entryBox.setAlignment(Pos.BASELINE_LEFT);
 
             Label playerLabel = new Label(entry[0]);
-            playerLabel.setFont(new Font("Arial", 16));
+            playerLabel.setFont(Font.font("Arial", FontWeight.BOLD,16));
+            playerLabel.setPrefWidth(160);
+            playerLabel.setAlignment(Pos.CENTER_LEFT);
 
-            Label scoreLabel = new Label(entry[1]);
-            scoreLabel.setFont(new Font("Arial", 16));
+            Label eloLabel = new Label(entry[1]);
+            eloLabel.setFont(new Font("Arial", 16));
+            eloLabel.setPrefWidth(100);
+            eloLabel.setAlignment(Pos.CENTER);
 
-            entryBox.getChildren().addAll(playerLabel, scoreLabel);
+            Label winsLabel = new Label(entry[2]);
+            winsLabel.setFont(new Font("Arial", 16));
+            eloLabel.setPrefWidth(100);
+            eloLabel.setAlignment(Pos.CENTER);
+
+
+            entryBox.getChildren().addAll(playerLabel, eloLabel, winsLabel);
             entriesBox.getChildren().add(entryBox);
         }
         return entriesBox;
