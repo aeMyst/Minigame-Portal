@@ -280,7 +280,7 @@ public class Client implements IClient {
 
     public void sendCheckerMoveToServer(CheckersGameLogic gameLogic, int fromRow, int fromCol, int toRow, int toCol,PlayerID playerID, Runnable callback) {
         Random rand = new Random();
-        int time = rand.nextInt(1000) + 500; // Simulate random delay between 500ms and 1500ms
+        int time = rand.nextInt(10); // Simulate random delay between 500ms and 1500ms
 
         new Thread(() -> {
             try {
