@@ -66,7 +66,7 @@ public class Leaderboard implements ILeaderboard {
                 if (type.equals("CONNECT4")) {
                     C4Players.add(player);
                     count++;
-                } if (count >= 10) {
+                } if (count == 10) {
                     break;
                 }
             }
