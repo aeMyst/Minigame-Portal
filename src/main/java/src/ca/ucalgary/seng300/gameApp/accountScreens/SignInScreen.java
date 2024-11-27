@@ -82,7 +82,7 @@ public class SignInScreen implements IScreen {
         exitButton.setFont(new Font("Arial", 16));
         exitButton.setPrefWidth(200);
         exitButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: white;");;
-        exitButton.setOnAction(e -> System.exit(0));
+        exitButton.setOnAction(e -> controller.stop());
 
         // Combine Everything in a VBox
         VBox inputLayout = new VBox(15, titleLabel, usernameLayout, passwordLayout, signInButton, createAccountButton, exitButton);

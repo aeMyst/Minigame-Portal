@@ -7,9 +7,9 @@ import src.ca.ucalgary.seng300.gameApp.accountScreens.*;
 import src.ca.ucalgary.seng300.gameApp.extraScreens.EndGameScreen;
 import src.ca.ucalgary.seng300.gameApp.extraScreens.HelpScreen;
 import src.ca.ucalgary.seng300.gameApp.gameScreens.*;
-import src.ca.ucalgary.seng300.gameApp.loadScreens.LoadingScreen;
-import src.ca.ucalgary.seng300.gameApp.loadScreens.QueueScreen;
-import src.ca.ucalgary.seng300.gameApp.loadScreens.ServerConnectionScreen;
+import src.ca.ucalgary.seng300.gameApp.loadingScreens.LoadingScreen;
+import src.ca.ucalgary.seng300.gameApp.loadingScreens.QueueScreen;
+import src.ca.ucalgary.seng300.gameApp.loadingScreens.ServerConnectionScreen;
 import src.ca.ucalgary.seng300.gameApp.menuScreens.GameMenuScreen;
 import src.ca.ucalgary.seng300.gameApp.menuScreens.MainMenuScreen;
 import src.ca.ucalgary.seng300.gameApp.menuScreens.MatchmakeChoiceScreen;
@@ -37,6 +37,7 @@ public final class ScreenController extends Application {
     public void stop() {
         System.out.println("Application is Closing...");
         client.disconnect();
+        System.exit(0);
     }
 
     public void showMainMenu() {

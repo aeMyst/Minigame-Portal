@@ -1,4 +1,4 @@
-package src.ca.ucalgary.seng300.gameApp.loadScreens;
+package src.ca.ucalgary.seng300.gameApp.loadingScreens;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

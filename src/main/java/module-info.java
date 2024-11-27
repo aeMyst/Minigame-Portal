@@ -16,7 +16,7 @@ module src.ca.ucalgary.seng300 {
     exports src.ca.ucalgary.seng300;
     exports src.ca.ucalgary.seng300.gameApp.leaderboardScreens;
     exports src.ca.ucalgary.seng300.gameApp.gameScreens;
-    exports src.ca.ucalgary.seng300.gameApp.loadScreens;
+    exports src.ca.ucalgary.seng300.gameApp.loadingScreens;
     exports src.ca.ucalgary.seng300.gameApp.accountScreens;
     exports src.ca.ucalgary.seng300.gameApp.menuScreens;
     exports src.ca.ucalgary.seng300.gameApp.extraScreens;
