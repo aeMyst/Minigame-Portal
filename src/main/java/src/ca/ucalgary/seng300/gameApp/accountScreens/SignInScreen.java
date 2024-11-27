@@ -77,6 +77,20 @@ public class SignInScreen implements IScreen {
         createAccountButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         createAccountButton.setOnAction(e -> controller.showCreateProfileScreen());
 
+        // Forgot Password Button
+        Button forgotPasswordButton = new Button("Forgot Password?");
+        forgotPasswordButton.setFont(new Font("Arial", 16));
+        forgotPasswordButton.setPrefWidth(200);
+        forgotPasswordButton.setStyle("-fx-background-color: #FFA500; -fx-text-fill: white;");
+        forgotPasswordButton.setOnAction(e -> controller.showForgotPasswordScreen());
+
+        // Forgot Username Button
+        Button forgotUsernameButton = new Button("Forgot Username?");
+        forgotUsernameButton.setFont(new Font("Arial", 16));
+        forgotUsernameButton.setPrefWidth(200);
+        forgotUsernameButton.setStyle("-fx-background-color: #FFA500; -fx-text-fill: white;");
+        forgotUsernameButton.setOnAction(e -> controller.showForgotUsernameScreen());
+
         // Exit Button
         Button exitButton = new Button("Exit");
         exitButton.setFont(new Font("Arial", 16));
@@ -85,7 +99,8 @@ public class SignInScreen implements IScreen {
         exitButton.setOnAction(e -> controller.stop());
 
         // Combine Everything in a VBox
-        VBox inputLayout = new VBox(15, titleLabel, usernameLayout, passwordLayout, signInButton, createAccountButton, exitButton);
+        VBox inputLayout = new VBox(15, titleLabel, usernameLayout, passwordLayout, signInButton, createAccountButton,
+                forgotPasswordButton, forgotUsernameButton,  exitButton);
         inputLayout.setAlignment(Pos.CENTER);
         inputLayout.setPadding(new Insets(20));
 

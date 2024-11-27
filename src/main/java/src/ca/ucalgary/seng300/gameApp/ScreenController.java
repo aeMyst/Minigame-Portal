@@ -147,4 +147,23 @@ public final class ScreenController extends Application {
         primaryStage.setTitle("matchmake Screen");
         primaryStage.setScene(matchmakeScreen.getScene());
     }
+
+    public void showForgotPasswordScreen() {
+        ForgotPasswordScreen forgotPassword = new ForgotPasswordScreen(primaryStage, this, client);
+        primaryStage.setTitle("Forgot Password");
+        primaryStage.setScene(forgotPassword.getScene());
+    }
+
+    public void showResetPasswordScreen(String username) {
+        ResetPasswordScreen resetPassword = new ResetPasswordScreen(primaryStage, this, client, username);
+        primaryStage.setTitle("Reset Password");
+        primaryStage.setScene(resetPassword.getScene());
+    }
+
+    public void showForgotUsernameScreen() {
+        ForgotUsernameScreen forgotUsername = new ForgotUsernameScreen(primaryStage, this, client);
+        primaryStage.setTitle("Forgot Username");
+        primaryStage.setScene(forgotUsername.getScene());
+    }
+
 }

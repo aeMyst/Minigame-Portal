@@ -61,6 +61,19 @@ public class Client implements IClient {
         return auth.register(email, username, password);
     }
 
+    public boolean validateRecoveryInfo(String username, String recoveryInfo) {
+        System.out.println("validateRecoveryInfo");
+        return true;
+    }
+
+    public void updatePassword(String username, String newPassword) {
+        System.out.println("updatePassword");
+    }
+
+    public String retrieveUsername(String recoveryInfo) {
+        return "some string";
+    }
+
     @Override
     public String getCurrentUsername() {
         User cur_user = auth.isLoggedIn();
@@ -314,5 +327,6 @@ public class Client implements IClient {
         }
         System.out.println("   +------------------------+");
     }
+
     // ###########################################Checkers Server Methods#############################################//
 }
