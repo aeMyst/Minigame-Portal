@@ -8,7 +8,6 @@ import java.util.*;
 import java.io.*;
 
 public class Leaderboard implements ILeaderboard {
-    private HashMap<String, Player> players = new HashMap<>();
     private static final String FILE_PATH = "players_data.csv";
     private File file = new File(FILE_PATH);
 
@@ -57,9 +56,10 @@ public class Leaderboard implements ILeaderboard {
         int count = 0;
         int sortedCount = 0;
         List<Player> C4Players = new ArrayList<>();
+        File C4file = new File(FILE_PATH);
 
-        if (file.exists()) {
-            storage = FileManagement.fileReading(file);
+        if (C4file.exists()) {
+            storage = FileManagement.fileReading(C4file);
 
             for (Player player : storage.getPlayers()) {
                 String type = player.getGameType();
@@ -69,6 +69,10 @@ public class Leaderboard implements ILeaderboard {
                 } if (count >= 10) {
                     break;
                 }
+            }
+
+            if (C4Players.isEmpty()) {
+                System.out.println("No player data available.");
             }
             // sorting C4 players LB
             C4Players.sort((player1, player2) -> Integer.compare(player2.getElo(), player1.getElo()));
@@ -83,7 +87,7 @@ public class Leaderboard implements ILeaderboard {
             }
             return sortedC4LB;
         } else {
-            System.err.println("[ERROR] File does not exist.");
+            System.out.println("[ERROR] File does not exist.");
             return new String[0][];
         }
     }
