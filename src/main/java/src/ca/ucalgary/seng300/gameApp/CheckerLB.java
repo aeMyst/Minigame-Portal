@@ -11,12 +11,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Client;
 import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
 
 public class CheckerLB implements IScreen {
     private Scene scene;
 
-    public CheckerLB(Stage stage, LeaderboardController controller) {
+    public CheckerLB(Stage stage, LeaderboardController controller, Client client) {
         // Title Label
         Label titleLabel = createLabel("Checkers Leaderboard", 24, Pos.CENTER);
         Leaderboard leaderboard = new Leaderboard();
@@ -31,6 +32,16 @@ public class CheckerLB implements IScreen {
 //        );
 
         VBox leaderboardEntries = createLeaderboardEntries(leaderboard.getCheckersLeaderboard());
+
+        client.sendC4LeaderboardToServer(leaderboard.getCheckersLeaderboard(), () -> {
+            if (leaderboard.getCheckersLeaderboard()!=null) {
+                System.out.println("\n" + "Checkers Leaderboard successfully updated");
+                System.out.println("==========================");
+            } else {
+                System.out.println("Checkers Leaderboard is empty");
+                System.out.println("==========================");
+            }
+        });
 
 
         // Back Button
