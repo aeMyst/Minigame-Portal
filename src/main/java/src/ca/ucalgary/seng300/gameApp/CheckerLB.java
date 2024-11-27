@@ -79,13 +79,13 @@ public class CheckerLB implements IScreen {
         headerBox.setPrefWidth(400);
         headerBox.setStyle("-fx-background-color: grey; -fx-padding: 10; -fx-background-radius: 10 10 0 0;");
 
-        Label nameHeader = new Label("NAME");
+        Label nameHeader = new Label("PLAYERID");
         nameHeader.setFont(Font.font("Arial",FontWeight.BOLD,20));
         nameHeader.setPrefWidth(220);
         nameHeader.setAlignment(Pos.CENTER);
         nameHeader.setTextFill(Color.WHITE);
 
-        Label eloHeader = new Label("SCORE");
+        Label eloHeader = new Label("RATING");
         eloHeader.setFont(Font.font("Arial",FontWeight.BOLD,20));
         eloHeader.setPrefWidth(90);
         eloHeader.setAlignment(Pos.CENTER);

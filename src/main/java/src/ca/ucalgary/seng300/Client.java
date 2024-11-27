@@ -213,7 +213,7 @@ public class Client implements IClient {
                 int count = 1;
 
                 System.out.println("Sorted Leaderboard for Connect 4:\n");
-                System.out.printf("%-10s %-16s %-10s %-10s%n", "Rank", "Player ID", "Score", "Wins");
+                System.out.printf("%-10s %-16s %-10s %-10s%n", "Rank", "Player ID", "Rating", "Wins");
                 for (String[] entry : leaderboard) {
                     System.out.printf("%-10d %-16s %-10s %-10s%n", count, entry[0], entry[1], entry[2]);
 
@@ -252,7 +252,7 @@ public class Client implements IClient {
                 int count = 1;
 
                 System.out.println("Sorted Leaderboard for Tic-Tac-Toe:\n");
-                System.out.printf("%-10s %-16s %-10s %-10s%n", "Rank", "Player ID", "Score", "Wins");
+                System.out.printf("%-10s %-16s %-10s %-10s%n", "Rank", "Player ID", "Rating", "Wins");
                 for (String[] entry : leaderboard) {
                     System.out.printf("%-10d %-16s %-10s %-10s%n", count, entry[0], entry[1], entry[2]);
 
@@ -281,7 +281,7 @@ public class Client implements IClient {
                 int count = 1;
 
                 System.out.println("Sorted Leaderboard for Checkers:\n");
-                System.out.printf("%-10s %-16s %-10s %-10s%n", "Rank", "Player ID", "Score", "Wins");
+                System.out.printf("%-10s %-16s %-10s %-10s%n", "Rank", "Player ID", "Rating", "Wins");
                 for (String[] entry : leaderboard) {
                     System.out.printf("%-10d %-16s %-10s %-10s%n", count, entry[0], entry[1], entry[2]);
 
