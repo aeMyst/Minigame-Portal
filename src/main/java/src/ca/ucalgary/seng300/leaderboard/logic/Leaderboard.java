@@ -99,7 +99,7 @@ public class Leaderboard implements ILeaderboard {
 
             for (Player player : storage.getPlayers()) {
                 String type = player.getGameType();
-                if (type.equals("CONNECT4")) {
+                if (type.equals("TICTACTOE")) {
                     TicTacToePlayers.add(player);
                     count++;
                 } if (count >= 10) {
@@ -135,7 +135,7 @@ public class Leaderboard implements ILeaderboard {
 
             for (Player player : storage.getPlayers()) {
                 String type = player.getGameType();
-                if (type.equals("CONNECT4")) {
+                if (type.equals("CHECKERS")) {
                     CheckersPlayers.add(player);
                     count++;
                 } if (count >= 10) {
