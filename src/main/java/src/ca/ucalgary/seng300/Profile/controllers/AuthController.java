@@ -1,7 +1,7 @@
-package src.ca.ucalgary.seng300.authentication.controllers;
+package src.ca.ucalgary.seng300.Profile.controllers;
 
-import src.ca.ucalgary.seng300.authentication.models.User;
-import src.ca.ucalgary.seng300.authentication.services.AuthService;
+import src.ca.ucalgary.seng300.Profile.models.User;
+import src.ca.ucalgary.seng300.Profile.services.AuthService;
 
 public class AuthController {
 
@@ -23,7 +23,7 @@ public class AuthController {
         return authService.logout(currentUser);
     }
 
-    public User isLoggedIn(User currentUser){
-        return authService.isLoggedIn(currentUser);
+    public User isLoggedIn(){
+        return authService.isLoggedIn();
     }
 }

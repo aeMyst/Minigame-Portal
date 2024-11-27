@@ -81,8 +81,9 @@ public class CreateProfileScreen implements IScreen {
                 showAlert(Alert.AlertType.ERROR, "Error", "All fields are required.");
             } else if (!password.equals(confirmPassword)) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Passwords do not match.");
-            } else {
+            } else if (client.registerUser(username, password, email)) {
                 // You can add logic to save the profile data
+                // TODO: We need to add specifics on why a registration failed
                 System.out.println("Profile created for " + username);
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Profile created successfully!");
 
