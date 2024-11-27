@@ -1,10 +1,9 @@
 package tiktaktoe;
 
-import org.junit.Before;
-import org.junit.Test;
-import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.Board;
-import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.BoardManager;
-import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.Game;
+import org.junit.jupiter.api.Test;
+import org.junit.*;
+import src.ca.ucalgary.seng300.gamelogic.tictactoe.Board;
+import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,14 +12,14 @@ public class BoardManagerTest {
     BoardManager boardManager;
     private char[][] board;
     @Before
-    private void setup(){
+    public void setup(){
         Board board1=new Board();
         board= board1.getBoard();
         boardManager = new BoardManager();
 
     }
     @Test
-    private void isValidMoveTest(){
+    public void isValidMoveTest(){
         assertTrue(boardManager.isValidMove(2,2));
         assertFalse(boardManager.isValidMove(-1,4));
         boardManager.placeSymbol('X',1,2);
