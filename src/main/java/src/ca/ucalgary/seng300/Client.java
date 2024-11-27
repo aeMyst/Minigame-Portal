@@ -210,9 +210,13 @@ public class Client implements IClient {
                 System.out.println("Server Communication for Leaderboard...");
                 System.out.println("Leaderboard for Connect 4 being updated..." + "\n");
 
-                System.out.println("Sorted Leaderboard for Connect 4:");
+                int count = 1;
+
+                System.out.println("Sorted Leaderboard for Connect 4:\n");
                 for (String[] entry : leaderboard) {
-                    System.out.println("Player ID: " + entry[0] + ", Elo: " + entry[1] + ", Wins: " + entry[2]);
+                    System.out.println(count + "\t\t" + entry[0] + "\t\t\t SCORE: " + entry[1] + "\t\t WINS:" + entry[2]);
+
+                    count++;
                 }
 
                 // update the GUI
@@ -244,9 +248,13 @@ public class Client implements IClient {
                 System.out.println("Server Communication for Leaderboard...");
                 System.out.println("Leaderboard for Tic-Tac-Toe being updated..." + "\n");
 
-                System.out.println("Sorted Leaderboard for Tic-Tac-Toe:");
+                int count = 1;
+
+                System.out.println("Sorted Leaderboard for Tic-Tac-Toe:\n");
                 for (String[] entry : leaderboard) {
-                    System.out.println("Player ID: " + entry[0] + ", Elo: " + entry[1] + ", Wins: " + entry[2]);
+                    System.out.println(count + "\t\t" + entry[0] + "\t\t\t SCORE: " + entry[1] + "\t\t WINS:" + entry[2]);
+
+                    count++;
                 }
 
                 // update the GUI
@@ -266,11 +274,15 @@ public class Client implements IClient {
             try {
                 Thread.sleep(time);
                 System.out.println("Server Communication for Checkers...");
-                System.out.println("Leaderboard for Checkers being updated..." + "\n");
+                System.out.println("Leaderboard for Checkers being updated...\n");
 
-                System.out.println("Sorted Leaderboard for Checkers:");
+                int count = 1;
+
+                System.out.println("Sorted Leaderboard for Checkers:\n");
                 for (String[] entry : leaderboard) {
-                    System.out.println("Player ID: " + entry[0] + ", Elo: " + entry[1] + ", Wins: " + entry[2]);
+                    System.out.println(count + "\t\t" + entry[0] + "\t\t\t SCORE: " + entry[1] + "\t\t WINS:" + entry[2]);
+
+                    count++;
                 }
 
                 // update the GUI
