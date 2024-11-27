@@ -128,10 +128,32 @@ public class ExampleMain {
 
     // Display sorted leaderboard
     private static void displaySortedLeaderboard(Leaderboard leaderboard, String gameType) {
-        String[][] sortedLeaderboard = leaderboard.sortLeaderboard(gameType);
-        if (sortedLeaderboard.length == 0) {
-            System.out.println("No players available for the specified game type.");
-        } else {
+//        String[][] sortedLeaderboard = leaderboard.sortLeaderboard(gameType);
+//        if (sortedLeaderboard.length == 0) {
+//            System.out.println("No players available for the specified game type.");
+//        } else {
+//            System.out.println("\nSorted Leaderboard for " + gameType + ":");
+//            System.out.printf("%-15s %-10s %-10s%n", "Player ID", "Elo", "Wins");
+//            for (String[] playerData : sortedLeaderboard) {
+//                System.out.printf("%-15s %-10s %-10s%n", playerData[0], playerData[1], playerData[2]);
+//            }
+//        }
+        if (gameType.equals("CONNECT4")) {
+            String[][] sortedLeaderboard = leaderboard.getC4Leaderboard();
+            System.out.println("\nSorted Leaderboard for " + gameType + ":");
+            System.out.printf("%-15s %-10s %-10s%n", "Player ID", "Elo", "Wins");
+            for (String[] playerData : sortedLeaderboard) {
+                System.out.printf("%-15s %-10s %-10s%n", playerData[0], playerData[1], playerData[2]);
+            }
+        } else if (gameType.equals("CHECKERS")) {
+            String[][] sortedLeaderboard = leaderboard.getCheckersLeaderboard();
+            System.out.println("\nSorted Leaderboard for " + gameType + ":");
+            System.out.printf("%-15s %-10s %-10s%n", "Player ID", "Elo", "Wins");
+            for (String[] playerData : sortedLeaderboard) {
+                System.out.printf("%-15s %-10s %-10s%n", playerData[0], playerData[1], playerData[2]);
+            }
+        } else if (gameType.equals("TICTACTOE")) {
+            String[][] sortedLeaderboard = leaderboard.getTicTacToeLeaderboard();
             System.out.println("\nSorted Leaderboard for " + gameType + ":");
             System.out.printf("%-15s %-10s %-10s%n", "Player ID", "Elo", "Wins");
             for (String[] playerData : sortedLeaderboard) {
