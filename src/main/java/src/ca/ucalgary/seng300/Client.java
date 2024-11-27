@@ -130,6 +130,8 @@ public class Client implements IClient {
 
     // ############################################Queue Server Methods###############################################//
 
+
+
     // ###########################################Tic-Tac-Toe Server Methods##########################################//
     public void newMoveTTT(BoardManager boardManager, PlayerManager playerManager, String status) {
         System.out.println("Game Status: " + status);
@@ -158,6 +160,10 @@ public class Client implements IClient {
         }).start();
     }
     // ###########################################Tic-Tac-Toe Server Methods##########################################//
+
+
+
+    // ###########################################Connect4 Server Methods##########################################//
 
     public void newMoveC4(Connect4Logic logicManager, TurnManager turnManager, String status) {
         System.out.println("Game Status: " + status);
@@ -192,11 +198,17 @@ public class Client implements IClient {
         }).start();
     }
 
+    public void sendC4LeaderboardToServer() {}
+
+    // ###########################################Connect4 Server Methods##########################################//
+
+
+
     public void WinnerACK() {}
 
     public void newGameInfo() {}
 
-    public void sendC4LeaderboardToServer() {}
+
 
     public void sendTTTLeaderboardToserver() {}
 
@@ -206,7 +218,6 @@ public class Client implements IClient {
     public GameState getNextMove(GameState gamestate) {
         return null;
     }
-
 
     public void pingQueue() {}
 
