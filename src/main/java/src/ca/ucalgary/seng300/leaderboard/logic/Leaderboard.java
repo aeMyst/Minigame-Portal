@@ -10,7 +10,6 @@ import java.io.*;
 public class Leaderboard implements ILeaderboard {
     private HashMap<String, Player> players = new HashMap<>();
     private static final String FILE_PATH = "players_data.csv";
-    private ArrayList<Player> loadPlayers = new ArrayList<>();
     private File file = new File(FILE_PATH);
 
     // sorts names with corresponding elo values in order
@@ -54,7 +53,6 @@ public class Leaderboard implements ILeaderboard {
     // all leaderboard will return the top10 for gui readability
 
     public String[][] getC4Leaderboard() {
-        File file = new File(FILE_PATH);
         Storage storage;
         int count = 0;
         int sortedCount = 0;
@@ -91,10 +89,42 @@ public class Leaderboard implements ILeaderboard {
     }
 
     public String[][] getTicTacToeLeaderboard() {
-        return new String[0][];
+        Storage storage;
+        int count = 0;
+        int sortedCount = 0;
+        List<Player> TicTacToePlayers = new ArrayList<>();
+
+        if (file.exists()) {
+            storage = FileManagement.fileReading(file);
+
+            for (Player player : storage.getPlayers()) {
+                String type = player.getGameType();
+                if (type.equals("CONNECT4")) {
+                    TicTacToePlayers.add(player);
+                    count++;
+                } if (count >= 10) {
+                    break;
+                }
+            }
+            // sorting C4 players LB
+            TicTacToePlayers.sort((player1, player2) -> Integer.compare(player2.getElo(), player1.getElo()));
+
+            String[][] sortedTictacToeLB = new String[count][3];
+
+            for (Player player : TicTacToePlayers) {
+                sortedTictacToeLB[sortedCount][0] = player.getPlayerID();
+                sortedTictacToeLB[sortedCount][1] = String.valueOf(player.getElo());
+                sortedTictacToeLB[sortedCount][2] = (String.valueOf(player.getWins()));
+                sortedCount++;
+            }
+            return sortedTictacToeLB;
+        } else {
+            System.err.println("[ERROR] File does not exist.");
+            return new String[0][];
+        }
     }
 
     public String[][] getCheckersLeaderboard() {
-        return new String[0][];
+
     }
 }
