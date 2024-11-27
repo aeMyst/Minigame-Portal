@@ -279,8 +279,9 @@ public class Client implements IClient {
                 int count = 1;
 
                 System.out.println("Sorted Leaderboard for Checkers:\n");
+                System.out.printf("%-10s %-16s %-10s %-10s%n", "Rank", "Player ID", "Score", "Wins");
                 for (String[] entry : leaderboard) {
-                    System.out.println(count + "\t\t" + entry[0] + "\t\t\t SCORE: " + entry[1] + "\t\t WINS:" + entry[2]);
+                    System.out.printf("%-10d %-16s %-10s %-10s%n", count, entry[0], entry[1], entry[2]);
 
                     count++;
                 }
