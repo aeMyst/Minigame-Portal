@@ -196,6 +196,12 @@ public class Client implements IClient {
 
     public void newGameInfo() {}
 
+    public void sendC4LeaderboardToServer() {}
+
+    public void sendTTTLeaderboardToserver() {}
+
+    public void sendCheckersLeaderboardToServer() {}
+
     @Override
     public GameState getNextMove(GameState gamestate) {
         return null;
