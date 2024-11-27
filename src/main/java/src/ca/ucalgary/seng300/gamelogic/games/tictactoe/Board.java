@@ -9,10 +9,15 @@ public class Board {
         board = new char[3][3]; // Create 2d array
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                board[i][j] = ' '; // each arrow will be place holdered with empty space
+                board[i][j] = ' '; // each arrow will be filled with a placeholder with empty space
             }
         }
     }
+
+    /**
+     *
+     * @return board a 2d array representation of the chars in the board created by the loop in Board()
+     */
 
     public char[][] getBoard() {
         return board;

@@ -14,27 +14,22 @@ public class CheckerLB implements IScreen {
     private Scene scene;
 
     public CheckerLB(Stage stage, LeaderboardController controller) {
-        // Title Label
         Label titleLabel = createLabel("Checkers Leaderboard", 24, Pos.CENTER);
 
-        // Leaderboard Entries Section
         VBox leaderboardEntries = createLeaderboardEntries(
                 new String[][]{
-                        {"1. PlayerX", "1200"},
-                        {"2. PlayerY", "1100"},
-                        {"3. PlayerZ", "1000"}
+                        {"1. PlayerBlue", "1500"},
+                        {"2. PlayerRed", "1400"},
+                        {"3. PlayerGreen", "1300"}
                 }
         );
 
-        // Back Button
         Button backButton = createButton("Back to LeaderBoard Menu", 16, 300, "#4CAF50", e -> controller.showLeaderBoardMenu());
 
-        // Main Layout
         VBox layout = new VBox(20, titleLabel, leaderboardEntries, backButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
 
-        // Scene
         scene = new Scene(layout, 800, 600);
     }
 
