@@ -12,9 +12,11 @@ import src.ca.ucalgary.seng300.Client;
 public class LeaderboardController implements IScreen {
     private Scene scene;
     private Stage stage;
+    private Client client;
 
     public LeaderboardController(Stage stage, ScreenController controller, Client client) {
         this.stage = stage;
+        this.client = client;
 
         // Buttons to navigate to each specific leaderboard screen
         Button ticTacToeButton = new Button("Tic-Tac-Toe Leaderboard");
@@ -50,19 +52,19 @@ public class LeaderboardController implements IScreen {
     }
 
     private void showConnectFourLeaderboard() {
-        Connect4LB ticTacToeLeaderBoardScreen = new Connect4LB(stage, this);
+        Connect4LB ticTacToeLeaderBoardScreen = new Connect4LB(stage, this,client);
         stage.setScene(ticTacToeLeaderBoardScreen.getScene());
     }
 
 
     // Methods to display each leaderboard screen
     private void showTicTacToeLeaderboard() {
-        TictactoeLB ticTacToeLeaderBoardScreen = new TictactoeLB(stage, this);
+        TictactoeLB ticTacToeLeaderBoardScreen = new TictactoeLB(stage, this,client);
         stage.setScene(ticTacToeLeaderBoardScreen.getScene());
     }
 
     private void showCheckersLeaderboard() {
-        CheckerLB checkersLeaderBoardScreen = new CheckerLB(stage, this);
+        CheckerLB checkersLeaderBoardScreen = new CheckerLB(stage, this,client);
         stage.setScene(checkersLeaderBoardScreen.getScene());
     }
 
