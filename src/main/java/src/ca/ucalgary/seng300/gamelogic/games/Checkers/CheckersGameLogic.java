@@ -41,7 +41,11 @@ public class CheckersGameLogic implements ICheckers {
     public boolean playerSelectedPiece(int row, int col, PlayerID playerID) {
         if (!isWithinBounds(row, col)) return false;
         int piece = board[row][col];
-        return (playerID == PlayerID.PLAYER1 && piece == 1) || (playerID == PlayerID.PLAYER2 && piece == 2);
+        int requiredPiece = (playerID == PlayerID.PLAYER1) ? 1 : 2;
+        int kingPiece = requiredPiece + 2;
+
+        // Recognize both normal and king pieces
+        return piece == requiredPiece || piece == kingPiece;
     }
 
     @Override
@@ -51,6 +55,10 @@ public class CheckersGameLogic implements ICheckers {
         }
         board[toRow][toCol] = board[fromRow][fromCol];
         board[fromRow][fromCol] = 0;
+
+        if (checkKingPromotion(toRow, toCol, playerID)) {
+            promoteToKing(toRow, toCol, playerID);
+        }
         graphic.update(board);
         return true;
     }
@@ -63,16 +71,15 @@ public class CheckersGameLogic implements ICheckers {
 
         int midRow = (fromRow + toRow) / 2;
         int midCol = (fromCol + toCol) / 2;
-        board[midRow][midCol] = 0;
-        board[toRow][toCol] = board[fromRow][fromCol];
+        board[midRow][midCol] = 0; // Remove captured piece
+        board[toRow][toCol] = board[fromRow][fromCol]; // Move piece
         board[fromRow][fromCol] = 0;
 
         if (checkKingPromotion(toRow, toCol, playerID)) {
-            promoteToKing(toRow, toCol);
+            promoteToKing(toRow, toCol, playerID);
         }
-
         graphic.update(board);
-        return true; // Capture was successful
+        return true;
     }
 
     @Override
@@ -80,52 +87,138 @@ public class CheckersGameLogic implements ICheckers {
         if (!isWithinBounds(row, col)) return;
 
         int piece = board[row][col];
-        if ((playerID == PlayerID.PLAYER1 && row == 7) || (playerID == PlayerID.PLAYER2 && row == 0)) {
-            board[row][col] = piece + 2;
+        int requiredPiece = (playerID == PlayerID.PLAYER1) ? 1 : 2;
+        if (piece == requiredPiece && checkKingPromotion(row, col, playerID)) {
+            board[row][col] = piece + 2; // Promote to king
             graphic.update(board);
         }
     }
 
-    private boolean isValidMove(int fromRow, int fromCol, int toRow, int toCol, PlayerID playerID) {
+    public boolean isValidMove(int fromRow, int fromCol, int toRow, int toCol, PlayerID playerID) {
         if (!isWithinBounds(fromRow, fromCol) || !isWithinBounds(toRow, toCol)) return false;
         if (board[toRow][toCol] != 0) return false;
 
         int piece = board[fromRow][fromCol];
         int requiredPiece = (playerID == PlayerID.PLAYER1) ? 1 : 2;
+        int kingPiece = requiredPiece + 2;
 
-        if (piece != requiredPiece && piece != requiredPiece + 2) {
+        if (piece != requiredPiece && piece != kingPiece) {
             return false;
         }
 
-        int rowDiff = Math.abs(toRow - fromRow);
-        int colDiff = Math.abs(toCol - fromCol);
-        return rowDiff == 1 && colDiff == 1;
+        int rowDiff = toRow - fromRow;
+        int colDiff = toCol - fromCol;
+
+        // Ensure the move is diagonal and one step
+        if (Math.abs(rowDiff) != 1 || Math.abs(colDiff) != 1) {
+            return false;
+        }
+
+        // For normal pieces, ensure movement is forward
+        if (piece == 1 && rowDiff != 1) return false; // Player 1 moves down
+        if (piece == 2 && rowDiff != -1) return false; // Player 2 moves up
+
+        // Kings can move in any direction
+        return true;
     }
 
-    private boolean isValidCapture(int fromRow, int fromCol, int toRow, int toCol, PlayerID playerID) {
+    public boolean isValidCapture(int fromRow, int fromCol, int toRow, int toCol, PlayerID playerID) {
         if (!isWithinBounds(fromRow, fromCol) || !isWithinBounds(toRow, toCol)) return false;
         if (board[toRow][toCol] != 0) return false;
 
+        int piece = board[fromRow][fromCol];
+        int opponentPiece = (playerID == PlayerID.PLAYER1) ? 2 : 1;
+        int opponentKingPiece = opponentPiece + 2;
+
+        int rowDiff = toRow - fromRow;
+        int colDiff = toCol - fromCol;
+
+        // Ensure the move is diagonal and two steps
+        if (Math.abs(rowDiff) != 2 || Math.abs(colDiff) != 2) {
+            return false;
+        }
+
+        // For normal pieces, ensure movement is forward
+        if (piece == 1 && rowDiff != 2) return false; // Player 1 captures down
+        if (piece == 2 && rowDiff != -2) return false; // Player 2 captures up
+
+        // Kings can capture in any direction
+
         int midRow = (fromRow + toRow) / 2;
         int midCol = (fromCol + toCol) / 2;
-        int opponentPiece = (playerID == PlayerID.PLAYER1) ? 2 : 1;
 
-        return board[midRow][midCol] == opponentPiece && Math.abs(toRow - fromRow) == 2;
+        int midPiece = board[midRow][midCol];
+
+        // Check if the middle piece is an opponent's piece
+        if (midPiece != opponentPiece && midPiece != opponentKingPiece) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean hasValidCapture(int row, int col, PlayerID playerID) {
+        int piece = board[row][col];
+        if (piece == 0) return false;
+        int requiredPiece = (playerID == PlayerID.PLAYER1) ? 1 : 2;
+        int kingPiece = requiredPiece + 2;
+
+        if (piece != requiredPiece && piece != kingPiece) {
+            return false;
+        }
+
+        int[] rowDirs;
+        if (piece == requiredPiece) {
+            // Normal pieces
+            rowDirs = (playerID == PlayerID.PLAYER1) ? new int[]{2} : new int[]{-2};
+        } else {
+            // Kings
+            rowDirs = new int[]{-2, 2};
+        }
+        int[] colDirs = {-2, 2};
+
+        for (int rd : rowDirs) {
+            for (int cd : colDirs) {
+                int toRow = row + rd;
+                int toCol = col + cd;
+                if (isValidCapture(row, col, toRow, toCol, playerID)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean hasAnyValidCaptures(PlayerID playerID) {
+        int requiredPiece = (playerID == PlayerID.PLAYER1) ? 1 : 2;
+        int kingPiece = requiredPiece + 2;
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                int piece = board[row][col];
+                if (piece == requiredPiece || piece == kingPiece) {
+                    if (hasValidCapture(row, col, playerID)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     boolean checkKingPromotion(int row, int col, PlayerID playerID) {
-        return (playerID == PlayerID.PLAYER1 && row == 7) || (playerID == PlayerID.PLAYER2 && row == 0);
-    }
-
-    private void promoteToKing(int row, int col) {
-        board[row][col] += 2; // Promote piece to king
+        if (playerID == PlayerID.PLAYER1 && row == 7) {
+            return true;
+        } else if (playerID == PlayerID.PLAYER2 && row == 0) {
+            return true;
+        }
+        return false;
     }
 
     private boolean isWithinBounds(int row, int col) {
         return row >= 0 && row < 8 && col >= 0 && col < 8;
     }
 
-    // Remove switchPlayer from CheckersGameLogic
     public void switchPlayer() {
         currentPlayer = (currentPlayer == PlayerID.PLAYER1) ? PlayerID.PLAYER2 : PlayerID.PLAYER1;
         System.out.println("Switched to " + currentPlayer + "'s turn.");

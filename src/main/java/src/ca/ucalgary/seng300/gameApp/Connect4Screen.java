@@ -24,7 +24,7 @@ public class Connect4Screen implements IScreen {
     private Connect4Logic logicManager = new Connect4Logic();
     private TurnManager turnManager;
     private Client client;
-    private String status;
+    private String status = "ONGOING";
     private Stage stage;
     private Button[][] gameButtons = new Button[6][7];
     private Label turnIndicator;
@@ -81,9 +81,10 @@ public class Connect4Screen implements IScreen {
         sendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         sendButton.setOnAction(e -> sendMessage());
 
-        Button backToMenuButton = new Button("Back to Menu");
+        Button backToMenuButton = new Button("Forfeit");
         backToMenuButton.setFont(new Font("Arial", 16));
         backToMenuButton.setPrefWidth(200);
+        backToMenuButton.setStyle("-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF;");
         backToMenuButton.setOnAction(e -> controller.showMainMenu());
 
         HBox chatBox = new HBox(5, chatInput, sendButton);
@@ -122,17 +123,17 @@ public class Connect4Screen implements IScreen {
             }
             client.sendC4MoveToServer(logicManager, turnManager, status, () -> {
                 if (logicManager.horizontalWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-                    controller.showC4EndGameScreen();
+                    controller.showEndGameScreen(1, null, logicManager, null);
                 } else if (logicManager.verticalWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-                    controller.showC4EndGameScreen();
+                    controller.showEndGameScreen(1, null, logicManager, null);
                 } else if (logicManager.forwardslashWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-                    controller.showC4EndGameScreen();
+                    controller.showEndGameScreen(1, null, logicManager, null);
                 } else if (logicManager.backslashWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-                    controller.showC4EndGameScreen();
+                    controller.showEndGameScreen(1, null, logicManager, null);
                 } else if (logicManager.boardFull(logicManager.getBoard())) {
                     // tie if board is full
                     status = "DONE";
-                    controller.showC4EndGameScreen();
+                    controller.showEndGameScreen(1, null, logicManager, null);
                 }
                 if (currentPlayer == user1) {
                     currentPlayer = user2;

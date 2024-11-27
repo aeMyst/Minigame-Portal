@@ -6,14 +6,29 @@ public class HumanPlayer implements IPlayer {
 
     private char symbol;
 
+    /**
+     *
+     * @param symbol that will be assigned to a player X or O
+     */
     public HumanPlayer(char symbol) {
         this.symbol = symbol;
     }
+
+    /**
+     *
+     * @return symbol that was last assigned
+     */
 
     @Override
     public char getSymbol() {
         return symbol;
     }
+
+    /**
+     *
+     * @param board the current board before the move is applied
+     * @return int [] row, col of where the move occurred
+     */
 
     @Override
     public int[] getMove(Board board) {
