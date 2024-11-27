@@ -2,23 +2,41 @@ package src.ca.ucalgary.seng300.gameApp;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import src.ca.ucalgary.seng300.Client;
-import src.ca.ucalgary.seng300.gamelogic.games.Checkers.CheckersGameLogic;
-import src.ca.ucalgary.seng300.gamelogic.games.Checkers.Graphic;
-import src.ca.ucalgary.seng300.gamelogic.games.Connect4.Connect4Logic;
-import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.BoardManager;
+import src.ca.ucalgary.seng300.network.Client;
+import src.ca.ucalgary.seng300.gameApp.accountScreens.*;
+import src.ca.ucalgary.seng300.gameApp.extraScreens.EndGameScreen;
+import src.ca.ucalgary.seng300.gameApp.extraScreens.HelpScreen;
+import src.ca.ucalgary.seng300.gameApp.gameScreens.*;
+import src.ca.ucalgary.seng300.gameApp.loadScreens.LoadingScreen;
+import src.ca.ucalgary.seng300.gameApp.loadScreens.QueueScreen;
+import src.ca.ucalgary.seng300.gameApp.loadScreens.ServerConnectionScreen;
+import src.ca.ucalgary.seng300.gameApp.menuScreens.GameMenuScreen;
+import src.ca.ucalgary.seng300.gameApp.menuScreens.MainMenuScreen;
+import src.ca.ucalgary.seng300.gameApp.menuScreens.MatchmakeChoiceScreen;
+import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
+import src.ca.ucalgary.seng300.gamelogic.Checkers.Graphic;
+import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Logic;
+import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 
-public class ScreenController extends Application {
+/**
+ * ScreenController is responsible for managing the application screens.
+ * This class should not be run directly. Use Main.java as the application entry point.
+ */
+public final class ScreenController extends Application {
     private Stage primaryStage;
     Client client = new Client();
-
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         showSignInScreen();
         primaryStage.show();
+    }
 
+    @Override
+    public void stop() {
+        System.out.println("Application is Closing...");
+        client.disconnect();
     }
 
     public void showMainMenu() {
@@ -127,13 +145,4 @@ public class ScreenController extends Application {
         primaryStage.setTitle("matchmake Screen");
         primaryStage.setScene(matchmakeScreen.getScene());
     }
-
-
-
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-
 }

@@ -1,7 +1,7 @@
 package tiktaktoe;
 
 import org.junit.jupiter.api.Test;
-import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.Board;
+import src.ca.ucalgary.seng300.gamelogic.tictactoe.Board;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

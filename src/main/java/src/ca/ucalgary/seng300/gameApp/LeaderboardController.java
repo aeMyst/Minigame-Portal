@@ -7,7 +7,10 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import src.ca.ucalgary.seng300.Client;
+import src.ca.ucalgary.seng300.network.Client;
+import src.ca.ucalgary.seng300.gameApp.leaderboardScreens.CheckerLB;
+import src.ca.ucalgary.seng300.gameApp.leaderboardScreens.Connect4LB;
+import src.ca.ucalgary.seng300.gameApp.leaderboardScreens.TictactoeLB;
 
 public class LeaderboardController implements IScreen {
     private Scene scene;
@@ -38,7 +41,7 @@ public class LeaderboardController implements IScreen {
         Button backButton = new Button("Back to Main Menu");
         backButton.setFont(new Font("Arial", 16));
         backButton.setPrefWidth(300);
-        backButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        backButton.setStyle("-fx-background-color: #808080; -fx-text-fill: white;");
         backButton.setOnAction(e -> controller.showMainMenu());
 
         // Layout for the leaderboard menu
@@ -46,7 +49,7 @@ public class LeaderboardController implements IScreen {
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
 
-        scene = new Scene(layout, 800, 600);
+        scene = new Scene(layout, 1280, 900);
     }
 
     private void showConnectFourLeaderboard() {

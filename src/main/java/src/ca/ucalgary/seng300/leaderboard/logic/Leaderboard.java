@@ -1,6 +1,5 @@
 package src.ca.ucalgary.seng300.leaderboard.logic;
 
-import src.ca.ucalgary.seng300.gamelogic.players.PlayerID;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.ILeaderboard;
 
 import java.util.ArrayList;
