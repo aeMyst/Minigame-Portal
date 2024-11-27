@@ -11,12 +11,11 @@ public class Leaderboard implements ILeaderboard {
     private HashMap<String, Player> players = new HashMap<>();
     private static final String FILE_PATH = "players_data.csv";
     private ArrayList<Player> loadPlayers = new ArrayList<>();
+    private File file = new File(FILE_PATH);
 
     // sorts names with corresponding elo values in order
 
     public String[][] sortLeaderboard(String gameType) {
-
-        File file = new File(FILE_PATH);
         Storage storage;
 
         if (file.exists()) {
@@ -47,8 +46,55 @@ public class Leaderboard implements ILeaderboard {
             }
             return sortedLeaderboard;
         } else {
-            System.out.println("[ERROR] File does not exist.");
+            System.err.println("[ERROR] File does not exist.");
             return new String[0][3];
         }
+    }
+
+    // all leaderboard will return the top10 for gui readability
+
+    public String[][] getC4Leaderboard() {
+        File file = new File(FILE_PATH);
+        Storage storage;
+        int count = 0;
+        int sortedCount = 0;
+        List<Player> C4Players = new ArrayList<>();
+
+        if (file.exists()) {
+            storage = FileManagement.fileReading(file);
+
+            for (Player player : storage.getPlayers()) {
+                String type = player.getGameType();
+                if (type.equals("CONNECT4")) {
+                    C4Players.add(player);
+                    count++;
+                } if (count >= 10) {
+                    break;
+                }
+            }
+            // sorting C4 players LB
+            C4Players.sort((player1, player2) -> Integer.compare(player2.getElo(), player1.getElo()));
+
+            String[][] sortedC4LB = new String[count][3];
+
+            for (Player player : C4Players) {
+                sortedC4LB[sortedCount][0] = player.getPlayerID();
+                sortedC4LB[sortedCount][1] = String.valueOf(player.getElo());
+                sortedC4LB[sortedCount][2] = (String.valueOf(player.getWins()));
+                sortedCount++;
+            }
+            return sortedC4LB;
+        } else {
+            System.err.println("[ERROR] File does not exist.");
+            return new String[0][];
+        }
+    }
+
+    public String[][] getTicTacToeLeaderboard() {
+        return new String[0][];
+    }
+
+    public String[][] getCheckersLeaderboard() {
+        return new String[0][];
     }
 }
