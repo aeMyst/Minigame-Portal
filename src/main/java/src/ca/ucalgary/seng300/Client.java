@@ -210,7 +210,6 @@ public class Client implements IClient {
                 System.out.println("Server Communication for Leaderboard...");
                 System.out.println("Leaderboard for Connect 4 being updated..." + "\n");
 
-
                 System.out.println("Sorted Leaderboard for Connect 4:");
                 for (String[] entry : leaderboard) {
                     System.out.println("Player ID: " + entry[0] + ", Elo: " + entry[1] + ", Wins: " + entry[2]);
