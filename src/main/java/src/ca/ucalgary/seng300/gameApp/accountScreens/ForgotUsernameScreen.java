@@ -46,7 +46,7 @@ public class ForgotUsernameScreen {
             String recoveryInfo = recoveryField.getText();
 
             // Validate recovery info using client logic
-            String username = client.retrieveUsername(recoveryInfo);
+            String username = authService.recoverUsername(recoveryInfo);
             if (username != null) {
                 showAlert(Alert.AlertType.INFORMATION, "Username Retrieved", "Your username is: " + username);
                 controller.showSignInScreen();

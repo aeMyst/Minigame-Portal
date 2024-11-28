@@ -6,6 +6,7 @@ import src.ca.ucalgary.seng300.Profile.utils.ValidationUtils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AuthService implements AuthInterface {
 
@@ -14,7 +15,7 @@ public class AuthService implements AuthInterface {
 
     private static final String USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/Profile/services/users.csv";
 
-    AuthService() {
+    public AuthService() {
         ArrayList<User> newUsers = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE));
@@ -73,6 +74,15 @@ public class AuthService implements AuthInterface {
             System.err.println("An error occurred when storing user: " + e.getMessage());
             return false;
         }
+    }
+
+    public String recoverUsername(String email) {
+        for (User user : users) {
+            if (Objects.equals(user.getEmail(), email)) {
+                return user.getUsername();
+            }
+        }
+        return null;
     }
 
 
