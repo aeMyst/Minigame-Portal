@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 /**
- * This code represents a game screen for a Tic-Tac-Toe game.
- * Handles game board creation, player interactions, and chat functionality.
+ * This code represents a Tic-Tac-Toe game screen.
+ * Handles game board creation, game logic integration, player interactions, and chat functionality.
  */
 public class TictactoeGameScreen {
     private Scene scene;
@@ -57,7 +57,7 @@ public class TictactoeGameScreen {
         HumanPlayer playerO = new HumanPlayer(humanPlayerO, 'O');
 
         boardManager = new BoardManager();
-        playerManager = new PlayerManager(new HumanPlayer('X'), new HumanPlayer('O'));
+        playerManager = new PlayerManager(playerX, playerO);
 
         // Game Board
         GridPane gameBoard = new GridPane();
@@ -98,6 +98,7 @@ public class TictactoeGameScreen {
         chatInput.setPromptText("Type your message...");
         chatInput.setOnAction(e -> sendMessage());
 
+        // Send button
         Button sendButton = new Button("Send");
         sendButton.getStyleClass().add("button-send");
         sendButton.setOnAction(e -> sendMessage());
@@ -217,7 +218,6 @@ public class TictactoeGameScreen {
      * @param col        The column of the move.
      * @param controller The screen controller for navigating screens.
      */
-
     private void handleMove(int row, int col, ScreenController controller, ArrayList<Player> match) {
         if (moveInProgress) {
             return;     // Ignore input if a move is already in progress
@@ -310,6 +310,11 @@ public class TictactoeGameScreen {
         alert.showAndWait();
     }
 
+    /**
+     * Returns the scene for the Tic-Tac-Toe game screen.
+     *
+     * @return The game screen.
+     */
     public Scene getScene() {
         return scene;
     }
