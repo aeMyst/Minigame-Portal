@@ -2,23 +2,46 @@ package src.ca.ucalgary.seng300.gameApp;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import src.ca.ucalgary.seng300.Client;
-import src.ca.ucalgary.seng300.gamelogic.games.Checkers.CheckersGameLogic;
-import src.ca.ucalgary.seng300.gamelogic.games.Checkers.Graphic;
-import src.ca.ucalgary.seng300.gamelogic.games.Connect4.Connect4Logic;
-import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.BoardManager;
+import src.ca.ucalgary.seng300.gameApp.extraScreens.CheckersRules;
+import src.ca.ucalgary.seng300.gameApp.extraScreens.ConnectFourRules;
+import src.ca.ucalgary.seng300.gameApp.extraScreens.TTTRules;
+import src.ca.ucalgary.seng300.gameApp.leaderboardScreens.LeaderboardController;
+import src.ca.ucalgary.seng300.network.Client;
+import src.ca.ucalgary.seng300.gameApp.accountScreens.*;
+import src.ca.ucalgary.seng300.gameApp.gameScreens.EndGameScreen;
+import src.ca.ucalgary.seng300.gameApp.extraScreens.HelpScreen;
+import src.ca.ucalgary.seng300.gameApp.gameScreens.*;
+import src.ca.ucalgary.seng300.gameApp.loadingScreens.LoadingScreen;
+import src.ca.ucalgary.seng300.gameApp.loadingScreens.QueueScreen;
+import src.ca.ucalgary.seng300.gameApp.loadingScreens.ServerConnectionScreen;
+import src.ca.ucalgary.seng300.gameApp.menuScreens.GameMenuScreen;
+import src.ca.ucalgary.seng300.gameApp.menuScreens.MainMenuScreen;
+import src.ca.ucalgary.seng300.gameApp.menuScreens.MatchmakeChoiceScreen;
+import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
+import src.ca.ucalgary.seng300.gamelogic.Checkers.Graphic;
+import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Logic;
+import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 
-public class ScreenController extends Application {
+/**
+ * ScreenController is responsible for managing the application screens.
+ * This class should not be run directly. Use Main.java as the application entry point.
+ */
+public final class ScreenController extends Application {
     private Stage primaryStage;
     Client client = new Client();
-
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         showSignInScreen();
         primaryStage.show();
+    }
 
+    @Override
+    public void stop() {
+        System.out.println("Closing Connection to Server...");
+        client.disconnect();
+        System.exit(0);
     }
 
     public void showMainMenu() {
@@ -128,12 +151,41 @@ public class ScreenController extends Application {
         primaryStage.setScene(matchmakeScreen.getScene());
     }
 
-
-
-
-    public static void main(String[] args) {
-        launch(args);
+    public void showForgotPasswordScreen() {
+        ForgotPasswordScreen forgotPassword = new ForgotPasswordScreen(primaryStage, this, client);
+        primaryStage.setTitle("Forgot Password");
+        primaryStage.setScene(forgotPassword.getScene());
     }
 
+    public void showResetPasswordScreen(String username) {
+        ResetPasswordScreen resetPassword = new ResetPasswordScreen(primaryStage, this, client, username);
+        primaryStage.setTitle("Reset Password");
+        primaryStage.setScene(resetPassword.getScene());
+    }
+
+    public void showForgotUsernameScreen() {
+        ForgotUsernameScreen showUsername = new ForgotUsernameScreen(primaryStage, this, client);
+        primaryStage.setTitle("Find Username");
+        primaryStage.setScene(showUsername.getScene());
+
+    }
+
+    public void showConnectFourRules() {
+        ConnectFourRules c4Rules = new ConnectFourRules(primaryStage, this, client);
+        primaryStage.setTitle("Connect Four Rules");
+        primaryStage.setScene(c4Rules.getScene());
+    }
+
+    public void showTTTRules() {
+        TTTRules TTTrules = new TTTRules(primaryStage, this, client);
+        primaryStage.setTitle("Tic-Tac-Toe Rules");
+        primaryStage.setScene(TTTrules.getScene());
+    }
+
+    public void showCheckersRules() {
+        CheckersRules CHRules = new CheckersRules(primaryStage, this, client);
+        primaryStage.setTitle("Checkers' Rules");
+        primaryStage.setScene(CHRules.getScene());
+    }
 
 }

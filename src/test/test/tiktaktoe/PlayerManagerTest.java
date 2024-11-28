@@ -2,8 +2,8 @@ package tiktaktoe;
 
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.HumanPlayer;
-import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.PlayerManager;
+import src.ca.ucalgary.seng300.gamelogic.tictactoe.HumanPlayer;
+import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
 
 import static org.junit.Assert.assertEquals;
 

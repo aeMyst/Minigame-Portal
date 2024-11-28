@@ -14,4 +14,13 @@ module src.ca.ucalgary.seng300 {
     requires com.almasb.fxgl.all;
    opens src.ca.ucalgary.seng300 to javafx.fxml;
     exports src.ca.ucalgary.seng300;
+    exports src.ca.ucalgary.seng300.gameApp.leaderboardScreens;
+    exports src.ca.ucalgary.seng300.gameApp.gameScreens;
+    exports src.ca.ucalgary.seng300.gameApp.loadingScreens;
+    exports src.ca.ucalgary.seng300.gameApp.accountScreens;
+    exports src.ca.ucalgary.seng300.gameApp.menuScreens;
+    exports src.ca.ucalgary.seng300.gameApp.extraScreens;
+    exports src.ca.ucalgary.seng300.network;
+    opens src.ca.ucalgary.seng300.network to javafx.fxml;
+    exports src.ca.ucalgary.seng300.gameApp.Utility;
 }
