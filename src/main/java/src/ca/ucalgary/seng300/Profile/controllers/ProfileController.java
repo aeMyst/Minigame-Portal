@@ -13,8 +13,8 @@ public class ProfileController {
     }
 
     // View a user's profile
-    public String viewProfile(Profile profile) {
-       return profileService.viewProfile(profile);
+    public String viewProfile() {
+       return profileService.viewProfile();
     }
 
     // Update a user's profile (username, email, password)
@@ -32,7 +32,5 @@ public class ProfileController {
         profileService.updateRanking(user, rank);
     }
 
-    public String displayProfile(String username){
-        return profileService.displayProfileFromFile(username);
-    }
+
 }
