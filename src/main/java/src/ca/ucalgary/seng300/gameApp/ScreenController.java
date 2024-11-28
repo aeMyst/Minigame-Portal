@@ -171,7 +171,7 @@ public final class ScreenController extends Application {
     }
 
     public void showForgotUsernameScreen() {
-        ForgotUsernameScreen showUsername = new ForgotUsernameScreen(primaryStage, this, client);
+        ForgotUsernameScreen showUsername = new ForgotUsernameScreen(primaryStage, this, client, authService);
         primaryStage.setTitle("Find Username");
         primaryStage.setScene(showUsername.getScene());
 
