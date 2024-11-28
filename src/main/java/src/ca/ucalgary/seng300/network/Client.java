@@ -290,14 +290,14 @@ public class Client implements IClient {
     // ###########################################Checkers Server Methods#############################################//
     public void sendCheckerMoveToServer(CheckersGameLogic gameLogic, int fromRow, int fromCol, int toRow, int toCol,PlayerID playerID, Runnable callback) {
         Random rand = new Random();
-        int time = rand.nextInt(1000) + 500; // Simulate random delay between 500ms and 1500ms
+        int time = rand.nextInt(10); // Simulate random delay between 500ms and 1500ms
 
         new Thread(() -> {
             try {
                 Thread.sleep(time); // Simulate server processing time
                 System.out.println("Server Communication: Processing move...");
                 System.out.printf("Move acknowledged by server: [%d, %d] -> [%d, %d]\n", fromRow, fromCol, toRow, toCol);
-
+                newMoveCheckers(gameLogic,playerID);
                 Platform.runLater(callback); // Execute the callback on the JavaFX thread
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -305,8 +305,7 @@ public class Client implements IClient {
         }).start();
     }
 
-    public void newMoveCheckers(CheckersGameLogic logicManager, PlayerID currentPlayer, String status) {
-        System.out.println("Game Status: " + status);
+    public void newMoveCheckers(CheckersGameLogic logicManager, PlayerID currentPlayer) {
         System.out.println("Current Player: " + (currentPlayer == PlayerID.PLAYER1 ? "Player 1 (White)" : "Player 2 (Black)"));
 
         int[][] board = logicManager.getBoard();
