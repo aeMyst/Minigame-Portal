@@ -5,12 +5,30 @@ import src.ca.ucalgary.seng300.Profile.models.User;
 import src.ca.ucalgary.seng300.Profile.utils.ValidationUtils;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class AuthService implements AuthInterface {
 
     private User currentUser = null;
+    private ArrayList<User> users = new ArrayList<>();
 
     private static final String USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/Profile/services/users.csv";
+
+    AuthService() {
+        ArrayList<User> newUsers = new ArrayList<>();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                User user = User.fromCsv(line);
+                newUsers.add(user);
+            }
+            reader.close();
+            this.users = newUsers;
+        } catch (IOException e) {
+            System.err.println("An error occurred when reading user data: " + e.getMessage());
+        }
+    }
 
     // This will register a new user based on the credentials that our users provide.
     // Once registration is completed without an issue, returns true.
@@ -38,11 +56,15 @@ public class AuthService implements AuthInterface {
                 ValidationUtils.isValidEmail(email);
     }
 
+
+
     // To store user info to a text file, let me know if we need to hash the password later on.
     private boolean storeUser(User user) {
+        this.users.add(user);
+
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, true));
-            writer.write(user.getEmail() + "," + user.getUsername() + "," + user.getPassword());
+            writer.write(user.toCsv());
             writer.newLine();
             writer.close();
             System.out.println("User successfully registered and stored.");
@@ -57,23 +79,14 @@ public class AuthService implements AuthInterface {
 
     @Override
     public boolean login(String username, String password) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] userDetails = line.split(",");
-                if (userDetails.length == 3) {
-                    String storedUsername = userDetails[1];
-                    String storedPassword = userDetails[2];
-                    if (storedUsername.equals(username) && storedPassword.equals(password)) {
-                        currentUser = new User(storedUsername, storedPassword, null);
-                        System.out.println("Login successful : " + username);
-                        return true;
-                    }
-                }
+        for (User user : users) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                currentUser = user;
+                System.out.println("Login successful: " + username);
+                return true;
             }
-        } catch (IOException e) {
-            System.err.println("Login failed: " + e.getMessage());
         }
+        System.out.println("Login failed: Invalid username or password.");
         return false;
     }
 

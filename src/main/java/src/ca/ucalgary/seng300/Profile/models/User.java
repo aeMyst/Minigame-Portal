@@ -1,6 +1,8 @@
 package src.ca.ucalgary.seng300.Profile.models;
 
 
+import src.ca.ucalgary.seng300.Profile.services.UserAuthData;
+
 public class User {
 
     private String username;
@@ -11,6 +13,15 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public static User fromCsv(String csv) {
+        String[] data = csv.split(",");
+        return new User(data[0], data[1], data[2]);
+    }
+
+    public String toCsv() {
+        return email + "," + username + "," + password;
     }
 
     public void setUsername(String username) {
