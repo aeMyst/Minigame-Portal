@@ -46,7 +46,7 @@ public class Connect4LB implements IScreen {
         layout.setPadding(new Insets(20));
 
         // Scene
-        scene = new Scene(layout, 800, 600);
+        scene = new Scene(layout, 1280, 900);
     }
 
     private Label createLabel(String text, int fontSize, Pos alignment) {
