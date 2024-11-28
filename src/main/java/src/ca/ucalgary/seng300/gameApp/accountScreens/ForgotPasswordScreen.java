@@ -10,13 +10,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Profile.models.User;
+import src.ca.ucalgary.seng300.Profile.services.AuthService;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
+
+import java.util.ArrayList;
 
 public class ForgotPasswordScreen {
     private Scene scene;
 
-    public ForgotPasswordScreen(Stage stage, ScreenController controller, Client client) {
+    public ForgotPasswordScreen(Stage stage, ScreenController controller, Client client, AuthService authService) {
         Label titleLabel = new Label("Forgot Password");
         titleLabel.setFont(new Font("Arial", 36));
         titleLabel.setTextFill(Color.DARKBLUE);
@@ -55,13 +59,20 @@ public class ForgotPasswordScreen {
         submitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         submitButton.setOnAction(e -> {
             String username = usernameField.getText();
-            String recoveryInfo = recoveryField.getText();
+            String email = recoveryField.getText();
 
-            // Validate the recovery info using client logic
-            boolean isRecoverySuccessful = client.validateRecoveryInfo(username, recoveryInfo);
+            ArrayList<User> users = authService.getSanitizedUsers();
+            boolean isRecoverySuccessful = false;
+            for (User user : users) {
+                if (user.getUsername().equals(username) && user.getEmail().equals(email)) {
+                    isRecoverySuccessful = true;
+                    break;
+                }
+            }
+
             if (isRecoverySuccessful) {
                 // Simulate successful recovery and show a reset password screen
-                controller.showResetPasswordScreen(username);
+                controller.showResetPasswordScreen(username, email);
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "Invalid recovery information.");
             }

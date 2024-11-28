@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.gamelogic.Checkers.GameState;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
@@ -27,22 +28,40 @@ public class EndGameScreen implements IScreen {
         Label boardPrint = new Label();
         boardPrint.setFont(new Font("Arial", 24));
 
+        String winner = "";
+        String loser = "";
+        String eloGain = "";
+
         if (gameType == 0) {
             boardPrint.setText(printGameResults(boardManager.getBoard(), null, 0));
         } else if (gameType == 1) {
             boardPrint.setText(printGameResults(null, connect4Logic.getBoard(), 1));
         } else if (gameType == 2) {
             boardPrint.setText(printGameResults(null, checkersGameLogic.getBoard(), 2));
+            if (checkersGameLogic.getGameState().equals(GameState.PLAYER1_WIN)) {
+                winner = "Player 1";
+                loser = "Player 2";
+                eloGain = "10";
+            } else if (checkersGameLogic.getGameState().equals(GameState.PLAYER2_WIN)) {
+                winner = "Player 2";
+                loser = "Player 1";
+                eloGain = "10";
+            } else {
+                winner = "No one";
+                loser = "No one";
+                eloGain = "0";
+            }
         }
+
 
         Label titleLabel = new Label("End of Match");
         titleLabel.setFont(new Font("Arial", 24));
         titleLabel.setTextFill(Color.DARKBLUE);
 
-        Label winnerLabel = new Label("The Winner Was: ");
+        Label winnerLabel = new Label("The Winner Was: " + winner + " and gained " + eloGain + " ELO");
         winnerLabel.setFont(new Font("Arial", 24));
 
-        Label eloLabel = new Label("Player has gained: ");
+        Label eloLabel = new Label("The Loser Was: " + loser + " and lost " + eloGain + " ELO");
         eloLabel.setFont(new Font("Arial", 24));
 
         Button playAgainButton = new Button("Rematch");

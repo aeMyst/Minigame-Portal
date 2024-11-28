@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.Utility.ChatUtility;
+import src.ca.ucalgary.seng300.gamelogic.Checkers.GameState;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
@@ -87,7 +88,11 @@ public class CheckerScreen implements IScreen {
         Button backButton = new Button("Forfeit");
         backButton.setFont(new Font("Arial", 16));
         backButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: white;");
-        backButton.setOnAction(e -> controller.showMainMenu());
+        backButton.setOnAction(e -> {
+                gameLogic.forfeitGame();
+                checkGameState();
+            }
+        );
 
         HBox chatBox = new HBox(10, chatInput, emojiButton, sendButton);
         chatBox.setAlignment(Pos.CENTER);
@@ -318,6 +323,14 @@ public class CheckerScreen implements IScreen {
                     blackCount++;
                 }
             }
+        }
+
+        if (gameLogic.getGameState() == GameState.PLAYER1_WIN) {
+            controller.showEndGameScreen(2, null, null, gameLogic);
+            return true;
+        } else if (gameLogic.getGameState() == GameState.PLAYER2_WIN) {
+            controller.showEndGameScreen(2, null, null, gameLogic);
+            return true;
         }
 
         if (whiteCount == 0) {

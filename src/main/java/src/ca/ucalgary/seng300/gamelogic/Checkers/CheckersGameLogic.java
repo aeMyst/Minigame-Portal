@@ -215,6 +215,14 @@ public class CheckersGameLogic implements ICheckers {
         return false;
     }
 
+    public void forfeitGame() {
+        if (getCurrentPlayer() == PlayerID.PLAYER1) {
+            gameState = GameState.PLAYER2_WIN;
+        } else {
+            gameState = GameState.PLAYER1_WIN;
+        }
+    }
+
     private boolean isWithinBounds(int row, int col) {
         return row >= 0 && row < 8 && col >= 0 && col < 8;
     }

@@ -25,7 +25,7 @@ public class GameController {
         // Create a single PlayerInteraction instance for the entire game
         PlayerInteraction playerInteraction = new PlayerInteraction(gameLogic);
 
-        while (gameStateHandler.getState() != GameState.GAME_OVER) {
+        while (gameStateHandler.getState() != GameState.PLAYER1_WIN && gameStateHandler.getState() != GameState.PLAYER2_WIN) {
             if (gameStateHandler.getState() == GameState.PLAYER_TURN) {
                 System.out.println("Player " + gameLogic.getCurrentPlayer() + "'s turn.");
 
@@ -42,7 +42,8 @@ public class GameController {
                 // Check for a winner
                 PlayerID winner = checkForWinner();
                 if (winner != null) {
-                    gameStateHandler.setState(GameState.GAME_OVER);
+                    if (winner == PlayerID.PLAYER1) gameStateHandler.setState(GameState.PLAYER1_WIN);
+                    else gameStateHandler.setState(GameState.PLAYER2_WIN);
                     String winnerColor = (winner == PlayerID.PLAYER1) ? "White" : "Black";
                     System.out.println("Game Over! Player " + winnerColor + " wins!");
                 } else {
@@ -54,6 +55,14 @@ public class GameController {
                     gameStateHandler.setState(GameState.PLAYER_TURN);
                 }
             }
+        }
+    }
+
+    public void forfeitGame() {
+        if (gameLogic.getCurrentPlayer() == PlayerID.PLAYER1) {
+            gameStateHandler.setState(GameState.PLAYER2_WIN);
+        } else {
+            gameStateHandler.setState(GameState.PLAYER1_WIN);
         }
     }
 

@@ -44,7 +44,7 @@ public class CreateProfileScreen implements IScreen {
         passwordField.setPrefHeight(30);
         passwordField.setPromptText("Password");
 
-        Label passwordDetailsLabel = new Label("Password Requirements: \n - Must include atleast 1 Letter \n " +
+        Label passwordDetailsLabel = new Label("Password Requirements: \n - Must include atleast 8 characters\n - Must include atleast 1 Letter \n " +
                 "- Must include atleast 1 number\n " + "- must include atleast 1 special character/symbol" );
         passwordDetailsLabel.setFont(new Font("Arial", 10));
         passwordDetailsLabel.setTextFill(Color.GRAY);
@@ -97,6 +97,8 @@ public class CreateProfileScreen implements IScreen {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Profile created successfully!");
 
                 controller.showSignInScreen();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error", "Profile creation failed.");
             }
         });
 

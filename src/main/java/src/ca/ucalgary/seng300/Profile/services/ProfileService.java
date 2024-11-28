@@ -9,29 +9,54 @@ import java.util.*;
 
 public class ProfileService implements ProfileInterface {
 
-    @Override
-    public String viewProfile(Profile profile) {
-        // Logic to view a user's profile
-        return profile.getProfileDetails();
+    private final AuthService authService;
+
+    public ProfileService(AuthService authService) {
+        this.authService = authService;
     }
 
-    public String displayProfileFromFile(String username) {
-        String filePath = "Usersprofiles.txt";
+    @Override
+    public String viewProfile() {
+        // Retrieve the currently logged-in user from AuthService
+        User loggedInUser = authService.isLoggedIn();
+
+        if (loggedInUser == null) {
+            return "No user is currently logged in.";
+        }
+
+        String username = loggedInUser.getUsername();
+        String filePath = "src/main/java/src/ca/ucalgary/seng300/Profile/services/profiles.csv";
+
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
+
                 String[] details = line.split(",");
-                if (details[0].equalsIgnoreCase(username)) {
-                    return String.format("Username: %s, Email: %s, Games Played: %s, Wins: %s, Losses: %s, Rank: %s",
-                            details[0], details[1], details[2], details[3], details[4], details[5]);
+                if (details.length == 6) {
+                    String gameType = details[0].trim();
+                    String fileUsername = details[1].trim();
+                    int elo = Integer.parseInt(details[2].trim());
+                    int wins = Integer.parseInt(details[3].trim());
+                    int losses = Integer.parseInt(details[4].trim());
+                    int draws = Integer.parseInt(details[5].trim());
+
+                    if (fileUsername.equalsIgnoreCase(username)) {
+                        int gamesPlayed = wins + losses + draws;
+
+                        return String.format(
+                                "Gametype: %s\nPlayerID: %s\nElo: %d\nWins: %d\nLosses: %d\nDraws: %d\nGames Played: %d",
+                                gameType, fileUsername, elo, wins, losses, draws, gamesPlayed
+                        );
+                    }
                 }
             }
         } catch (IOException e) {
             return "Error reading profile file: " + e.getMessage();
+        } catch (NumberFormatException e) {
+            return "Error parsing numeric values: " + e.getMessage();
         }
         return "Profile not found for username: " + username;
     }
-
     @Override
     public void updateProfile(User user, String newUsername, String newEmail, String newPassword) {
         if (newUsername != null && !newUsername.isEmpty()) {
