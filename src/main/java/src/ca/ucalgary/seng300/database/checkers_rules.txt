@@ -1,0 +1,21 @@
+Board Setup:
+Played on an 8x8 board with alternating dark and light squares. Only dark squares are used.
+Each player starts with 12 pieces placed on the dark squares of the first three rows closest to them.
+
+Objective:
+Capture all of the opponent’s pieces or block them so they cannot make a move.
+
+Basic Movement:
+Pieces move diagonally forward to an adjacent unoccupied square.
+If a jump is available (capturing an opponent’s piece by jumping over it to an empty square), it must be taken.
+
+Capturing Pieces:
+A piece can jump over an adjacent opponent’s piece if the square beyond it is empty.
+Multiple jumps are allowed in a single turn if available.
+
+Crowning Kings:
+When a piece reaches the opponent’s back row, it becomes a king and is crowned.
+Kings can move both forward and backward diagonally.
+
+Winning:
+A player wins by capturing all opponent’s pieces or when the opponent cannot make a valid move.
