@@ -76,13 +76,21 @@ public class AuthService implements AuthInterface {
         }
     }
 
-    public String recoverUsername(String email) {
+//    public String recoverUsername(String email) {
+//        for (User user : users) {
+//            if (Objects.equals(user.getEmail(), email)) {
+//                return user.getUsername();
+//            }
+//        }
+//        return null;
+//    }
+
+    public ArrayList<User> getSanitizedUsers() {
+        ArrayList<User> sanitizedUsers = new ArrayList<>();
         for (User user : users) {
-            if (Objects.equals(user.getEmail(), email)) {
-                return user.getUsername();
-            }
+            sanitizedUsers.add(new User(user.getUsername(), null, user.getEmail()));
         }
-        return null;
+        return sanitizedUsers;
     }
 
 

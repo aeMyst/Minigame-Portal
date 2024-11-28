@@ -10,13 +10,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Profile.services.AuthService;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
 public class ForgotPasswordScreen {
     private Scene scene;
 
-    public ForgotPasswordScreen(Stage stage, ScreenController controller, Client client) {
+    public ForgotPasswordScreen(Stage stage, ScreenController controller, Client client, AuthService authService) {
         Label titleLabel = new Label("Forgot Password");
         titleLabel.setFont(new Font("Arial", 36));
         titleLabel.setTextFill(Color.DARKBLUE);
@@ -56,6 +57,8 @@ public class ForgotPasswordScreen {
         submitButton.setOnAction(e -> {
             String username = usernameField.getText();
             String recoveryInfo = recoveryField.getText();
+
+
 
             // Validate the recovery info using client logic
             boolean isRecoverySuccessful = client.validateRecoveryInfo(username, recoveryInfo);

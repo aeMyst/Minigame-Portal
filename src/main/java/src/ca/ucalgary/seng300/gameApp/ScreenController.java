@@ -159,7 +159,7 @@ public final class ScreenController extends Application {
     }
 
     public void showForgotPasswordScreen() {
-        ForgotPasswordScreen forgotPassword = new ForgotPasswordScreen(primaryStage, this, client);
+        ForgotPasswordScreen forgotPassword = new ForgotPasswordScreen(primaryStage, this, client, authService);
         primaryStage.setTitle("Forgot Password");
         primaryStage.setScene(forgotPassword.getScene());
     }

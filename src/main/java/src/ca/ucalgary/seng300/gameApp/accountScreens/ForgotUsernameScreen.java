@@ -10,9 +10,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Profile.models.User;
 import src.ca.ucalgary.seng300.Profile.services.AuthService;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
+
+import java.util.ArrayList;
 
 public class ForgotUsernameScreen {
     private Scene scene;
@@ -46,7 +49,14 @@ public class ForgotUsernameScreen {
             String recoveryInfo = recoveryField.getText();
 
             // Validate recovery info using client logic
-            String username = authService.recoverUsername(recoveryInfo);
+            ArrayList<User> sanitizedUsers = authService.getSanitizedUsers();
+            String username = null;
+            for (User user : sanitizedUsers) {
+                if (user.getEmail().equals(recoveryInfo)) {
+                    username = user.getUsername();
+                    break;
+                }
+            }
             if (username != null) {
                 showAlert(Alert.AlertType.INFORMATION, "Username Retrieved", "Your username is: " + username);
                 controller.showSignInScreen();
