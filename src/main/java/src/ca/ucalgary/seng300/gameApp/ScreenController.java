@@ -164,8 +164,8 @@ public final class ScreenController extends Application {
         primaryStage.setScene(forgotPassword.getScene());
     }
 
-    public void showResetPasswordScreen(String username) {
-        ResetPasswordScreen resetPassword = new ResetPasswordScreen(primaryStage, this, client, username, authService);
+    public void showResetPasswordScreen(String username, String email) {
+        ResetPasswordScreen resetPassword = new ResetPasswordScreen(primaryStage, this, client, username, email, authService);
         primaryStage.setTitle("Reset Password");
         primaryStage.setScene(resetPassword.getScene());
     }

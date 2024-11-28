@@ -59,12 +59,12 @@ public class ForgotPasswordScreen {
         submitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         submitButton.setOnAction(e -> {
             String username = usernameField.getText();
-            String recoveryInfo = recoveryField.getText();
+            String email = recoveryField.getText();
 
             ArrayList<User> users = authService.getSanitizedUsers();
             boolean isRecoverySuccessful = false;
             for (User user : users) {
-                if (user.getUsername().equals(username) && user.getEmail().equals(recoveryInfo)) {
+                if (user.getUsername().equals(username) && user.getEmail().equals(email)) {
                     isRecoverySuccessful = true;
                     break;
                 }
@@ -72,7 +72,7 @@ public class ForgotPasswordScreen {
 
             if (isRecoverySuccessful) {
                 // Simulate successful recovery and show a reset password screen
-                controller.showResetPasswordScreen(username);
+                controller.showResetPasswordScreen(username, email);
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "Invalid recovery information.");
             }

@@ -64,7 +64,7 @@ public class AuthService implements AuthInterface {
         return false;
     }
     // This will Validate the credentials based on formatting rules from ValidationUtils.
-    private boolean validateCredentials(String username, String password, String email) {
+    public boolean validateCredentials(String username, String password, String email) {
         // I added isValidUsername here to filter out invalid usernames to prevent SQL injection attack.
         return ValidationUtils.isValidUsername(username) &&
                 ValidationUtils.isValidPassword(password) &&
