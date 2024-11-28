@@ -10,9 +10,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Profile.models.User;
 import src.ca.ucalgary.seng300.Profile.services.AuthService;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
+
+import java.util.ArrayList;
 
 public class ForgotPasswordScreen {
     private Scene scene;
@@ -58,10 +61,15 @@ public class ForgotPasswordScreen {
             String username = usernameField.getText();
             String recoveryInfo = recoveryField.getText();
 
+            ArrayList<User> users = authService.getSanitizedUsers();
+            boolean isRecoverySuccessful = false;
+            for (User user : users) {
+                if (user.getUsername().equals(username) && user.getEmail().equals(recoveryInfo)) {
+                    isRecoverySuccessful = true;
+                    break;
+                }
+            }
 
-
-            // Validate the recovery info using client logic
-            boolean isRecoverySuccessful = client.validateRecoveryInfo(username, recoveryInfo);
             if (isRecoverySuccessful) {
                 // Simulate successful recovery and show a reset password screen
                 controller.showResetPasswordScreen(username);

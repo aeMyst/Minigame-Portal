@@ -31,6 +31,20 @@ public class AuthService implements AuthInterface {
         }
     }
 
+    public void saveUsers() {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE));
+            for (User user : users) {
+                writer.write(user.toCsv());
+                writer.newLine();
+            }
+            writer.close();
+            System.out.println("User data successfully saved.");
+        } catch (IOException e) {
+            System.err.println("An error occurred when saving user data: " + e.getMessage());
+        }
+    }
+
     // This will register a new user based on the credentials that our users provide.
     // Once registration is completed without an issue, returns true.
     @Override
@@ -76,14 +90,17 @@ public class AuthService implements AuthInterface {
         }
     }
 
-//    public String recoverUsername(String email) {
-//        for (User user : users) {
-//            if (Objects.equals(user.getEmail(), email)) {
-//                return user.getUsername();
-//            }
-//        }
-//        return null;
-//    }
+    public void modifyUserPassword(String username, String password) {
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                user.setPassword(password);
+                saveUsers();
+                break;
+            }
+        }
+
+    }
+
 
     public ArrayList<User> getSanitizedUsers() {
         ArrayList<User> sanitizedUsers = new ArrayList<>();

@@ -10,13 +10,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Profile.services.AuthService;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
 public class ResetPasswordScreen {
     private Scene scene;
 
-    public ResetPasswordScreen(Stage stage, ScreenController controller, Client client, String username) {
+    public ResetPasswordScreen(Stage stage, ScreenController controller, Client client, String username, AuthService authService) {
         Label titleLabel = new Label("Reset Password");
         titleLabel.setFont(new Font("Arial", 36));
         titleLabel.setTextFill(Color.DARKBLUE);
@@ -55,7 +56,7 @@ public class ResetPasswordScreen {
             String confirmPassword = confirmPasswordField.getText();
 
             if (newPassword.equals(confirmPassword)) {
-                client.updatePassword(username, newPassword);
+                authService.modifyUserPassword(username, newPassword);
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Password successfully reset!");
                 controller.showSignInScreen();
             } else {
