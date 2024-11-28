@@ -22,19 +22,76 @@ public class BoardManagerTest {
     @Test
     public void isValidMoveTest(){
         assertTrue(boardManager.isValidMove(2,2));
+    }
+    @Test
+    public void isValidMoveTest2(){
         assertFalse(boardManager.isValidMove(-1,4));
+    }
+
+    @Test
+    public void isValidMoveTest3(){
         boardManager.placeSymbol('X',1,2);
         assertFalse(boardManager.isValidMove(1,2));
-
-
-
     }
-    private void isWinnerTest(){
-        boardManager.placeSymbol('X',1,1);
-        boardManager.placeSymbol('X', 1,3);
+    @Test
+    public void isWinnerTest(){
+        boardManager.placeSymbol('X',0,0);
+        boardManager.placeSymbol('X', 0,1);
+        boardManager.placeSymbol('X',0,2);
         assertTrue(boardManager.isWinner('X'));
     }
-    private void isTieTest(){
-        
+    @Test
+    public void testIsWinner_ColumnWin() {
+        boardManager.placeSymbol('O', 0, 1);
+        boardManager.placeSymbol('O', 1, 1);
+        boardManager.placeSymbol('O', 2, 1);
+        assertTrue(boardManager.isWinner('O'));
+    }
+
+    @Test
+    public void testIsWinner_DiagonalWinLeftToRight() {
+        boardManager.placeSymbol('X', 0, 0);
+        boardManager.placeSymbol('X', 1, 1);
+        boardManager.placeSymbol('X', 2, 2);
+        assertTrue(boardManager.isWinner('X'));
+    }
+
+    @Test
+    public void testIsWinner_DiagonalWinRightToLeft() {
+        boardManager.placeSymbol('O', 0, 2);
+        boardManager.placeSymbol('O', 1, 1);
+        boardManager.placeSymbol('O', 2, 0);
+        assertTrue(boardManager.isWinner('O'));
+    }
+
+    @Test
+    public void testIsWinner_NoWin() {
+        boardManager.placeSymbol('X', 0, 0);
+        boardManager.placeSymbol('X', 0, 1);
+        boardManager.placeSymbol('O', 0, 2);
+        assertFalse(boardManager.isWinner('X'));
+        assertFalse(boardManager.isWinner('O'));
+    }
+
+    @Test
+    public void testIsTie_NotTie() {
+        boardManager.placeSymbol('X', 0, 0);
+        boardManager.placeSymbol('X', 0, 1);
+        boardManager.placeSymbol('O', 0, 2);
+        assertFalse(boardManager.isTie());
+    }
+
+    @Test
+    public void testIsTie_TrueTie() {
+        boardManager.placeSymbol('X', 0, 0);
+        boardManager.placeSymbol('O', 0, 1);
+        boardManager.placeSymbol('X', 0, 2);
+        boardManager.placeSymbol('X', 1, 0);
+        boardManager.placeSymbol('O', 1, 1);
+        boardManager.placeSymbol('X', 1, 2);
+        boardManager.placeSymbol('O', 2, 0);
+        boardManager.placeSymbol('X', 2, 1);
+        boardManager.placeSymbol('O', 2, 2);
+        assertTrue(boardManager.isTie());
     }
 }
