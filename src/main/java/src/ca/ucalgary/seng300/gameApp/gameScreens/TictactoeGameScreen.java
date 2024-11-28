@@ -15,8 +15,8 @@ import src.ca.ucalgary.seng300.gamelogic.tictactoe.HumanPlayer;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
 
 /**
- * This code represents a game screen for a Tic-Tac-Toe game.
- * Handles game board creation, player interactions, and chat functionality.
+ * This code represents a Tic-Tac-Toe game screen.
+ * Handles game board creation, game logic integration, player interactions, and chat functionality.
  */
 public class TictactoeGameScreen {
     private Scene scene;
@@ -217,6 +217,11 @@ public class TictactoeGameScreen {
         }
     }
 
+    /**
+     * Returns the scene for the Tic-Tac-Toe game screen.
+     *
+     * @return The game screen.
+     */
     public Scene getScene() {
         return scene;
     }

@@ -16,20 +16,25 @@ import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.PlayerID;
+
 import java.io.FileInputStream;
 
+/**
+ * This code represents the Checkers game screen.
+ * Handles the game board creation, game logic integration, player interactions, and chat functionalities/
+ */
 public class CheckerScreen implements IScreen {
-    private Scene scene;
-    private Client client;
-    private final CheckersGameLogic gameLogic;
-    private Label turnIndicator;
-    private TextArea chatArea;
-    private TextField chatInput;
-    private Button[][] boardButtons;
-    private final ScreenController controller;
+    private Scene scene; // Main scene for the Checkers game
+    private Client client; // Client for server interactions
+    private final CheckersGameLogic gameLogic; // Game logic for Checkers
+    private Label turnIndicator; // Displays the current player's turn
+    private TextArea chatArea; // Area for displaying chat messages
+    private TextField chatInput; // Input field for sending chat messages
+    private Button[][] boardButtons; // Buttons representing the game board
+    private final ScreenController controller; // Controller for managing screens
     private int selectedRow = -1;
     private int selectedCol = -1;
-    private boolean isEmojiOpen = false;
+    private boolean isEmojiOpen = false; // Indicates if the emoji menu is open
 
     // Paths to images
     // https://www.tutorialspoint.com/javafx/javafx_images.htm
@@ -38,6 +43,14 @@ public class CheckerScreen implements IScreen {
     private final String WHITE_KING_IMAGE_PATH = "src/main/java/src/ca/ucalgary/seng300/images/white_king_piece.png";
     private final String BLACK_KING_IMAGE_PATH = "src/main/java/src/ca/ucalgary/seng300/images/black_king_piece.png";
 
+    /**
+     * Constructor for CheckerScreen.
+     *
+     * @param stage      The primary stage of the application.
+     * @param controller The screen controller for navigation between screens.
+     * @param gameLogic  The logic for managing Checkers game rules.
+     * @param client     The client for server communication.
+     */
     public CheckerScreen(Stage stage, ScreenController controller, CheckersGameLogic gameLogic, Client client) {
         this.controller = controller;
         this.gameLogic = gameLogic;
@@ -51,25 +64,30 @@ public class CheckerScreen implements IScreen {
         turnIndicator.setFont(new Font("Arial", 18));
         turnIndicator.setTextFill(Color.DARKGREEN);
 
+        //Game board creation
         boardButtons = new Button[8][8];
         GridPane gameBoard = createGameBoard();
 
+        // Chat area for displaying messages
         chatArea = new TextArea();
         chatArea.setEditable(false);
         chatArea.setPrefHeight(150);
         chatArea.setStyle("-fx-control-inner-background: #f8f8ff; -fx-text-fill: black; -fx-font-size: 14px;");
 
+        // Chat input field
         chatInput = new TextField();
         chatInput.setPromptText("Type your message...");
         chatInput.setStyle("-fx-background-color: #e0e0e0;");
         chatInput.setOnAction(e -> sendMessage());
 
+        // Send button
         Button sendButton = new Button("Send");
         sendButton.setFont(new Font("Arial", 16));
         sendButton.setPrefWidth(150);
         sendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         sendButton.setOnAction(e -> sendMessage());
 
+        // Emoji menu button
         Button emojiButton = new Button("Emoji Menu");
         emojiButton.setFont(new Font("Arial", 16));
         emojiButton.setPrefWidth(150);
@@ -83,15 +101,17 @@ public class CheckerScreen implements IScreen {
             }
         });
 
-
+        //Back to the Main Menu button
         Button backButton = new Button("Forfeit");
         backButton.setFont(new Font("Arial", 16));
         backButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: white;");
         backButton.setOnAction(e -> controller.showMainMenu());
 
+        //Chat layout
         HBox chatBox = new HBox(10, chatInput, emojiButton, sendButton);
         chatBox.setAlignment(Pos.CENTER);
 
+        // Main layout for the Checkers game screen
         VBox layout = new VBox(15, titleLabel, turnIndicator, gameBoard, chatArea, chatBox, backButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
@@ -100,6 +120,11 @@ public class CheckerScreen implements IScreen {
         scene = new Scene(layout, 1280, 900);
     }
 
+    /**
+     * Creates the game board for Checkers.
+     *
+     * @return Checkers game board.
+     */
     private GridPane createGameBoard() {
         GridPane gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);
@@ -111,7 +136,7 @@ public class CheckerScreen implements IScreen {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 Button button = new Button();
-                button.setPrefSize(80, 80 );
+                button.setPrefSize(80, 80);
 
                 // Set button background color
                 if ((row + col) % 2 == 0) {
@@ -121,15 +146,18 @@ public class CheckerScreen implements IScreen {
                 }
 
                 final int r = row, c = col;
-                button.setOnAction(e -> handleMove(r, c));
-                boardButtons[row][col] = button;
-                gameBoard.add(button, col, row);
+                button.setOnAction(e -> handleMove(r, c));  // Handle on click event
+                boardButtons[row][col] = button; // Store button in the button array
+                gameBoard.add(button, col, row); // Add button to the grid
             }
         }
         updateBoard();
         return gameBoard;
     }
 
+    /**
+     * Updates the game board with the current state from the game logic.
+     */
     private void updateBoard() {
         int[][] board = gameLogic.getBoard();
         for (int row = 0; row < 8; row++) {
@@ -174,6 +202,12 @@ public class CheckerScreen implements IScreen {
         }
     }
 
+    /**
+     * Handles a player's move.
+     *
+     * @param row The row of the clicked square.
+     * @param col The column of the clicked square.
+     */
     private void handleMove(int row, int col) {
         if (selectedRow == -1 && selectedCol == -1) {
             // No piece is currently selected
@@ -257,7 +291,12 @@ public class CheckerScreen implements IScreen {
         }
     }
 
-
+    /**
+     * Highlights player's possible moves.
+     *
+     * @param row The row of the clicked square.
+     * @param col The column of the clicked square.
+     */
     private void highlightPossibleMoves(int row, int col) {
         // Existing highlight logic remains unchanged
         PlayerID currentPlayer = gameLogic.getCurrentPlayer();
@@ -296,6 +335,9 @@ public class CheckerScreen implements IScreen {
         }
     }
 
+    /**
+     * Sends a chat message to the server and displays it in the chat area.
+     */
     private void sendMessage() {
         String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
@@ -305,6 +347,11 @@ public class CheckerScreen implements IScreen {
         }
     }
 
+    /**
+     * Checks the game state to determine if the game has ended.
+     *
+     * @return True if the game has ended, false otherwise.
+     */
     private boolean checkGameState() {
         int whiteCount = 0;
         int blackCount = 0;
