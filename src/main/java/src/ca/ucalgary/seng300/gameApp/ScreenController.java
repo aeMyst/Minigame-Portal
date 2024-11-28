@@ -2,6 +2,10 @@ package src.ca.ucalgary.seng300.gameApp;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Profile.controllers.AuthController;
+import src.ca.ucalgary.seng300.Profile.controllers.ProfileController;
+import src.ca.ucalgary.seng300.Profile.services.AuthService;
+import src.ca.ucalgary.seng300.Profile.services.ProfileService;
 import src.ca.ucalgary.seng300.gameApp.extraScreens.CheckersRules;
 import src.ca.ucalgary.seng300.gameApp.extraScreens.ConnectFourRules;
 import src.ca.ucalgary.seng300.gameApp.extraScreens.TTTRules;
@@ -29,6 +33,9 @@ import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 public final class ScreenController extends Application {
     private Stage primaryStage;
     Client client = new Client();
+
+    AuthService authService = new AuthService();
+    ProfileService profileService = new ProfileService(authService);
 
     @Override
     public void start(Stage primaryStage) throws Exception {

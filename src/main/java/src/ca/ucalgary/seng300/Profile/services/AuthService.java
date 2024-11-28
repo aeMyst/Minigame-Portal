@@ -10,7 +10,7 @@ public class AuthService implements AuthInterface {
 
     private User currentUser = null;
 
-    private static final String USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/Profile/services/users.txt";
+    private static final String USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/Profile/services/users.csv";
 
     // This will register a new user based on the credentials that our users provide.
     // Once registration is completed without an issue, returns true.
@@ -44,7 +44,7 @@ public class AuthService implements AuthInterface {
             BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, true));
             writer.write(user.getEmail() + "," + user.getUsername() + "," + user.getPassword());
             writer.newLine();
-            writer.close(); // Close the writer to save changes
+            writer.close();
             System.out.println("User successfully registered and stored.");
             return true;
         } catch (IOException e) {
