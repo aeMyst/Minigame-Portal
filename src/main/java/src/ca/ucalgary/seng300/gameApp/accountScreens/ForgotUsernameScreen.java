@@ -10,13 +10,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Profile.services.AuthService;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
 public class ForgotUsernameScreen {
     private Scene scene;
 
-    public ForgotUsernameScreen(Stage stage, ScreenController controller, Client client) {
+    public ForgotUsernameScreen(Stage stage, ScreenController controller, Client client, AuthService authService) {
         Label titleLabel = new Label("Forgot Username");
         titleLabel.setFont(new Font("Arial", 36));
         titleLabel.setTextFill(Color.DARKBLUE);
