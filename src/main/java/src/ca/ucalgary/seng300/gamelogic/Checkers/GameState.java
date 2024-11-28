@@ -1,8 +1,9 @@
 package src.ca.ucalgary.seng300.gamelogic.Checkers;
 
-enum GameState {
+public enum GameState {
     START,
     PLAYER_TURN,
     KING_PROMOTION,
-    GAME_OVER
+    PLAYER1_WIN,
+    PLAYER2_WIN,
 }
