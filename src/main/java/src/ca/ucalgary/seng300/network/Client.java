@@ -272,7 +272,7 @@ public class Client implements IClient {
 
     public void sendC4MoveToServer(Connect4Logic logicManager, TurnManager turnManager, String status, Runnable callback) {
         Random rand = new Random();
-        int time = rand.nextInt(0); // delay
+        int time = rand.nextInt(1000); // delay
         new Thread(() -> {
             try {
                 Thread.sleep(time); // simulate server delay
@@ -280,6 +280,35 @@ public class Client implements IClient {
                 System.out.println("Move acknowledged by server: " + status);
                 newMoveC4(logicManager, turnManager, status); // updates the board and game state
                 Platform.runLater(callback); // calls the callback after the fake server responds
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    public void sendC4LeaderboardToServer(String[][] leaderboard, Runnable callback) {
+        Random rand = new Random();
+        int time = rand.nextInt(1000); // simulate server delay
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(time);
+                System.out.println("Server Communication for Leaderboard...");
+                System.out.println("Leaderboard for Connect 4 being updated..." + "\n");
+
+                int count = 1;
+
+                System.out.println("Sorted Leaderboard for Connect 4:\n");
+                System.out.printf("%-10s %-16s %-10s %-10s%n", "Rank", "Player ID", "Rating", "Wins");
+                for (String[] entry : leaderboard) {
+                    System.out.printf("%-10d %-16s %-10s %-10s%n", count, entry[0], entry[1], entry[2]);
+
+                    count++;
+                }
+
+                // update the GUI
+                Platform.runLater(callback);
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -325,6 +354,64 @@ public class Client implements IClient {
             System.out.println("|");
         }
         System.out.println("   +------------------------+");
+    }
+
+    public void sendCheckersLeaderboardToServer(String [][] leaderboard, Runnable callback) {
+        Random rand = new Random();
+        int time = rand.nextInt(1000); // simulate server delay
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(time);
+                System.out.println("Server Communication for Checkers...");
+                System.out.println("Leaderboard for Checkers being updated...\n");
+
+                int count = 1;
+
+                System.out.println("Sorted Leaderboard for Checkers:\n");
+                System.out.printf("%-10s %-16s %-10s %-10s%n", "Rank", "Player ID", "Rating", "Wins");
+                for (String[] entry : leaderboard) {
+                    System.out.printf("%-10d %-16s %-10s %-10s%n", count, entry[0], entry[1], entry[2]);
+
+                    count++;
+                }
+
+                // update the GUI
+                Platform.runLater(callback);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    public void sendTTTLeaderboardToServer(String[][] leaderboard, Runnable callback) {
+        Random rand = new Random();
+        int time = rand.nextInt(1000); // simulate server delay
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(time);
+                System.out.println("Server Communication for Leaderboard...");
+                System.out.println("Leaderboard for Tic-Tac-Toe being updated..." + "\n");
+
+                int count = 1;
+
+                System.out.println("Sorted Leaderboard for Tic-Tac-Toe:\n");
+                System.out.printf("%-10s %-16s %-10s %-10s%n", "Rank", "Player ID", "Rating", "Wins");
+                for (String[] entry : leaderboard) {
+                    System.out.printf("%-10d %-16s %-10s %-10s%n", count, entry[0], entry[1], entry[2]);
+
+                    count++;
+                }
+
+                // update the GUI
+                Platform.runLater(callback);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     // ###########################################Checkers Server Methods#############################################//

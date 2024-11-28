@@ -23,17 +23,34 @@ public class HelpScreen implements IScreen {
         information.setFont(new Font("Arial", 24));
         information.setTextFill(Color.DARKBLUE);
 
-        Button gamesButton = new Button("back");
-        gamesButton.setFont(new Font("Arial", 16));
-        gamesButton.setPrefWidth(200);
-        gamesButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        gamesButton.setOnAction(e -> controller.showMainMenu());
+        Button backButton = new Button("back");
+        backButton.setFont(new Font("Arial", 16));
+        backButton.setPrefWidth(200);
+        backButton.setStyle("-fx-background-color: #808080; -fx-text-fill: white;");
+        backButton.setOnAction(e -> controller.showMainMenu());
 
-        VBox helpLayout = new VBox(15, information, gamesButton);
+        Button TTTHelp = new Button("Tic-Tac-Toe Rules");
+        TTTHelp.setFont(new Font("Arial", 16));
+        TTTHelp.setPrefWidth(200);
+        TTTHelp.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        TTTHelp.setOnAction(e -> controller.showTTTRules());
+
+        Button C4Help = new Button("Connect Four Rules");
+        C4Help.setFont(new Font("Arial", 16));
+        C4Help.setPrefWidth(200);
+        C4Help.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        C4Help.setOnAction(e -> controller.showConnectFourRules());
+
+        Button CHHelp = new Button("Checkers' Rules");
+        CHHelp.setFont(new Font("Arial", 16));
+        CHHelp.setPrefWidth(200);
+        CHHelp.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        CHHelp.setOnAction(e -> controller.showCheckersRules());
+
+        VBox helpLayout = new VBox(15, information, TTTHelp, C4Help, CHHelp, backButton);
         helpLayout.setAlignment(Pos.CENTER);
         helpLayout.setPadding(new Insets(20));
         helpLayout.setStyle("-fx-background-color: #f0f8ff;");
-
 
         BorderPane mainMenuPane = new BorderPane();
         mainMenuPane.setCenter(helpLayout);
