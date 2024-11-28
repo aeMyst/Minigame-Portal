@@ -11,29 +11,32 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class BoardManagerTest {
     BoardManager boardManager;
     private char[][] board;
+
     @Before
-    public void setup(){
-        Board board1=new Board();
-        board= board1.getBoard();
+    public void setup() {
+        Board board1 = new Board();
+        board = board1.getBoard();
         boardManager = new BoardManager();
 
     }
-    @Test
-    public void isValidMoveTest(){
-        assertTrue(boardManager.isValidMove(2,2));
-        assertFalse(boardManager.isValidMove(-1,4));
-        boardManager.placeSymbol('X',1,2);
-        assertFalse(boardManager.isValidMove(1,2));
 
+    @Test
+    public void isValidMoveTest() {
+        assertTrue(boardManager.isValidMove(2, 2));
+        assertFalse(boardManager.isValidMove(-1, 4));
+        boardManager.placeSymbol('X', 1, 2);
+        assertFalse(boardManager.isValidMove(1, 2));
 
 
     }
-    private void isWinnerTest(){
-        boardManager.placeSymbol('X',1,1);
-        boardManager.placeSymbol('X', 1,3);
+
+    private void isWinnerTest() {
+        boardManager.placeSymbol('X', 1, 1);
+        boardManager.placeSymbol('X', 1, 3);
         assertTrue(boardManager.isWinner('X'));
     }
-    private void isTieTest(){
-        
+
+    private void isTieTest() {
+
     }
 }
