@@ -27,7 +27,6 @@ public class TipsUtility {
             e.printStackTrace();
             tips.add("Error loading tips. Please try again!");
         }
-
         return tips;
     }
 

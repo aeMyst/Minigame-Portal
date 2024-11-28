@@ -2,6 +2,9 @@ package src.ca.ucalgary.seng300.gameApp;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.gameApp.extraScreens.CheckersRules;
+import src.ca.ucalgary.seng300.gameApp.extraScreens.ConnectFourRules;
+import src.ca.ucalgary.seng300.gameApp.extraScreens.TTTRules;
 import src.ca.ucalgary.seng300.gameApp.leaderboardScreens.LeaderboardController;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.accountScreens.*;
@@ -161,9 +164,28 @@ public final class ScreenController extends Application {
     }
 
     public void showForgotUsernameScreen() {
-        ForgotUsernameScreen forgotUsername = new ForgotUsernameScreen(primaryStage, this, client);
-        primaryStage.setTitle("Forgot Username");
-        primaryStage.setScene(forgotUsername.getScene());
+        ForgotUsernameScreen showUsername = new ForgotUsernameScreen(primaryStage, this, client);
+        primaryStage.setTitle("Find Username");
+        primaryStage.setScene(showUsername.getScene());
+
+    }
+
+    public void showConnectFourRules() {
+        ConnectFourRules c4Rules = new ConnectFourRules(primaryStage, this, client);
+        primaryStage.setTitle("Connect Four Rules");
+        primaryStage.setScene(c4Rules.getScene());
+    }
+
+    public void showTTTRules() {
+        TTTRules TTTrules = new TTTRules(primaryStage, this, client);
+        primaryStage.setTitle("Tic-Tac-Toe Rules");
+        primaryStage.setScene(TTTrules.getScene());
+    }
+
+    public void showCheckersRules() {
+        CheckersRules CHRules = new CheckersRules(primaryStage, this, client);
+        primaryStage.setTitle("Checkers' Rules");
+        primaryStage.setScene(CHRules.getScene());
     }
 
 }

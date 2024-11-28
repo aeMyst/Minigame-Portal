@@ -272,7 +272,7 @@ public class Client implements IClient {
 
     public void sendC4MoveToServer(Connect4Logic logicManager, TurnManager turnManager, String status, Runnable callback) {
         Random rand = new Random();
-        int time = rand.nextInt(0); // delay
+        int time = rand.nextInt(1000); // delay
         new Thread(() -> {
             try {
                 Thread.sleep(time); // simulate server delay
