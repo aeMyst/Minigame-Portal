@@ -2,10 +2,11 @@ package tiktaktoe;
 
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.BoardManager;
-import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.HumanPlayer;
-import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.PlayerManager;
-import src.ca.ucalgary.seng300.gamelogic.games.tictactoe.TictactoeGame;
+import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
+import src.ca.ucalgary.seng300.gamelogic.tictactoe.HumanPlayer;
+import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
+import src.ca.ucalgary.seng300.gamelogic.tictactoe.TictactoeGame;
+
 
 import static org.junit.Assert.*;
 
@@ -23,6 +24,7 @@ public class TictactoeGameTest {
     @Test
     public void testPlayerXWins() {
         // Simulate moves leading to a win for player X
+        boardManager= new BoardManager();
         boardManager.placeSymbol('X', 0, 0);
         boardManager.placeSymbol('X', 0, 1);
         boardManager.placeSymbol('X', 0, 2);
@@ -34,6 +36,7 @@ public class TictactoeGameTest {
     @Test
     public void testPlayerOWins() {
         // Simulate moves leading to a win for player O
+        boardManager= new BoardManager();
         boardManager.placeSymbol('O', 0, 0);
         boardManager.placeSymbol('O', 1, 0);
         boardManager.placeSymbol('O', 2, 0);
@@ -45,6 +48,7 @@ public class TictactoeGameTest {
     @Test
     public void testTie() {
         // Simulate a game that ends in a tie
+        boardManager= new BoardManager();
         char[][] tieBoard = {
                 {'X', 'O', 'X'},
                 {'X', 'X', 'O'},
@@ -63,6 +67,7 @@ public class TictactoeGameTest {
     @Test
     public void testInvalidMove() {
         // Attempt to make a move in an occupied cell
+        boardManager= new BoardManager();
         boardManager.placeSymbol('X', 0, 0);
         boolean isValidMove = boardManager.isValidMove(0, 0);
 
@@ -71,6 +76,9 @@ public class TictactoeGameTest {
 
     @Test
     public void testSwitchPlayer() {
+        humanPlayerx=new HumanPlayer('X');
+        humanPlayero=new HumanPlayer('O');
+        playerManager=new PlayerManager(humanPlayerx,humanPlayero);
         // Ensure players alternate correctly
         assertEquals("Player 1 (X) should start", 'X', playerManager.getCurrentPlayer().getSymbol());
 
