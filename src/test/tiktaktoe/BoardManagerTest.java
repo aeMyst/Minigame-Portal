@@ -11,33 +11,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class BoardManagerTest {
     BoardManager boardManager;
     private char[][] board;
+
     @Before
-    public void setup(){
-        Board board1=new Board();
-        board= board1.getBoard();
+    public void setup() {
+        Board board1 = new Board();
+        board = board1.getBoard();
         boardManager = new BoardManager();
 
     }
-    @Test
-    public void isValidMoveTest(){
-        assertTrue(boardManager.isValidMove(2,2));
-    }
-    @Test
-    public void isValidMoveTest2(){
-        assertFalse(boardManager.isValidMove(-1,4));
-    }
 
     @Test
-    public void isValidMoveTest3(){
-        boardManager.placeSymbol('X',1,2);
-        assertFalse(boardManager.isValidMove(1,2));
-    }
-    @Test
-    public void isWinnerTest(){
-        boardManager.placeSymbol('X',0,0);
-        boardManager.placeSymbol('X', 0,1);
-        boardManager.placeSymbol('X',0,2);
-        assertTrue(boardManager.isWinner('X'));
+    public void isValidMoveTest() {
+        assertTrue(boardManager.isValidMove(2, 2));
+        assertFalse(boardManager.isValidMove(-1, 4));
+        boardManager.placeSymbol('X', 1, 2);
+        assertFalse(boardManager.isValidMove(1, 2));
+
+
     }
     @Test
     public void testIsWinner_ColumnWin() {
@@ -52,6 +42,10 @@ public class BoardManagerTest {
         boardManager.placeSymbol('X', 0, 0);
         boardManager.placeSymbol('X', 1, 1);
         boardManager.placeSymbol('X', 2, 2);
+
+    private void isWinnerTest() {
+        boardManager.placeSymbol('X', 1, 1);
+        boardManager.placeSymbol('X', 1, 3);
         assertTrue(boardManager.isWinner('X'));
     }
 
@@ -92,5 +86,8 @@ public class BoardManagerTest {
         boardManager.placeSymbol('X', 2, 1);
         boardManager.placeSymbol('O', 2, 2);
         assertTrue(boardManager.isTie());
+
+    private void isTieTest() {
+
     }
 }
