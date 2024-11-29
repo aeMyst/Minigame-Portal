@@ -2,8 +2,10 @@ package src.ca.ucalgary.seng300.network;
 
 import javafx.application.Platform;
 import src.ca.ucalgary.seng300.Profile.interfaces.AuthInterface;
+import src.ca.ucalgary.seng300.Profile.interfaces.ProfileInterface;
 import src.ca.ucalgary.seng300.Profile.models.User;
 import src.ca.ucalgary.seng300.Profile.services.AuthService;
+import src.ca.ucalgary.seng300.Profile.services.ProfileService;
 import src.ca.ucalgary.seng300.gameApp.Utility.ChatUtility;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.PlayerID;
@@ -20,6 +22,7 @@ public class Client implements IClient {
     private volatile boolean isQueueCanceled = false;
 
     AuthInterface auth;
+    ProfileInterface profile;
 
     /**
      * starts server
@@ -29,6 +32,7 @@ public class Client implements IClient {
         System.out.println("Waiting for Request...");
         System.out.println("==========================");
         auth = new AuthService();
+        profile = new ProfileService((AuthService) auth);
     }
 
     public void disconnect() {
@@ -82,9 +86,23 @@ public class Client implements IClient {
         }
         return cur_user.getUsername();
     }
+
+    public User loggedIn(){
+        User currentUser = auth.isLoggedIn();
+        return currentUser;
+    }
 // search for and return a profile
+    public String getCurrentUserProfile() {
+        return profile.viewProfile();
+    }
     public String findProfileInfo(String User) {
         return User;
+    }
+    public void editProfile(User user, String username, String email, String password){
+        profile.updateProfile(user,username,email,password);
+    }
+    public String searchProfile(String username) {
+        return profile.searchProfile(username);
     }
 
     // ###################################Connect-Disconnect to Server Methods########################################//

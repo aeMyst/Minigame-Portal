@@ -3,11 +3,15 @@ package src.ca.ucalgary.seng300.Profile.services;
 import src.ca.ucalgary.seng300.Profile.interfaces.ProfileInterface;
 import src.ca.ucalgary.seng300.Profile.models.Profile;
 import src.ca.ucalgary.seng300.Profile.models.User;
+import src.ca.ucalgary.seng300.Profile.utils.ValidationUtils;
 
 import java.io.*;
 import java.util.*;
 
 public class ProfileService implements ProfileInterface {
+
+    public String profilePath = "src/main/java/src/ca/ucalgary/seng300/Profile/services/profiles.csv";
+    public String usersPath = "src/main/java/src/ca/ucalgary/seng300/Profile/services/users.csv";
 
     private final AuthService authService;
 
@@ -17,7 +21,6 @@ public class ProfileService implements ProfileInterface {
 
     @Override
     public String viewProfile() {
-        // Retrieve the currently logged-in user from AuthService
         User loggedInUser = authService.isLoggedIn();
 
         if (loggedInUser == null) {
@@ -25,60 +28,169 @@ public class ProfileService implements ProfileInterface {
         }
 
         String username = loggedInUser.getUsername();
-        String filePath = "src/main/java/src/ca/ucalgary/seng300/Profile/services/profiles.csv";
+        return buildProfileString(username);
+    }
 
+    @Override
+    public void updateProfile(User user, String newUsername, String newEmail, String newPassword) {
+        if (!isValidUpdate(newUsername, newEmail, newPassword)) return;
+
+        List<String[]> users = readCsv(usersPath);
+        boolean userFound = false;
+
+        for (int i = 0; i < users.size(); i++) {
+            String[] details = users.get(i);
+            if (details.length == 3 && details[1].trim().equalsIgnoreCase(user.getUsername())) {
+                userFound = true;
+                users.set(i, new String[]{
+                        isBlank(newEmail) ? details[0].trim() : newEmail,
+                        isBlank(newUsername) ? details[1].trim() : newUsername,
+                        isBlank(newPassword) ? details[2].trim() : newPassword
+                });
+                break;
+            }
+        }
+
+        if (!userFound) {
+            System.out.println("User not found.");
+            return;
+        }
+
+        if (!isBlank(newUsername)) updateProfileUsername(user.getUsername(), newUsername);
+        writeCsv(usersPath, users);
+
+        if (!isBlank(newUsername)) {
+            authService.updateCurrentUser(newUsername, isBlank(newEmail) ? user.getEmail() : newEmail);
+        }
+
+        System.out.println("Profile updated successfully.");
+    }
+
+    //for new user, instantiate profile with default values
+    @Override
+    public void initializeProfile(String username) {
+        String defaultProfile = String.format("N/A,%s,0,0,0,0", username);
+        appendToCsv(profilePath, defaultProfile);
+        System.out.println("Default profile created for user: " + username);
+    }
+
+    @Override
+    public String searchProfile(String username) {
+        return buildProfileString(username);
+    }
+
+    private String buildProfileString(String username) {
+        StringBuilder profileBuilder = new StringBuilder();
+        List<String[]> profiles = readCsv(profilePath);
+        boolean profileFound = false;
+
+        for (String[] details : profiles) {
+            if (details.length == 6 && details[1].trim().equalsIgnoreCase(username)) {
+                profileFound = true;
+                int elo = parseInt(details[2]);
+                int wins = parseInt(details[3]);
+                int losses = parseInt(details[4]);
+                int draws = parseInt(details[5]);
+                int gamesPlayed = wins + losses + draws;
+
+                profileBuilder.append(String.format(
+                        "Gametype: %s\nPlayerID: %s\nElo: %d\nWins: %d\nLosses: %d\nDraws: %d\nGames Played: %d\n\n",
+                        details[0].trim(), details[1].trim(), elo, wins, losses, draws, gamesPlayed
+                ));
+            }
+        }
+
+        if (!profileFound) {
+            return "Profile not found for username: " + username;
+        }
+
+        return profileBuilder.toString().trim();
+    }
+
+    // Helper methods
+    private List<String[]> readCsv(String filePath) {
+        List<String[]> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-
-                String[] details = line.split(",");
-                if (details.length == 6) {
-                    String gameType = details[0].trim();
-                    String fileUsername = details[1].trim();
-                    int elo = Integer.parseInt(details[2].trim());
-                    int wins = Integer.parseInt(details[3].trim());
-                    int losses = Integer.parseInt(details[4].trim());
-                    int draws = Integer.parseInt(details[5].trim());
-
-                    if (fileUsername.equalsIgnoreCase(username)) {
-                        int gamesPlayed = wins + losses + draws;
-
-                        return String.format(
-                                "Gametype: %s\nPlayerID: %s\nElo: %d\nWins: %d\nLosses: %d\nDraws: %d\nGames Played: %d",
-                                gameType, fileUsername, elo, wins, losses, draws, gamesPlayed
-                        );
-                    }
-                }
+                lines.add(line.split(","));
             }
         } catch (IOException e) {
-            return "Error reading profile file: " + e.getMessage();
+            System.err.println("Error reading from file: " + e.getMessage());
+        }
+        return lines;
+    }
+
+    private void writeCsv(String filePath, List<String[]> data) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (String[] line : data) {
+                writer.write(String.join(",", line));
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Error writing file: " + e.getMessage());
+        }
+    }
+
+    private void appendToCsv(String filePath, String line) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+            writer.write(line);
+            writer.newLine();
+        } catch (IOException e) {
+            System.err.println("Error appending to file: " + e.getMessage());
+        }
+    }
+
+    private void updateProfileUsername(String oldUsername, String newUsername) {
+        List<String[]> profiles = readCsv(profilePath);
+
+        for (int i = 0; i < profiles.size(); i++) {
+            String[] details = profiles.get(i);
+            if (details.length == 6 && details[1].trim().equalsIgnoreCase(oldUsername)) {
+                details[1] = newUsername.trim();
+                profiles.set(i, details);
+            }
+        }
+
+        writeCsv(profilePath, profiles);
+    }
+
+    //Check to see atleast one field is changed and follows the correct validation format
+    private boolean isValidUpdate(String newUsername, String newEmail, String newPassword) {
+        if (isBlank(newUsername) && isBlank(newEmail) && isBlank(newPassword)) {
+            System.out.println("At least one field must be changed.");
+            return false;
+        }
+
+        if (!isBlank(newUsername) && !ValidationUtils.isValidUsername(newUsername)) {
+            System.out.println("Invalid username format.");
+            return false;
+        }
+
+        if (!isBlank(newEmail) && !ValidationUtils.isValidEmail(newEmail)) {
+            System.out.println("Invalid email format.");
+            return false;
+        }
+
+        if (!isBlank(newPassword) && !ValidationUtils.isValidPassword(newPassword)) {
+            System.out.println("Invalid password format.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isBlank(String str) {
+        return str == null || str.isBlank();
+    }
+
+    private int parseInt(String str) {
+        try {
+            return Integer.parseInt(str.trim());
         } catch (NumberFormatException e) {
-            return "Error parsing numeric values: " + e.getMessage();
-        }
-        return "Profile not found for username: " + username;
-    }
-    @Override
-    public void updateProfile(User user, String newUsername, String newEmail, String newPassword) {
-        if (newUsername != null && !newUsername.isEmpty()) {
-            user.setUsername(newUsername);
-        }
-
-        if (newEmail != null && !newEmail.isEmpty()) {
-            user.setEmail(newEmail);
-        }
-
-        if (newPassword != null && !newPassword.isEmpty()) {
-            user.setPassword(newPassword);
+            return 0;
         }
     }
 
-    @Override
-    public void trackGameHistory(User user, Profile profile) {
-        //TrackGameHistory
-    }
 
-    @Override
-    public void updateRanking(User user, int rank) {
-        //update ranking
-    }
 }

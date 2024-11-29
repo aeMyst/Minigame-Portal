@@ -142,5 +142,12 @@ public class AuthService implements AuthInterface {
         return currentUser;
     }
 
+    public void updateCurrentUser(String newUsername, String newEmail) {
+        if (currentUser != null) {
+            currentUser.setUsername(newUsername);
+            currentUser.setEmail(newEmail);
+        }
+    }
+
 
 }

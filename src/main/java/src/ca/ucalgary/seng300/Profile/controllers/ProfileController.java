@@ -23,13 +23,13 @@ public class ProfileController {
     }
 
     // Track game history (increment games played)
-    public void trackGameHistory(User user, Profile profile) {
-        profileService.trackGameHistory(user, profile);
+    public void initializeProfile(String username) {
+        profileService.initializeProfile(username);
     }
 
     // Update ranking
-    public void updateRanking(User user, int rank) {
-        profileService.updateRanking(user, rank);
+    public void searchProfile(String username) {
+        profileService.searchProfile(username);
     }
 
 
