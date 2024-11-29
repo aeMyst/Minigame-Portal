@@ -136,8 +136,8 @@ public final class ScreenController extends Application {
 
     }
 
-    public void showConnect4Screen() {
-        Connect4Screen connect4 = new Connect4Screen(primaryStage, this, client);
+    public void showConnect4Screen(ArrayList<Player> match) {
+        Connect4Screen connect4 = new Connect4Screen(primaryStage, this, client, match);
         primaryStage.setTitle("Connect 4");
         primaryStage.setScene(connect4.getScene());
     }

@@ -139,7 +139,7 @@ public class QueueScreen implements IScreen {
                                     controller.showTictactoeGameScreen(queue.createMatch());
                                     break;
                                 case 1:
-                                    controller.showConnect4Screen();
+                                    controller.showConnect4Screen(queue.createMatch());
                                     break;
                                 case 2:
                                     controller.showCheckerScreen();

@@ -129,7 +129,7 @@ public class EndGameScreen implements IScreen {
                 controller.showTictactoeGameScreen(match);
             } else if (gameType == 1) {
                 client.createGameSession();
-                controller.showConnect4Screen();
+                controller.showConnect4Screen(match);
             } else if (gameType == 2) {
                 client.createGameSession();
                 controller.showCheckerScreen();

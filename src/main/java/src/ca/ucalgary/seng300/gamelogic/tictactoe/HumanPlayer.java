@@ -2,7 +2,6 @@ package src.ca.ucalgary.seng300.gamelogic.tictactoe;
 
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 
-import java.io.Console;
 
 public class HumanPlayer implements IPlayer {
     private Player player;
