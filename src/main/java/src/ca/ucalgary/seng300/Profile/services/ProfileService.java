@@ -28,7 +28,12 @@ public class ProfileService implements ProfileInterface {
         }
 
         String username = loggedInUser.getUsername();
-        return buildProfileString(username);
+        String displayProfile = buildProfileString(username);
+        if (displayProfile.isEmpty()) {
+            initializeProfile(username);
+            displayProfile = buildProfileString(username); // Rebuild after initialization
+        }
+        return displayProfile;
     }
 
     @Override
@@ -67,16 +72,23 @@ public class ProfileService implements ProfileInterface {
     }
 
     //for new user, instantiate profile with default values
-    @Override
     public void initializeProfile(String username) {
-        String defaultProfile = String.format("N/A,%s,0,0,0,0", username);
-        appendToCsv(profilePath, defaultProfile);
-        System.out.println("Default profile created for user: " + username);
+        String[] gameTypes = {"CHECKERS", "CONNECT4", "TicTacToe"};
+        for (String gameType : gameTypes) {
+            String defaultProfile = String.format("%s,%s,0,0,0,0", gameType, username);
+            appendToCsv(profilePath, defaultProfile);
+        }
+        System.out.println("Default profiles created for user: " + username);
     }
+
 
     @Override
     public String searchProfile(String username) {
-        return buildProfileString(username);
+        String displayProfile = buildProfileString(username);
+        if (displayProfile.isEmpty()){
+            return "Profile not found for " + username;
+        }
+        return displayProfile;
     }
 
     private String buildProfileString(String username) {
@@ -101,7 +113,7 @@ public class ProfileService implements ProfileInterface {
         }
 
         if (!profileFound) {
-            return "Profile not found for username: " + username;
+            System.out.println("Profile not found for username: " + username);
         }
 
         return profileBuilder.toString().trim();

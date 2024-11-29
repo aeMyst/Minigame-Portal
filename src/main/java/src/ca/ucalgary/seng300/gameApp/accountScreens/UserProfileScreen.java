@@ -24,8 +24,9 @@ public class UserProfileScreen implements IScreen {
     private VBox userProfileInfoLayout;
 
     public UserProfileScreen(Stage stage, ScreenController controller, Client client) {
+        String currentUsername = client.getCurrentUsername();
         // User Profile Title
-        Label userProfileTitle = new Label("USER PROFILE");
+        Label userProfileTitle = new Label("USER PROFILE: " + currentUsername);
         userProfileTitle.setFont(new Font("Arial", 32));
 
         // The layout
@@ -69,7 +70,8 @@ public class UserProfileScreen implements IScreen {
             // Reset to the logged-in user's profile
             String updatedProfileInfo = client.getCurrentUserProfile();
             displayProfile(updatedProfileInfo);
-            userProfileTitle.setText("USER PROFILE");
+            String currentUsernameReset = client.getCurrentUsername();
+            userProfileTitle.setText("USER PROFILE: " + currentUsernameReset);
             searchProfileField.clear();
         });
 
