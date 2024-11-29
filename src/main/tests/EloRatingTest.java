@@ -1,7 +1,4 @@
-package EloRating;
-
 import org.junit.*;
 
-public class EloRatingTests {
-    }
-
+public class EloRatingTest {
+}
