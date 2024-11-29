@@ -9,4 +9,7 @@ CONNECT4,s1mple,0,0,0,0
 TICTACTOE,s1mple,0,0,0,0
 CHECKERS,testing,0,0,0,0
 CONNECT4,testing,0,0,0,0
-TICTACTOE,testing,0,0,0,0
+TICTACTOE,testing,0,0,4,0
+CHECKERS,test,0,0,0,0
+CONNECT4,test,0,0,0,0
+TICTACTOE,test,85,4,0,0

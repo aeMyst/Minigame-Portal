@@ -12,9 +12,13 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
+import src.ca.ucalgary.seng300.leaderboard.data.Storage;
+import src.ca.ucalgary.seng300.leaderboard.logic.MatchMaker;
+import src.ca.ucalgary.seng300.leaderboard.utility.FileManagement;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.Utility.TipsUtility;
 
+import java.io.File;
 import java.util.List;
 import java.util.Random;
 
@@ -24,6 +28,13 @@ public class QueueScreen implements IScreen {
 
     public QueueScreen(Stage stage, ScreenController controller, int gameType, Client client) {
         System.out.println("Queueing...");
+
+        File players = new File(client.getStatPath());
+        String currentUser = client.getCurrentUsername();
+        Storage allPlayers = FileManagement.fileReading(players);
+
+        MatchMaker queue = new MatchMaker(allPlayers);
+
         // Title label
         Label joiningLabel = new Label("Searching for Player...");
         joiningLabel.setFont(new Font("Arial", 24));
@@ -86,6 +97,18 @@ public class QueueScreen implements IScreen {
             }
 
             if (!canceled) {
+
+                if (gameType == 0) {
+                    queue.addPlayerToQueue(currentUser, "TICTACTOE");
+                    queue.createMatch();
+                } else if (gameType == 1) {
+                    queue.addPlayerToQueue(currentUser, "CONNECT4");
+                    queue.createMatch();
+                } else if (gameType == 2) {
+                    queue.addPlayerToQueue(currentUser, "CHECKERS");
+                    queue.createMatch();
+                }
+
                 // Update the label to indicate a player was found
                 Platform.runLater(() -> joiningLabel.setText("Player Found!"));
 
@@ -113,7 +136,7 @@ public class QueueScreen implements IScreen {
                         Platform.runLater(() -> {
                             switch (gameType) {
                                 case 0:
-                                    controller.showTictactoeGameScreen();
+                                    controller.showTictactoeGameScreen(queue.createMatch());
                                     break;
                                 case 1:
                                     controller.showConnect4Screen();

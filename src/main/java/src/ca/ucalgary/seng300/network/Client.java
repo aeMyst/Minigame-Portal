@@ -495,4 +495,10 @@ public class Client implements IClient {
         }
     }
 
+    public String getStatPath() {
+        System.out.println("Server Request Started for fetching Stats");
+        return "src/main/java/src/ca/ucalgary/seng300/database/profiles.csv";
+    }
+
+
 }

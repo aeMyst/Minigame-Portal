@@ -144,17 +144,17 @@ public class Connect4Screen implements IScreen {
             }
             client.sendC4MoveToServer(logicManager, turnManager, status, () -> {
                 if (logicManager.horizontalWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-                    controller.showEndGameScreen(1, null, logicManager, null);
+                    //controller.showEndGameScreen(1, null, logicManager, null);
                 } else if (logicManager.verticalWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-                    controller.showEndGameScreen(1, null, logicManager, null);
+                    //controller.showEndGameScreen(1, null, logicManager, null);
                 } else if (logicManager.forwardslashWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-                    controller.showEndGameScreen(1, null, logicManager, null);
+                    //controller.showEndGameScreen(1, null, logicManager, null);
                 } else if (logicManager.backslashWin(logicManager.getBoard(), currentPlayer.getPiece())) {
-                    controller.showEndGameScreen(1, null, logicManager, null);
+                    //controller.showEndGameScreen(1, null, logicManager, null);
                 } else if (logicManager.boardFull(logicManager.getBoard())) {
                     // tie if board is full
                     status = "DONE";
-                    controller.showEndGameScreen(1, null, logicManager, null);
+                    //controller.showEndGameScreen(1, null, logicManager, null);
                 }
                 if (currentPlayer == user1) {
                     currentPlayer = user2;

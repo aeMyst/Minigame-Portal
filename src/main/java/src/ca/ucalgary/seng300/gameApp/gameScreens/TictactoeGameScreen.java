@@ -8,11 +8,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.Utility.ChatUtility;
+import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.HumanPlayer;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
+
+import java.util.ArrayList;
 
 public class TictactoeGameScreen {
     private Scene scene;
@@ -29,12 +32,18 @@ public class TictactoeGameScreen {
     private boolean isEmojiOpen = false;
     private boolean moveInProgress = false;
 
-    public TictactoeGameScreen(Stage stage, ScreenController controller, Client client) {
+    public TictactoeGameScreen(Stage stage, ScreenController controller, Client client, ArrayList<Player> match) {
         this.stage = stage;
         this.client = client;
 
+        Player humanPlayerX = match.get(0);
+        Player humanPlayerO = match.get(1);
+
+        HumanPlayer playerX = new HumanPlayer(humanPlayerX, 'X');
+        HumanPlayer playerO = new HumanPlayer(humanPlayerO, 'O');
+
         boardManager = new BoardManager();
-        playerManager = new PlayerManager(new HumanPlayer('X'), new HumanPlayer('O'));
+        playerManager = new PlayerManager(playerX, playerO);
 
         // Game Board
         GridPane gameBoard = new GridPane();
@@ -49,7 +58,7 @@ public class TictactoeGameScreen {
                 button.setFont(new Font("Impact", 32));
                 button.setPrefSize(100, 100);
                 final int r = row, c = col;
-                button.setOnAction(e -> handleMove(r, c, controller));
+                button.setOnAction(e -> handleMove(r, c, controller, match));
                 buttons[row][col] = button;
                 gameBoard.add(button, col, row);
             }
@@ -61,7 +70,7 @@ public class TictactoeGameScreen {
         title.setTextFill(Color.DARKBLUE);
 
         // Turn Indicator
-        turnIndicator = new Label("Turn: Player " + currentPlayer);
+        turnIndicator = new Label(String.format("Turn: %s (%s)", playerX.getSymbol(), playerX.getPlayer().getPlayerID()));
         turnIndicator.setFont(new Font("Arial", 18));
         turnIndicator.setTextFill(Color.DARKGREEN);
 
@@ -116,7 +125,7 @@ public class TictactoeGameScreen {
         scene = new Scene(layout, 1280, 900); // Fixed size
     }
 
-    private void handleMove(int row, int col, ScreenController controller) {
+    private void handleMove(int row, int col, ScreenController controller, ArrayList<Player> match) {
         if (moveInProgress) {
             return;
         }
@@ -125,31 +134,28 @@ public class TictactoeGameScreen {
         disableBoard();
 
         HumanPlayer currentPlayerObj = playerManager.getCurrentPlayer();
+        Player currentPlayerData = currentPlayerObj.getPlayer(); // Get associated Player data
 
         if (boardManager.isValidMove(row, col)) {
             boardManager.placeSymbol(currentPlayerObj.getSymbol(), row, col);
 
             client.sendMoveToServer(boardManager, playerManager, status, () -> {
-                // Update GUI after "server acknowledgment"
                 buttons[row][col].setText(String.valueOf(currentPlayerObj.getSymbol()));
 
-                // Check for game outcomes
                 if (boardManager.isWinner(currentPlayerObj.getSymbol())) {
                     this.status = "DONE";
-                    System.out.println("Winner Found, Game Status: " + status);
-                    System.out.println("==========================");
-                    controller.showEndGameScreen(0, boardManager, null, null);
+                    System.out.println("Winner: " + currentPlayerData.getPlayerID());
+                    controller.showEndGameScreen(0, boardManager, null, null, match, currentPlayerData);
 
                 } else if (boardManager.isTie()) {
                     this.status = "DONE";
-                    System.out.println("Tie Found, Game Status: " + status);
-                    System.out.println("==========================");
-                    controller.showEndGameScreen(0, boardManager, null, null);
+                    System.out.println("Game Tied.");
+                    controller.showEndGameScreen(0, boardManager, null, null, match, null);
 
                 } else {
                     playerManager.switchPlayer();
-                    currentPlayer = String.valueOf(playerManager.getCurrentPlayer().getSymbol());
-                    turnIndicator.setText("Turn: Player " + currentPlayer);
+                    currentPlayer = String.valueOf(playerManager.getCurrentPlayer().getPlayer().getPlayerID());
+                    turnIndicator.setText(String.format("Turn: %s (%s)", playerManager.getCurrentPlayer().getSymbol(), currentPlayer));
                 }
 
                 moveInProgress = false;

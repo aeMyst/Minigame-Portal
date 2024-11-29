@@ -6,9 +6,9 @@ import src.ca.ucalgary.seng300.leaderboard.data.Storage;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.IMatchmaker;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MatchMaker implements IMatchmaker {
+    public ArrayList<Player> match = new ArrayList<>();
     private ArrayList<Player> queue = new ArrayList<>();
     private static final int THRESHOLD = 150; //it's good practice to set up the 150 here for future bug fix/code design
     private Storage storage;
@@ -17,34 +17,70 @@ public class MatchMaker implements IMatchmaker {
         this.storage = storage;
     }
 
-    //method for adding players to queue after we first parsed all info from csv
     @Override
-    public void addPlayerToQueue(Player player) {
-        queue.add(player);
-        findMatch();
+    public void addPlayerToQueue(String user, String gameType) {
+        for (Player player : storage.getPlayers()) {
+            if (player.getGameType().equals(gameType)) {
+                queue.add(player);
+            }
+        }
+
+        findMatch(user);
     }
 
     @Override
-    public void findMatch() {
-        // some loop that goes through the players in queue, grabs first 2 of similar elos
-        for (int p1 = 0; p1 < queue.size(); p1++) {
-            for (int p2 = p1 + 1; p2 < queue.size(); p2++) {
-                // assuming a threshold of 150
-                if (queue.get(p1).getElo() - queue.get(p2).getElo() <= THRESHOLD) {
-                    createMatch(queue.get(p1), queue.get(p2));
-                    queue.remove(p2);
-                    queue.remove(p1);
-                    return;
+    public void findMatch(String user) {
+        Player userPlayer = null;
+
+        // Find the player with the matching playerId in the queue
+        for (Player player : queue) {
+            if (player.getPlayerID().equals(user)) {
+                userPlayer = player;
+                queue.remove(userPlayer);
+                break;
+            }
+        }
+
+        // If the user is not found, return
+        if (userPlayer == null) {
+            System.err.println("Player with ID " + user + " not found in the queue.");
+            return;
+        }
+
+        // Find the closest Elo match for the user
+        Player closestMatch = null;
+
+        for (Player player : queue) {
+            int eloDifference = Math.abs(userPlayer.getElo() - player.getElo());
+            if (eloDifference <= THRESHOLD) {
+                closestMatch = player;
+            }
+        }
+
+        // If no suitable match is found, choose a random player
+        if (closestMatch == null) {
+            for (Player player : queue) {
+                if (!player.getPlayerID().equals(user)) {
+                    closestMatch = player;
+                    break; // Take the first random player
                 }
             }
+        }
+
+        // If a match is found
+        if (closestMatch != null) {
+            match.add(userPlayer);
+            match.add(closestMatch);
+            queue.remove(userPlayer);
+            queue.remove(closestMatch);
+        } else {
+            System.out.println("No other players available for matching.");
         }
     }
 
     @Override
-    public void createMatch(Player player1, Player player2) {
-        System.out.println("Match created between: " + player1.getPlayerID()+ " and " + player2.getPlayerID());
-
-        Connect4Game game = new Connect4Game(player1, player2, storage);
-        game.startGame();;
+    public ArrayList<Player> createMatch() {
+        System.out.println("Match created between: " + match.get(0).getPlayerID()+ " and " + match.get(1).getPlayerID());
+        return match;
     }
 }

@@ -326,18 +326,18 @@ public class CheckerScreen implements IScreen {
         }
 
         if (gameLogic.getGameState() == GameState.PLAYER1_WIN) {
-            controller.showEndGameScreen(2, null, null, gameLogic);
+            //controller.showEndGameScreen(2, null, null, gameLogic);
             return true;
         } else if (gameLogic.getGameState() == GameState.PLAYER2_WIN) {
-            controller.showEndGameScreen(2, null, null, gameLogic);
+            //controller.showEndGameScreen(2, null, null, gameLogic);
             return true;
         }
 
         if (whiteCount == 0) {
-            controller.showEndGameScreen(2, null, null, gameLogic);
+            //controller.showEndGameScreen(2, null, null, gameLogic);
             return true;
         } else if (blackCount == 0) {
-            controller.showEndGameScreen(2, null, null, gameLogic);
+            //controller.showEndGameScreen(2, null, null, gameLogic);
             return true;
         }
 

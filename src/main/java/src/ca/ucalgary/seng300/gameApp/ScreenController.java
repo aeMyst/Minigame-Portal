@@ -10,6 +10,7 @@ import src.ca.ucalgary.seng300.gameApp.extraScreens.CheckersRules;
 import src.ca.ucalgary.seng300.gameApp.extraScreens.ConnectFourRules;
 import src.ca.ucalgary.seng300.gameApp.extraScreens.TTTRules;
 import src.ca.ucalgary.seng300.gameApp.leaderboardScreens.LeaderboardController;
+import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.accountScreens.*;
 import src.ca.ucalgary.seng300.gameApp.gameScreens.EndGameScreen;
@@ -25,6 +26,8 @@ import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.Graphic;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Logic;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
+
+import java.util.ArrayList;
 
 /**
  * ScreenController is responsible for managing the application screens.
@@ -64,8 +67,8 @@ public final class ScreenController extends Application {
         primaryStage.setScene(gameMenu.getScene());
     }
 
-    public void showTictactoeGameScreen() {
-        TictactoeGameScreen ticTacToe = new TictactoeGameScreen(primaryStage, this, client);
+    public void showTictactoeGameScreen(ArrayList<Player> match) {
+        TictactoeGameScreen ticTacToe = new TictactoeGameScreen(primaryStage, this, client, match);
         primaryStage.setTitle("TicTacToe");
         primaryStage.setScene(ticTacToe.getScene());
     }
@@ -113,8 +116,8 @@ public final class ScreenController extends Application {
 
     }
 
-    public void showEndGameScreen(int gameType, BoardManager boardManager, Connect4Logic connect4Logic, CheckersGameLogic checkersGameLogic) {
-        EndGameScreen endGame = new EndGameScreen(primaryStage, this, client, gameType, boardManager, connect4Logic, checkersGameLogic);
+    public void showEndGameScreen(int gameType, BoardManager boardManager, Connect4Logic connect4Logic, CheckersGameLogic checkersGameLogic, ArrayList<Player> match, Player winner) {
+        EndGameScreen endGame = new EndGameScreen(primaryStage, this, client, gameType, boardManager, connect4Logic, checkersGameLogic, match, winner);
         primaryStage.setTitle("End Game Screen");
         primaryStage.setScene(endGame.getScene());
     }
