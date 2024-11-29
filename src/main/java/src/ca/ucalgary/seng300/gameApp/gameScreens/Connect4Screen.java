@@ -95,7 +95,7 @@ public class Connect4Screen implements IScreen {
         emojiButton.setOnAction(e -> {
             if (!isEmojiOpen) {
                 isEmojiOpen = true;
-                ChatUtility.showEmojiMenu(chatInput, stage, () -> isEmojiOpen = false);
+                ChatUtility.showEmojiMenu(chatInput, stage, () -> isEmojiOpen = false, client);
             } else {
                 chatArea.appendText("Server: Please select an Emoji or close the menu.\n");
             }
@@ -192,7 +192,7 @@ public class Connect4Screen implements IScreen {
     private void sendMessage() {
         String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
-            String responseFromServer = client.sendMessageToServer(message);
+            String responseFromServer = client.sendMessageToServer(message, client);
             chatArea.appendText("Player: " + responseFromServer + "\n");
             chatInput.clear();
         }

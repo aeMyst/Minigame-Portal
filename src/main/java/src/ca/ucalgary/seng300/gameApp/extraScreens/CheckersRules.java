@@ -19,8 +19,8 @@ public class CheckersRules implements IScreen {
     private Scene scene;
 
     public CheckersRules(Stage stage, ScreenController controller, Client client) {
-        String filePath = "src/main/java/src/ca/ucalgary/seng300/database/checkers_rules.txt";
-        String rulesText = RulesUtility.getRules(filePath);
+        String filePathFromServer = client.getRulesPath(2);
+        String rulesText = RulesUtility.getRules(filePathFromServer);
 
         Label Rules = new Label("Checkers' Rules: ");
         Rules.setFont(new Font("Arial", 24));

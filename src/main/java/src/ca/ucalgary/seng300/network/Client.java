@@ -35,8 +35,8 @@ public class Client implements IClient {
         System.out.println("Disconnection Successful. Application will now Safely Close.");
     };
 
-    public String sendMessageToServer(String message) {
-        String filteredMessage = ChatUtility.filterMessage(message);
+    public String sendMessageToServer(String message, Client client) {
+        String filteredMessage = ChatUtility.filterMessage(message, client);
         System.out.println("Sending Message to Server: " + message);
         System.out.println("==========================");
         return filteredMessage;
@@ -415,4 +415,66 @@ public class Client implements IClient {
     }
 
     // ###########################################Checkers Server Methods#############################################//
+
+    public String getRulesPath(int gameType) {
+        System.out.println("Server Request Started for fetching Rules");
+        // tictactoe rules
+        if (gameType == 0) {
+            System.out.println("returning file path in database for rules");
+            System.out.println("==========================");
+            return "src/main/java/src/ca/ucalgary/seng300/database/tictactoe_rules.txt";
+            // connect four rules
+        } else if (gameType == 1) {
+            System.out.println("returning file path in database for rules");
+            System.out.println("==========================");
+            return "src/main/java/src/ca/ucalgary/seng300/database/connect_four_rules.txt";
+            // checkers rules
+        } else if (gameType == 2) {
+            System.out.println("returning file path in database for rules");
+            System.out.println("==========================");
+            return "src/main/java/src/ca/ucalgary/seng300/database/checkers_rules.txt";
+        } else {
+            System.out.println("No file path found...");
+            System.out.println("==========================");
+            return "No File Path for GameType: " + gameType;
+        }
+    }
+
+    public String getTipsPath(int gameType) {
+        System.out.println("Server Request Started for fetching Tips");
+        // tictactoe tips
+        if (gameType == 0) {
+            System.out.println("returning file path in database for tips");
+            return "src/main/java/src/ca/ucalgary/seng300/database/tictactoe_tips.txt";
+            // connect four tips
+        } else if (gameType == 1) {
+            System.out.println("returning file path in database for tips");
+            return "src/main/java/src/ca/ucalgary/seng300/database/connect4_tips.txt";
+            // checkers tips
+        } else if (gameType == 2) {
+            System.out.println("returning file path in database for tips");
+            return "src/main/java/src/ca/ucalgary/seng300/database/checkers_tips.txt";
+        } else {
+            // default
+            System.out.println("No file path found... using default...");
+            return "Enjoy and Have Fun!";
+        }
+    }
+
+    public String getChatElements(int utilityType) {
+        System.out.println("Server Request Started for fetching Chat Elements");
+        if (utilityType == 0) {
+            System.out.println("returning file path in database for filtered words");
+            System.out.println("==========================");
+            return "src/main/java/src/ca/ucalgary/seng300/database/banned_words.txt";
+        } else if (utilityType == 1) {
+            System.out.println("returning file path in database for Emojis");
+            System.out.println("==========================");
+            return "src/main/java/src/ca/ucalgary/seng300/database/emojis.txt";
+        } else {
+            System.out.println("No file Path Found");
+            return null; // no path, return null
+        }
+    }
+
 }

@@ -89,7 +89,7 @@ public class TictactoeGameScreen {
         emojiButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         emojiButton.setOnAction(e -> {
             if (!isEmojiOpen) {
-                ChatUtility.showEmojiMenu(chatInput, stage, () -> isEmojiOpen = false);
+                ChatUtility.showEmojiMenu(chatInput, stage, () -> isEmojiOpen = false, client);
                 isEmojiOpen = true;
             } else {
                 chatArea.appendText("Server: Please select an Emoji or close the menu.\n");
@@ -181,7 +181,7 @@ public class TictactoeGameScreen {
     private void sendMessage() {
         String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
-            String responseFromServer = client.sendMessageToServer(message);
+            String responseFromServer = client.sendMessageToServer(message, client);
             chatArea.appendText("Player: " + responseFromServer + "\n");
             chatInput.clear();
         }

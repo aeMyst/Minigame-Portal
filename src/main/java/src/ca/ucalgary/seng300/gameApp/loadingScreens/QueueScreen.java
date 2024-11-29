@@ -39,7 +39,7 @@ public class QueueScreen implements IScreen {
         tipLabel.setTextFill(Color.DARKGREEN);
 
         // Load game-specific tips using TipsUtility
-        List<String> tips = TipsUtility.loadTipsFromFile(gameType);
+        List<String> tips = TipsUtility.loadTipsFromFile(client, gameType);
 
         // Start thread to update the tip label
         new Thread(() -> {

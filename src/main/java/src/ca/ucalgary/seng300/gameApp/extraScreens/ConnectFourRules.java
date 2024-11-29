@@ -19,8 +19,8 @@ public class ConnectFourRules implements IScreen {
     private Scene scene;
 
     public ConnectFourRules(Stage stage, ScreenController controller, Client client) {
-        String filePath = "src/main/java/src/ca/ucalgary/seng300/database/connect_four_rules.txt";
-        String rulesText = RulesUtility.getRules(filePath);
+        String filePathFromServer = client.getRulesPath(1);
+        String rulesText = RulesUtility.getRules(filePathFromServer);
 
         Label Rules = new Label("Connect Four Rules: ");
         Rules.setFont(new Font("Arial", 24));
