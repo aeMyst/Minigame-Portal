@@ -8,23 +8,33 @@ import java.io.*;
 import java.util.*;
 
 public class ProfileService implements ProfileInterface {
-
+    // Initialize authService
     private final AuthService authService;
 
+    // Constructor for ProfileService object
     public ProfileService(AuthService authService) {
         this.authService = authService;
     }
 
+    /**
+     * Method to view profile information from profiles.csv file
+     * Error message printed if method:
+     *  1. Fails to read file
+     *  2. Fails to parse numeric values
+     *  3. User is not found
+     * @return String
+     */
     @Override
     public String viewProfile() {
         // Retrieve the currently logged-in user from AuthService
         User loggedInUser = authService.isLoggedIn();
-
+        // Check if user is logged in
         if (loggedInUser == null) {
             return "No user is currently logged in.";
         }
-
+        // Retrieve username
         String username = loggedInUser.getUsername();
+        // Set filepath
         String filePath = "src/main/java/src/ca/ucalgary/seng300/Profile/services/profiles.csv";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {

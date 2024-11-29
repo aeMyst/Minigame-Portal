@@ -5,11 +5,14 @@ import src.ca.ucalgary.seng300.Profile.services.AuthService;
 
 public class AuthController {
 
+    //
     private final AuthService authService;
 
+    // Constructor for AuthController object
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
+
 
     public boolean register(String email,String username, String password) {
         return authService.register(email,username, password);
