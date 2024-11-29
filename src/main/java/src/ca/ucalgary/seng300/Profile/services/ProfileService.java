@@ -10,8 +10,8 @@ import java.util.*;
 
 public class ProfileService implements ProfileInterface {
 
-    public String profilePath = "src/main/java/src/ca/ucalgary/seng300/Profile/services/profiles.csv";
-    public String usersPath = "src/main/java/src/ca/ucalgary/seng300/Profile/services/users.csv";
+    public String profilePath = "src/main/java/src/ca/ucalgary/seng300/database/profiles.csv";
+    public String usersPath = "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
 
     private final AuthService authService;
 
@@ -73,7 +73,7 @@ public class ProfileService implements ProfileInterface {
 
     //for new user, instantiate profile with default values
     public void initializeProfile(String username) {
-        String[] gameTypes = {"CHECKERS", "CONNECT4", "TicTacToe"};
+        String[] gameTypes = {"CHECKERS", "CONNECT4", "TICTACTOE"};
         for (String gameType : gameTypes) {
             String defaultProfile = String.format("%s,%s,0,0,0,0", gameType, username);
             appendToCsv(profilePath, defaultProfile);

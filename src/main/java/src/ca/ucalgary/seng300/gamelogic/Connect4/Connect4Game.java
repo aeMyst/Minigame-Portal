@@ -84,7 +84,7 @@ public class Connect4Game extends StartGame {
         System.out.println(winnerPlayer);
         System.out.println(loserPlayer);
 
-        File file = new File("players_data.csv");
+        File file = new File("src/main/java/src/ca/ucalgary/seng300/database/profiles.csv");
         FileManagement.fileWriting(storage, file);
         System.out.println("Player data saved.");
     }
