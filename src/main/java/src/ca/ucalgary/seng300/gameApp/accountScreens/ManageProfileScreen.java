@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Profile.models.User;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
@@ -54,30 +55,22 @@ public class ManageProfileScreen implements IScreen {
         updateButton.setOnAction(e -> {
 
             // if email field is filled, change the email
-            if (!(changeEmailField.getText().isEmpty())) {
+            User currentUser = client.loggedIn(); //
 
-                // add information to profile here
-                String newEmail = changeEmailField.getText();
-                System.out.println(newEmail);
+            if (currentUser == null) {
+                showErrorMessage("Error", "No user is currently logged in.");
+                return;
             }
 
-            // if password field is filled, change the password
-            if (!(changePasswordField.getText().isEmpty())) {
+            // Get input values
+            String newEmail = changeEmailField.getText().isEmpty() ? null : changeEmailField.getText();
+            String newUsername = changeUsernameField.getText().isEmpty() ? null : changeUsernameField.getText();
+            String newPassword = changePasswordField.getText().isEmpty() ? null : changePasswordField.getText();
 
-                // add information to profile here
-                String newPassword = changePasswordField.getText();
-                System.out.println(newPassword);
-            }
+            // Call the editProfile method
+            client.editProfile(currentUser, newUsername, newEmail, newPassword);
 
-            // if username field is filled, change the username
-            if (!(changeUsernameField.getText().isEmpty())) {
-
-                // add information to profile here
-                String newUsername = changeUsernameField.getText();
-                System.out.println(newUsername);
-            }
-
-            // Simulate updating profile
+            // Provide feedback to the user
             showInfoMessage("Success", "Profile updated successfully!");
             controller.showMainMenu();
         });

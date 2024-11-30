@@ -13,8 +13,8 @@ public class ProfileController {
     }
 
     // View a user's profile
-    public String viewProfile(Profile profile) {
-       return profileService.viewProfile(profile);
+    public String viewProfile() {
+       return profileService.viewProfile();
     }
 
     // Update a user's profile (username, email, password)
@@ -23,16 +23,14 @@ public class ProfileController {
     }
 
     // Track game history (increment games played)
-    public void trackGameHistory(User user, Profile profile) {
-        profileService.trackGameHistory(user, profile);
+    public void initializeProfile(String username) {
+        profileService.initializeProfile(username);
     }
 
     // Update ranking
-    public void updateRanking(User user, int rank) {
-        profileService.updateRanking(user, rank);
+    public void searchProfile(String username) {
+        profileService.searchProfile(username);
     }
 
-    public String displayProfile(String username){
-        return profileService.displayProfileFromFile(username);
-    }
+
 }
