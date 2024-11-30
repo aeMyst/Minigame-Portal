@@ -44,6 +44,7 @@ public class CheckerScreen implements IScreen {
     private ArrayList<Player> match;
     // https://www.tutorialspoint.com/javafx/javafx_images.htm
     private final String WHITE_PIECE_IMAGE_PATH = "src/main/java/src/ca/ucalgary/seng300/images/white_piece.png";
+    private final String BLACK_PIECE_IMAGE_PATH = "src/main/java/src/ca/ucalgary/seng300/images/black_piece.png";
     private final String WHITE_KING_IMAGE_PATH = "src/main/java/src/ca/ucalgary/seng300/images/white_king_piece.png";
     private final String BLACK_KING_IMAGE_PATH = "src/main/java/src/ca/ucalgary/seng300/images/black_king_piece.png";
 
