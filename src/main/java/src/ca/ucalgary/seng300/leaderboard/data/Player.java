@@ -17,6 +17,10 @@ public class Player {
         this.ties = ties;
     }
 
+    public static Player defaultPlauer(String gameType, String playerID){
+        return new Player(gameType, playerID, 0, 0, 0, 0);
+    }
+
     public void setGameType(String gameType) {
         this.gameType = gameType;
     }
