@@ -260,7 +260,7 @@ public class TictactoeGameScreen {
         String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
             String responseFromServer = client.sendMessageToServer(message, client);
-            chatArea.appendText("Player: " + responseFromServer + "\n");
+            chatArea.appendText(client.getCurrentUsername() + responseFromServer + "\n");
             chatInput.clear();
         }
     }

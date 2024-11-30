@@ -376,11 +376,10 @@ public class CheckerScreen implements IScreen {
         String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
             String responseFromServer = client.sendMessageToServer(message, client);
-            chatArea.appendText(gameLogic.getCurrentPlayer() + ": " + responseFromServer + "\n");
+            chatArea.appendText(client.getCurrentUsername() + ": " + responseFromServer + "\n");
             chatInput.clear();
         }
     }
-
 
     private boolean checkGameState() {
         int whiteCount = 0;

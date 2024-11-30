@@ -271,7 +271,7 @@ public class Connect4Screen implements IScreen {
     private void sendMessage() {
         String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
-            chatArea.appendText("Player: " + client.sendMessageToServer(message, client) + "\n");
+            chatArea.appendText(client.getCurrentUsername() + client.sendMessageToServer(message, client) + "\n");
             chatInput.clear();
         }
     }
