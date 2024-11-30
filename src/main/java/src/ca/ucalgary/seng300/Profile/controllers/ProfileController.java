@@ -1,5 +1,6 @@
 /**
- * Class to implement methods from ProfileInterface and implemented by
+ * Class to implement methods from ProfileService to handle profile information
+ * @author
  */
 
 package src.ca.ucalgary.seng300.Profile.controllers;
