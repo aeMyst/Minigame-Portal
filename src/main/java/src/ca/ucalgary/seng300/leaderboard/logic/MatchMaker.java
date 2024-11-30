@@ -28,6 +28,10 @@ public class MatchMaker implements IMatchmaker {
 
     @Override
     public void addPlayerToQueue(String user, String gameType) {
+        Player currentPlayer = Player.defaultPlayer(gameType, user);
+        if (!queue.contains(currentPlayer)) {
+            queue.add(currentPlayer);
+        }
         for (Player player : storage.getPlayers()) {
             if (player.getGameType().equals(gameType)) {
                 queue.add(player);
