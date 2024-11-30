@@ -1,0 +1,19 @@
+Board Setup:
+Played on a vertical 6x7 grid.
+
+Players:
+Two players take turns dropping one of their colored discs into a column.
+
+Objective:
+Be the first to form a line of four discs horizontally, vertically, or diagonally.
+
+Gameplay:
+Players take turns dropping their disc into one of the columns.
+Discs stack on top of each other in the chosen column.
+
+Winning:
+The first player to connect four discs wins.
+If the board fills completely without a winner, the game ends in a draw.
+
+Valid Moves:
+A Tile can only be placed in a column that is not full.

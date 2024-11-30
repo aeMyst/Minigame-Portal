@@ -10,7 +10,7 @@ import java.util.Scanner;
 // Example main to show file reading, writing, and storage and Player are all functional for future use cases
 public class ExampleMain {
 
-    private static final String FILE_PATH = "players_data.csv";
+    private static final String FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/profiles.csv";
 
     public static void main(String[] args) {
         File file = new File(FILE_PATH);
@@ -128,16 +128,17 @@ public class ExampleMain {
 
     // Display sorted leaderboard
     private static void displaySortedLeaderboard(Leaderboard leaderboard, String gameType) {
-//        String[][] sortedLeaderboard = leaderboard.sortLeaderboard(gameType);
-//        if (sortedLeaderboard.length == 0) {
-//            System.out.println("No players available for the specified game type.");
-//        } else {
-//            System.out.println("\nSorted Leaderboard for " + gameType + ":");
-//            System.out.printf("%-15s %-10s %-10s%n", "Player ID", "Elo", "Wins");
-//            for (String[] playerData : sortedLeaderboard) {
-//                System.out.printf("%-15s %-10s %-10s%n", playerData[0], playerData[1], playerData[2]);
-//            }
-//        }
+        // String[][] sortedLeaderboard = leaderboard.sortLeaderboard(gameType);
+        // if (sortedLeaderboard.length == 0) {
+        // System.out.println("No players available for the specified game type.");
+        // } else {
+        // System.out.println("\nSorted Leaderboard for " + gameType + ":");
+        // System.out.printf("%-15s %-10s %-10s%n", "Player ID", "Elo", "Wins");
+        // for (String[] playerData : sortedLeaderboard) {
+        // System.out.printf("%-15s %-10s %-10s%n", playerData[0], playerData[1],
+        // playerData[2]);
+        // }
+        // }
         if (gameType.equals("CONNECT4")) {
             String[][] sortedLeaderboard = leaderboard.getC4Leaderboard();
             System.out.println("\nSorted Leaderboard for " + gameType + ":");
@@ -161,5 +162,5 @@ public class ExampleMain {
             }
         }
     }
-    //will have matchmaker example method implementation later on
+    // will have matchmaker example method implementation later on
 }

@@ -2,19 +2,56 @@ package src.ca.ucalgary.seng300.gameApp;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import src.ca.ucalgary.seng300.Client;
+import src.ca.ucalgary.seng300.Profile.controllers.AuthController;
+import src.ca.ucalgary.seng300.Profile.controllers.ProfileController;
+import src.ca.ucalgary.seng300.Profile.services.AuthService;
+import src.ca.ucalgary.seng300.Profile.services.ProfileService;
+import src.ca.ucalgary.seng300.gameApp.extraScreens.CheckersRules;
+import src.ca.ucalgary.seng300.gameApp.extraScreens.ConnectFourRules;
+import src.ca.ucalgary.seng300.gameApp.extraScreens.TTTRules;
+import src.ca.ucalgary.seng300.gameApp.leaderboardScreens.LeaderboardController;
+import src.ca.ucalgary.seng300.gameApp.loadingScreens.ChallengePlayerScreen;
+import src.ca.ucalgary.seng300.leaderboard.data.Player;
+import src.ca.ucalgary.seng300.network.Client;
+import src.ca.ucalgary.seng300.gameApp.accountScreens.*;
+import src.ca.ucalgary.seng300.gameApp.gameScreens.EndGameScreen;
+import src.ca.ucalgary.seng300.gameApp.extraScreens.HelpScreen;
+import src.ca.ucalgary.seng300.gameApp.gameScreens.*;
+import src.ca.ucalgary.seng300.gameApp.loadingScreens.LoadingScreen;
+import src.ca.ucalgary.seng300.gameApp.loadingScreens.QueueScreen;
+import src.ca.ucalgary.seng300.gameApp.loadingScreens.ServerConnectionScreen;
+import src.ca.ucalgary.seng300.gameApp.menuScreens.GameMenuScreen;
+import src.ca.ucalgary.seng300.gameApp.menuScreens.MainMenuScreen;
+import src.ca.ucalgary.seng300.gameApp.menuScreens.MatchmakeChoiceScreen;
+import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
+import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Logic;
+import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 
-public class ScreenController extends Application {
+import java.util.ArrayList;
+
+/**
+ * ScreenController is responsible for managing the application screens.
+ * This class should not be run directly. Use Main.java as the application entry point.
+ */
+public final class ScreenController extends Application {
     private Stage primaryStage;
     Client client = new Client();
 
+    AuthService authService = new AuthService();
+    ProfileService profileService = new ProfileService(authService);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         showSignInScreen();
         primaryStage.show();
+    }
 
+    @Override
+    public void stop() {
+        System.out.println("Closing Connection to Server...");
+        client.disconnect();
+        System.exit(0);
     }
 
     public void showMainMenu() {
@@ -30,8 +67,8 @@ public class ScreenController extends Application {
         primaryStage.setScene(gameMenu.getScene());
     }
 
-    public void showTictactoeGameScreen() {
-        TictactoeGameScreen ticTacToe = new TictactoeGameScreen(primaryStage, this, client);
+    public void showTictactoeGameScreen(ArrayList<Player> match) {
+        TictactoeGameScreen ticTacToe = new TictactoeGameScreen(primaryStage, this, client, match);
         primaryStage.setTitle("TicTacToe");
         primaryStage.setScene(ticTacToe.getScene());
     }
@@ -79,17 +116,10 @@ public class ScreenController extends Application {
 
     }
 
-    public void showEndGameScreen() {
-        EndGameScreen endGame = new EndGameScreen(primaryStage, this, client);
-        primaryStage.setTitle("Game Over");
+    public void showEndGameScreen(int gameType, BoardManager boardManager, Connect4Logic connect4Logic, CheckersGameLogic checkersGameLogic, ArrayList<Player> match, Player winner) {
+        EndGameScreen endGame = new EndGameScreen(primaryStage, this, client, gameType, boardManager, connect4Logic, checkersGameLogic, match, winner);
+        primaryStage.setTitle("End Game Screen");
         primaryStage.setScene(endGame.getScene());
-
-    }
-
-    public void showC4EndGameScreen() {
-        C4EndGameScreen c4EndGame = new C4EndGameScreen(primaryStage, this, client);
-        primaryStage.setTitle("Game Over");
-        primaryStage.setScene(c4EndGame.getScene());
     }
 
     public void showCreateProfileScreen() {
@@ -106,8 +136,8 @@ public class ScreenController extends Application {
 
     }
 
-    public void showConnect4Screen() {
-        Connect4Screen connect4 = new Connect4Screen(primaryStage, this, client);
+    public void showConnect4Screen(ArrayList<Player> match) {
+        Connect4Screen connect4 = new Connect4Screen(primaryStage, this, client, match);
         primaryStage.setTitle("Connect 4");
         primaryStage.setScene(connect4.getScene());
     }
@@ -118,8 +148,18 @@ public class ScreenController extends Application {
         primaryStage.setScene(leaderBoard.getScene());
     }
 
-    public void showCheckerScreen() {
-        CheckerScreen checkers = new CheckerScreen(primaryStage, this, client);
+    public void showCheckerScreen(ArrayList<Player> match) {
+        // Create Player instances for player1 and player2
+        Player player1 = new Player("Checkers", "Player1", 1200, 0, 0, 0);
+        Player player2 = new Player("Checkers", "Player2", 1200, 0, 0, 0);
+
+        // Create CheckersGameLogic with player1 and player2
+        CheckersGameLogic gameLogic = new CheckersGameLogic( player1, player2);
+
+        // Pass CheckersGameLogic and client into CheckerScreen
+        CheckerScreen checkers = new CheckerScreen(primaryStage, this, client,match);
+
+        // Set up the stage
         primaryStage.setTitle("Checkers");
         primaryStage.setScene(checkers.getScene());
     }
@@ -130,11 +170,47 @@ public class ScreenController extends Application {
         primaryStage.setScene(matchmakeScreen.getScene());
     }
 
+    public void showForgotPasswordScreen() {
+        ForgotPasswordScreen forgotPassword = new ForgotPasswordScreen(primaryStage, this, client, authService);
+        primaryStage.setTitle("Forgot Password");
+        primaryStage.setScene(forgotPassword.getScene());
+    }
 
+    public void showResetPasswordScreen(String username, String email) {
+        ResetPasswordScreen resetPassword = new ResetPasswordScreen(primaryStage, this, client, username, email, authService);
+        primaryStage.setTitle("Reset Password");
+        primaryStage.setScene(resetPassword.getScene());
+    }
 
+    public void showForgotUsernameScreen() {
+        ForgotUsernameScreen showUsername = new ForgotUsernameScreen(primaryStage, this, client, authService);
+        primaryStage.setTitle("Find Username");
+        primaryStage.setScene(showUsername.getScene());
 
-    public static void main(String[] args) {
-        launch(args);
+    }
+
+    public void showConnectFourRules() {
+        ConnectFourRules c4Rules = new ConnectFourRules(primaryStage, this, client);
+        primaryStage.setTitle("Connect Four Rules");
+        primaryStage.setScene(c4Rules.getScene());
+    }
+
+    public void showTTTRules() {
+        TTTRules TTTrules = new TTTRules(primaryStage, this, client);
+        primaryStage.setTitle("Tic-Tac-Toe Rules");
+        primaryStage.setScene(TTTrules.getScene());
+    }
+
+    public void showCheckersRules() {
+        CheckersRules CHRules = new CheckersRules(primaryStage, this, client);
+        primaryStage.setTitle("Checkers' Rules");
+        primaryStage.setScene(CHRules.getScene());
+    }
+
+    public void showChallengePlayerScreen(String challengeUser, int gameChoice) {
+        ChallengePlayerScreen challengeScreen = new ChallengePlayerScreen(primaryStage, this, client, challengeUser, gameChoice);
+        primaryStage.setTitle("Challenge Player Screen");
+        primaryStage.setScene(challengeScreen.getScene());
     }
 
 

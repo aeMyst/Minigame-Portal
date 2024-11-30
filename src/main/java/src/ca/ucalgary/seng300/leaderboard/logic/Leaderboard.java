@@ -8,7 +8,11 @@ import java.util.*;
 import java.io.*;
 
 public class Leaderboard implements ILeaderboard {
+<<<<<<< HEAD
     private static final String FILE_PATH = "players_data.csv";
+=======
+    private static final String FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/profiles.csv";
+>>>>>>> main
     private File file = new File(FILE_PATH);
 
     // sorts names with corresponding elo values in order

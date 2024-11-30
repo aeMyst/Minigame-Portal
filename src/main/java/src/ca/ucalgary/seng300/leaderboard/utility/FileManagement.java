@@ -10,6 +10,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.util.ArrayList;
+import java.util.List;
+
 
 public class FileManagement {
     public static Storage fileReading(File file) {
@@ -56,4 +58,45 @@ public class FileManagement {
             error.printStackTrace();
         }
     }
+
+    public static void updateProfilesInCsv(String filePath, ArrayList<Player> players) {
+        List<String[]> allRows = new ArrayList<>();
+
+        // Step 1: Read existing CSV rows
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                allRows.add(line.split(",")); // Split CSV into columns
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading profiles.csv: " + e.getMessage());
+            return;
+        }
+
+        // Step 2: Update matching rows
+        for (Player player : players) {
+            for (String[] row : allRows) {
+                if (row[0].equals(player.getGameType()) && row[1].equals(player.getPlayerID())) {
+                    // Replace row with updated player data
+                    row[2] = String.valueOf(player.getElo());
+                    row[3] = String.valueOf(player.getWins());
+                    row[4] = String.valueOf(player.getLosses());
+                    row[5] = String.valueOf(player.getTies());
+                    break; // Move to the next player
+                }
+            }
+        }
+
+        // Step 3: Write updated rows back to the CSV
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (String[] row : allRows) {
+                writer.write(String.join(",", row));
+                writer.newLine();
+            }
+            System.out.println("Profiles successfully updated in CSV.");
+        } catch (IOException e) {
+            System.err.println("Error writing to profiles.csv: " + e.getMessage());
+        }
+    }
+
 }
