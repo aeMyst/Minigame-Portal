@@ -6,14 +6,28 @@ import src.ca.ucalgary.seng300.Profile.utils.ValidationUtils;
 
 import java.io.*;
 
+/**
+ * AuthService class implementing methods from AuthInterface, methods used by AuthController class to
+ * authorize user information
+ * @author
+ */
+
 public class AuthService implements AuthInterface {
 
+    // Initiate currentUser as null
     private User currentUser = null;
 
+    // Set pathname for users data
     private static final String USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/Profile/services/users.csv";
 
-    // This will register a new user based on the credentials that our users provide.
-    // Once registration is completed without an issue, returns true.
+    /**
+     * Function to register new user
+     * @param email
+     * @param username
+     * @param password
+     * @return True if new user is stored without error
+     * @return False if error occurs
+     */
     @Override
     public boolean register(String email, String username, String password) {
         if (validateCredentials(username, password, email)) {
@@ -30,7 +44,14 @@ public class AuthService implements AuthInterface {
         }
         return false;
     }
-    // This will Validate the credentials based on formatting rules from ValidationUtils.
+
+    /**
+     * Function to validate entered username, password and email are in acceptable format
+     * @param username
+     * @param password
+     * @param email
+     * @return boolean result of ValidationUtils methods called
+     */
     private boolean validateCredentials(String username, String password, String email) {
         // I added isValidUsername here to filter out invalid usernames to prevent SQL injection attack.
         return ValidationUtils.isValidUsername(username) &&
@@ -38,7 +59,12 @@ public class AuthService implements AuthInterface {
                 ValidationUtils.isValidEmail(email);
     }
 
-    // To store user info to a text file, let me know if we need to hash the password later on.
+    /**
+     * Function to store new user information to user txt file
+     * @param user
+     * @return True if information was added without error
+     * @return False if error occurs
+     */
     private boolean storeUser(User user) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, true));
@@ -54,7 +80,13 @@ public class AuthService implements AuthInterface {
     }
 
 
-
+    /**
+     * Function to login user given username and password to validate in user data file
+     * @param username
+     * @param password
+     * @return True if entered data matches stored user data
+     * @return False if user data is not found
+     */
     @Override
     public boolean login(String username, String password) {
         try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
@@ -77,6 +109,12 @@ public class AuthService implements AuthInterface {
         return false;
     }
 
+    /**
+     * Function to logout user and end session
+     * @param user
+     * @return False if user is invalid
+     * @return True if user is valid
+     */
     @Override
     public boolean logout(User user) {
         if (user == null || !user.equals(currentUser)) {
@@ -89,6 +127,7 @@ public class AuthService implements AuthInterface {
         return true;
     }
 
+    // Method to check if a user is logged in, will return null if no user is logged in
     @Override
     public User isLoggedIn() {
         return currentUser;

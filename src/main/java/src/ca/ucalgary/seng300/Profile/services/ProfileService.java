@@ -7,6 +7,11 @@ import src.ca.ucalgary.seng300.Profile.models.User;
 import java.io.*;
 import java.util.*;
 
+/**
+ * ProfileService class containing methods from ProfileInterface, methods used by ProfileController class to
+ * handle profile information
+ * @author
+ */
 public class ProfileService implements ProfileInterface {
     // Initialize authService
     private final AuthService authService;

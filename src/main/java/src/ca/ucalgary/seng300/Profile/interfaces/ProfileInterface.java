@@ -4,7 +4,7 @@ import src.ca.ucalgary.seng300.Profile.models.User;
 import src.ca.ucalgary.seng300.Profile.models.Profile;
 
 /**
- * Interface to define methods implemented in ProfileService and ProfileController
+ * Interface to define methods implemented in ProfileService and ProfileController to handle profile information
  * @author
  */
 public interface ProfileInterface {

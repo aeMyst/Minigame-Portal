@@ -3,7 +3,7 @@ package src.ca.ucalgary.seng300.Profile.interfaces;
 import src.ca.ucalgary.seng300.Profile.models.User;
 
 /**
- * Interface to define methods implemented in AuthService and AuthController
+ * Interface to define methods implemented in AuthService and AuthController to authorize user information
  * @author
  */
 public interface AuthInterface {
