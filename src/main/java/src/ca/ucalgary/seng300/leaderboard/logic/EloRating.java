@@ -8,11 +8,7 @@ public class EloRating implements IEloRating {
     //we're going to calculate new elo ratings from your current elo and the enemy's elo
     @Override
     public int calculateNewElo(int myElo, int enemyElo, boolean won) {
-<<<<<<< HEAD
-        int K = 48;  // Constant K-factor used in calculation
-=======
         int K = 200;  // Constant K-factor used in calculation
->>>>>>> main
         double expectedScore = 1.0 / (1 + Math.pow(10, (enemyElo - myElo) / 400.0));
 
         int actualScore;
