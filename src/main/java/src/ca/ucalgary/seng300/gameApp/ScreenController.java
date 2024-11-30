@@ -149,9 +149,18 @@ public final class ScreenController extends Application {
         primaryStage.setScene(leaderBoard.getScene());
     }
 
-    public void showCheckerScreen() {
-        CheckersGameLogic gameLogic = new CheckersGameLogic(new Graphic());
-        CheckerScreen checkers = new CheckerScreen(primaryStage, this, gameLogic , client);
+    public void showCheckerScreen(ArrayList<Player> match) {
+        // Create Player instances for player1 and player2
+        Player player1 = new Player("Checkers", "Player1", 1200, 0, 0, 0);
+        Player player2 = new Player("Checkers", "Player2", 1200, 0, 0, 0);
+
+        // Create CheckersGameLogic with player1 and player2
+        CheckersGameLogic gameLogic = new CheckersGameLogic( player1, player2);
+
+        // Pass CheckersGameLogic and client into CheckerScreen
+        CheckerScreen checkers = new CheckerScreen(primaryStage, this, client,match);
+
+        // Set up the stage
         primaryStage.setTitle("Checkers");
         primaryStage.setScene(checkers.getScene());
     }

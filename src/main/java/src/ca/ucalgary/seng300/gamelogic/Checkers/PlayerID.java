@@ -1,6 +1,6 @@
 package src.ca.ucalgary.seng300.gamelogic.Checkers;
 
-public enum PlayerID {
+/*public enum PlayerID {
     PLAYER1(1),
     PLAYER2(2);
 
@@ -14,3 +14,5 @@ public enum PlayerID {
         return id;
     }
 }
+
+ */

@@ -1,23 +1,24 @@
 package src.ca.ucalgary.seng300.gamelogic.Checkers;
 
+import src.ca.ucalgary.seng300.leaderboard.data.Player;
+
 public class CheckersGameLogic implements ICheckers {
 
     private int[][] board;
     private GameState gameState;
-    private PlayerID currentPlayer;
-    private final Graphic graphic;
+    private Player currentPlayer;
+    private final Player player1;
+    private final Player player2;;
 
-    public CheckersGameLogic(Graphic graphic) {
+    public CheckersGameLogic( Player player1, Player player2) {
         this.board = CheckersBoard.createBoard();
-        this.graphic = graphic;
         this.gameState = GameState.START;
-        this.currentPlayer = PlayerID.PLAYER1;
+        this.player1 = player1;
+        this.player2 = player2;
+        this.currentPlayer = player1; // Start with Player 1
+
     }
 
-    @Override
-    public Graphic getGraphic() {
-        return graphic;
-    }
 
     @Override
     public GameState getGameState() {
@@ -29,7 +30,7 @@ public class CheckersGameLogic implements ICheckers {
         return 2;
     }
 
-    public PlayerID getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
@@ -38,10 +39,10 @@ public class CheckersGameLogic implements ICheckers {
     }
 
     @Override
-    public boolean playerSelectedPiece(int row, int col, PlayerID playerID) {
+    public boolean playerSelectedPiece(int row, int col, Player player) {
         if (!isWithinBounds(row, col)) return false;
         int piece = board[row][col];
-        int requiredPiece = (playerID == PlayerID.PLAYER1) ? 1 : 2;
+        int requiredPiece = (player == player1) ? 1 : 2;
         int kingPiece = requiredPiece + 2;
 
         // Recognize both normal and king pieces
@@ -49,23 +50,22 @@ public class CheckersGameLogic implements ICheckers {
     }
 
     @Override
-    public boolean playerMovedPiece(int fromRow, int fromCol, int toRow, int toCol, PlayerID playerID) {
-        if (!isValidMove(fromRow, fromCol, toRow, toCol, playerID)) {
+    public boolean playerMovedPiece(int fromRow, int fromCol, int toRow, int toCol, Player player) {
+        if (!isValidMove(fromRow, fromCol, toRow, toCol, player)) {
             return false;
         }
         board[toRow][toCol] = board[fromRow][fromCol];
         board[fromRow][fromCol] = 0;
 
-        if (checkKingPromotion(toRow, toCol, playerID)) {
-            promoteToKing(toRow, toCol, playerID);
+        if (checkKingPromotion(toRow, toCol, player)) {
+            promoteToKing(toRow, toCol, player);
         }
-        graphic.update(board);
         return true;
     }
 
     @Override
-    public boolean playerCapturedPiece(int fromRow, int fromCol, int toRow, int toCol, PlayerID playerID) {
-        if (!isValidCapture(fromRow, fromCol, toRow, toCol, playerID)) {
+    public boolean playerCapturedPiece(int fromRow, int fromCol, int toRow, int toCol, Player player) {
+        if (!isValidCapture(fromRow, fromCol, toRow, toCol, player)) {
             return false;
         }
 
@@ -75,31 +75,29 @@ public class CheckersGameLogic implements ICheckers {
         board[toRow][toCol] = board[fromRow][fromCol]; // Move piece
         board[fromRow][fromCol] = 0;
 
-        if (checkKingPromotion(toRow, toCol, playerID)) {
-            promoteToKing(toRow, toCol, playerID);
+        if (checkKingPromotion(toRow, toCol, player)) {
+            promoteToKing(toRow, toCol, player);
         }
-        graphic.update(board);
         return true;
     }
 
     @Override
-    public void promoteToKing(int row, int col, PlayerID playerID) {
+    public void promoteToKing(int row, int col, Player player) {
         if (!isWithinBounds(row, col)) return;
 
         int piece = board[row][col];
-        int requiredPiece = (playerID == PlayerID.PLAYER1) ? 1 : 2;
-        if (piece == requiredPiece && checkKingPromotion(row, col, playerID)) {
+        int requiredPiece = (player == player1) ? 1 : 2;
+        if (piece == requiredPiece && checkKingPromotion(row, col, player)) {
             board[row][col] = piece + 2; // Promote to king
-            graphic.update(board);
         }
     }
 
-    public boolean isValidMove(int fromRow, int fromCol, int toRow, int toCol, PlayerID playerID) {
+    public boolean isValidMove(int fromRow, int fromCol, int toRow, int toCol, Player player) {
         if (!isWithinBounds(fromRow, fromCol) || !isWithinBounds(toRow, toCol)) return false;
         if (board[toRow][toCol] != 0) return false;
 
         int piece = board[fromRow][fromCol];
-        int requiredPiece = (playerID == PlayerID.PLAYER1) ? 1 : 2;
+        int requiredPiece = (player == player1) ? 1 : 2;
         int kingPiece = requiredPiece + 2;
 
         if (piece != requiredPiece && piece != kingPiece) {
@@ -122,12 +120,12 @@ public class CheckersGameLogic implements ICheckers {
         return true;
     }
 
-    public boolean isValidCapture(int fromRow, int fromCol, int toRow, int toCol, PlayerID playerID) {
+    public boolean isValidCapture(int fromRow, int fromCol, int toRow, int toCol, Player player) {
         if (!isWithinBounds(fromRow, fromCol) || !isWithinBounds(toRow, toCol)) return false;
         if (board[toRow][toCol] != 0) return false;
 
         int piece = board[fromRow][fromCol];
-        int opponentPiece = (playerID == PlayerID.PLAYER1) ? 2 : 1;
+        int opponentPiece = (player == player1) ? 2 : 1;
         int opponentKingPiece = opponentPiece + 2;
 
         int rowDiff = toRow - fromRow;
@@ -157,10 +155,10 @@ public class CheckersGameLogic implements ICheckers {
         return true;
     }
 
-    public boolean hasValidCapture(int row, int col, PlayerID playerID) {
+    public boolean hasValidCapture(int row, int col, Player player) {
         int piece = board[row][col];
         if (piece == 0) return false;
-        int requiredPiece = (playerID == PlayerID.PLAYER1) ? 1 : 2;
+        int requiredPiece = (player == player1) ? 1 : 2;
         int kingPiece = requiredPiece + 2;
 
         if (piece != requiredPiece && piece != kingPiece) {
@@ -170,7 +168,7 @@ public class CheckersGameLogic implements ICheckers {
         int[] rowDirs;
         if (piece == requiredPiece) {
             // Normal pieces
-            rowDirs = (playerID == PlayerID.PLAYER1) ? new int[]{2} : new int[]{-2};
+            rowDirs = (player == player1) ? new int[]{2} : new int[]{-2};
         } else {
             // Kings
             rowDirs = new int[]{-2, 2};
@@ -181,7 +179,7 @@ public class CheckersGameLogic implements ICheckers {
             for (int cd : colDirs) {
                 int toRow = row + rd;
                 int toCol = col + cd;
-                if (isValidCapture(row, col, toRow, toCol, playerID)) {
+                if (isValidCapture(row, col, toRow, toCol, player)) {
                     return true;
                 }
             }
@@ -189,15 +187,15 @@ public class CheckersGameLogic implements ICheckers {
         return false;
     }
 
-    public boolean hasAnyValidCaptures(PlayerID playerID) {
-        int requiredPiece = (playerID == PlayerID.PLAYER1) ? 1 : 2;
+    public boolean hasAnyValidCaptures(Player player) {
+        int requiredPiece = (player == player1) ? 1 : 2;
         int kingPiece = requiredPiece + 2;
 
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 int piece = board[row][col];
                 if (piece == requiredPiece || piece == kingPiece) {
-                    if (hasValidCapture(row, col, playerID)) {
+                    if (hasValidCapture(row, col, player)) {
                         return true;
                     }
                 }
@@ -206,17 +204,17 @@ public class CheckersGameLogic implements ICheckers {
         return false;
     }
 
-    boolean checkKingPromotion(int row, int col, PlayerID playerID) {
-        if (playerID == PlayerID.PLAYER1 && row == 7) {
+    boolean checkKingPromotion(int row, int col, Player player) {
+        if (player == player1 && row == 7) {
             return true;
-        } else if (playerID == PlayerID.PLAYER2 && row == 0) {
+        } else if (player == player2 && row == 0) {
             return true;
         }
         return false;
     }
 
     public void forfeitGame() {
-        if (getCurrentPlayer() == PlayerID.PLAYER1) {
+        if (getCurrentPlayer() == player1) {
             gameState = GameState.PLAYER2_WIN;
         } else {
             gameState = GameState.PLAYER1_WIN;
@@ -228,7 +226,7 @@ public class CheckersGameLogic implements ICheckers {
     }
 
     public void switchPlayer() {
-        currentPlayer = (currentPlayer == PlayerID.PLAYER1) ? PlayerID.PLAYER2 : PlayerID.PLAYER1;
-        System.out.println("Switched to " + currentPlayer + "'s turn.");
+        currentPlayer = (currentPlayer == player1) ? player2 : player1;
+        System.out.println("Switched to " + currentPlayer.getPlayerID() + "'s turn.");
     }
 }

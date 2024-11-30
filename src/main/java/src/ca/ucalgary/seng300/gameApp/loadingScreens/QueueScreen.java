@@ -142,7 +142,7 @@ public class QueueScreen implements IScreen {
                                     controller.showConnect4Screen(queue.createMatch());
                                     break;
                                 case 2:
-                                    controller.showCheckerScreen();
+                                    controller.showCheckerScreen(queue.createMatch());
                                     break;
                             }
                         });

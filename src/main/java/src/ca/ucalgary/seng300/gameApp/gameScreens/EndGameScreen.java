@@ -83,19 +83,6 @@ public class EndGameScreen implements IScreen {
             boardPrint.setText(printGameResults(null, connect4Logic.getBoard(), 1));
         } else if (gameType == 2) {
             boardPrint.setText(printGameResults(null, checkersGameLogic.getBoard(), 2));
-            if (checkersGameLogic.getGameState().equals(GameState.PLAYER1_WIN)) {
-                winnerString = "Player 1";
-                loserString = "Player 2";
-                eloGain = "10";
-            } else if (checkersGameLogic.getGameState().equals(GameState.PLAYER2_WIN)) {
-                winnerString = "Player 2";
-                loserString = "Player 1";
-                eloGain = "10";
-            } else {
-                winnerString = "No one";
-                loserString = "No one";
-                eloGain = "0";
-            }
         }
 
 
@@ -132,7 +119,7 @@ public class EndGameScreen implements IScreen {
                 controller.showConnect4Screen(match);
             } else if (gameType == 2) {
                 client.createGameSession();
-                controller.showCheckerScreen();
+                controller.showCheckerScreen(match);
             }
         });
 

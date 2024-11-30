@@ -8,11 +8,11 @@ import src.ca.ucalgary.seng300.Profile.services.AuthService;
 import src.ca.ucalgary.seng300.Profile.services.ProfileService;
 import src.ca.ucalgary.seng300.gameApp.Utility.ChatUtility;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
-import src.ca.ucalgary.seng300.gamelogic.Checkers.PlayerID;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Logic;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.TurnManager;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
+import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.ILeaderboard;
 
 import java.util.Random;
@@ -335,16 +335,20 @@ public class Client implements IClient {
     // ###########################################Connect 4 Server Methods############################################//
 
     // ###########################################Checkers Server Methods#############################################//
-    public void sendCheckerMoveToServer(CheckersGameLogic gameLogic, int fromRow, int fromCol, int toRow, int toCol,PlayerID playerID, Runnable callback) {
+
+    public void sendCheckerMoveToServer(CheckersGameLogic gameLogic, int fromRow, int fromCol, int toRow, int toCol, Player player, Runnable callback) {
         Random rand = new Random();
-        int time = rand.nextInt(10); // Simulate random delay between 500ms and 1500ms
+        int time = rand.nextInt(10);
 
         new Thread(() -> {
             try {
                 Thread.sleep(time); // Simulate server processing time
                 System.out.println("Server Communication: Processing move...");
                 System.out.printf("Move acknowledged by server: [%d, %d] -> [%d, %d]\n", fromRow, fromCol, toRow, toCol);
-                newMoveCheckers(gameLogic,playerID);
+
+                // Log the board state after the move
+                newMoveCheckers(gameLogic, player);
+
                 Platform.runLater(callback); // Execute the callback on the JavaFX thread
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -352,8 +356,8 @@ public class Client implements IClient {
         }).start();
     }
 
-    public void newMoveCheckers(CheckersGameLogic logicManager, PlayerID currentPlayer) {
-        System.out.println("Current Player: " + (currentPlayer == PlayerID.PLAYER1 ? "Player 1 (White)" : "Player 2 (Black)"));
+    public void newMoveCheckers(CheckersGameLogic logicManager, Player currentPlayer) {
+        System.out.println("Current Player: " + currentPlayer.getPlayerID());
 
         int[][] board = logicManager.getBoard();
         System.out.println("     1  2  3  4  5  6  7  8");
@@ -374,9 +378,9 @@ public class Client implements IClient {
         System.out.println("   +------------------------+");
     }
 
-    public void sendCheckersLeaderboardToServer(String [][] leaderboard, Runnable callback) {
+    public void sendCheckersLeaderboardToServer(String[][] leaderboard, Runnable callback) {
         Random rand = new Random();
-        int time = rand.nextInt(1000); // simulate server delay
+        int time = rand.nextInt(500) + 500; // Simulate server delay between 500ms and 1000ms
 
         new Thread(() -> {
             try {
@@ -385,23 +389,21 @@ public class Client implements IClient {
                 System.out.println("Leaderboard for Checkers being updated...\n");
 
                 int count = 1;
-
                 System.out.println("Sorted Leaderboard for Checkers:\n");
                 System.out.printf("%-10s %-16s %-10s %-10s%n", "Rank", "Player ID", "Rating", "Wins");
                 for (String[] entry : leaderboard) {
                     System.out.printf("%-10d %-16s %-10s %-10s%n", count, entry[0], entry[1], entry[2]);
-
                     count++;
                 }
 
-                // update the GUI
+                // Update the GUI on the JavaFX thread
                 Platform.runLater(callback);
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }).start();
     }
+
 
     public void sendTTTLeaderboardToServer(String[][] leaderboard, Runnable callback) {
         Random rand = new Random();
