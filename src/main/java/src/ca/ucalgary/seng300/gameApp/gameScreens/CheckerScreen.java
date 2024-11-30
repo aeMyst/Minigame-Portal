@@ -12,7 +12,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.Utility.ChatUtility;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.GameState;
-import src.ca.ucalgary.seng300.gamelogic.Checkers.Graphic;
 import src.ca.ucalgary.seng300.leaderboard.logic.EloRating;
 import src.ca.ucalgary.seng300.leaderboard.utility.FileManagement;
 import src.ca.ucalgary.seng300.network.Client;

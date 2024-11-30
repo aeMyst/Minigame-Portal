@@ -24,7 +24,6 @@ import src.ca.ucalgary.seng300.gameApp.menuScreens.GameMenuScreen;
 import src.ca.ucalgary.seng300.gameApp.menuScreens.MainMenuScreen;
 import src.ca.ucalgary.seng300.gameApp.menuScreens.MatchmakeChoiceScreen;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
-import src.ca.ucalgary.seng300.gamelogic.Checkers.Graphic;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Logic;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 
