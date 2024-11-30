@@ -57,6 +57,7 @@ public class EndGameScreen implements IScreen {
             eloRating.updateElo(winner, loser);
             winner.setWins(winner.getWins() + 1);
             loser.setLosses(loser.getLosses() + 1);
+
             eloGain = String.valueOf(winner.getElo() - currentWinnerElo);
             eloLoss = String.valueOf(currentLoserElo - loser.getElo());
 

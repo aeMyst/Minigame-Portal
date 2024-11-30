@@ -69,6 +69,16 @@ public class Player {
         return ties;
     }
 
+    public static Player fromCsv(String csv) {
+        String[] parts = csv.split(",");
+        // game, playerID, elo, wins, losses, ties
+        return new Player(parts[0], parts[1], Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5]));
+    }
+
+    public String toCsv() {
+        return this.getGameType() + "," + this.getPlayerID() + "," + this.getElo() + "," + this.getWins() + "," + this.getLosses() + "," + this.getTies();
+    }
+
     @Override
     public String toString() {
         return "GameType: " + gameType +
