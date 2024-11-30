@@ -10,7 +10,7 @@ import java.util.Scanner;
 // Example main to show file reading, writing, and storage and Player are all functional for future use cases
 public class ExampleMain {
 
-    private static final String FILE_PATH = "players_data.csv";
+    private static final String FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/profiles.csv";
 
     public static void main(String[] args) {
         File file = new File(FILE_PATH);

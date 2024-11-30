@@ -10,13 +10,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Profile.services.AuthService;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
 public class ResetPasswordScreen {
     private Scene scene;
 
-    public ResetPasswordScreen(Stage stage, ScreenController controller, Client client, String username) {
+    public ResetPasswordScreen(Stage stage, ScreenController controller, Client client, String username, String email,  AuthService authService) {
         Label titleLabel = new Label("Reset Password");
         titleLabel.setFont(new Font("Arial", 36));
         titleLabel.setTextFill(Color.DARKBLUE);
@@ -45,6 +46,16 @@ public class ResetPasswordScreen {
         HBox confirmPasswordLayout = new HBox(10, confirmPasswordLabel, confirmPasswordField);
         confirmPasswordLayout.setAlignment(Pos.CENTER);
 
+        Label passwordDetailsLabel = new Label("Password Requirements: \n - Must include atleast 8 characters\n - Must include atleast 1 Letter \n " +
+                "- Must include atleast 1 number\n " + "- must include atleast 1 special character/symbol" );
+        passwordDetailsLabel.setFont(new Font("Arial", 10));
+        passwordDetailsLabel.setTextFill(Color.GRAY);
+
+        VBox passwordLayout = new VBox(10, passwordDetailsLabel);
+        passwordLayout.setAlignment(Pos.CENTER);
+        HBox passwordHbox = new HBox(10, passwordLayout);
+        passwordHbox.setAlignment(Pos.CENTER);
+
         // Submit Button
         Button submitButton = new Button("Submit");
         submitButton.setFont(new Font("Arial", 16));
@@ -55,7 +66,13 @@ public class ResetPasswordScreen {
             String confirmPassword = confirmPasswordField.getText();
 
             if (newPassword.equals(confirmPassword)) {
-                client.updatePassword(username, newPassword);
+
+                if (!authService.validateCredentials(username, email, newPassword)) {
+                    showAlert(Alert.AlertType.ERROR, "Error", "Password does not meet requirements!");
+                    return;
+                }
+
+                authService.modifyUserPassword(username, newPassword);
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Password successfully reset!");
                 controller.showSignInScreen();
             } else {
@@ -64,7 +81,7 @@ public class ResetPasswordScreen {
         });
 
         // Layout
-        VBox inputLayout = new VBox(15, titleLabel, newPasswordLayout, confirmPasswordLayout, submitButton);
+        VBox inputLayout = new VBox(15, titleLabel, newPasswordLayout, confirmPasswordLayout, passwordLayout, submitButton);
         inputLayout.setAlignment(Pos.CENTER);
         inputLayout.setPadding(new Insets(20));
 

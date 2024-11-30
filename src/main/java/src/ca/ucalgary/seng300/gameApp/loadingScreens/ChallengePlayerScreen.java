@@ -12,22 +12,23 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
+import src.ca.ucalgary.seng300.gameApp.Utility.TipsUtility;
 import src.ca.ucalgary.seng300.leaderboard.data.Storage;
 import src.ca.ucalgary.seng300.leaderboard.logic.MatchMaker;
 import src.ca.ucalgary.seng300.leaderboard.utility.FileManagement;
 import src.ca.ucalgary.seng300.network.Client;
-import src.ca.ucalgary.seng300.gameApp.Utility.TipsUtility;
 
 import java.io.File;
 import java.util.List;
 import java.util.Random;
 
-public class QueueScreen implements IScreen {
+public class ChallengePlayerScreen implements IScreen {
     private Scene scene;
+
     private boolean canceled = false;
 
-    public QueueScreen(Stage stage, ScreenController controller, int gameType, Client client) {
-        System.out.println("Queueing...");
+    public ChallengePlayerScreen(Stage stage, ScreenController controller, Client client, String challengeUser, int gameType) {
+        System.out.println("Finding Correct User... Challenge Request sent...");
 
         File players = new File(client.getStatPath());
         String currentUser = client.getCurrentUsername();
@@ -36,7 +37,7 @@ public class QueueScreen implements IScreen {
         MatchMaker queue = new MatchMaker(allPlayers);
 
         // Title label
-        Label joiningLabel = new Label("Searching for Player...");
+        Label joiningLabel = new Label("Challenge Request Sent To: " + challengeUser);
         joiningLabel.setFont(new Font("Arial", 24));
         joiningLabel.setTextFill(Color.DARKBLUE);
 
@@ -99,18 +100,15 @@ public class QueueScreen implements IScreen {
             if (!canceled) {
 
                 if (gameType == 0) {
-                    queue.addPlayerToQueue(currentUser, "TICTACTOE");
-                    queue.createMatch();
+                    queue.challengePlayerQueue(challengeUser, currentUser, "TICTACTOE");
                 } else if (gameType == 1) {
-                    queue.addPlayerToQueue(currentUser, "CONNECT4");
-                    queue.createMatch();
+                    queue.challengePlayerQueue(challengeUser, currentUser, "CONNECT4");
                 } else if (gameType == 2) {
-                    queue.addPlayerToQueue(currentUser, "CHECKERS");
-                    queue.createMatch();
+                    queue.challengePlayerQueue(challengeUser, currentUser, "CHECKERS");
                 }
 
                 // Update the label to indicate a player was found
-                Platform.runLater(() -> joiningLabel.setText("Player Found!"));
+                Platform.runLater(() -> joiningLabel.setText("Player Accepted Challenge!"));
 
                 // Additional delay before setting up the game
                 try {
@@ -157,5 +155,3 @@ public class QueueScreen implements IScreen {
         return scene;
     }
 }
-
-

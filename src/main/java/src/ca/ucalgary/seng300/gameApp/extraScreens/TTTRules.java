@@ -19,15 +19,21 @@ public class TTTRules implements IScreen {
     private Scene scene;
 
     public TTTRules(Stage stage, ScreenController controller, Client client) {
-        String filePath = "src/main/java/src/ca/ucalgary/seng300/database/tictactoe_rules.txt";
-        String rulesText = RulesUtility.getRules(filePath);
+        String filePathFromServer = client.getRulesPath(0);
+        String rulesText = RulesUtility.getRules(filePathFromServer);
 
         Label Rules = new Label("Tic-Tac-Toe Rules: ");
         Rules.setFont(new Font("Arial", 24));
         Rules.setTextFill(Color.DARKBLUE);
 
         Label content = new Label(rulesText);
-        content.setStyle("-fx-font-weight: bold");
+        content.setStyle("-fx-font-weight: bold; "
+                + "-fx-padding: 10; "
+                + "-fx-border-color: black; "
+                + "-fx-border-width: 2; "
+                + "-fx-border-style: solid; "
+                + "-fx-border-radius: 5; "
+                + "-fx-background-color: #ffffff;");
         Rules.setFont(new Font("Arial", 24));
 
         Button backButton = new Button("back");
