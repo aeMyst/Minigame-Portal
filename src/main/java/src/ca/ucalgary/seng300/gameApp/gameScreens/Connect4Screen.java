@@ -3,16 +3,15 @@ package src.ca.ucalgary.seng300.gameApp.gameScreens;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.Utility.ChatUtility;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
+import src.ca.ucalgary.seng300.leaderboard.logic.EloRating;
+import src.ca.ucalgary.seng300.leaderboard.utility.FileManagement;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
@@ -21,6 +20,7 @@ import src.ca.ucalgary.seng300.gamelogic.Connect4.TurnManager;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.UserPiece;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Connect4Screen implements IScreen {
     private Scene scene;
@@ -114,16 +114,85 @@ public class Connect4Screen implements IScreen {
             }
         });
 
-        Button backToMenuButton = new Button("Forfeit");
-        backToMenuButton.setFont(new Font("Arial", 16));
-        backToMenuButton.setPrefWidth(200);
-        backToMenuButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: #FFFFFF;");
-        backToMenuButton.setOnAction(e -> controller.showMainMenu());
+        Button forfeitButton = new Button("Forfeit");
+        forfeitButton.setFont(new Font("Arial", 16));
+        forfeitButton.setPrefWidth(200);
+        forfeitButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: #FFFFFF;");
+        forfeitButton.setOnAction(e -> {
+            // Create a confirmation dialog
+            // chatgpt generated
+            Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationDialog.setHeaderText("Forfeit Confirmation");
+            confirmationDialog.setTitle("Confirm Forfeit");
+
+            Label header = new Label("Are you sure you want to forfeit?");
+            header.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #d9534f;");
+
+            Label content = new Label("Forfeiting will end the game and declare the opponent as the winner and you will lose elo.");
+            content.setStyle("-fx-font-size: 14px; -fx-text-fill: #5a5a5a;");
+
+            VBox dialogContent = new VBox(10, header, content);
+            dialogContent.setAlignment(Pos.CENTER_LEFT);
+            confirmationDialog.getDialogPane().setContent(dialogContent);
+
+            ButtonType forfeitButtonType = new ButtonType("Confirm Forfeit", ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancelButtonType = new ButtonType("Cancel Forfeit", ButtonBar.ButtonData.CANCEL_CLOSE);
+            confirmationDialog.getButtonTypes().setAll(forfeitButtonType, cancelButtonType);
+
+            // Show the dialog and wait for a response
+            Optional<ButtonType> result = confirmationDialog.showAndWait();
+
+            // Handle user response
+            if (result.isPresent() && result.get() == forfeitButtonType) {
+                // User confirmed forfeiting
+                System.out.println(client.getCurrentUsername() + " has forfeited the game.");
+
+                Player winner = null;
+                Player loser = null;
+
+                EloRating eloRating = new EloRating();
+                String eloLoss;
+                int currentLoserElo = 0;
+
+                // loop to find winner and loser
+                for (Player player : match) {
+                    if (!player.getPlayerID().equals(client.getCurrentUsername())) {
+                        winner = player;
+                    } else {
+                        loser = player;
+                        currentLoserElo = loser.getElo();
+                    }
+                }
+
+                eloRating.updateElo(winner, loser);
+                winner.setWins(winner.getWins() + 1);
+                loser.setLosses(loser.getLosses() + 1);
+                eloLoss = String.valueOf(currentLoserElo - loser.getElo());
+
+                // loop to edit player profiles in match
+                for (Player player : match) {
+                    if (player.getPlayerID().equals(winner.getPlayerID())) {
+                        player = winner;
+                    } else {
+                        player = loser;
+                    }
+                }
+
+                FileManagement.updateProfilesInCsv(client.getStatPath(), match);
+
+                controller.showMainMenu(); // Navigate back to the main menu
+                https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
+                showAlert(Alert.AlertType.INFORMATION, "The game was Forfeited", "You have Loss -" + eloLoss +" Elo" );
+            } else {
+                // User canceled forfeiting
+                System.out.println(client.getCurrentUsername() + " has canceled forfeiting.");
+            }
+        });
 
         HBox chatBox = new HBox(5, chatInput, emojiButton, sendButton);
         chatBox.setAlignment(Pos.CENTER);
 
-        VBox layout = new VBox(15, title, turnIndicator, gameBoard, chatArea, chatBox, backToMenuButton);
+        VBox layout = new VBox(15, title, turnIndicator, gameBoard, chatArea, chatBox, forfeitButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
         layout.setStyle("-fx-background-color: #f5f5f5;");
@@ -205,6 +274,18 @@ public class Connect4Screen implements IScreen {
             chatArea.appendText("Player: " + client.sendMessageToServer(message, client) + "\n");
             chatInput.clear();
         }
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+
+        Label content = new Label(message);
+        content.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+
+        alert.getDialogPane().setContent(content);
+        alert.showAndWait();
     }
 
     @Override
