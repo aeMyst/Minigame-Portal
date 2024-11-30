@@ -500,5 +500,9 @@ public class Client implements IClient {
         return "src/main/java/src/ca/ucalgary/seng300/database/profiles.csv";
     }
 
+    public String getAccountsPath() {
+        System.out.println("Server Request started for fetching Accounts in System");
+        return "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
+    }
 
 }

@@ -10,6 +10,7 @@ import src.ca.ucalgary.seng300.gameApp.extraScreens.CheckersRules;
 import src.ca.ucalgary.seng300.gameApp.extraScreens.ConnectFourRules;
 import src.ca.ucalgary.seng300.gameApp.extraScreens.TTTRules;
 import src.ca.ucalgary.seng300.gameApp.leaderboardScreens.LeaderboardController;
+import src.ca.ucalgary.seng300.gameApp.loadingScreens.ChallengePlayerScreen;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.accountScreens.*;
@@ -197,5 +198,12 @@ public final class ScreenController extends Application {
         primaryStage.setTitle("Checkers' Rules");
         primaryStage.setScene(CHRules.getScene());
     }
+
+    public void showChallengePlayerScreen(String challengeUser, int gameChoice) {
+        ChallengePlayerScreen challengeScreen = new ChallengePlayerScreen(primaryStage, this, client, challengeUser, gameChoice);
+        primaryStage.setTitle("Challenge Player Screen");
+        primaryStage.setScene(challengeScreen.getScene());
+    }
+
 
 }

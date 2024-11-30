@@ -34,7 +34,7 @@ public class EndGameScreen implements IScreen {
         EloRating eloRating = new EloRating();
 
         Label boardPrint = new Label();
-        boardPrint.setFont(new Font("Arial", 24));
+        boardPrint.setFont(new Font("Courier New", 24));
 
         // string initialization
         int currentWinnerElo;
@@ -161,14 +161,16 @@ public class EndGameScreen implements IScreen {
         if (gameType == 0) {
             for (char[] row : charArray) {
                 for (char cell : row) {
-                    buildString += cell + " ";
+                    // chat-gpt generated to print out nicely if a cell is empty
+                    buildString += String.format("%-3s", (cell == '\0' || cell == ' ') ? "~" : cell);
                 }
-                buildString += "\n";
+                buildString += "\n\n";
             }
         } else {
             for (int[] row : intArray) {
                 for (int cell : row) {
-                    buildString += cell + " ";
+                    // Replace 0 with '~', otherwise print the number
+                    buildString += String.format("%-3s", (cell == 0) ? "~" : cell);
                 }
                 buildString += "\n";
             }

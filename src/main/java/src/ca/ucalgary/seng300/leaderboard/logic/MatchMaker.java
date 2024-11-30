@@ -16,6 +16,16 @@ public class MatchMaker implements IMatchmaker {
         this.storage = storage;
     }
 
+    public void challengePlayerQueue(String challengeUser, String currentUser, String gameType) {
+        for (Player player : storage.getPlayers()) {
+            if (player.getGameType().equals(gameType) && player.getPlayerID().equals(challengeUser)) {
+                match.add(player);
+            } else if (player.getGameType().equals(gameType) && player.getPlayerID().equals(currentUser)) {
+                match.add(player);
+            }
+        }
+    }
+
     @Override
     public void addPlayerToQueue(String user, String gameType) {
         for (Player player : storage.getPlayers()) {
