@@ -19,7 +19,7 @@ public class HelpScreen implements IScreen {
 
     public HelpScreen(Stage stage, ScreenController controller, Client client) {
 
-        Label information = new Label("Some kind of Information Here");
+        Label information = new Label("Game Rules:");
         information.setFont(new Font("Arial", 24));
         information.setTextFill(Color.DARKBLUE);
 

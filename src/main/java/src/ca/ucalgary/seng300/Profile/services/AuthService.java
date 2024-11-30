@@ -13,7 +13,7 @@ public class AuthService implements AuthInterface {
     private User currentUser = null;
     private ArrayList<User> users = new ArrayList<>();
 
-    private static final String USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/Profile/services/users.csv";
+    private static final String USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
 
     public AuthService() {
         ArrayList<User> newUsers = new ArrayList<>();
@@ -140,6 +140,13 @@ public class AuthService implements AuthInterface {
     @Override
     public User isLoggedIn() {
         return currentUser;
+    }
+
+    public void updateCurrentUser(String newUsername, String newEmail) {
+        if (currentUser != null) {
+            currentUser.setUsername(newUsername);
+            currentUser.setEmail(newEmail);
+        }
     }
 
 

@@ -12,12 +12,16 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.Utility.ChatUtility;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.GameState;
+import src.ca.ucalgary.seng300.leaderboard.logic.EloRating;
+import src.ca.ucalgary.seng300.leaderboard.utility.FileManagement;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
-import src.ca.ucalgary.seng300.gamelogic.Checkers.PlayerID;
+import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class CheckerScreen implements IScreen {
     private Scene scene;
@@ -31,6 +35,7 @@ public class CheckerScreen implements IScreen {
     private int selectedRow = -1;
     private int selectedCol = -1;
     private boolean isEmojiOpen = false;
+    private ArrayList<Player> match;
 
     // Paths to images
     // https://www.tutorialspoint.com/javafx/javafx_images.htm
@@ -39,16 +44,22 @@ public class CheckerScreen implements IScreen {
     private final String WHITE_KING_IMAGE_PATH = "src/main/java/src/ca/ucalgary/seng300/images/white_king_piece.png";
     private final String BLACK_KING_IMAGE_PATH = "src/main/java/src/ca/ucalgary/seng300/images/black_king_piece.png";
 
-    public CheckerScreen(Stage stage, ScreenController controller, CheckersGameLogic gameLogic, Client client) {
+    public CheckerScreen(Stage stage, ScreenController controller, Client client, ArrayList<Player> match) {
         this.controller = controller;
-        this.gameLogic = gameLogic;
         this.client = client;
+        this.match = match;
+
+        Player playerOne = match.get(0);
+        Player playerTwo = match.get(1);
+
+        // Correctly assign to the class-level gameLogic field
+        this.gameLogic = new CheckersGameLogic(playerOne, playerTwo);
 
         Label titleLabel = new Label("Checkers");
         titleLabel.setFont(new Font("Arial", 24));
         titleLabel.setTextFill(Color.DARKBLUE);
 
-        turnIndicator = new Label("Turn: Player " + gameLogic.getCurrentPlayer());
+        turnIndicator = new Label("Turn: " + gameLogic.getCurrentPlayer().getPlayerID());
         turnIndicator.setFont(new Font("Arial", 18));
         turnIndicator.setTextFill(Color.DARKGREEN);
 
@@ -78,26 +89,92 @@ public class CheckerScreen implements IScreen {
         emojiButton.setOnAction(e -> {
             if (!isEmojiOpen) {
                 isEmojiOpen = true;
-                ChatUtility.showEmojiMenu(chatInput, stage, () -> isEmojiOpen = false);
+                ChatUtility.showEmojiMenu(chatInput, stage, () -> isEmojiOpen = false, client);
             } else {
                 chatArea.appendText("Server: Please select an Emoji or close the menu.\n");
             }
         });
 
 
-        Button backButton = new Button("Forfeit");
-        backButton.setFont(new Font("Arial", 16));
-        backButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: white;");
-        backButton.setOnAction(e -> {
-                gameLogic.forfeitGame();
-                checkGameState();
+        Button forfeitButton = new Button("Forfeit");
+        forfeitButton.setFont(new Font("Arial", 16));
+        forfeitButton.setPrefWidth(200);
+        forfeitButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: #FFFFFF;");
+        forfeitButton.setOnAction(e -> {
+            // Create a confirmation dialog
+            // chatgpt generated
+            Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationDialog.setHeaderText("Forfeit Confirmation");
+            confirmationDialog.setTitle("Confirm Forfeit");
+
+            Label header = new Label("Are you sure you want to forfeit?");
+            header.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #d9534f;");
+
+            Label content = new Label("Forfeiting will end the game and declare the opponent as the winner and you will lose elo.");
+            content.setStyle("-fx-font-size: 14px; -fx-text-fill: #5a5a5a;");
+
+            VBox dialogContent = new VBox(10, header, content);
+            dialogContent.setAlignment(Pos.CENTER_LEFT);
+            confirmationDialog.getDialogPane().setContent(dialogContent);
+
+            ButtonType forfeitButtonType = new ButtonType("Confirm Forfeit", ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancelButtonType = new ButtonType("Cancel Forfeit", ButtonBar.ButtonData.CANCEL_CLOSE);
+            confirmationDialog.getButtonTypes().setAll(forfeitButtonType, cancelButtonType);
+
+            // Show the dialog and wait for a response
+            Optional<ButtonType> result = confirmationDialog.showAndWait();
+
+            // Handle user response
+            if (result.isPresent() && result.get() == forfeitButtonType) {
+                // User confirmed forfeiting
+                System.out.println(client.getCurrentUsername() + " has forfeited the game.");
+
+                Player winner = null;
+                Player loser = null;
+
+                EloRating eloRating = new EloRating();
+                String eloLoss;
+                int currentLoserElo = 0;
+
+                // loop to find winner and loser
+                for (Player player : match) {
+                    if (!player.getPlayerID().equals(client.getCurrentUsername())) {
+                        winner = player;
+                    } else {
+                        loser = player;
+                        currentLoserElo = loser.getElo();
+                    }
+                }
+
+                eloRating.updateElo(winner, loser);
+                winner.setWins(winner.getWins() + 1);
+                loser.setLosses(loser.getLosses() + 1);
+                eloLoss = String.valueOf(currentLoserElo - loser.getElo());
+
+                // loop to edit player profiles in match
+                for (Player player : match) {
+                    if (player.getPlayerID().equals(winner.getPlayerID())) {
+                        player = winner;
+                    } else {
+                        player = loser;
+                    }
+                }
+
+                FileManagement.updateProfilesInCsv(client.getStatPath(), match);
+
+                controller.showMainMenu(); // Navigate back to the main menu
+                https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
+                showAlert(Alert.AlertType.INFORMATION, "The game was Forfeited", "You have Loss -" + eloLoss +" Elo" );
+            } else {
+                // User canceled forfeiting
+                System.out.println(client.getCurrentUsername() + " has canceled forfeiting.");
             }
-        );
+        });
 
         HBox chatBox = new HBox(10, chatInput, emojiButton, sendButton);
         chatBox.setAlignment(Pos.CENTER);
 
-        VBox layout = new VBox(15, titleLabel, turnIndicator, gameBoard, chatArea, chatBox, backButton);
+        VBox layout = new VBox(15, titleLabel, turnIndicator, gameBoard, chatArea, chatBox, forfeitButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
         layout.setStyle("-fx-background-color: #f5f5f5;");
@@ -189,83 +266,76 @@ public class CheckerScreen implements IScreen {
             } else {
                 chatArea.appendText("Invalid piece selection. Try again.\n");
             }
+        } else if (selectedRow == row && selectedCol == col) {
+            // Unselect the currently selected piece if clicked again
+            clearHighlights();
+            selectedRow = -1;
+            selectedCol = -1;
+            chatArea.appendText("Piece unselected.\n");
+        } else if (gameLogic.playerSelectedPiece(row, col, gameLogic.getCurrentPlayer())) {
+            // If another piece is selected, switch selection to the new piece
+            clearHighlights();
+            selectedRow = row;
+            selectedCol = col;
+            highlightPossibleMoves(row, col);
+            chatArea.appendText("Piece switched to a new selection.\n");
         } else {
-            // A piece is already selected
-            if (selectedRow == row && selectedCol == col) {
-                // Deselect the currently selected piece
-                selectedRow = -1;
-                selectedCol = -1;
-                clearHighlights();
-            } else if (gameLogic.playerSelectedPiece(row, col, gameLogic.getCurrentPlayer())) {
-                // Select a different piece
-                selectedRow = row;
-                selectedCol = col;
-                clearHighlights();
-                highlightPossibleMoves(row, col);
-            } else {
-                // Attempt to move to the selected square
-                int fromRow = selectedRow;
-                int fromCol = selectedCol;
-                int toRow = row;
-                int toCol = col;
-                PlayerID currentPlayer = gameLogic.getCurrentPlayer();
+            // Attempt to move the selected piece
+            int fromRow = selectedRow;
+            int fromCol = selectedCol;
+            int toRow = row;
+            int toCol = col;
+            Player currentPlayer = gameLogic.getCurrentPlayer();
 
+            if (gameLogic.isValidCapture(fromRow, fromCol, toRow, toCol, currentPlayer)) {
+                gameLogic.playerCapturedPiece(fromRow, fromCol, toRow, toCol, currentPlayer);
+                updateBoard();
+                clearHighlights(); // Clear highlights after capture
 
-                if (gameLogic.isValidCapture(fromRow, fromCol, toRow, toCol, currentPlayer)) {
-                    gameLogic.playerCapturedPiece(fromRow, fromCol, toRow, toCol, currentPlayer);
-                    updateBoard();
-                    clearHighlights(); // Clear highlights after capture
-
-
-                    client.sendCheckerMoveToServer(gameLogic, fromRow, fromCol, toRow, toCol, currentPlayer, () -> {
-                        if (gameLogic.hasValidCapture(toRow, toCol, currentPlayer)) {
-                            selectedRow = toRow;
-                            selectedCol = toCol;
-                            highlightPossibleMoves(toRow, toCol);
-                        } else {
-                            if (checkGameState()) {
-                                return;
-                            }
-                            selectedRow = -1;
-                            selectedCol = -1;
-                            clearHighlights();
-                            gameLogic.switchPlayer();
-                            turnIndicator.setText("Turn: Player " + gameLogic.getCurrentPlayer());
+                client.sendCheckerMoveToServer(gameLogic, fromRow, fromCol, toRow, toCol, currentPlayer, () -> {
+                    if (gameLogic.hasValidCapture(toRow, toCol, currentPlayer)) {
+                        selectedRow = toRow;
+                        selectedCol = toCol;
+                        highlightPossibleMoves(toRow, toCol);
+                    } else {
+                        if (checkGameState()) {
+                            return;
                         }
-                    });
-
-
-                } else if (gameLogic.isValidMove(fromRow, fromCol, toRow, toCol, currentPlayer)) {
-                    if (gameLogic.hasAnyValidCaptures(currentPlayer)) {
-                        chatArea.appendText("You must capture if possible.\n");
-                        clearHighlights();
                         selectedRow = -1;
                         selectedCol = -1;
-                    } else {
-                        gameLogic.playerMovedPiece(fromRow, fromCol, toRow, toCol, currentPlayer);
-                        updateBoard();
-                        clearHighlights(); // Clear highlights after a valid move
-
-
-                        client.sendCheckerMoveToServer(gameLogic, fromRow, fromCol, toRow, toCol, currentPlayer, () -> {
-                            selectedRow = -1;
-                            selectedCol = -1;
-                            clearHighlights();
-                            gameLogic.switchPlayer();
-                            turnIndicator.setText("Turn: Player " + gameLogic.getCurrentPlayer());
-                        });
+                        clearHighlights();
+                        gameLogic.switchPlayer();
+                        turnIndicator.setText("Turn: " + gameLogic.getCurrentPlayer().getPlayerID());
                     }
+                });
+
+            } else if (gameLogic.isValidMove(fromRow, fromCol, toRow, toCol, currentPlayer)) {
+                if (gameLogic.hasAnyValidCaptures(currentPlayer)) {
+                    chatArea.appendText("You must capture if possible.\n");
+                    clearHighlights();
+                    selectedRow = -1;
+                    selectedCol = -1;
                 } else {
-                    chatArea.appendText("Invalid move. Try again.\n");
+                    gameLogic.playerMovedPiece(fromRow, fromCol, toRow, toCol, currentPlayer);
+                    updateBoard();
+                    clearHighlights(); // Clear highlights after a valid move
+
+                    client.sendCheckerMoveToServer(gameLogic, fromRow, fromCol, toRow, toCol, currentPlayer, () -> {
+                        selectedRow = -1;
+                        selectedCol = -1;
+                        clearHighlights();
+                        gameLogic.switchPlayer();
+                        turnIndicator.setText("Turn: " + gameLogic.getCurrentPlayer().getPlayerID());
+                    });
                 }
+            } else {
+                chatArea.appendText("Invalid move. Try again.\n");
             }
         }
     }
 
-
     private void highlightPossibleMoves(int row, int col) {
-        // Existing highlight logic remains unchanged
-        PlayerID currentPlayer = gameLogic.getCurrentPlayer();
+        Player currentPlayer = gameLogic.getCurrentPlayer();
         boolean mustCapture = gameLogic.hasAnyValidCaptures(currentPlayer);
         boolean pieceHasCapture = gameLogic.hasValidCapture(row, col, currentPlayer);
 
@@ -304,8 +374,8 @@ public class CheckerScreen implements IScreen {
     private void sendMessage() {
         String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
-            String responseFromServer = client.sendMessageToServer(message);
-            chatArea.appendText(gameLogic.getCurrentPlayer() + ": " + responseFromServer + "\n");
+            String responseFromServer = client.sendMessageToServer(message, client);
+            chatArea.appendText(client.getCurrentUsername() + ": " + responseFromServer + "\n");
             chatInput.clear();
         }
     }
@@ -324,25 +394,34 @@ public class CheckerScreen implements IScreen {
                 }
             }
         }
+        Player currentPlayerData = gameLogic.getCurrentPlayer();
 
-        if (gameLogic.getGameState() == GameState.PLAYER1_WIN) {
-            controller.showEndGameScreen(2, null, null, gameLogic);
+        // Determine the winner based on the current game state or piece count
+        if (whiteCount == 0 || gameLogic.getGameState() == GameState.PLAYER2_WIN) {
+            // Player 2 (Black) wins
+            controller.showEndGameScreen(2, null, null, gameLogic,match,currentPlayerData);
             return true;
-        } else if (gameLogic.getGameState() == GameState.PLAYER2_WIN) {
-            controller.showEndGameScreen(2, null, null, gameLogic);
+        } else if (blackCount == 0 || gameLogic.getGameState() == GameState.PLAYER1_WIN) {
+            // Player 1 (White) wins
+            controller.showEndGameScreen(2, null, null, gameLogic,match,currentPlayerData);
             return true;
         }
-
-        if (whiteCount == 0) {
-            controller.showEndGameScreen(2, null, null, gameLogic);
-            return true;
-        } else if (blackCount == 0) {
-            controller.showEndGameScreen(2, null, null, gameLogic);
-            return true;
-        }
-
-        return false;
+        return false; // No winner yet
     }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+
+        Label content = new Label(message);
+        content.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+
+        alert.getDialogPane().setContent(content);
+        alert.showAndWait();
+    }
+
+
 
     @Override
     public Scene getScene() {

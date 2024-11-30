@@ -2,12 +2,13 @@ package src.ca.ucalgary.seng300.leaderboard.interfaces;
 
 
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
+import java.util.ArrayList;
 
 public interface IMatchmaker {
 
-    void addPlayerToQueue(Player player);
+    void addPlayerToQueue(String user, String gameType);
 
-    void findMatch();
+    void findMatch(String user);
 
-    void createMatch(Player player1, Player player2);
+    ArrayList<Player> createMatch();
 }

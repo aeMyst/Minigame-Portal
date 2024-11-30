@@ -19,8 +19,8 @@ public class TTTRules implements IScreen {
     private Scene scene;
 
     public TTTRules(Stage stage, ScreenController controller, Client client) {
-        String filePath = "src/main/java/src/ca/ucalgary/seng300/database/tictactoe_rules.txt";
-        String rulesText = RulesUtility.getRules(filePath);
+        String filePathFromServer = client.getRulesPath(0);
+        String rulesText = RulesUtility.getRules(filePathFromServer);
 
         Label Rules = new Label("Tic-Tac-Toe Rules: ");
         Rules.setFont(new Font("Arial", 24));
