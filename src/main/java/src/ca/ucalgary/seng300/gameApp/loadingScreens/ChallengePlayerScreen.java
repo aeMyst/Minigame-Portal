@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -38,17 +39,15 @@ public class ChallengePlayerScreen implements IScreen {
 
         // Title label
         Label joiningLabel = new Label("Challenge Request Sent To: " + challengeUser);
-        joiningLabel.setFont(new Font("Arial", 24));
-        joiningLabel.setTextFill(Color.DARKBLUE);
+        joiningLabel.getStyleClass().add("title-label");
 
         // Progress indicator
         ProgressIndicator progressIndicator = new ProgressIndicator();
-        progressIndicator.setPrefSize(100, 100);
+        progressIndicator.setPrefSize(250, 250);
 
         // Tip label
         Label tipLabel = new Label();
-        tipLabel.setFont(new Font("Arial", 16));
-        tipLabel.setTextFill(Color.DARKGREEN);
+        joiningLabel.getStyleClass().add("tip-label");
 
         // Load game-specific tips using TipsUtility
         List<String> tips = TipsUtility.loadTipsFromFile(client, gameType);
@@ -74,9 +73,8 @@ public class ChallengePlayerScreen implements IScreen {
 
         // Button to cancel joining game
         Button cancelButton = new Button("Cancel");
-        cancelButton.setFont(new Font("Arial", 16));
-        cancelButton.setPrefWidth(200);
-        cancelButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: white;");
+        cancelButton.getStyleClass().add("button");
+        cancelButton.getStyleClass().add("exit-button");
         cancelButton.setOnAction(e -> {
             canceled = true;
             client.cancelQueue();
@@ -87,7 +85,12 @@ public class ChallengePlayerScreen implements IScreen {
         VBox layout = new VBox(20, joiningLabel, progressIndicator, tipLabel, cancelButton);
         layout.setAlignment(Pos.CENTER);
 
-        scene = new Scene(layout, 1280, 900);
+        BorderPane rootPane = new BorderPane();
+        rootPane.setCenter(layout);
+        rootPane.getStyleClass().add("root-pane");
+
+        scene = new Scene(rootPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("styles.css").toExternalForm()));
 
         // Simulate a delay for connecting to another player
         new Thread(() -> {

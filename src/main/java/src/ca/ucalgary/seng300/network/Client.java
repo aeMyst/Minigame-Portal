@@ -35,6 +35,10 @@ public class Client implements IClient {
         profile = new ProfileService((AuthService) auth);
     }
 
+    public void initializeProfile(String username) {
+        profile.initializeProfile(username);
+    }
+
     public void disconnect() {
         System.out.println("Disconnection Successful. Application will now Safely Close.");
     };
