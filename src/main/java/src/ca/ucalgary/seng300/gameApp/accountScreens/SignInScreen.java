@@ -4,8 +4,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -16,9 +14,6 @@ import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
-import java.io.*;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 
@@ -34,10 +29,8 @@ public class SignInScreen implements IScreen {
 
     public SignInScreen(Stage stage, ScreenController controller, Client client) {
 
-        System.out.println(Objects.requireNonNull(getClass().getClassLoader().getResource("styles.css")).getPath());
-//        for (File f : getResourceFolderFiles("resources/styles")) {
-//            System.out.println(f);
-//        }
+        String cssPath = "styles.css";
+        System.out.println(Objects.requireNonNull(getClass().getClassLoader().getResource(cssPath)).getPath());
 
         Label titleLabel = new Label("SIGN IN");
         titleLabel.setFont(new Font("Arial", 36));
