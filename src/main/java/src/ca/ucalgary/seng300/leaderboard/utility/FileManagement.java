@@ -62,8 +62,6 @@ public class FileManagement {
     public static void updateProfilesInCsv(String filePath, ArrayList<Player> players) {
         List<String[]> allRows = new ArrayList<>();
 
-        System.out.println(allPlayers);
-
         // Step 1: Read existing CSV rows
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;

@@ -19,6 +19,34 @@
     -fx-background-color: #28a745; /* Success Green */
 }
 
+.forgot-button {
+    -fx-background-color: #ffc107; /* Warning Yellow */
+}
+
+.exit-button {
+    -fx-background-color: #dc3545; /* Danger Red */
+}
+
+.create-account-button {
+    -fx-background-color: #007bff; /* Primary Blue */
+}
+
+.emoji-button {
+    -fx-font-family: 'Arial';
+    -fx-background-color: #FFFFF0;
+    -fx-font-size: 20px;
+    -fx-pref-width: 220;
+    -fx-pref-height: 40;
+    -fx-text-fill: black;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 8, 0.5, 0, 2);
+}
+
+
+.submit-button {
+    -fx-background-color: #28a745; /* Success Green */
+}
+
 .create-account-button {
     -fx-background-color: #007bff; /* Primary Blue */
 }
@@ -111,7 +139,7 @@
     -fx-background-color: #ffffff;
     -fx-border-color: #ddd;
     -fx-border-width: 1;
-    -fx-border-radius: 10;
+    -fx-border-radius: 5;
 }
 
 

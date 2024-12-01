@@ -55,37 +55,38 @@ public class CheckerScreen implements IScreen {
         // Correctly assign to the class-level gameLogic field
         this.gameLogic = new CheckersGameLogic(playerOne, playerTwo);
 
-        Label titleLabel = new Label("Checkers");
-        titleLabel.setFont(new Font("Arial", 24));
-        titleLabel.setTextFill(Color.DARKBLUE);
+        Label titleLabel = new Label("CHECKERS GAME");
+        titleLabel.getStyleClass().add("title-label");
 
         turnIndicator = new Label("Turn: " + gameLogic.getCurrentPlayer().getPlayerID());
-        turnIndicator.setFont(new Font("Arial", 18));
-        turnIndicator.setTextFill(Color.DARKGREEN);
+        turnIndicator.getStyleClass().add("label-turn-indicator");
 
         boardButtons = new Button[8][8];
         GridPane gameBoard = createGameBoard();
+        gameBoard.setMaxWidth(800); // Total width of the board
+        gameBoard.setMaxHeight(800); // Total height of the board
+
+        HBox gameLayout = new HBox(gameBoard);
+        gameLayout.setAlignment(Pos.CENTER);
+        gameLayout.maxWidth(250);
+
 
         chatArea = new TextArea();
         chatArea.setEditable(false);
-        chatArea.setPrefHeight(150);
-        chatArea.setStyle("-fx-control-inner-background: #f8f8ff; -fx-text-fill: black; -fx-font-size: 14px;");
+        chatArea.setMaxHeight(100);
+        chatArea.getStyleClass().add("text-area-chat");;
 
         chatInput = new TextField();
         chatInput.setPromptText("Type your message...");
-        chatInput.setStyle("-fx-background-color: #e0e0e0;");
+        chatInput.getStyleClass().add("input-field");;
         chatInput.setOnAction(e -> sendMessage());
 
         Button sendButton = new Button("Send");
-        sendButton.setFont(new Font("Arial", 16));
-        sendButton.setPrefWidth(150);
-        sendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        sendButton.getStyleClass().add("button-send");
         sendButton.setOnAction(e -> sendMessage());
 
         Button emojiButton = new Button("Emoji Menu");
-        emojiButton.setFont(new Font("Arial", 16));
-        emojiButton.setPrefWidth(150);
-        emojiButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        emojiButton.getStyleClass().add("button-emoji");
         emojiButton.setOnAction(e -> {
             if (!isEmojiOpen) {
                 isEmojiOpen = true;
@@ -97,9 +98,8 @@ public class CheckerScreen implements IScreen {
 
 
         Button forfeitButton = new Button("Forfeit");
-        forfeitButton.setFont(new Font("Arial", 16));
-        forfeitButton.setPrefWidth(200);
-        forfeitButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: #FFFFFF;");
+        forfeitButton.getStyleClass().add("button");
+        forfeitButton.getStyleClass().add("button-forfeit");
         forfeitButton.setOnAction(e -> {
             // Create a confirmation dialog
             // chatgpt generated
@@ -108,10 +108,10 @@ public class CheckerScreen implements IScreen {
             confirmationDialog.setTitle("Confirm Forfeit");
 
             Label header = new Label("Are you sure you want to forfeit?");
-            header.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #d9534f;");
+            header.getStyleClass().add("dialog-header");
 
             Label content = new Label("Forfeiting will end the game and declare the opponent as the winner and you will lose elo.");
-            content.setStyle("-fx-font-size: 14px; -fx-text-fill: #5a5a5a;");
+            content.getStyleClass().add("dialog-content");
 
             VBox dialogContent = new VBox(10, header, content);
             dialogContent.setAlignment(Pos.CENTER_LEFT);
@@ -163,6 +163,7 @@ public class CheckerScreen implements IScreen {
                 FileManagement.updateProfilesInCsv(client.getStatPath(), match);
 
                 controller.showMainMenu(); // Navigate back to the main menu
+
                 https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
                 showAlert(Alert.AlertType.INFORMATION, "The game was Forfeited", "You have Loss -" + eloLoss +" Elo" );
             } else {
@@ -174,26 +175,42 @@ public class CheckerScreen implements IScreen {
         HBox chatBox = new HBox(10, chatInput, emojiButton, sendButton);
         chatBox.setAlignment(Pos.CENTER);
 
-        VBox layout = new VBox(15, titleLabel, turnIndicator, gameBoard, chatArea, chatBox, forfeitButton);
+        VBox layout = new VBox(15, titleLabel, turnIndicator, gameLayout, chatArea, chatBox, forfeitButton);
         layout.setAlignment(Pos.CENTER);
-        layout.setPadding(new Insets(20));
-        layout.setStyle("-fx-background-color: #f5f5f5;");
+        layout.setPadding(new Insets(50));
 
-        scene = new Scene(layout, 1280, 900);
+        BorderPane rootPane = new BorderPane();
+        rootPane.setCenter(layout);
+        rootPane.getStyleClass().add("root-pane");
+
+        scene = new Scene(rootPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("GamesStyles.css").toExternalForm()));
     }
 
     private GridPane createGameBoard() {
         GridPane gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);
-        gameBoard.setHgap(5);
-        gameBoard.setVgap(5);
-        gameBoard.setPadding(new Insets(10));
+        gameBoard.setPadding(new Insets(5));
+
+        // Define uniform row and column constraints
+        for (int i = 0; i < 8; i++) {
+            ColumnConstraints column = new ColumnConstraints();
+            column.setPercentWidth(100.0 / 8); // Divide the width evenly
+            column.setFillWidth(true);
+            gameBoard.getColumnConstraints().add(column);
+
+            RowConstraints row = new RowConstraints();
+            row.setPercentHeight(100.0 / 8); // Divide the height evenly
+            row.setFillHeight(true);
+            gameBoard.getRowConstraints().add(row);
+        }
 
         int[][] board = gameLogic.getBoard();
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 Button button = new Button();
-                button.setPrefSize(80, 80 );
+                button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE); // Allow buttons to expand
+                button.setPrefSize(80, 80);
 
                 // Set button background color
                 if ((row + col) % 2 == 0) {
@@ -415,7 +432,7 @@ public class CheckerScreen implements IScreen {
         alert.setHeaderText(null);
 
         Label content = new Label(message);
-        content.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+        content.getStyleClass().add("dialog-content");
 
         alert.getDialogPane().setContent(content);
         alert.showAndWait();

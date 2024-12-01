@@ -6,8 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
@@ -17,99 +16,116 @@ public class CreateProfileScreen implements IScreen {
     private Scene scene;
 
     public CreateProfileScreen(Stage stage, ScreenController controller, Client client) {
-        // Title label
+        // Title Label
         Label titleLabel = new Label("Create Profile");
-        titleLabel.setFont(new Font("Arial", 24));
-        titleLabel.setTextFill(Color.DARKBLUE);
+        titleLabel.getStyleClass().add("title-label");
 
-        // Fields for user input
+        // Email Section
+        Label emailLabel = new Label("Email Address:");
+        emailLabel.getStyleClass().add("search-label");
+
         TextField emailField = new TextField();
-        emailField.setPrefWidth(350); // Increase width
-        emailField.setPrefHeight(30);
-        emailField.setPromptText("Email Address");
+        emailField.getStyleClass().add("input-field");
+        emailField.setPromptText("Enter your email address");
+        emailField.setMaxWidth(350);
 
-        HBox emailLayout = new HBox(10, emailField);
+        VBox emailLayout = new VBox(5, emailLabel, emailField);
         emailLayout.setAlignment(Pos.CENTER);
 
-        TextField usernameField = new TextField();
-        usernameField.setPrefWidth(350);
-        usernameField.setPrefHeight(30);
-        usernameField.setPromptText("Username");
+        // Username Section
+        Label usernameLabel = new Label("Username:");
+        usernameLabel.getStyleClass().add("search-label");
 
-        HBox usernameLayout = new HBox(10, usernameField);
+        TextField usernameField = new TextField();
+        usernameField.getStyleClass().add("input-field");
+        usernameField.setPromptText("Enter your username");
+        usernameField.setMaxWidth(350);
+
+        VBox usernameLayout = new VBox(5, usernameLabel, usernameField);
         usernameLayout.setAlignment(Pos.CENTER);
 
+        // Password Section
+        Label passwordLabel = new Label("Password:");
+        passwordLabel.getStyleClass().add("search-label");
+
         PasswordField passwordField = new PasswordField();
-        passwordField.setPrefWidth(350);
-        passwordField.setPrefHeight(30);
-        passwordField.setPromptText("Password");
+        passwordField.getStyleClass().add("input-field");
+        passwordField.setPromptText("Enter your password");
+        passwordField.setMaxWidth(350);
 
-        Label passwordDetailsLabel = new Label("Password Requirements: \n - Must include atleast 8 characters\n - Must include atleast 1 Letter \n " +
-                "- Must include atleast 1 number\n " + "- must include atleast 1 special character/symbol" );
-        passwordDetailsLabel.setFont(new Font("Arial", 10));
-        passwordDetailsLabel.setTextFill(Color.GRAY);
+        // Password Requirements
+        Label passwordRequirementTitle = new Label("Password Requirements:");
+        passwordRequirementTitle.getStyleClass().add("password-details-label");
 
-        VBox passwordLayout = new VBox(10, passwordField, passwordDetailsLabel);
+        VBox passwordLayoutOne = new VBox(5, passwordRequirementTitle);
+        passwordLayoutOne.setAlignment(Pos.CENTER);
+
+        Label passwordRequirementLabel = new Label("- At least 8 characters\n- Includes 1 letter, 1 number, and 1 special character");
+        passwordRequirementLabel.getStyleClass().add("password-details-label");
+        passwordRequirementLabel.setWrapText(true);
+        passwordRequirementLabel.setMaxWidth(350);
+
+        VBox passwordRequirementLayout = new VBox(5, passwordLayoutOne, passwordRequirementLabel);
+        passwordRequirementLayout.setAlignment(Pos.CENTER);
+
+        VBox passwordLayout = new VBox(5, passwordLabel, passwordField, passwordRequirementLayout);
         passwordLayout.setAlignment(Pos.CENTER);
-        HBox passwordHbox = new HBox(10, passwordLayout);
-        passwordHbox.setAlignment(Pos.CENTER);
+
+        // Confirm Password Section
+        Label confirmPasswordLabel = new Label("Confirm Password:");
+        confirmPasswordLabel.getStyleClass().add("search-label");
 
         PasswordField confirmPasswordField = new PasswordField();
-        confirmPasswordField.setPrefWidth(350);
-        confirmPasswordField.setPrefHeight(30);
-        confirmPasswordField.setPromptText("Confirm Password");
+        confirmPasswordField.getStyleClass().add("input-field");
+        confirmPasswordField.setPromptText("Re-enter your password");
+        confirmPasswordField.setMaxWidth(350);
 
-        HBox confirmPasswordLayout = new HBox(10, confirmPasswordField);
+        VBox confirmPasswordLayout = new VBox(5, confirmPasswordLabel, confirmPasswordField);
         confirmPasswordLayout.setAlignment(Pos.CENTER);
 
-        // Back to Sign In button
-        Button backToSignInButton = new Button("Back to Sign In");
-        backToSignInButton.setFont(new Font("Arial", 16));
-        backToSignInButton.setPrefWidth(200);
-        backToSignInButton.setStyle("-fx-background-color: #808080; -fx-text-fill: white;");
-        backToSignInButton.setOnAction(e -> {
-            // Handle navigation to the sign-in screen
-            controller.showSignInScreen();
-        });
-
-        // Submit button
+        // Buttons Section
         Button submitButton = new Button("Create Profile");
-        submitButton.setFont(new Font("Arial", 16));
-        submitButton.setPrefWidth(200);
-        submitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        submitButton.getStyleClass().add("button");
+        submitButton.getStyleClass().add("submit-button");
         submitButton.setOnAction(e -> {
-            // Handle profile creation
             String email = emailField.getText();
             String username = usernameField.getText();
             String password = passwordField.getText();
             String confirmPassword = confirmPasswordField.getText();
-
-            // authentication should happen here
 
             if (email.isEmpty() || username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 showAlert(Alert.AlertType.ERROR, "Error", "All fields are required.");
             } else if (!password.equals(confirmPassword)) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Passwords do not match.");
             } else if (client.registerUser(username, password, email)) {
-                // You can add logic to save the profile data
-                client.initializeProfile(username);
-                // TODO: We need to add specifics on why a registration failed
-                System.out.println("Profile created for " + username);
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Profile created successfully!");
-
                 controller.showSignInScreen();
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "Profile creation failed.");
             }
         });
 
-        // Layout for profile setup
-        VBox layout = new VBox(15, titleLabel, emailLayout, usernameLayout, passwordHbox, confirmPasswordLayout, submitButton, backToSignInButton);
-        layout.setAlignment(Pos.CENTER);
-        layout.setPadding(new Insets(20));
+        Button backToSignInButton = new Button("Back to Sign In");
+        backToSignInButton.getStyleClass().add("button");
+        backToSignInButton.getStyleClass().add("back-button");
+        backToSignInButton.setOnAction(e -> controller.showSignInScreen());
+
+        HBox buttonsLayout = new HBox(15, submitButton, backToSignInButton);
+        buttonsLayout.setAlignment(Pos.CENTER);
+
+        // Main Layout
+        VBox mainLayout = new VBox(20, titleLabel, emailLayout, usernameLayout, passwordLayout, confirmPasswordLayout, buttonsLayout);
+        mainLayout.setAlignment(Pos.CENTER);
+        mainLayout.setPadding(new Insets(40));
+        mainLayout.setMaxWidth(600);
+
+        BorderPane rootPane = new BorderPane();
+        rootPane.setCenter(mainLayout);
+        rootPane.getStyleClass().add("root-pane");
 
         // Scene for create profile screen
-        scene = new Scene(layout, 1280, 900);
+        scene = new Scene(rootPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("styles.css").toExternalForm()));
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
@@ -125,3 +141,4 @@ public class CreateProfileScreen implements IScreen {
         return scene;
     }
 }
+

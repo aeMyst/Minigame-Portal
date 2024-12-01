@@ -43,7 +43,7 @@ public class LeaderboardController implements IScreen {
 
         Button backButton = new Button("Back to Main Menu");
         backButton.getStyleClass().add("leaderboard-button");
-        backButton.getStyleClass().add("leaderboard-button-back");
+        backButton.getStyleClass().add("back-button");
         backButton.setOnAction(e -> controller.showMainMenu());
 
         // Layout for the leaderboard menu

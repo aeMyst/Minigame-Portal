@@ -58,12 +58,13 @@ public class Connect4Screen implements IScreen {
         turnManager = new TurnManager(playerRed, playerBlue);
 
         // UI setup
-        Label title = new Label("Connect4");
-        title.setFont(new Font("Arial", 24));
-        title.setTextFill(Color.DARKBLUE);
+        Label title = new Label("CONNECT FOUR GAME");
+        title.getStyleClass().add("title-label");
 
         GridPane gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);
+        gameBoard.setMaxWidth(500); // Total width of the board
+        gameBoard.setMaxHeight(800); // Total height of the board
         gameBoard.setHgap(5);
         gameBoard.setVgap(5);
         gameBoard.setPadding(new Insets(10));
@@ -72,7 +73,7 @@ public class Connect4Screen implements IScreen {
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
                 Button button = new Button();
-                button.setPrefSize(40, 40);
+                button.setPrefSize(120, 120);
                 int finalCol = col;
                 button.setOnAction(e -> gameButtonClicked(finalCol, controller));
                 gameButtons[row][col] = button;
@@ -81,30 +82,24 @@ public class Connect4Screen implements IScreen {
         }
 
         turnIndicator = new Label("Player turn: " + currentPlayer.getPlayer().getPlayerID() + " (RED)");
-        turnIndicator.setFont(new Font("Arial", 18));
-        turnIndicator.setTextFill(Color.DARKGREEN);
+        turnIndicator.getStyleClass().add("label-turn-indicator");
 
         chatArea = new TextArea();
         chatArea.setEditable(false);
         chatArea.setPrefHeight(150);
-        chatArea.setStyle("-fx-control-inner-background: #f8f8ff; -fx-text-fill: black; -fx-font-size: 14px;");
+        chatArea.getStyleClass().add("text-area-chat");
 
         chatInput = new TextField();
         chatInput.setPromptText("Type your message...");
-        chatInput.setPrefWidth(250);
-        chatInput.setStyle("-fx-background-color: #e0e0e0;");
+        chatInput.getStyleClass().add("input-field");
         chatInput.setOnAction(e -> sendMessage());
 
         Button sendButton = new Button("Send");
-        sendButton.setFont(new Font("Arial", 16));
-        sendButton.setPrefWidth(150);
-        sendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        sendButton.getStyleClass().add("button-send");
         sendButton.setOnAction(e -> sendMessage());
 
         Button emojiButton = new Button("Emoji Menu");
-        emojiButton.setFont(new Font("Arial", 16));
-        emojiButton.setPrefWidth(150);
-        emojiButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        emojiButton.getStyleClass().add("button-emoji");
         emojiButton.setOnAction(e -> {
             if (!isEmojiOpen) {
                 isEmojiOpen = true;
@@ -115,9 +110,8 @@ public class Connect4Screen implements IScreen {
         });
 
         Button forfeitButton = new Button("Forfeit");
-        forfeitButton.setFont(new Font("Arial", 16));
-        forfeitButton.setPrefWidth(200);
-        forfeitButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: #FFFFFF;");
+        forfeitButton.getStyleClass().add("button");
+        forfeitButton.getStyleClass().add("button-forfeit");
         forfeitButton.setOnAction(e -> {
             // Create a confirmation dialog
             // chatgpt generated
@@ -126,10 +120,10 @@ public class Connect4Screen implements IScreen {
             confirmationDialog.setTitle("Confirm Forfeit");
 
             Label header = new Label("Are you sure you want to forfeit?");
-            header.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #d9534f;");
+            header.getStyleClass().add("dialog-header");
 
             Label content = new Label("Forfeiting will end the game and declare the opponent as the winner and you will lose elo.");
-            content.setStyle("-fx-font-size: 14px; -fx-text-fill: #5a5a5a;");
+            content.getStyleClass().add("dialog-content");
 
             VBox dialogContent = new VBox(10, header, content);
             dialogContent.setAlignment(Pos.CENTER_LEFT);
@@ -194,10 +188,15 @@ public class Connect4Screen implements IScreen {
 
         VBox layout = new VBox(15, title, turnIndicator, gameBoard, chatArea, chatBox, forfeitButton);
         layout.setAlignment(Pos.CENTER);
+        layout.setMaxWidth(1200);
         layout.setPadding(new Insets(20));
-        layout.setStyle("-fx-background-color: #f5f5f5;");
 
-        scene = new Scene(layout, 1280, 900);
+        BorderPane rootPane = new BorderPane();
+        rootPane.setCenter(layout);
+        rootPane.getStyleClass().add("root-pane");
+
+        scene = new Scene(rootPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("GamesStyles.css").toExternalForm()));
     }
 
     private boolean moveInProgress = false;
@@ -271,7 +270,7 @@ public class Connect4Screen implements IScreen {
     private void sendMessage() {
         String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
-            chatArea.appendText(client.getCurrentUsername() + client.sendMessageToServer(message, client) + "\n");
+            chatArea.appendText(client.getCurrentUsername() + ": " + client.sendMessageToServer(message, client) + "\n");
             chatInput.clear();
         }
     }
@@ -282,7 +281,7 @@ public class Connect4Screen implements IScreen {
         alert.setHeaderText(null);
 
         Label content = new Label(message);
-        content.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+        content.getStyleClass().add("dialog-content");
 
         alert.getDialogPane().setContent(content);
         alert.showAndWait();

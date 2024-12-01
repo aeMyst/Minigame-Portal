@@ -28,6 +28,10 @@
     -fx-background-color: #28a745; /* Success Green */
 }
 
+.back-button {
+    -fx-background-color: #808080; /* Dark Grey */
+}
+
 
 .leaderboard-button:hover {
     -fx-opacity: 0.6;
