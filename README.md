@@ -12,7 +12,7 @@ and how to backup stored data.
 ### Steps:
 1. Clone the repository
 2. Navigate to the root directory of the project
-3. run `gradle run`
+3. run `gradle run` to run the program
 
 ## File Overview:
 
