@@ -5,10 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.Profile.services.AuthService;
 import src.ca.ucalgary.seng300.network.Client;
@@ -17,56 +14,53 @@ import src.ca.ucalgary.seng300.gameApp.ScreenController;
 public class ResetPasswordScreen {
     private Scene scene;
 
-    public ResetPasswordScreen(Stage stage, ScreenController controller, Client client, String username, String email,  AuthService authService) {
-        Label titleLabel = new Label("Reset Password");
-        titleLabel.setFont(new Font("Arial", 36));
-        titleLabel.setTextFill(Color.DARKBLUE);
+    public ResetPasswordScreen(Stage stage, ScreenController controller, Client client, String username, String email, AuthService authService) {
+        // Title Label
+        Label titleLabel = new Label("RESET PASSWORD");
+        titleLabel.getStyleClass().add("title-label");
 
         // New Password Section
-        Label newPasswordLabel = new Label("New Password: ");
-        newPasswordLabel.setFont(new Font("Arial", 16));
+        Label newPasswordLabel = new Label("New Password:");
+        newPasswordLabel.getStyleClass().add("search-label");
 
         PasswordField newPasswordField = new PasswordField();
-        newPasswordField.setPrefWidth(350);
-        newPasswordField.setPrefHeight(30);
+        newPasswordField.getStyleClass().add("input-field");
         newPasswordField.setPromptText("Enter new password");
+        newPasswordField.setMaxWidth(350);
 
-        HBox newPasswordLayout = new HBox(10, newPasswordLabel, newPasswordField);
+        VBox newPasswordLayout = new VBox(5, newPasswordLabel, newPasswordField);
         newPasswordLayout.setAlignment(Pos.CENTER);
 
         // Confirm Password Section
-        Label confirmPasswordLabel = new Label("Confirm Password: ");
-        confirmPasswordLabel.setFont(new Font("Arial", 16));
+        Label confirmPasswordLabel = new Label("Confirm Password:");
+        confirmPasswordLabel.getStyleClass().add("search-label");
 
         PasswordField confirmPasswordField = new PasswordField();
-        confirmPasswordField.setPrefWidth(350);
-        confirmPasswordField.setPrefHeight(30);
+        confirmPasswordField.getStyleClass().add("input-field");
         confirmPasswordField.setPromptText("Confirm new password");
+        confirmPasswordField.setMaxWidth(350);
 
-        HBox confirmPasswordLayout = new HBox(10, confirmPasswordLabel, confirmPasswordField);
+        VBox confirmPasswordLayout = new VBox(5, confirmPasswordLabel, confirmPasswordField);
         confirmPasswordLayout.setAlignment(Pos.CENTER);
 
-        Label passwordDetailsLabel = new Label("Password Requirements: \n - Must include atleast 8 characters\n - Must include atleast 1 Letter \n " +
-                "- Must include atleast 1 number\n " + "- must include atleast 1 special character/symbol" );
-        passwordDetailsLabel.setFont(new Font("Arial", 10));
-        passwordDetailsLabel.setTextFill(Color.GRAY);
+        // Password Requirements
+        Label passwordDetailsLabel = new Label("Password Requirements:\n- At least 8 characters\n- Includes 1 letter, 1 number, and 1 special character");
+        passwordDetailsLabel.getStyleClass().add("password-details-label");
+        passwordDetailsLabel.setWrapText(true);
+        passwordDetailsLabel.setMaxWidth(350);
 
-        VBox passwordLayout = new VBox(10, passwordDetailsLabel);
-        passwordLayout.setAlignment(Pos.CENTER);
-        HBox passwordHbox = new HBox(10, passwordLayout);
-        passwordHbox.setAlignment(Pos.CENTER);
+        VBox passwordRequirementsLayout = new VBox(10, passwordDetailsLabel);
+        passwordRequirementsLayout.setAlignment(Pos.CENTER);
 
         // Submit Button
         Button submitButton = new Button("Submit");
-        submitButton.setFont(new Font("Arial", 16));
-        submitButton.setPrefWidth(200);
-        submitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        submitButton.getStyleClass().add("button");
+        submitButton.getStyleClass().add("submit-button");
         submitButton.setOnAction(e -> {
             String newPassword = newPasswordField.getText();
             String confirmPassword = confirmPasswordField.getText();
 
             if (newPassword.equals(confirmPassword)) {
-
                 if (!authService.validateCredentials(username, email, newPassword)) {
                     showAlert(Alert.AlertType.ERROR, "Error", "Password does not meet requirements!");
                     return;
@@ -81,14 +75,17 @@ public class ResetPasswordScreen {
         });
 
         // Layout
-        VBox inputLayout = new VBox(15, titleLabel, newPasswordLayout, confirmPasswordLayout, passwordLayout, submitButton);
+        VBox inputLayout = new VBox(15, titleLabel, newPasswordLayout, confirmPasswordLayout, passwordRequirementsLayout, submitButton);
         inputLayout.setAlignment(Pos.CENTER);
         inputLayout.setPadding(new Insets(20));
 
         BorderPane rootPane = new BorderPane();
         rootPane.setCenter(inputLayout);
+        rootPane.getStyleClass().add("root-pane");
 
+        // Scene
         scene = new Scene(rootPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("styles.css").toExternalForm()));
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
@@ -103,4 +100,5 @@ public class ResetPasswordScreen {
         return scene;
     }
 }
+
 

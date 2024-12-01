@@ -7,42 +7,25 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
-import java.util.Objects;
-
-
 public class SignInScreen implements IScreen {
     private Scene scene;
 
-//    private static File[] getResourceFolderFiles(String folder) {
-//        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-//        URL url = loader.getResource(folder);
-//        String path = url.getPath();
-//        return new File(path).listFiles();
-//    }
-
     public SignInScreen(Stage stage, ScreenController controller, Client client) {
-
-        String cssPath = "styles.css";
-        System.out.println(Objects.requireNonNull(getClass().getClassLoader().getResource(cssPath)).getPath());
-
+        // Title Label
         Label titleLabel = new Label("SIGN IN");
-        titleLabel.setFont(new Font("Arial", 36));
-        titleLabel.setTextFill(Color.DARKBLUE);
+        titleLabel.getStyleClass().add("title-label");
 
         // Username Section
         Label usernameLabel = new Label("Username: ");
-        usernameLabel.setFont(new Font("Arial", 16));
+        usernameLabel.getStyleClass().add("search-label");
 
         TextField usernameField = new TextField();
-        usernameField.setPrefWidth(350); // Increase width
-        usernameField.setPrefHeight(30); // Optional: Increase height
+        usernameField.getStyleClass().add("input-field");
         usernameField.setPromptText("Enter your Username");
 
         HBox usernameLayout = new HBox(10, usernameLabel, usernameField);
@@ -50,75 +33,69 @@ public class SignInScreen implements IScreen {
 
         // Password Section
         Label passwordLabel = new Label("Password: ");
-        passwordLabel.setFont(new Font("Arial", 16));
+        passwordLabel.getStyleClass().add("search-label");
 
         PasswordField passwordField = new PasswordField();
-        passwordField.setPrefWidth(350); // Increase width
-        passwordField.setPrefHeight(30); // Optional: Increase height
+        passwordField.getStyleClass().add("input-field");
         passwordField.setPromptText("Enter your Password");
 
         HBox passwordLayout = new HBox(10, passwordLabel, passwordField);
         passwordLayout.setAlignment(Pos.CENTER);
 
-        // Sign In Button
+        // Buttons Section
         Button signInButton = new Button("Sign In");
-        signInButton.setFont(new Font("Arial", 16));
-        signInButton.setPrefWidth(200);
-        signInButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        signInButton.getStyleClass().add("button");
+        signInButton.getStyleClass().add("submit-button");
         signInButton.setOnAction(e -> {
             String username = usernameField.getText();
             String password = passwordField.getText();
 
             boolean isLoggedIn = client.logInUser(username, password);
-            // Verify username and password with authentication logic
             if (isLoggedIn) {
-                // Simulate successful login by showing the connecting screen
                 controller.showServerConnectionScreen(false);
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "Invalid Login");
-                System.out.println("Not Logged In");
             }
         });
 
-        // Create Account Button
         Button createAccountButton = new Button("Create Account");
-        createAccountButton.setFont(new Font("Arial", 16));
-        createAccountButton.setPrefWidth(200);
-        createAccountButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        createAccountButton.getStyleClass().add("button");
+        createAccountButton.getStyleClass().add("create-account-button");
         createAccountButton.setOnAction(e -> controller.showCreateProfileScreen());
 
-        // Forgot Password Button
+        VBox signInCreateLayout = new VBox(10, signInButton, createAccountButton);
+        signInCreateLayout.setAlignment(Pos.CENTER);
+
+        // Forgot Password and Username Section
         Button forgotPasswordButton = new Button("Forgot Password?");
-        forgotPasswordButton.setFont(new Font("Arial", 16));
-        forgotPasswordButton.setPrefWidth(200);
-        forgotPasswordButton.setStyle("-fx-background-color: #FFA500; -fx-text-fill: white;");
+        forgotPasswordButton.getStyleClass().add("button");
+        forgotPasswordButton.getStyleClass().add("forgot-button");
         forgotPasswordButton.setOnAction(e -> controller.showForgotPasswordScreen());
 
-        // Forgot Username Button
         Button forgotUsernameButton = new Button("Forgot Username?");
-        forgotUsernameButton.setFont(new Font("Arial", 16));
-        forgotUsernameButton.setPrefWidth(200);
-        forgotUsernameButton.setStyle("-fx-background-color: #FFA500; -fx-text-fill: white;");
+        forgotUsernameButton.getStyleClass().add("button");
+        forgotUsernameButton.getStyleClass().add("forgot-button");
         forgotUsernameButton.setOnAction(e -> controller.showForgotUsernameScreen());
+
+        HBox forgotLayout = new HBox(15, forgotPasswordButton, forgotUsernameButton);
+        forgotLayout.setAlignment(Pos.CENTER);
 
         // Exit Button
         Button exitButton = new Button("Exit");
-        exitButton.setFont(new Font("Arial", 16));
-        exitButton.setPrefWidth(200);
-        exitButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: white;");;
+        exitButton.getStyleClass().add("button");
+        exitButton.getStyleClass().add("exit-button");
         exitButton.setOnAction(e -> controller.stop());
 
-        // Combine Everything in a VBox
-        VBox inputLayout = new VBox(15, titleLabel, usernameLayout, passwordLayout, signInButton, createAccountButton,
-                forgotPasswordButton, forgotUsernameButton,  exitButton);
-        inputLayout.setAlignment(Pos.CENTER);
-        inputLayout.setPadding(new Insets(20));
+        VBox mainLayout = new VBox(20, titleLabel, usernameLayout, passwordLayout, signInCreateLayout, forgotLayout, exitButton);
+        mainLayout.setAlignment(Pos.CENTER);
+        mainLayout.setPadding(new Insets(40));
 
-        // Main Layout
         BorderPane rootPane = new BorderPane();
-        rootPane.setCenter(inputLayout);
+        rootPane.setCenter(mainLayout);
+        rootPane.getStyleClass().add("root-pane");
 
         scene = new Scene(rootPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("styles.css").toExternalForm()));
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
@@ -134,3 +111,5 @@ public class SignInScreen implements IScreen {
         return scene;
     }
 }
+
+

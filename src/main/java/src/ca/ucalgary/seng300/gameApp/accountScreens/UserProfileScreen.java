@@ -10,7 +10,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
@@ -25,14 +24,16 @@ public class UserProfileScreen implements IScreen {
 
     public UserProfileScreen(Stage stage, ScreenController controller, Client client) {
         String currentUsername = client.getCurrentUsername();
+
         // User Profile Title
         Label userProfileTitle = new Label("USER PROFILE: " + currentUsername);
-        userProfileTitle.setFont(new Font("Arial", 32));
+        userProfileTitle.getStyleClass().add("title-label");
 
-        // The layout
+        // The layout for displaying user profile details
         userProfileInfoLayout = new VBox(10);
-        userProfileInfoLayout.setAlignment(Pos.CENTER);
-        userProfileInfoLayout.setPadding(new Insets(0, 0, 0, 20));
+        userProfileInfoLayout.setAlignment(Pos.CENTER_LEFT);
+        userProfileInfoLayout.setPadding(new Insets(20));
+        userProfileInfoLayout.getStyleClass().add("user-profile-box");
 
         // Display user profile details (initially the logged-in user's profile)
         String profileInfo = client.getCurrentUserProfile();
@@ -40,13 +41,15 @@ public class UserProfileScreen implements IScreen {
 
         // TextField to search for another profile
         Label searchProfileLabel = new Label("Search Profile:");
-        searchProfileLabel.setFont(new Font("Arial", 16));
+        searchProfileLabel.getStyleClass().add("search-label");
+
         TextField searchProfileField = new TextField();
+        searchProfileField.getStyleClass().add("input-field");
         searchProfileField.setPromptText("Enter profile name");
 
         Button searchButton = new Button("Search");
-        searchButton.setFont(new Font("Arial", 16));
-        searchButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF;");
+        searchButton.getStyleClass().add("button");
+        searchButton.getStyleClass().add("submit-button");
         searchButton.setOnAction(e -> {
             String profileName = searchProfileField.getText();
             if (!profileName.isEmpty()) {
@@ -64,8 +67,8 @@ public class UserProfileScreen implements IScreen {
 
         // Button to return to the logged-in user's profile
         Button xButton = new Button("X");
-        xButton.setFont(new Font("Arial", 16));
-        xButton.setStyle("-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF;");
+        xButton.getStyleClass().add("button");
+        xButton.getStyleClass().add("exit-button");
         xButton.setOnAction(e -> {
             // Reset to the logged-in user's profile
             String updatedProfileInfo = client.getCurrentUserProfile();
@@ -77,14 +80,14 @@ public class UserProfileScreen implements IScreen {
 
         // Manage Profile Button
         Button manageProfileButton = new Button("Manage Profile");
-        manageProfileButton.setFont(new Font("Arial", 18));
-        manageProfileButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF;");
+        manageProfileButton.getStyleClass().add("button");
+        manageProfileButton.getStyleClass().add("submit-button");
         manageProfileButton.setOnAction(e -> controller.showManageProfileScreen());
 
         // Back Button
         Button backButton = new Button("Back");
-        backButton.setFont(new Font("Arial", 18));
-        backButton.setStyle("-fx-background-color: #AAAAAA; -fx-text-fill: #FFFFFF;");
+        backButton.getStyleClass().add("button");
+        backButton.getStyleClass().add("back-button");
         backButton.setOnAction(e -> controller.showMainMenu());
 
         // Layout for search
@@ -102,8 +105,10 @@ public class UserProfileScreen implements IScreen {
 
         BorderPane rootPane = new BorderPane();
         rootPane.setCenter(userProfileLayout);
+        rootPane.getStyleClass().add("root-pane");
 
         scene = new Scene(rootPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("styles.css").toExternalForm()));
     }
 
     private void displayProfile(String profileInfo) {
@@ -111,7 +116,7 @@ public class UserProfileScreen implements IScreen {
 
         if (profileInfo.startsWith("Profile not found")) {
             Label notFoundLabel = new Label(profileInfo);
-            notFoundLabel.setFont(new Font("Arial", 16));
+            notFoundLabel.getStyleClass().add("search-label");
             userProfileInfoLayout.getChildren().add(notFoundLabel);
             return;
         }
@@ -128,8 +133,8 @@ public class UserProfileScreen implements IScreen {
             }
 
             VBox profileBox = new VBox(5);
-            profileBox.setPadding(new Insets(5));
-            profileBox.setStyle("-fx-border-color: black; -fx-border-width: 1;");
+            profileBox.setPadding(new Insets(10));
+            profileBox.getStyleClass().add("profile-box");
 
             Label gametypeLabel = new Label("Gametype: " + profileData.getOrDefault("Gametype", ""));
             Label playerIDLabel = new Label("PlayerID: " + profileData.getOrDefault("PlayerID", ""));
@@ -160,3 +165,4 @@ public class UserProfileScreen implements IScreen {
         return scene;
     }
 }
+
