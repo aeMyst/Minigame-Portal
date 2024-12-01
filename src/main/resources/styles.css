@@ -1,0 +1,54 @@
+/* Common button styles */
+.button {
+    -fx-font-family: Arial;
+    -fx-font-size: 16;
+    -fx-pref-width: 200;
+    -fx-text-fill: white;
+}
+
+.submit-button {
+    -fx-background-color: #4CAF50;
+}
+
+.back-button {
+    -fx-background-color: #808080;
+}
+
+.exit-button {
+    -fx-background-color: #af4c4c;
+}
+
+.forgot-button {
+    -fx-background-color: #FFA500;
+}
+
+/* Labels */
+.title-label {
+    -fx-font-family: Arial;
+    -fx-font-size: 24;
+    -fx-text-fill: darkblue;
+}
+
+.password-details-label {
+    -fx-font-family: Arial;
+    -fx-font-size: 10;
+    -fx-text-fill: gray;
+}
+
+.search-label {
+    -fx-font-family: Arial;
+    -fx-font-size: 16;
+}
+
+/* Text Fields */
+.input-field {
+    -fx-pref-width: 350;
+    -fx-pref-height: 30;
+}
+
+/* Layout borders */
+.profile-box {
+    -fx-border-color: black;
+    -fx-border-width: 1;
+    -fx-padding: 5;
+}

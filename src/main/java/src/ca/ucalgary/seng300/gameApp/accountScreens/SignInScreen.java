@@ -16,12 +16,29 @@ import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
-import java.io.FileInputStream;
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+
 
 public class SignInScreen implements IScreen {
     private Scene scene;
 
+//    private static File[] getResourceFolderFiles(String folder) {
+//        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+//        URL url = loader.getResource(folder);
+//        String path = url.getPath();
+//        return new File(path).listFiles();
+//    }
+
     public SignInScreen(Stage stage, ScreenController controller, Client client) {
+
+        System.out.println(Objects.requireNonNull(getClass().getClassLoader().getResource("styles.css")).getPath());
+//        for (File f : getResourceFolderFiles("resources/styles")) {
+//            System.out.println(f);
+//        }
+
         Label titleLabel = new Label("SIGN IN");
         titleLabel.setFont(new Font("Arial", 36));
         titleLabel.setTextFill(Color.DARKBLUE);
