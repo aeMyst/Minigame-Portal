@@ -15,7 +15,7 @@ class Commit:
         return f"{self.commit_hash} {self.author_name} {self.commit_date} {self.commit_message}"
 
 def get_data() -> [str]:
-    command = " git log --all --pretty=format:%H,%an,%ad,%s --date=format:'%Y-%m-%d'"
+    command = "git log --all --pretty=format:%H,%an,%ad,%s --date=format:'%Y-%m-%d'"
     output_b = subprocess.check_output(command, shell=True)
     output = output_b.decode("utf-8")
     return output.split("\n")
