@@ -1,0 +1,36 @@
+/* General Background */
+.leaderboard-pane {
+    -fx-background-color: linear-gradient(to bottom, #f0f4f7, #c4dbe8);
+}
+
+/* Title Label */
+.leaderboard-title {
+    -fx-font-family: 'Segoe UI Bold', sans-serif;
+    -fx-font-size: 30px;
+    -fx-text-fill: #333;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0, 3);
+    -fx-padding: 10;
+}
+
+/* Buttons */
+.leaderboard-button {
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-size: 16px;
+    -fx-pref-width: 300;
+    -fx-pref-height: 40;
+    -fx-background-radius: 8;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 8, 0.5, 0, 2);
+}
+
+.leaderboard-button-primary {
+    -fx-background-color: #28a745; /* Success Green */
+}
+
+
+.leaderboard-button:hover {
+    -fx-opacity: 0.6;
+}
+
+
