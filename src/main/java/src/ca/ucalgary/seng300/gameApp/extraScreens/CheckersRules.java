@@ -7,8 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
@@ -22,39 +20,33 @@ public class CheckersRules implements IScreen {
         String filePathFromServer = client.getRulesPath(2);
         String rulesText = RulesUtility.getRules(filePathFromServer);
 
-        Label Rules = new Label("Checkers' Rules: ");
-        Rules.setFont(new Font("Arial", 24));
-        Rules.setTextFill(Color.DARKBLUE);
+        Label rulesTitle = new Label("CHECKERS' RULES:");
+        rulesTitle.getStyleClass().add("rules-title");
 
         Label content = new Label(rulesText);
-        content.setStyle("-fx-font-weight: bold; "
-                + "-fx-padding: 10; "
-                + "-fx-border-color: black; "
-                + "-fx-border-width: 2; "
-                + "-fx-border-style: solid; "
-                + "-fx-border-radius: 5; "
-                + "-fx-background-color: #ffffff;");
-        Rules.setFont(new Font("Arial", 24));
+        content.getStyleClass().add("rules-content");
 
-        Button backButton = new Button("back");
-        backButton.setFont(new Font("Arial", 16));
-        backButton.setPrefWidth(200);
-        backButton.setStyle("-fx-background-color: #808080; -fx-text-fill: white;");
+        Button backButton = new Button("Back");
+        backButton.getStyleClass().add("rules-button");
+        backButton.getStyleClass().add("rules-button-back");
         backButton.setOnAction(e -> controller.showHelpScreen());
 
-        VBox layout = new VBox(15, Rules, content, backButton);
+        VBox layout = new VBox(15, rulesTitle, content, backButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
-        layout.setStyle("-fx-background-color: #f0f8ff;");
+        layout.getStyleClass().add("rules-pane");
 
-        BorderPane mainMenuPane = new BorderPane();
-        mainMenuPane.setCenter(layout);
+        BorderPane mainPane = new BorderPane();
+        mainPane.setCenter(layout);
 
-        // Scene for the main menu
-        scene = new Scene(mainMenuPane, 1280, 900);
-
+        // Scene
+        scene = new Scene(mainPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("RulesSyles.css").toExternalForm()));
     }
 
     @Override
-    public Scene getScene() { return scene; }
+    public Scene getScene() {
+        return scene;
+    }
 }
+

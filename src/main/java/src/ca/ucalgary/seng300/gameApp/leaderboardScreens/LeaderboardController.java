@@ -4,8 +4,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
@@ -20,54 +21,58 @@ public class LeaderboardController implements IScreen {
         this.stage = stage;
         this.client = client;
 
+        // Title Label
+        Label titleLabel = new Label("CHOOSE LEADERBOARDS");
+        titleLabel.getStyleClass().add("leaderboard-title");
+
         // Buttons to navigate to each specific leaderboard screen
         Button ticTacToeButton = new Button("Tic-Tac-Toe Leaderboard");
-        ticTacToeButton.setFont(new Font("Arial", 16));
-        ticTacToeButton.setPrefWidth(300);
-        ticTacToeButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        ticTacToeButton.getStyleClass().add("leaderboard-button");
+        ticTacToeButton.getStyleClass().add("leaderboard-button-primary");
         ticTacToeButton.setOnAction(e -> showTicTacToeLeaderboard());
 
         Button checkersButton = new Button("Checkers Leaderboard");
-        checkersButton.setFont(new Font("Arial", 16));
-        checkersButton.setPrefWidth(300);
-        checkersButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        checkersButton.getStyleClass().add("leaderboard-button");
+        checkersButton.getStyleClass().add("leaderboard-button-primary");
         checkersButton.setOnAction(e -> showCheckersLeaderboard());
 
         Button connectFourButton = new Button("Connect Four Leaderboard");
-        connectFourButton.setFont(new Font("Arial", 16));
-        connectFourButton.setPrefWidth(300);
-        connectFourButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        connectFourButton.getStyleClass().add("leaderboard-button");
+        connectFourButton.getStyleClass().add("leaderboard-button-primary");
         connectFourButton.setOnAction(e -> showConnectFourLeaderboard());
 
         Button backButton = new Button("Back to Main Menu");
-        backButton.setFont(new Font("Arial", 16));
-        backButton.setPrefWidth(300);
-        backButton.setStyle("-fx-background-color: #808080; -fx-text-fill: white;");
+        backButton.getStyleClass().add("leaderboard-button");
+        backButton.getStyleClass().add("back-button");
         backButton.setOnAction(e -> controller.showMainMenu());
 
         // Layout for the leaderboard menu
-        VBox layout = new VBox(20, ticTacToeButton, checkersButton, connectFourButton, backButton);
+        VBox layout = new VBox(20, titleLabel, ticTacToeButton, checkersButton, connectFourButton, backButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
 
-        scene = new Scene(layout, 1280, 900);
-    }
+        BorderPane rootPane = new BorderPane();
+        rootPane.setCenter(layout);
+        rootPane.getStyleClass().add("leaderboard-pane");
 
-    private void showConnectFourLeaderboard() {
-        Connect4LB ticTacToeLeaderBoardScreen = new Connect4LB(stage, this,client);
-        stage.setScene(ticTacToeLeaderBoardScreen.getScene());
+        scene = new Scene(rootPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("LeaderboardStyles.css").toExternalForm()));
     }
-
 
     // Methods to display each leaderboard screen
     private void showTicTacToeLeaderboard() {
-        TictactoeLB ticTacToeLeaderBoardScreen = new TictactoeLB(stage, this,client);
+        TictactoeLB ticTacToeLeaderBoardScreen = new TictactoeLB(stage, this, client);
         stage.setScene(ticTacToeLeaderBoardScreen.getScene());
     }
 
     private void showCheckersLeaderboard() {
-        CheckerLB checkersLeaderBoardScreen = new CheckerLB(stage, this,client);
+        CheckerLB checkersLeaderBoardScreen = new CheckerLB(stage, this, client);
         stage.setScene(checkersLeaderBoardScreen.getScene());
+    }
+
+    private void showConnectFourLeaderboard() {
+        Connect4LB connectFourLeaderBoardScreen = new Connect4LB(stage, this, client);
+        stage.setScene(connectFourLeaderBoardScreen.getScene());
     }
 
     // Method to return to the leaderboard menu from any leaderboard screen
@@ -79,5 +84,4 @@ public class LeaderboardController implements IScreen {
     public Scene getScene() {
         return scene;
     }
-
 }

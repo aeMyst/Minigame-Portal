@@ -21,15 +21,4 @@ public class Storage {
         return this.players;
     }
 
-    public void updatePlayer(Player updatedPlayer) {
-        for (int i = 0; i < this.players.size(); i++) {
-            if (this.players.get(i).getPlayerID().equals(updatedPlayer.getPlayerID())) {
-                System.out.println("updating player: " + updatedPlayer.getPlayerID());
-                this.players.set(i, updatedPlayer);
-                return;
-            }
-        }
-        System.out.println("adding new player: " + updatedPlayer.getPlayerID());
-        players.add(updatedPlayer);
-    }
 }

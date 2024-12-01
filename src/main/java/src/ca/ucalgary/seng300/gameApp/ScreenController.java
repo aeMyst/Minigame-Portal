@@ -73,12 +73,6 @@ public final class ScreenController extends Application {
         primaryStage.setScene(ticTacToe.getScene());
     }
 
-    public void showPlayerProfileScreen() {
-        PlayerProfileScreen playerProfile = new PlayerProfileScreen(primaryStage, this , client);
-        primaryStage.setTitle("View Player Profile");
-        primaryStage.setScene(playerProfile.getScene());
-    }
-
     public void showLoadingScreen() {
         LoadingScreen loadingScreen = new  LoadingScreen(primaryStage, this, client);
         primaryStage.setTitle("View Player Profile");
