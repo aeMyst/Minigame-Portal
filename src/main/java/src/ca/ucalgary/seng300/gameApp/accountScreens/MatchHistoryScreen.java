@@ -24,6 +24,7 @@ public class MatchHistoryScreen implements IScreen {
 
 
         Button backButton = new Button("back");
+        backButton.getStyleClass().add("back-button");
         backButton.setOnAction(e -> controller.showUserProfileScreen());
         MatchHistory matchHistory = new MatchHistory();
 
@@ -39,7 +40,7 @@ public class MatchHistoryScreen implements IScreen {
 
 
         matchHistoryLayout = new VBox(10, historyTitle, historyEntries, backButton);
-        matchHistoryLayout.setAlignment(Pos.CENTER_LEFT);
+        matchHistoryLayout.setAlignment(Pos.CENTER);
         matchHistoryLayout.setPadding(new Insets(20));
 
         BorderPane rootPane = new BorderPane();
