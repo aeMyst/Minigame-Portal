@@ -88,12 +88,15 @@ public class FileManagement {
         return storage;
     }
 
-    public static void fileWritingHistory(File file, HistoryStorage storage, String gameType, String playerID, String winnerString, String loserString, int eloGained, int eloLost, String date) {
+    public static void fileWritingHistory(File file, HistoryStorage storage) {
 
         try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file))) {
             //write info to the file in the format of "gametype, player_id, winner, loser, eloGained, eloLost"
-            String[] player = {gameType, playerID, winnerString, loserString, String.valueOf(eloGained), String.valueOf(eloLost), date};
-            writerBuffer.write(String.join(",", player));
+            for (HistoryPlayer hp : storage.getPlayersHistory()) {
+                String[] player = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};
+                writerBuffer.write(String.join(",", player));
+                writerBuffer.newLine();
+            }
 
         } catch (IOException error) {
             System.out.println("Error writing file");
