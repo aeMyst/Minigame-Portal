@@ -4,7 +4,6 @@ import src.ca.ucalgary.seng300.leaderboard.data.HistoryPlayer;
 import src.ca.ucalgary.seng300.leaderboard.data.HistoryStorage;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.IMatchHistory;
 import src.ca.ucalgary.seng300.leaderboard.utility.FileManagement;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +14,7 @@ public class MatchHistory implements IMatchHistory {
     private static final String USERS_PATH = "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
     private File file = new File(FILE_PATH);
 
-    public void updateMatchHistory(String gameType, String player, String winnerString, String loserString, int eloGained, int eloLost, String date) {
-
-        HistoryStorage storage;
+    public void updateMatchHistory(HistoryStorage storage, String player) {
 
         int max = 0;
         int lineCount = 0;
@@ -25,26 +22,25 @@ public class MatchHistory implements IMatchHistory {
 
         try {
             int userCount = FileManagement.countLinesInCSV(new File(USERS_PATH));
-            storage = FileManagement.fileReadingHistory(file);
+
             if (userCount > 0) {
                 max = userCount * 2;
             }
             lineCount = FileManagement.countLinesInTextFile(file);
 
-            storage = FileManagement.fileReadingHistory(file);
-
             for (HistoryPlayer hp : storage.getPlayersHistory()) {
                 String id = hp.getPlayerIDHistory();
-                if (id.equals(player)) {    // checking if players has more than 2 recorded games in history
+                if (id.equals(player)) {    // checking if players have more than 2 recorded games in history
                     gameCount++;
                 }
             }
+
 
             if (gameCount > 2) {
                 FileManagement.clearOtherGameHistory(storage, file, player);
             }
 
-            FileManagement.fileWritingHistory(file, storage, gameType, player, winnerString, loserString, eloGained, eloLost, date);
+            FileManagement.fileWritingHistory(file, storage);
 
 
         } catch (Exception e) {
