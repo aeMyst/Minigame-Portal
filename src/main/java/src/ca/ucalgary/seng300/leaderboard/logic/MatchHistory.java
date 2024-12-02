@@ -55,17 +55,31 @@ public class MatchHistory implements IMatchHistory {
         List<HistoryPlayer> history = new ArrayList<>();
         int count = 0;
         int counter = 0;
+        int size = 0;
 
         if (file.exists()) {
             storage = FileManagement.fileReadingHistory(file);
+            size = storage.getPlayersHistory().size();
 
-            for (HistoryPlayer histPlayer : storage.getPlayersHistory()) {
-                String playerID = histPlayer.getPlayerIDHistory();
-                if (playerID.equals(player)) {
-                    history.add(histPlayer);
-                    count++;
+//            for (HistoryPlayer histPlayer : storage.getPlayersHistory()) {
+//                String playerID = histPlayer.getPlayerIDHistory();
+//                if (playerID.equals(player)) {
+//                    history.add(histPlayer);
+//                    count++;
+//                }
+//            }
+
+            for (int i = size - 1; i >= 0; i--) {
+                if (count < 2) {
+                    String playerID = storage.getPlayersHistory().get(i).getPlayerIDHistory();
+                    if (playerID.equals(player)) {
+                        history.add(storage.getPlayersHistory().get(i));
+                        count++;
+                    }
                 }
             }
+
+
 
             if (history.isEmpty()) {
                 System.out.println("No match history is available.");
