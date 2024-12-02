@@ -25,25 +25,6 @@ public class MatchHistory implements IMatchHistory {
         int gameCount = 0;
 
         try {
-            int userCount = FileManagement.countLinesInCSV(new File(USERS_PATH));
-
-            if (userCount > 0) {
-                max = userCount * 2;
-            }
-            lineCount = FileManagement.countLinesInTextFile(file);
-
-            for (HistoryPlayer hp : storage.getPlayersHistory()) {
-                String id = hp.getPlayerIDHistory();
-                if (id.equals(player)) {    // checking if players have more than 2 recorded games in history
-                    gameCount++;
-                }
-            }
-
-
-            if (gameCount > 2) {
-                FileManagement.clearOtherGameHistory(storage, file, player);
-            }
-
             FileManagement.fileWritingHistory(file, storage);
 
 
@@ -64,25 +45,18 @@ public class MatchHistory implements IMatchHistory {
             storage = FileManagement.fileReadingHistory(file);
             size = storage.getPlayersHistory().size();
 
-//            for (int i = size - 1; i >= 0; i--) {
-//                String playerID = storage.getPlayersHistory().get(i).getPlayerIDHistory();
-//                if (count < 2) {
-//                    if (playerID.equals(player)) {
-//                        history.add(storage.getPlayersHistory().get(i));
-//                        count++;
-//                    }
-//                } else {
-                    ListIterator<HistoryPlayer> itr = storage.getPlayersHistory().listIterator(size);
-                    while (itr.hasPrevious()) {
-                        HistoryPlayer current = itr.previous();
-                        String currentID = current.getPlayerIDHistory();
-                        if (currentID.equals(player) && count < 2) {
-                            history.add(current);
-                            count++;
-                        } else if (currentID.equals(player) && count >= 2) {
-                            itr.remove();
-                        }
-                    }
+
+            ListIterator<HistoryPlayer> itr = storage.getPlayersHistory().listIterator(size);
+            while (itr.hasPrevious()) {
+                HistoryPlayer current = itr.previous();
+                String currentID = current.getPlayerIDHistory();
+                if (currentID.equals(player) && count < 2) {
+                    history.add(current);
+                    count++;
+                } else if (currentID.equals(player) && count >= 2) {
+                    itr.remove();
+                }
+            }
 
             if (history.isEmpty()) {
                 System.out.println("No match history is available.");
