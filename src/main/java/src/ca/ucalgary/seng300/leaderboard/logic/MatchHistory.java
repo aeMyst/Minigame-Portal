@@ -74,11 +74,9 @@ public class MatchHistory implements IMatchHistory {
 //                } else {
                     ListIterator<HistoryPlayer> itr = storage.getPlayersHistory().listIterator(size);
                     while (itr.hasPrevious()) {
-                        System.out.println("added");
                         HistoryPlayer current = itr.previous();
                         String currentID = current.getPlayerIDHistory();
                         if (currentID.equals(player) && count < 2) {
-                            System.out.println("added");
                             history.add(current);
                             count++;
                         } else if (currentID.equals(player) && count >= 2) {
