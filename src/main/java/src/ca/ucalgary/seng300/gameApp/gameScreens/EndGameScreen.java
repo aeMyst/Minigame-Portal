@@ -185,7 +185,7 @@ public class EndGameScreen implements IScreen {
                 }
             }
 
-            if (gameCount >= 2) {
+            if (gameCount > 2) {
                 FileManagement.clearOtherGameHistory(storage, file, player);
             }
 
