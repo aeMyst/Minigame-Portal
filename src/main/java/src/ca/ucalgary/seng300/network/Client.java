@@ -44,6 +44,14 @@ public class Client implements IClient {
         clientAuth = new ClientAuth(auth);
     }
 
+    public Client(AuthInterface authInterface, ProfileInterface profileInterface) {
+        System.out.println("Server Started");
+        System.out.println("Waiting for Request...");
+        System.out.println("==========================");
+        auth = authInterface;
+        profile = profileInterface;
+    }
+
     public void initializeProfile(String username) {
         profile.initializeProfile(username);
     }
