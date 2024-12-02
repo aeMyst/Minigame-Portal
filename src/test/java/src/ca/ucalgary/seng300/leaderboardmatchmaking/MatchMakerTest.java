@@ -1,3 +1,5 @@
+package src.ca.ucalgary.seng300.leaderboardmatchmaking;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 import src.ca.ucalgary.seng300.leaderboard.logic.*;
