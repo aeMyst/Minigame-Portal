@@ -119,42 +119,6 @@ public class FileManagement {
         }
     }
 
-    public static void clearOtherGameHistory(HistoryStorage storage, File file, String player) throws IOException {
-        List<String> keepLines = new ArrayList<>();
-        String recentGame = null;
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.contains("," + player + ",")) {
-                    recentGame = line;
-                } else {
-                    keepLines.add(line);
-                }
-            }
-        } catch (IOException e) {
-            if (e instanceof FileNotFoundException) {
-                System.out.println("File not found");
-            } else {
-                System.out.println("Error reading file");
-            }
-        }
-
-        if (recentGame != null) {
-            keepLines.add(recentGame);
-        }
-
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-            for (String l : keepLines) {
-                bw.write(l);
-                bw.newLine();
-            }
-        } catch (IOException e) {
-            System.out.println("Error writing file");
-            e.printStackTrace();
-        }
-    }
-
     public static int countLinesInCSV(File file) {
         int count = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
