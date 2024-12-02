@@ -1,0 +1,16 @@
+Board Setup:
+Played on a 3x3 grid.
+
+Players:
+Two players take turns: one as "X" and the other as "O".
+
+Objective:
+Be the first to get three of your symbols in a row (horizontally, vertically, or diagonally).
+
+Gameplay:
+Players alternate turns, placing their symbol in an empty square.
+Once a symbol is placed, it cannot be moved or removed.
+
+Winning:
+The first player to form a line of three wins.
+If all 9 squares are filled without a winner, the game ends in a draw.

@@ -26,8 +26,10 @@ public class Main {
             System.out.println("2. Login");
             System.out.println("3. Check Logged-In User");
             System.out.println("4. View Profile");
-            System.out.println("5. Logout");
-            System.out.println("6. Exit");
+            System.out.println("5. Update Profile");
+            System.out.println("6. Search Profile");
+            System.out.println("7. Logout");
+            System.out.println("8. Exit");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -74,11 +76,33 @@ public class Main {
                     }
                 }
                 case 4 -> {
-
                     String profile = profileController.viewProfile();
                     System.out.println(profile);
                 }
                 case 5 -> {
+                    User loggedInUser = authController.isLoggedIn();
+                    if (loggedInUser != null) {
+                        System.out.print("Enter your new email: ");
+                        String newEmail = scanner.nextLine();
+
+                        System.out.print("Enter your new username: ");
+                        String newUsername = scanner.nextLine();
+
+                        System.out.print("Enter your new password: ");
+                        String newPassword = scanner.nextLine();
+
+                        profileService.updateProfile(loggedInUser, newUsername, newEmail, newPassword);
+                    } else {
+                        System.out.println("No user is currently logged in.");
+                    }
+                }
+                case 6 -> {
+                    System.out.print("Enter the username to search: ");
+                    String searchUsername = scanner.nextLine();
+
+                    profileController.searchProfile(searchUsername);
+                }
+                case 7 -> {
                     User loggedInUser = authController.isLoggedIn();
                     if (loggedInUser != null && authController.logout(loggedInUser)) {
                         System.out.println("Logout successful.");
@@ -86,7 +110,7 @@ public class Main {
                         System.out.println("No user to log out.");
                     }
                 }
-                case 6 -> {
+                case 8 -> {
                     running = false;
                     System.out.println("Exiting the system. Goodbye!");
                 }

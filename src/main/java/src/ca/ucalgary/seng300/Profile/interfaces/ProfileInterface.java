@@ -10,14 +10,11 @@ import src.ca.ucalgary.seng300.Profile.models.Profile;
 public interface ProfileInterface {
     // Initializing string field
     String viewProfile();
-
     // Method to update profile information
     void updateProfile(User user, String newUsername, String newEmail, String newPassword);
-
-    // Method to track game history
-    void trackGameHistory(User user, Profile profile);
-
-    // Method to update ranking
-    void updateRanking(User user, int rank);
+    //Method to initialize profile for new user
+    void initializeProfile(String username);
+    //Method to search user's profile
+    String searchProfile(String username);
 
 }

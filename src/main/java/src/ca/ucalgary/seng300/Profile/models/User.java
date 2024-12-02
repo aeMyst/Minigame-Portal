@@ -17,10 +17,20 @@ public class User {
         this.email = email;
     }
 
+    public static User fromCsv(String csv) {
+        String[] data = csv.split(",");
+        return new User(data[1], data[2], data[0]);
+    }
+
+    public String toCsv() {
+        return email + "," + username + "," + password;
+    }
+
     // Getter and setter methods for username
     public void setUsername(String username) {
         this.username = username;
     }
+
     public String getUsername() {
         return username;
     }
@@ -29,19 +39,21 @@ public class User {
     public String getPassword() {
         return password;
     }
-    public void setPassword(String newPassword) {
-        this.password = newPassword;
-    }
 
     // Getter and setter methods for email
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getEmail() {
         return email;
     }
 
-    // Method to view user information in string format
+
+    public void setPassword(String newPassword) {
+        this.password = newPassword;
+    }
+
     public String toString() {
         return "User(username=" + username + ", email=" + email + ")";
     }
