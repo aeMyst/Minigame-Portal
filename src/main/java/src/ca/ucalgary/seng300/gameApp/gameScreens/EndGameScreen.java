@@ -70,7 +70,7 @@ public class EndGameScreen implements IScreen {
             eloLoss = String.valueOf(currentLoserElo - loser.getElo());
 
             for (Player player : match) {
-                storage.addPlayerHistory(new HistoryPlayer(player.getGameType(), player.getPlayerID(),winnerString, loserString, Integer.parseInt(eloGain), Integer.parseInt(eloLoss),LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MMM/yyyy"))));
+                storage.addPlayerHistory(new HistoryPlayer(player.getGameType(), player.getPlayerID(),winnerString, loserString, Integer.parseInt(eloGain), Integer.parseInt(eloLoss),LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM dd yyyy"))));
 
 
             }
