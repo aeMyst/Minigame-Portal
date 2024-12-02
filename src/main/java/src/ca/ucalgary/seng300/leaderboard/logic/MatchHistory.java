@@ -44,8 +44,6 @@ public class MatchHistory implements IMatchHistory {
         if (file.exists()) {
             storage = FileManagement.fileReadingHistory(file);
             size = storage.getPlayersHistory().size();
-
-
             ListIterator<HistoryPlayer> itr = storage.getPlayersHistory().listIterator(size);
             while (itr.hasPrevious()) {
                 HistoryPlayer current = itr.previous();
