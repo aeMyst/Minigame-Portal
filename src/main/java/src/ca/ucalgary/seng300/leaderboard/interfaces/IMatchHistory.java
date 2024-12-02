@@ -1,8 +1,10 @@
 package src.ca.ucalgary.seng300.leaderboard.interfaces;
 
+import src.ca.ucalgary.seng300.leaderboard.data.HistoryStorage;
+
 public interface IMatchHistory {
 
-    void updateMatchHistory(String gameType, String player, String winnerString, String loserString, int eloGained, int eloLost, String date);
+    void updateMatchHistory(HistoryStorage storage, String player);
 
     String[][] getMatchHistory(String player);
 }
