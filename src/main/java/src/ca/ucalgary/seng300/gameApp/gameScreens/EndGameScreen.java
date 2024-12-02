@@ -74,10 +74,7 @@ public class EndGameScreen implements IScreen {
 
 
             }
-
-            for (Player player2 : match) {
-                matchHistory.updateMatchHistory(storage, player2.getPlayerID());
-            }
+            matchHistory.updateMatchHistory(storage, client.getCurrentUsername());
 
 
 

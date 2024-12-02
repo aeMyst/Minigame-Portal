@@ -22,28 +22,26 @@ public class MatchHistoryScreen implements IScreen {
         Label historyTitle = new Label("USER MATCH HISTORY: " + client.getCurrentUsername());
         historyTitle.getStyleClass().add("title-label");
 
-
         Button backButton = new Button("back");
         backButton.setOnAction(e -> controller.showUserProfileScreen());
         MatchHistory matchHistory = new MatchHistory();
 
         String currentPlayer = client.getCurrentUsername();
 
-
+        matchHistoryLayout = new VBox(10);
+        matchHistoryLayout.setAlignment(Pos.CENTER_LEFT);
+        matchHistoryLayout.setPadding(new Insets(20));
+        matchHistoryLayout.getStyleClass().add("user-profile-box");
 
         VBox historyEntries = displayHistory(matchHistory.getMatchHistory(currentPlayer), client.getCurrentUserProfile());
 
-        VBox layout = new VBox(20, backButton);
-        layout.setAlignment(Pos.CENTER);
-        layout.setPadding(new Insets(20));
 
-
-        matchHistoryLayout = new VBox(10, historyTitle, historyEntries, backButton);
-        matchHistoryLayout.setAlignment(Pos.CENTER_LEFT);
-        matchHistoryLayout.setPadding(new Insets(20));
+        VBox mainLayout = new VBox(10, historyTitle, historyEntries, backButton);
+        mainLayout.setAlignment(Pos.CENTER);
+        mainLayout.setPadding(new Insets(20));
 
         BorderPane rootPane = new BorderPane();
-        rootPane.setCenter(matchHistoryLayout);
+        rootPane.setCenter(mainLayout);
         rootPane.getStyleClass().add("root-pane");
 
         scene = new Scene(rootPane, 1280, 900);

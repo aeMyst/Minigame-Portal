@@ -88,13 +88,23 @@ public class FileManagement {
         return storage;
     }
 
-    public static void fileWritingHistory(File file, HistoryStorage storage) {
+    public static void fileWritingHistory(File file, HistoryStorage storage, String player) {
 
-        try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file, true))) {
+            int count = 0;
+            for (HistoryPlayer hp : storage.getPlayersHistory()) {
+                String id = hp.getPlayerIDHistory();
+                if (id.equals(player)) {    // checking if players have more than 2 recorded games in history
+                    count++;
+                }
+            }
+            if (count >= 2) {
+                clearOtherGameHistory(storage, file, player);
+            }
             //write info to the file in the format of "gametype, player_id, winner, loser, eloGained, eloLost"
             for (HistoryPlayer hp : storage.getPlayersHistory()) {
-                String[] player = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};
-                writerBuffer.write(String.join(",", player));
+                String[] addPlayer = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};
+                writerBuffer.write(String.join(",", addPlayer));
                 writerBuffer.newLine();
             }
 
@@ -104,15 +114,20 @@ public class FileManagement {
         }
     }
 
-    public static void clearOtherGameHistory(HistoryStorage storage, File file, String player) throws IOException {
+    public static void clearOtherGameHistory(HistoryStorage storage, File file, String player) {
         List<String> keepLines = new ArrayList<>();
         String recentGame = null;
+        ArrayList<HistoryPlayer> arrList = storage.getPlayersHistory();
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
+                for (HistoryPlayer hp : storage.getPlayersHistory()) {
+                    System.out.println("type: " + hp.getGameTypeHistory() + ", id: " + hp.getPlayerIDHistory());
+                }
                 if (line.contains("," + player + ",")) {
                     recentGame = line;
+
                 } else {
                     keepLines.add(line);
                 }
