@@ -13,16 +13,27 @@ import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
+/**
+ * Represents the Create Profile Screen in the application.
+ * Allows users to input their credentials and create a new profile.
+ */
 public class CreateProfileScreen implements IScreen {
     private Scene scene;
 
+    /**
+     * Constructor for CreateProfileScreen.
+     *
+     * @param stage      the primary stage of the application
+     * @param controller the screen controller to manage navigation
+     * @param client     the client for handling network communication and registration
+     */
     public CreateProfileScreen(Stage stage, ScreenController controller, Client client) {
-        // Title label
+        // Title label setup
         Label titleLabel = new Label("Create Profile");
         titleLabel.setFont(new Font("Arial", 24));
         titleLabel.setTextFill(Color.DARKBLUE);
 
-        // Fields for user input
+        // Input field for email address
         TextField emailField = new TextField();
         emailField.setPrefWidth(350); // Increase width
         emailField.setPrefHeight(30);
@@ -31,6 +42,7 @@ public class CreateProfileScreen implements IScreen {
         HBox emailLayout = new HBox(10, emailField);
         emailLayout.setAlignment(Pos.CENTER);
 
+        // Input field for username
         TextField usernameField = new TextField();
         usernameField.setPrefWidth(350);
         usernameField.setPrefHeight(30);
@@ -39,6 +51,7 @@ public class CreateProfileScreen implements IScreen {
         HBox usernameLayout = new HBox(10, usernameField);
         usernameLayout.setAlignment(Pos.CENTER);
 
+        // Input field for password with details
         PasswordField passwordField = new PasswordField();
         passwordField.setPrefWidth(350);
         passwordField.setPrefHeight(30);
@@ -54,6 +67,7 @@ public class CreateProfileScreen implements IScreen {
         HBox passwordHbox = new HBox(10, passwordLayout);
         passwordHbox.setAlignment(Pos.CENTER);
 
+        // Input field for confirming password
         PasswordField confirmPasswordField = new PasswordField();
         confirmPasswordField.setPrefWidth(350);
         confirmPasswordField.setPrefHeight(30);
@@ -72,20 +86,19 @@ public class CreateProfileScreen implements IScreen {
             controller.showSignInScreen();
         });
 
-        // Submit button
+        // Submit button for profile creation
         Button submitButton = new Button("Create Profile");
         submitButton.setFont(new Font("Arial", 16));
         submitButton.setPrefWidth(200);
         submitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         submitButton.setOnAction(e -> {
-            // Handle profile creation
+            // Retrieve user input
             String email = emailField.getText();
             String username = usernameField.getText();
             String password = passwordField.getText();
             String confirmPassword = confirmPasswordField.getText();
 
-            // authentication should happen here
-
+            // Validate input fields and handle registration logic
             if (email.isEmpty() || username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 showAlert(Alert.AlertType.ERROR, "Error", "All fields are required.");
             } else if (!password.equals(confirmPassword)) {
@@ -93,24 +106,33 @@ public class CreateProfileScreen implements IScreen {
             } else if (client.registerUser(username, password, email)) {
                 // You can add logic to save the profile data
                 // TODO: We need to add specifics on why a registration failed
+                // Successfully registered
                 System.out.println("Profile created for " + username);
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Profile created successfully!");
 
                 controller.showSignInScreen();
             } else {
+                // Registration failed
                 showAlert(Alert.AlertType.ERROR, "Error", "Profile creation failed.");
             }
         });
 
-        // Layout for profile setup
+        // Organize all elements in a vertical box
         VBox layout = new VBox(15, titleLabel, emailLayout, usernameLayout, passwordHbox, confirmPasswordLayout, submitButton, backToSignInButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
 
-        // Scene for create profile screen
+        // Create the scene for the profile creation screen
         scene = new Scene(layout, 1280, 900);
     }
 
+    /**
+     * Displays an alert dialog with the given type, title, and message.
+     *
+     * @param alertType the type of alert (e.g., ERROR, INFORMATION)
+     * @param title     the title of the alert
+     * @param message   the message content of the alert
+     */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -119,6 +141,11 @@ public class CreateProfileScreen implements IScreen {
         alert.showAndWait();
     }
 
+    /**
+     * Returns the scene for the create profile screen.
+     *
+     * @return the Scene object
+     */
     @Override
     public Scene getScene() {
         return scene;
