@@ -14,10 +14,20 @@ import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
+/**
+ * Represents the main menu screen of the application where users can navigate to different features.
+ */
 public class MainMenuScreen implements IScreen {
     private Scene scene;
     private String username;
 
+    /**
+     * Constructs the MainMenuScreen with the necessary UI components.
+     *
+     * @param stage      The primary stage of the application.
+     * @param controller The controller used to navigate between screens.
+     * @param client     The client handling client interactions.
+     */
     public MainMenuScreen(Stage stage, ScreenController controller, Client client) {
         // Title label
         username = client.getCurrentUsername();

@@ -35,7 +35,7 @@ public class EndGameScreen implements IScreen {
      *
      * @param stage             The main application stage.
      * @param controller        Controller for screen navigation.
-     * @param client            Client for handling server interactions.
+     * @param client            Client for handling client interactions.
      * @param gameType          The type of the game (0 for Tic-Tac-Toe, 1 for Connect4, 2 for Checkers).
      * @param boardManager      The board manager for Tic-Tac-Toe.
      * @param connect4Logic     Logic for Connect4.
