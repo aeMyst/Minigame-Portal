@@ -49,10 +49,4 @@ public class BoardTest {
         assertEquals(expectedOutput.replace("\r\n", "\n"), outputStream.toString().replace("\r\n", "\n"));
     }
 
-    @Test
-    public void ShouldFail(){
-        assertEquals(1, 2);
-    }
-
-
 }
