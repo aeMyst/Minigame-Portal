@@ -22,6 +22,11 @@ import src.ca.ucalgary.seng300.gamelogic.Connect4.UserPiece;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * This code represents the Connect 4 game screen.
+ * Handles the game board creation, game logic integration, player interactions,
+ * and chat functionalities.
+ */
 public class Connect4Screen implements IScreen {
     private Scene scene;
 
@@ -41,6 +46,13 @@ public class Connect4Screen implements IScreen {
     private boolean isEmojiOpen = false;
     private ArrayList<Player> match;
 
+    /**
+     * Constructor for Connect4Screen.
+     * @param stage The primary stage of the application
+     * @param controller The screen controller for navigation between screens.
+     * @param client The client for server communication.
+     * @param match The list of players in the current match.
+     */
     public Connect4Screen(Stage stage, ScreenController controller, Client client, ArrayList<Player> match) {
         this.stage = stage;
         this.client = client;
@@ -62,6 +74,7 @@ public class Connect4Screen implements IScreen {
         title.setFont(new Font("Arial", 24));
         title.setTextFill(Color.DARKBLUE);
 
+        // GridPane that contains game board buttons
         GridPane gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);
         gameBoard.setHgap(5);
@@ -80,27 +93,32 @@ public class Connect4Screen implements IScreen {
             }
         }
 
+        // Label that displays current player
         turnIndicator = new Label("Player turn: " + currentPlayer.getPlayer().getPlayerID() + " (RED)");
         turnIndicator.setFont(new Font("Arial", 18));
         turnIndicator.setTextFill(Color.DARKGREEN);
 
+        // TextArea that displays messages
         chatArea = new TextArea();
         chatArea.setEditable(false);
         chatArea.setPrefHeight(150);
         chatArea.setStyle("-fx-control-inner-background: #f8f8ff; -fx-text-fill: black; -fx-font-size: 14px;");
 
+        // TextField that allows for players to input messages
         chatInput = new TextField();
         chatInput.setPromptText("Type your message...");
         chatInput.setPrefWidth(250);
         chatInput.setStyle("-fx-background-color: #e0e0e0;");
         chatInput.setOnAction(e -> sendMessage());
 
+        // Button that sends message when clicked
         Button sendButton = new Button("Send");
         sendButton.setFont(new Font("Arial", 16));
         sendButton.setPrefWidth(150);
         sendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         sendButton.setOnAction(e -> sendMessage());
 
+        // Button that opens emoji menu when clicked
         Button emojiButton = new Button("Emoji Menu");
         emojiButton.setFont(new Font("Arial", 16));
         emojiButton.setPrefWidth(150);
@@ -202,7 +220,11 @@ public class Connect4Screen implements IScreen {
 
     private boolean moveInProgress = false;
 
-    // handle move attempted by player when button on game board is clicked
+    /**
+     * Handles move attempted by player when button on game board is clicked.
+     * @param column The column index of the button clicked.
+     * @param controller The screen controller for navigation between screens.
+     */
     private void gameButtonClicked(int column, ScreenController controller) {
         if (moveInProgress) {
             return;
@@ -246,12 +268,18 @@ public class Connect4Screen implements IScreen {
         }
     }
 
+    /**
+     * Switches current player.
+     */
     private void switchTurns() {
         currentPlayer = (currentPlayer == playerRed) ? playerBlue : playerRed;
         turnIndicator.setText("Player turn: " + currentPlayer.getPlayer().getPlayerID()
                 + (currentPlayer == playerRed ? " (RED)" : " (BLUE)"));
     }
 
+    /**
+     * Disables all buttons on the game board.
+     */
     private void disableBoard() {
         for (int i = 0; i < gameButtons.length; i++) {
             for (int j = 0; j < gameButtons[i].length; j++) {
@@ -260,6 +288,9 @@ public class Connect4Screen implements IScreen {
         }
     }
 
+    /**
+     * Enables all buttons on the game board.
+     */
     private void enableBoard() {
         for (int i = 0; i < gameButtons.length; i++) {
             for (int j = 0; j < gameButtons[i].length; j++) {
@@ -268,6 +299,9 @@ public class Connect4Screen implements IScreen {
         }
     }
 
+    /**
+     * Sends a chat message to the server and displays it in the chat area.
+     */
     private void sendMessage() {
         String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
