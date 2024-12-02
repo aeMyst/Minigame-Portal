@@ -11,6 +11,7 @@ import src.ca.ucalgary.seng300.leaderboard.data.HistoryPlayer;
 import src.ca.ucalgary.seng300.leaderboard.data.HistoryStorage;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.logic.EloRating;
+import src.ca.ucalgary.seng300.leaderboard.logic.MatchHistory;
 import src.ca.ucalgary.seng300.leaderboard.utility.FileManagement;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
@@ -30,9 +31,7 @@ import java.util.List;
 
 public class EndGameScreen implements IScreen {
     private Scene scene;
-    private static final String FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/match_history.txt";
-    private static final String USERS_PATH = "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
-    private File file = new File(FILE_PATH);
+    MatchHistory matchHistory;
 
     public EndGameScreen(Stage stage, ScreenController controller, Client client, int gameType,
                          BoardManager boardManager, Connect4Logic connect4Logic, CheckersGameLogic checkersGameLogic,
@@ -49,6 +48,9 @@ public class EndGameScreen implements IScreen {
         String loserString = "";
         String eloGain = "";
         String eloLoss = "";
+        matchHistory = new MatchHistory();
+        HistoryStorage storage = new HistoryStorage();
+
 
         // Loser Player object
         Player loser;
@@ -68,8 +70,17 @@ public class EndGameScreen implements IScreen {
             eloLoss = String.valueOf(currentLoserElo - loser.getElo());
 
             for (Player player : match) {
-                updateMatchHistory(player.getGameType(), player.getPlayerID(),winnerString, loserString, Integer.parseInt(eloGain), Integer.parseInt(eloLoss),LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MMM/yyyy")));
+                storage.addPlayerHistory(new HistoryPlayer(player.getGameType(), player.getPlayerID(),winnerString, loserString, Integer.parseInt(eloGain), Integer.parseInt(eloLoss),LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MMM/yyyy"))));
+
+
             }
+
+            for (Player player2 : match) {
+                matchHistory.updateMatchHistory(storage, player2.getPlayerID());
+            }
+
+
+
 
         } else {
             for (Player player : match) {
@@ -159,86 +170,6 @@ public class EndGameScreen implements IScreen {
             }
         }
         return buildString.toString();
-    }
-
-    public void updateMatchHistory(String gameType, String player, String winnerString, String loserString, int eloGained, int eloLost, String date) {
-
-        HistoryStorage storage;
-
-        int max = 0;
-        int lineCount = 0;
-        int gameCount = 0;
-
-        try {
-            int userCount = FileManagement.countLinesInCSV(new File(USERS_PATH));
-            storage = FileManagement.fileReadingHistory(file);
-            if (userCount > 0) {
-                max = userCount * 2;
-            }
-            lineCount = FileManagement.countLinesInTextFile(file);
-
-            storage = FileManagement.fileReadingHistory(file);
-
-            for (HistoryPlayer hp : storage.getPlayersHistory()) {
-                String id = hp.getPlayerIDHistory();
-                if (id.equals(player)) {    // checking if players has more than 2 recorded games in history
-                    gameCount++;
-                }
-            }
-
-            if (gameCount > 2) {
-                FileManagement.clearOtherGameHistory(storage, file, player);
-            }
-
-            FileManagement.fileWritingHistory(file, storage, gameType, player, winnerString, loserString, eloGained, eloLost, date);
-
-
-        } catch (Exception e) {
-            System.out.println("Error fetching match history");
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
-    public String[][] getMatchHistory(String player) {
-        HistoryStorage storage;
-        List<HistoryPlayer> history = new ArrayList<>();
-        int count = 0;
-        int counter = 0;
-
-        if (file.exists()) {
-            storage = FileManagement.fileReadingHistory(file);
-
-            for (HistoryPlayer histPlayer : storage.getPlayersHistory()) {
-                String playerID = histPlayer.getPlayerIDHistory();
-                if (playerID.equals(player)) {
-                    history.add(histPlayer);
-                    count++;
-                }
-            }
-
-            if (history.isEmpty()) {
-                System.out.println("No match history is available.");
-            }
-
-            String[][] historyArr = new String[count][7];
-
-            for (HistoryPlayer hp : history) {
-                historyArr[counter][0] = hp.getGameTypeHistory();
-                historyArr[counter][1] = hp.getPlayerIDHistory();
-                historyArr[counter][2] = hp.getWinnerString();
-                historyArr[counter][3] = hp.getLoserString();
-                historyArr[counter][4] = String.valueOf(hp.getEloGained());
-                historyArr[counter][5] = String.valueOf(hp.getEloLost());
-                historyArr[counter][6] = hp.getDate();
-                counter++;
-            }
-
-            return historyArr;
-        } else {
-            System.out.println("[ERROR] File does not exist.");
-            return new String[0][];
-        }
     }
 
     @Override
