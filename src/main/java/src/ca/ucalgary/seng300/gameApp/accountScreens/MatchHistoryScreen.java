@@ -78,11 +78,12 @@ public class MatchHistoryScreen implements IScreen {
             searchProfileField.clear();
         });
 
-        String currentPlayer = client.getCurrentUsername();
-
         HBox searchLayout = new HBox(10, searchProfileLabel, searchProfileField, searchButton, xButton);
         searchLayout.setAlignment(Pos.CENTER);
 
+// TODO: figure out how to make this so that it always prints out the correct user
+
+//        String currentPlayer = client.getCurrentUsername();
 //        client.sendMatchHistoryToServer(matchHistory.getMatchHistory(currentPlayer), () -> {
 //            if (matchHistory.getMatchHistory(currentPlayer)!=null) {
 //                System.out.println("\n" + "Player Match History successfully updated");
