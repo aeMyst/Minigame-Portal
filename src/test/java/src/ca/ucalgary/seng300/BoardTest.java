@@ -1,4 +1,4 @@
-package tiktaktoe;
+package src.ca.ucalgary.seng300;
 
 import org.junit.jupiter.api.Test;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.Board;
@@ -47,6 +47,11 @@ public class BoardTest {
                         "    -----------------------\n";
 
         assertEquals(expectedOutput.replace("\r\n", "\n"), outputStream.toString().replace("\r\n", "\n"));
+    }
+
+    @Test
+    public void ShouldFail(){
+        assertEquals(1, 2);
     }
 
 

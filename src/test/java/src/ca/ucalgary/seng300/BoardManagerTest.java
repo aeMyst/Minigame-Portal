@@ -1,4 +1,4 @@
-package tiktaktoe;
+package src.ca.ucalgary.seng300;
 
 import org.junit.jupiter.api.Test;
 import org.junit.*;
