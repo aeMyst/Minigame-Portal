@@ -1,4 +1,6 @@
 package src.ca.ucalgary.seng300.leaderboard.utility;
+import src.ca.ucalgary.seng300.leaderboard.data.HistoryPlayer;
+import src.ca.ucalgary.seng300.leaderboard.data.HistoryStorage;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.data.Storage;
 
@@ -32,7 +34,6 @@ public class FileManagement {
             }
             Storage newStorage = new Storage(players);
             storage = newStorage;
-            reader.close();
         } catch (IOException error) {
             if (error instanceof FileNotFoundException) {
                 System.out.println("File not found");
@@ -57,6 +58,117 @@ public class FileManagement {
             System.out.println("Error writing file");
             error.printStackTrace();
         }
+    }
+
+    public static HistoryStorage fileReadingHistory(File file) {
+        ArrayList<HistoryPlayer> players = new ArrayList<>();
+        HistoryStorage storage = null;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line = reader.readLine();
+            while (line != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 7) {
+                    HistoryPlayer player = new HistoryPlayer(parts[0], parts[1], parts[2], parts[3], Integer.parseInt(parts[4]), Integer.parseInt(parts[5]), parts[6]);
+                    players.add(player);
+                } else {
+                    throw new IllegalArgumentException("Invalid file format");
+                }
+                line = reader.readLine();
+            }
+            HistoryStorage newStorage = new HistoryStorage(players);
+            storage = newStorage;
+        } catch (IOException error) {
+            if (error instanceof FileNotFoundException) {
+                System.out.println("File not found");
+            } else {
+                System.out.println("Error reading file");
+            }
+        }
+        return storage;
+    }
+
+    public static void fileWritingHistory(File file, HistoryStorage storage, String gameType, String playerID, String winnerString, String loserString, int eloGained, int eloLost, String date) {
+
+        try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file))) {
+            //write info to the file in the format of "gametype, player_id, winner, loser, eloGained, eloLost"
+            String[] player = {gameType, playerID, winnerString, loserString, String.valueOf(eloGained), String.valueOf(eloLost), date};
+            writerBuffer.write(String.join(",", player));
+
+        } catch (IOException error) {
+            System.out.println("Error writing file");
+            error.printStackTrace();
+        }
+    }
+
+    public static void clearOtherGameHistory(HistoryStorage storage, File file, String player) throws IOException {
+        List<String> keepLines = new ArrayList<>();
+        String recentGame = null;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.contains("," + player + ",")) {
+                    recentGame = line;
+                } else {
+                    keepLines.add(line);
+                }
+            }
+        } catch (IOException e) {
+            if (e instanceof FileNotFoundException) {
+                System.out.println("File not found");
+            } else {
+                System.out.println("Error reading file");
+            }
+        }
+
+        if (recentGame != null) {
+            keepLines.add(recentGame);
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            for (String l : keepLines) {
+                bw.write(l);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing file");
+            e.printStackTrace();
+        }
+    }
+
+    public static int countLinesInCSV(File file) {
+        int count = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (!line.trim().isEmpty() && !line.matches("^,+$")) {
+                    count++;
+                }
+            }
+            return count;
+        } catch (IOException error) {
+            System.out.println("Error reading file");
+            error.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static int countLinesInTextFile(File file) {
+        int count = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (!line.trim().isEmpty()) {
+                    count++;
+                }
+            }
+            return count;
+        } catch (IOException error) {
+            System.out.println("Error reading file");
+            error.printStackTrace();
+        }
+        return -1;
     }
 
     public static void updateProfilesInCsv(String filePath, ArrayList<Player> players) {
