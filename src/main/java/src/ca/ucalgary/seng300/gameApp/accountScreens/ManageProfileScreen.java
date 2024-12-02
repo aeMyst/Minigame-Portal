@@ -14,16 +14,28 @@ import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
+/**
+ * Represents the Manage Profile screen in the application.
+ * Allows users to update their email, username, or password and navigate back to the main menu.
+ */
+
 public class ManageProfileScreen implements IScreen {
     private Scene scene;
 
+    /**
+     * Constructor for ManageProfileScreen.
+     *
+     * @param stage      the primary stage of the application
+     * @param controller the screen controller for navigation
+     * @param client     the client for handling user authentication and profile updates
+     */
     public ManageProfileScreen(Stage stage, ScreenController controller, Client client) {
-        // Label for Manage Profile title
+        // Title for the Manage Profile screen
         Label titleLabel = new Label("Manage Profile");
         titleLabel.setFont(new Font("Arial", 24));
         titleLabel.setTextFill(Color.DARKBLUE);
 
-        // Label and field for changing email
+        // Input field for updating email
         Label changeEmailLabel = new Label("Change Email:");
         TextField changeEmailField = new TextField();
         changeEmailField.setPromptText("Enter new Email");
@@ -31,7 +43,7 @@ public class ManageProfileScreen implements IScreen {
         HBox emailLayout = new HBox(10, changeEmailLabel, changeEmailField);
         emailLayout.setAlignment(Pos.CENTER);
 
-        // Label and field for changing username
+        // Input field for updating username
         Label changeUsernameLabel = new Label("Change Username:");
         TextField changeUsernameField = new TextField();
         changeUsernameField.setPromptText("Enter new username");
@@ -39,7 +51,7 @@ public class ManageProfileScreen implements IScreen {
         HBox usernameLayout = new HBox(10, changeUsernameLabel, changeUsernameField);
         usernameLayout.setAlignment(Pos.CENTER);
 
-        // Label and field for changing password
+        // Input field for updating password
         Label changePasswordLabel = new Label("Change Password:");
         PasswordField changePasswordField = new PasswordField();
         changePasswordField.setPromptText("Enter new password");
@@ -54,7 +66,7 @@ public class ManageProfileScreen implements IScreen {
         updateButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         updateButton.setOnAction(e -> {
 
-            // if email field is filled, change the email
+            // Retrieve current user
             User currentUser = client.loggedIn(); //
 
             if (currentUser == null) {
@@ -62,20 +74,20 @@ public class ManageProfileScreen implements IScreen {
                 return;
             }
 
-            // Get input values
+            // Get input values for changes
             String newEmail = changeEmailField.getText().isEmpty() ? null : changeEmailField.getText();
             String newUsername = changeUsernameField.getText().isEmpty() ? null : changeUsernameField.getText();
             String newPassword = changePasswordField.getText().isEmpty() ? null : changePasswordField.getText();
 
-            // Call the editProfile method
+            // Update profile using client logic
             client.editProfile(currentUser, newUsername, newEmail, newPassword);
 
-            // Provide feedback to the user
+            // Provide feedback and navigate back to the main menu
             showInfoMessage("Success", "Profile updated successfully!");
             controller.showMainMenu();
         });
 
-        // Button for going back
+        // Button to go back to the main menu
         Button backButton = new Button("Back");
         backButton.setFont(new Font("Arial", 16));
         backButton.setPrefWidth(200);
@@ -86,14 +98,21 @@ public class ManageProfileScreen implements IScreen {
         HBox buttonLayout = new HBox(20, updateButton, backButton);
         buttonLayout.setAlignment(Pos.CENTER);
 
-        // Main Layout
+        // Main layout containing all elements
         VBox layout = new VBox(20, titleLabel, emailLayout, usernameLayout, passwordLayout, buttonLayout);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
 
+        // Create the scene
         scene = new Scene(layout, 1280, 900);
     }
 
+    /**
+     * Displays an error message alert.
+     *
+     * @param title   the title of the alert
+     * @param message the error message to display
+     */
     private void showErrorMessage(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -102,6 +121,12 @@ public class ManageProfileScreen implements IScreen {
         alert.showAndWait();
     }
 
+    /**
+     * Displays an informational message alert.
+     *
+     * @param title   the title of the alert
+     * @param message the informational message to display
+     */
     private void showInfoMessage(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -110,7 +135,11 @@ public class ManageProfileScreen implements IScreen {
         alert.showAndWait();
     }
 
-
+    /**
+     * Returns the scene for the Manage Profile screen.
+     *
+     * @return the Scene object
+     */
     @Override
     public Scene getScene() {
         return scene;
