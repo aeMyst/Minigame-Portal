@@ -1,6 +1,5 @@
 package src.ca.ucalgary.seng300.gameApp.gameScreens;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -8,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import src.ca.ucalgary.seng300.gamelogic.Checkers.GameState;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.logic.EloRating;
 import src.ca.ucalgary.seng300.leaderboard.utility.FileManagement;
@@ -19,10 +17,19 @@ import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Logic;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class EndGameScreen implements IScreen {
     private Scene scene;
+    private static final String FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/match_history.txt";
+    private static final String USERS_PATH = "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
+    private File file = new File(FILE_PATH);
+    LocalDate date;
 
     public EndGameScreen(Stage stage, ScreenController controller, Client client, int gameType,
                          BoardManager boardManager, Connect4Logic connect4Logic, CheckersGameLogic checkersGameLogic,
@@ -146,6 +153,27 @@ public class EndGameScreen implements IScreen {
         }
         return buildString.toString();
     }
+
+    public void updateMatchHistory(String gameType, ArrayList<Player> match, String winnerString, String loserString, int eloGained, int eloLost, String date) {
+
+        int max = 0;
+
+        try {
+            int userCount = FileManagement.countLinesInCSV(new File(USERS_PATH));
+            if (userCount > 0) {
+                max = userCount * 2;
+            }
+
+
+        } catch (Exception e) {
+            System.out.println("Error fetching match history");
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
 
     @Override
     public Scene getScene() {
