@@ -23,13 +23,30 @@ import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
 
 import java.util.ArrayList;
 
+/**
+ * Represents the end-game screen for displaying match results.
+ */
 
 public class EndGameScreen implements IScreen {
     private Scene scene;
 
+    /**
+     * Constructor for the EndGameScreen class.
+     *
+     * @param stage             The main application stage.
+     * @param controller        Controller for screen navigation.
+     * @param client            Client for handling server interactions.
+     * @param gameType          The type of the game (0 for Tic-Tac-Toe, 1 for Connect4, 2 for Checkers).
+     * @param boardManager      The board manager for Tic-Tac-Toe.
+     * @param connect4Logic     Logic for Connect4.
+     * @param checkersGameLogic Logic for Checkers.
+     * @param match             List of players involved in the match.
+     * @param winner            The winner of the match (null if it's a draw).
+     */
+
     public EndGameScreen(Stage stage, ScreenController controller, Client client, int gameType,
                          BoardManager boardManager, Connect4Logic connect4Logic, CheckersGameLogic checkersGameLogic,
-    ArrayList<Player> match, Player winner) {
+                         ArrayList<Player> match, Player winner) {
         // elo object
         EloRating eloRating = new EloRating();
 
@@ -142,7 +159,15 @@ public class EndGameScreen implements IScreen {
         scene = new Scene(layout, 1280, 900);
     }
 
-    public String printGameResults(char[][] charArray , int[][] intArray, int gameType) {
+    /**
+     * Generates a game results based on the game type.
+     *
+     * @param charArray Character array.
+     * @param intArray  Integer array.
+     * @param gameType  The type of game.
+     * @return A formatted string representation of game results.
+     */
+    public String printGameResults(char[][] charArray, int[][] intArray, int gameType) {
         String buildString = "";
 
         if (gameType == 0) {
