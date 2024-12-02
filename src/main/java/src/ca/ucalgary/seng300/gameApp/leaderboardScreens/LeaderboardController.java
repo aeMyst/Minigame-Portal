@@ -11,11 +11,21 @@ import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 import src.ca.ucalgary.seng300.network.Client;
 
+/**
+ * Provides navigation to TicTacToe, Checkers and Connect Four leaderboards.
+ */
 public class LeaderboardController implements IScreen {
     private Scene scene;
     private Stage stage;
     private Client client;
 
+    /**
+     * Constructor for the LeaderboardController.
+     *
+     * @param stage      The main application stage.
+     * @param controller The controller to manage screen transitions.
+     * @param client     The client for handling network interactions.
+     */
     public LeaderboardController(Stage stage, ScreenController controller, Client client) {
         this.stage = stage;
         this.client = client;
@@ -53,24 +63,33 @@ public class LeaderboardController implements IScreen {
         scene = new Scene(layout, 1280, 900);
     }
 
+    /**
+     * Displays the Connect Four leaderboard screen.
+     */
     private void showConnectFourLeaderboard() {
-        Connect4LB ticTacToeLeaderBoardScreen = new Connect4LB(stage, this,client);
+        Connect4LB ticTacToeLeaderBoardScreen = new Connect4LB(stage, this, client);
         stage.setScene(ticTacToeLeaderBoardScreen.getScene());
     }
 
-
-    // Methods to display each leaderboard screen
+    /**
+     * Displays the Tic-Tac-Toe leaderboard screen.
+     */
     private void showTicTacToeLeaderboard() {
-        TictactoeLB ticTacToeLeaderBoardScreen = new TictactoeLB(stage, this,client);
+        TictactoeLB ticTacToeLeaderBoardScreen = new TictactoeLB(stage, this, client);
         stage.setScene(ticTacToeLeaderBoardScreen.getScene());
     }
 
+    /**
+     * Displays the Checkers leaderboard screen.
+     */
     private void showCheckersLeaderboard() {
-        CheckerLB checkersLeaderBoardScreen = new CheckerLB(stage, this,client);
+        CheckerLB checkersLeaderBoardScreen = new CheckerLB(stage, this, client);
         stage.setScene(checkersLeaderBoardScreen.getScene());
     }
 
-    // Method to return to the leaderboard menu from any leaderboard screen
+    /**
+     * Returns to the leaderboard menu screen from any leaderboard screen.
+     */
     public void showLeaderBoardMenu() {
         stage.setScene(scene);
     }
