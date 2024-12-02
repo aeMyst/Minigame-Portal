@@ -1,3 +1,5 @@
+package src.ca.ucalgary.seng300.leaderboardmatchmaking;
+
 import org.junit.Before;
 import org.junit.Test;
 import src.ca.ucalgary.seng300.leaderboard.logic.EloRating;
