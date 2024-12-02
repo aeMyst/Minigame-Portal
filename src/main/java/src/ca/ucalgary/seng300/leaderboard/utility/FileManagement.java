@@ -90,7 +90,7 @@ public class FileManagement {
 
     public static void fileWritingHistory(File file, HistoryStorage storage) {
 
-        try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file,true))) {
             //write info to the file in the format of "gametype, player_id, winner, loser, eloGained, eloLost"
             for (HistoryPlayer hp : storage.getPlayersHistory()) {
                 String[] player = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};
