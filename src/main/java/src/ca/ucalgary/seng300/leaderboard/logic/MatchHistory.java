@@ -4,9 +4,13 @@ import src.ca.ucalgary.seng300.leaderboard.data.HistoryPlayer;
 import src.ca.ucalgary.seng300.leaderboard.data.HistoryStorage;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.IMatchHistory;
 import src.ca.ucalgary.seng300.leaderboard.utility.FileManagement;
+
+import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class MatchHistory implements IMatchHistory {
 
@@ -54,38 +58,40 @@ public class MatchHistory implements IMatchHistory {
         HistoryStorage storage;
         List<HistoryPlayer> history = new ArrayList<>();
         int count = 0;
-        int counter = 0;
-        int size = 0;
+        int size;
 
         if (file.exists()) {
             storage = FileManagement.fileReadingHistory(file);
             size = storage.getPlayersHistory().size();
 
-//            for (HistoryPlayer histPlayer : storage.getPlayersHistory()) {
-//                String playerID = histPlayer.getPlayerIDHistory();
-//                if (playerID.equals(player)) {
-//                    history.add(histPlayer);
-//                    count++;
-//                }
-//            }
-
-            for (int i = size - 1; i >= 0; i--) {
-                if (count < 2) {
-                    String playerID = storage.getPlayersHistory().get(i).getPlayerIDHistory();
-                    if (playerID.equals(player)) {
-                        history.add(storage.getPlayersHistory().get(i));
-                        count++;
+//            for (int i = size - 1; i >= 0; i--) {
+//                String playerID = storage.getPlayersHistory().get(i).getPlayerIDHistory();
+//                if (count < 2) {
+//                    if (playerID.equals(player)) {
+//                        history.add(storage.getPlayersHistory().get(i));
+//                        count++;
+//                    }
+//                } else {
+                    ListIterator<HistoryPlayer> itr = storage.getPlayersHistory().listIterator(size);
+                    while (itr.hasPrevious()) {
+                        System.out.println("added");
+                        HistoryPlayer current = itr.previous();
+                        String currentID = current.getPlayerIDHistory();
+                        if (currentID.equals(player) && count < 2) {
+                            System.out.println("added");
+                            history.add(current);
+                            count++;
+                        } else if (currentID.equals(player) && count >= 2) {
+                            itr.remove();
+                        }
                     }
-                }
-            }
-
-
 
             if (history.isEmpty()) {
                 System.out.println("No match history is available.");
             }
 
-            String[][] historyArr = new String[count][7];
+            String[][] historyArr = new String[2][7];
+            int counter = 0;
 
             for (HistoryPlayer hp : history) {
                 historyArr[counter][0] = hp.getGameTypeHistory();
@@ -95,8 +101,13 @@ public class MatchHistory implements IMatchHistory {
                 historyArr[counter][4] = String.valueOf(hp.getEloGained());
                 historyArr[counter][5] = String.valueOf(hp.getEloLost());
                 historyArr[counter][6] = hp.getDate();
+
                 counter++;
+
             }
+
+            FileManagement.fileWritingHistoryNewFile(file, storage);
+
 
             return historyArr;
         } else {
