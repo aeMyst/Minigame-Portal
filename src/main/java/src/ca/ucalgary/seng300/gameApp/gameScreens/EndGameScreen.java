@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.leaderboard.data.HistoryPlayer;
+import src.ca.ucalgary.seng300.leaderboard.data.HistoryStorage;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.logic.EloRating;
 import src.ca.ucalgary.seng300.leaderboard.utility.FileManagement;
@@ -22,6 +24,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class EndGameScreen implements IScreen {
@@ -29,7 +32,6 @@ public class EndGameScreen implements IScreen {
     private static final String FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/match_history.txt";
     private static final String USERS_PATH = "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
     private File file = new File(FILE_PATH);
-    LocalDate date;
 
     public EndGameScreen(Stage stage, ScreenController controller, Client client, int gameType,
                          BoardManager boardManager, Connect4Logic connect4Logic, CheckersGameLogic checkersGameLogic,
@@ -63,6 +65,10 @@ public class EndGameScreen implements IScreen {
 
             eloGain = String.valueOf(winner.getElo() - currentWinnerElo);
             eloLoss = String.valueOf(currentLoserElo - loser.getElo());
+
+            for (Player player : match) {
+                updateMatchHistory(player.getGameType(), player.getPlayerID(),winnerString, loserString, Integer.parseInt(eloGain), Integer.parseInt(eloLoss),LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            }
 
         } else {
             for (Player player : match) {
@@ -154,15 +160,36 @@ public class EndGameScreen implements IScreen {
         return buildString.toString();
     }
 
-    public void updateMatchHistory(String gameType, ArrayList<Player> match, String winnerString, String loserString, int eloGained, int eloLost, String date) {
+    public void updateMatchHistory(String gameType, String player, String winnerString, String loserString, int eloGained, int eloLost, String date) {
+
+        HistoryStorage storage;
 
         int max = 0;
+        int lineCount = 0;
+        int gameCount = 0;
 
         try {
             int userCount = FileManagement.countLinesInCSV(new File(USERS_PATH));
+            storage = FileManagement.fileReadingHistory(file);
             if (userCount > 0) {
                 max = userCount * 2;
             }
+            lineCount = FileManagement.countLinesInTextFile(file);
+
+            storage = FileManagement.fileReadingHistory(file);
+
+            for (HistoryPlayer hp : storage.getPlayersHistory()) {
+                String id = hp.getPlayerIDHistory();
+                if (id.equals(player)) {    // checking if players has more than 2 recorded games in history
+                    gameCount++;
+                }
+            }
+
+            if (gameCount >= 2) {
+                FileManagement.clearOtherGameHistory(storage, file, player);
+            }
+
+            FileManagement.fileWritingHistory(file, storage, gameType, player, winnerString, loserString, eloGained, eloLost, date);
 
 
         } catch (Exception e) {
