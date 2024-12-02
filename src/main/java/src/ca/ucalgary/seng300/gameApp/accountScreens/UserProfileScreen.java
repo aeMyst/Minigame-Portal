@@ -90,12 +90,17 @@ public class UserProfileScreen implements IScreen {
         backButton.getStyleClass().add("back-button");
         backButton.setOnAction(e -> controller.showMainMenu());
 
+        Button matchHistoryButton = new Button("Match History");
+        matchHistoryButton.getStyleClass().add("button");
+        matchHistoryButton.getStyleClass().add("submit-button");
+        matchHistoryButton.setOnAction(e -> controller.showMatchHistoryScreen());
+
         // Layout for search
         HBox searchLayout = new HBox(10, searchProfileLabel, searchProfileField, searchButton, xButton);
         searchLayout.setAlignment(Pos.CENTER);
 
         // Layout for buttons
-        HBox buttonsLayout = new HBox(20, manageProfileButton, backButton);
+        HBox buttonsLayout = new HBox(20, matchHistoryButton, manageProfileButton, backButton);
         buttonsLayout.setAlignment(Pos.CENTER);
 
         // Main layout

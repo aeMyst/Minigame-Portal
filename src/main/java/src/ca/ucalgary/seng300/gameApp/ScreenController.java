@@ -207,5 +207,12 @@ public final class ScreenController extends Application {
         primaryStage.setScene(challengeScreen.getScene());
     }
 
+    public void showMatchHistoryScreen() {
+        MatchHistoryScreen matchHistoryScreen = new MatchHistoryScreen(primaryStage, this, client);
+        primaryStage.setTitle("Match History");
+        primaryStage.setScene(matchHistoryScreen.getScene());
+    }
+
+
 
 }
