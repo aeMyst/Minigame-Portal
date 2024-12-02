@@ -18,6 +18,7 @@ public class MatchHistoryScreen implements IScreen {
         Button backButton = new Button("back");
         backButton.setOnAction(e -> controller.showUserProfileScreen());
 
+        String profileInfo = client.getCurrentUserProfile();
 
         VBox layout = new VBox(20, backButton);
         layout.setAlignment(Pos.CENTER);
@@ -29,6 +30,11 @@ public class MatchHistoryScreen implements IScreen {
 
         scene = new Scene(rootPane, 1280, 900);
         scene.getStylesheets().add((getClass().getClassLoader().getResource("styles.css").toExternalForm()));
+    }
+
+    private void displayHistory(String[][] player) {
+        VBox historyBox = new VBox(5);
+        historyBox.setPadding(new Insets(10));
     }
 
 

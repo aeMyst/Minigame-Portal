@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class EndGameScreen implements IScreen {
     private Scene scene;
@@ -197,10 +198,48 @@ public class EndGameScreen implements IScreen {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-
-
     }
 
+    public String[][] getMatchHistory(String player) {
+        HistoryStorage storage;
+        List<HistoryPlayer> history = new ArrayList<>();
+        int count = 0;
+        int counter = 0;
+
+        if (file.exists()) {
+            storage = FileManagement.fileReadingHistory(file);
+
+            for (HistoryPlayer histPlayer : storage.getPlayersHistory()) {
+                String playerID = histPlayer.getPlayerIDHistory();
+                if (playerID.equals(player)) {
+                    history.add(histPlayer);
+                    count++;
+                }
+            }
+
+            if (history.isEmpty()) {
+                System.out.println("No match history is available.");
+            }
+
+            String[][] historyArr = new String[count][7];
+
+            for (HistoryPlayer hp : history) {
+                historyArr[counter][0] = hp.getGameTypeHistory();
+                historyArr[counter][1] = hp.getPlayerIDHistory();
+                historyArr[counter][2] = hp.getWinnerString();
+                historyArr[counter][3] = hp.getLoserString();
+                historyArr[counter][4] = String.valueOf(hp.getEloGained());
+                historyArr[counter][5] = String.valueOf(hp.getEloLost());
+                historyArr[counter][6] = hp.getDate();
+                counter++;
+            }
+
+            return historyArr;
+        } else {
+            System.out.println("[ERROR] File does not exist.");
+            return new String[0][];
+        }
+    }
 
     @Override
     public Scene getScene() {
