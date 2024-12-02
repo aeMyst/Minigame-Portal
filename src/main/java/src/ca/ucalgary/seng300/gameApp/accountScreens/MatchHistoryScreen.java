@@ -33,6 +33,15 @@ public class MatchHistoryScreen implements IScreen {
 
 
         VBox historyEntries = displayHistory(matchHistory.getMatchHistory(currentPlayer), client.getCurrentUserProfile());
+        client.sendMatchHistoryToServer(matchHistory.getMatchHistory(currentPlayer), () -> {
+            if (matchHistory.getMatchHistory(currentPlayer)!=null) {
+                System.out.println("\n" + "Player Match History successfully updated");
+                System.out.println("==========================");
+            } else {
+                System.out.println("Player Match History is empty");
+                System.out.println("==========================");
+            }
+        });
 
         VBox layout = new VBox(20, backButton);
         layout.setAlignment(Pos.CENTER);
