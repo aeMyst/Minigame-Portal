@@ -511,4 +511,29 @@ public class Client implements IClient {
         return "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
     }
 
+    public void sendMatchHistoryToServer(String[][] matchHistory, Runnable callback) {
+        Random rand = new Random();
+        int time = rand.nextInt(500) + 500; // Simulate server delay between 500ms and 1000ms
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(time);
+                System.out.println("Server Communication for Player Match History...");
+                System.out.println("User Match History being updated...\n");
+
+                System.out.println("Sorted Leaderboard for Checkers:\n");
+                System.out.printf("%-15s %-15s %-15s %-15s %-15s %-10s %-15s%n",
+                        "Game Type", "Player ID", "Winner ID", "Loser ID", "Elo Gained", "Elo Lost", "Date");
+                for (String[] entry : matchHistory) {
+                    System.out.printf("%-15s %-15s %-15s %-15s %-15s %-10s %-15s%n", entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6]);
+                }
+
+                // Update the GUI on the JavaFX thread
+                Platform.runLater(callback);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
 }
