@@ -60,8 +60,8 @@ public class EloRatingTest {
 
     @Test
     public void testUpdateElo_WinnerAndLoserRatingsUpdateCorrectly() {
-        Player winner = new Player("Winner", 1500);
-        Player loser = new Player("Loser", 1500);
+        Player winner = new Player("Winner", "1500", 1500, 0, 0, 0);
+        Player loser = new Player("Loser", "1501", 1500, 0, 0, 0);
 
         eloRating.updateElo(winner, loser);
 
@@ -71,8 +71,8 @@ public class EloRatingTest {
 
     @Test
     public void testUpdateElo_WinnerWithHigherRatingAndLoserWithLowerRating() {
-        Player winner = new Player("Winner", 1600);
-        Player loser = new Player("Loser", 1400);
+        Player winner = new Player("Winner", "1502", 1600, 0, 0, 0);
+        Player loser = new Player("Loser", "1503", 1400, 0, 0, 0);
 
         eloRating.updateElo(winner, loser);
 
@@ -82,8 +82,8 @@ public class EloRatingTest {
 
     @Test
     public void testUpdateElo_LoserWithZeroRatingDoesNotGoNegative() {
-        Player winner = new Player("Winner", 1500);
-        Player loser = new Player("Loser", 0);
+        Player winner = new Player("Winner", "1504", 1500, 0, 0, 0);
+        Player loser = new Player("Loser", "1505", 0, 0, 0, 0);
 
         eloRating.updateElo(winner, loser);
 
