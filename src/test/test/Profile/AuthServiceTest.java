@@ -9,6 +9,13 @@ import src.ca.ucalgary.seng300.Profile.models.User;
 
 import static org.junit.Assert.*;
 public class AuthServiceTest {
+    private AuthService authService;
+
+    // Turns out I need to set up method to initialize AuthService before each test
+    @Before
+    public void setUp() {
+        authService = new AuthService(); // Create a new instance of AuthService to ensure each test runs independently
+    }
     @Test
     public void testRegisterValidUser() {
         boolean result = authService.register("valid@example.com", "ValidUser", "Password1!");
