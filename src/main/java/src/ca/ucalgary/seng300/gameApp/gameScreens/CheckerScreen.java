@@ -54,7 +54,7 @@ public class CheckerScreen implements IScreen {
      *
      * @param stage      The primary stage of the application.
      * @param controller The screen controller for navigation between screens.
-     * @param match  The logic for managing Checkers game rules.
+     * @param match      The logic for managing Checkers game rules.
      * @param client     The client for server communication.
      */
     public CheckerScreen(Stage stage, ScreenController controller, Client client, ArrayList<Player> match) {
@@ -89,12 +89,14 @@ public class CheckerScreen implements IScreen {
         chatArea = new TextArea();
         chatArea.setEditable(false);
         chatArea.setMaxHeight(100);
-        chatArea.getStyleClass().add("text-area-chat");;
+        chatArea.getStyleClass().add("text-area-chat");
+        ;
 
         // Chat input field
         chatInput = new TextField();
         chatInput.setPromptText("Type your message...");
-        chatInput.getStyleClass().add("input-field");;
+        chatInput.getStyleClass().add("input-field");
+        ;
         chatInput.setOnAction(e -> sendMessage());
 
         // Send button
@@ -181,8 +183,9 @@ public class CheckerScreen implements IScreen {
 
                 controller.showMainMenu(); // Navigate back to the main menu
 
-                https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
-                showAlert(Alert.AlertType.INFORMATION, "The game was Forfeited", "You have Loss -" + eloLoss +" Elo" );
+                https:
+//docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
+                showAlert(Alert.AlertType.INFORMATION, "The game was Forfeited", "You have Loss -" + eloLoss + " Elo");
             } else {
                 // User canceled forfeiting
                 System.out.println(client.getCurrentUsername() + " has canceled forfeiting.");
