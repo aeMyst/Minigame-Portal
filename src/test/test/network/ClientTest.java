@@ -20,10 +20,10 @@ public class ClientTest {
             BoardManager boardManager = new BoardManager(); // Assuming a constructor for initializing board
 
             // Setup actual PlayerManager
-            HumanPlayer player1 = new HumanPlayer('X');
-            HumanPlayer player2 = new HumanPlayer('O');
-            PlayerManager playerManager = new PlayerManager(player1, player2); // Assuming a constructor for players
-            if (playerManager.getCurrentPlayer() !=player1) {
+            HumanPlayer playerX = new HumanPlayer('X');
+            HumanPlayer playerO = new HumanPlayer('O');
+            PlayerManager playerManager = new PlayerManager(playerX, playerO); // Assuming a constructor for players
+            if (playerManager.getCurrentPlayer() !=playerX) {
                 playerManager.switchPlayer();
             }; // Set current player
 
@@ -45,9 +45,9 @@ public class ClientTest {
             BoardManager boardManager = new BoardManager();
 
             // Setup actual PlayerManager
-            HumanPlayer player1 = new HumanPlayer('X');
-            HumanPlayer player2 = new HumanPlayer('O');
-            PlayerManager playerManager = new PlayerManager(player1, player2);
+            HumanPlayer playerX = new HumanPlayer('X');
+            HumanPlayer playerO= new HumanPlayer('O');
+            PlayerManager playerManager = new PlayerManager(playerX, playerO);
             if (playerManager.getCurrentPlayer() !=player1) {
                 playerManager.switchPlayer();
             }
