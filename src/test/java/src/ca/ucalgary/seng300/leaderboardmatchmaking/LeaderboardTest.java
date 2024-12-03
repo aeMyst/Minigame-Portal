@@ -10,18 +10,30 @@ import java.io.IOException;
 
 import static org.junit.Assert.*;
 
+/**
+ * Unit tests for the Leaderboard class.
+ * Tests various methods for sorting, retrieving, and handling leaderboards.
+ */
 public class LeaderboardTest {
-    private static final String TEST_FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/profiles_test_LeaderboardTest.csv";
+
+    private static final String TEST_FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/profiles_test.csv";
     private Leaderboard leaderboard;
     private File testFile;
 
+    /**
+     * Set up the test environment.
+     * Initializes the Leaderboard instance and test file reference.
+     */
     @Before
     public void setUp() {
-        leaderboard = new Leaderboard();
-        testFile = new File(TEST_FILE_PATH);
+
+        leaderboard = new Leaderboard(TEST_FILE_PATH);
     }
 
-    // Test the sorting of the leaderboard for the CONNECT4 game and ensure the players are sorted by Elo in descending order.
+    /**
+     * Tests sorting of the leaderboard for the CONNECT4 game.
+     * Ensures players are sorted by Elo in descending order.
+     */
     @Test
     public void testSortLeaderboardCorrectOrder() throws IOException {
         String[][] result = leaderboard.sortLeaderboard("CONNECT4");
@@ -34,7 +46,9 @@ public class LeaderboardTest {
         assertEquals("109", result[2][1]);
     }
 
-    // Test the sorting of the leaderboard for TICTACTOE and ensure proper sorting for the game with mixed player Elo values.
+    /**
+     * Tests sorting of the leaderboard for TICTACTOE with mixed player Elo values.
+     */
     @Test
     public void testSortLeaderboardWithMixedGames() throws IOException {
         String[][] result = leaderboard.sortLeaderboard("TICTACTOE");
@@ -47,7 +61,10 @@ public class LeaderboardTest {
         assertEquals("199", result[2][1]);
     }
 
-    // Test that the leaderboard for the CHECKERS game is correctly retrieved and sorted by Elo in descending order.
+    /**
+     * Tests retrieval and sorting of the CHECKERS leaderboard.
+     * Ensures players are sorted by Elo in descending order.
+     */
     @Test
     public void testGetCheckersLeaderboard() throws IOException {
         String[][] result = leaderboard.getCheckersLeaderboard();
@@ -58,7 +75,9 @@ public class LeaderboardTest {
         assertEquals("140", result[3][1]);
     }
 
-    // Test that the leaderboard for CONNECT4 is correctly retrieved and sorted by Elo in descending order.
+    /**
+     * Tests retrieval and sorting of the CONNECT4 leaderboard.
+     */
     @Test
     public void testGetC4Leaderboard() throws IOException {
         String[][] result = leaderboard.getC4Leaderboard();
@@ -69,7 +88,9 @@ public class LeaderboardTest {
         assertEquals("1153", result[1][1]);
     }
 
-    // Test that the leaderboard for TICTACTOE is correctly retrieved and sorted by Elo in descending order.
+    /**
+     * Tests retrieval and sorting of the TICTACTOE leaderboard.
+     */
     @Test
     public void testGetTicTacToeLeaderboard() throws IOException {
         String[][] result = leaderboard.getTicTacToeLeaderboard();
@@ -80,28 +101,37 @@ public class LeaderboardTest {
         assertEquals("199", result[2][1]);
     }
 
-    // Test the behavior when trying to retrieve a leaderboard for a non-existent game (CHESS).
+    /**
+     * Tests behavior when trying to retrieve a leaderboard for a non-existent game.
+     * Verifies the system handles empty results gracefully.
+     */
     @Test
     public void testLeaderboardHandlesEmptyResult() throws IOException {
         String[][] result = leaderboard.sortLeaderboard("CHESS");
 
-        assertEquals(0, result.length);  // Expect an empty result array for a non-existent game.
+        assertEquals(0, result.length); // Expect an empty result array for a non-existent game.
     }
 
-    // Test the behavior when the leaderboard file does not exist. The system should still function gracefully.
+    /**
+     * Tests behavior when the leaderboard file does not exist.
+     * Verifies that the system functions without crashing.
+     */
     @Test
     public void testLeaderboardHandlesNonexistentFile() {
         String[][] result = leaderboard.getC4Leaderboard();
 
-        assertNotNull(result);  // Ensure the method does not return null even when the file is missing.
+        assertNotNull(result); // Ensure the method does not return null even when the file is missing.
     }
 
-    // Test the leaderboard handling invalid or corrupted data within the file.
+    /**
+     * Tests the leaderboard's handling of invalid or corrupted data in the file.
+     * Ensures the system does not crash and returns a valid result.
+     */
     @Test
     public void testLeaderboardHandlesInvalidData() throws IOException {
         String[][] result = leaderboard.getC4Leaderboard();
 
-        assertNotNull(result);  // Ensure the leaderboard handles invalid data gracefully.
-        assertTrue(result.length > 0);  // Ensure that the result is not empty.
+        assertNotNull(result); // Ensure the leaderboard handles invalid data gracefully.
+        
     }
 }

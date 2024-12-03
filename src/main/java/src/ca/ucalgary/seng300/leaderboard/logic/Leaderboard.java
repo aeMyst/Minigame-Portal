@@ -13,7 +13,15 @@ import java.io.*;
  */
 public class Leaderboard implements ILeaderboard {
     private static final String FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/profiles.csv";
-    private final File file = new File(FILE_PATH);
+    private final File file;
+
+    public Leaderboard() {
+        file = new File(FILE_PATH);
+    }
+
+    public Leaderboard(String file_path) {
+        file = new File(file_path);
+    }
 
     /**
      * Sorts the leaderboard for a specified game type by player Elo rating.
@@ -70,11 +78,10 @@ public class Leaderboard implements ILeaderboard {
         int count = 0;
         int sortedCount = 0;
         List<Player> C4Players = new ArrayList<>();
-        File C4file = new File(FILE_PATH);
 
-        if (C4file.exists()) {
+        if (file.exists()) {
             // Reading player data from the file
-            storage = FileManagement.fileReading(C4file);
+            storage = FileManagement.fileReading(file);
 
             // Adding players of type "CONNECT4" to the list
             for (Player player : storage.getPlayers()) {
