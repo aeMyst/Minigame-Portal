@@ -29,9 +29,9 @@ public class UserProfileScreen implements IScreen {
     /**
      * Constructs the UserProfileScreen with the given stage, controller, and client
      *
-     * @param stage      the primary stage of the application
-     * @param controller the screen controller for navigating between different screens
-     * @param client     the client for interacting with the network
+     * @param stage The primary stage of the application
+     * @param controller The screen controller for navigating between different screens
+     * @param client The client for interacting with the network
      */
     public UserProfileScreen(Stage stage, ScreenController controller, Client client, String initialUser) {
         // User Profile Title
@@ -144,7 +144,7 @@ public class UserProfileScreen implements IScreen {
     /**
      * Displays the given profile information in the user profile screen
      *
-     * @param profileInfo the user profile information to show
+     * @param profileInfo The user profile information to show
      */
     private void displayProfile(String profileInfo) {
         // Clear the existing content from the profile display area
@@ -160,15 +160,15 @@ public class UserProfileScreen implements IScreen {
 
         // Parse and display every user profile information into blocks
         String[] profileLists = profileInfo.split("\n\n");
-        // Iterate through each user profile block and split it into lines containing key-value pairs
+        // Iterate through each user profile block to extract key-value pairs
         for (String block : profileLists) {
             String[] lines = block.split("\n");
             // Store key-value pairs from the profile block
             Map<String, String> profileData = new HashMap<>();
-            // Iterate through each line and split the line into key and value based on delimiter
+            // Iterate through each line in block to split by delimiter
             for (String line : lines) {
                 String[] parts = line.split(": ");
-                // Check if key-value pairs are valid and add to the profile data map
+                // Add valid key-value pairs to the map
                 if (parts.length == 2) {
                     profileData.put(parts[0], parts[1]);
                 }
@@ -201,8 +201,8 @@ public class UserProfileScreen implements IScreen {
     /**
      * Displays an error message in a dialog box
      *
-     * @param title   the title of the error message dialog box
-     * @param message the content of the error message dialog box
+     * @param title The title of the error message dialog box
+     * @param message The content of the error message dialog box
      */
     private void showErrorMessage(String title, String message) {
         // Create and display an error message alert with the appropriate title and content
@@ -214,9 +214,9 @@ public class UserProfileScreen implements IScreen {
     }
 
     /**
-     * Returns the scene for the user profile screen
+     * Returns the constructed scene for the user profile screen
      *
-     * @return the scene for the user profile screen
+     * @return Scene representing the user profile screen
      */
     @Override
     public Scene getScene() {
