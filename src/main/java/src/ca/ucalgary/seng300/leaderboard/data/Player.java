@@ -1,5 +1,8 @@
 package src.ca.ucalgary.seng300.leaderboard.data;
 
+/**
+ * Class representing a player in the leaderboard system.
+ */
 public class Player {
     private String gameType;
     private String playerID;
@@ -8,6 +11,16 @@ public class Player {
     private int losses;
     private int ties;
 
+    /**
+     * Constructor to initialize a Player object with specified attributes.
+     *
+     * @param gameType The type of game the player is playing.
+     * @param playerID The unique identifier for the player.
+     * @param elo The Elo rating of the player.
+     * @param wins The number of wins the player has.
+     * @param losses The number of losses the player has.
+     * @param ties The number of ties the player has.
+     */
     public Player(String gameType, String playerID, int elo, int wins, int losses, int ties) {
         this.gameType = gameType;
         this.playerID = playerID;
@@ -17,9 +30,18 @@ public class Player {
         this.ties = ties;
     }
 
-    public static Player defaultPlauer(String gameType, String playerID){
+    /**
+     * Static method to create a default Player object with zeroed statistics.
+     *
+     * @param gameType The type of game the player is playing.
+     * @param playerID The unique identifier for the player.
+     * @return A new Player object with default values.
+     */
+    public static Player defaultPlayer(String gameType, String playerID) {
         return new Player(gameType, playerID, 0, 0, 0, 0);
     }
+
+    // Getter and setter methods for the player's attributes
 
     public void setGameType(String gameType) {
         this.gameType = gameType;
@@ -69,6 +91,11 @@ public class Player {
         return ties;
     }
 
+    /**
+     * Returns a string representation of the player's attributes.
+     *
+     * @return A string containing the player's game type, ID, Elo rating, wins, losses, and ties.
+     */
     @Override
     public String toString() {
         return "GameType: " + gameType +
@@ -78,5 +105,5 @@ public class Player {
                 "\tLosses: " + losses +
                 "\tTies: " + ties;
     }
-
 }
+

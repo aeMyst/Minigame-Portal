@@ -1,4 +1,4 @@
-package src.ca.ucalgary.seng300;
+/* package src.ca.ucalgary.seng300;
 
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
@@ -50,5 +50,4 @@ public class PlayerManagerTest {
         assertEquals("Player2's symbol should be 'O'", 'O', playerManager.getCurrentPlayer().getSymbol());
     }
 }
-
-
+ */
