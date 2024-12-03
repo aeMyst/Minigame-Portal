@@ -85,7 +85,7 @@ public class ManageProfileScreen implements IScreen {
         Button backButton = new Button("Back");
         backButton.getStyleClass().add("button");
         backButton.getStyleClass().add("back-button");
-        backButton.setOnAction(e -> controller.showMainMenu());
+        backButton.setOnAction(e -> controller.showUserProfileScreen(client.getCurrentUsername()));
 
         HBox buttonLayout = new HBox(15, updateButton, backButton);
         buttonLayout.setAlignment(Pos.CENTER);
