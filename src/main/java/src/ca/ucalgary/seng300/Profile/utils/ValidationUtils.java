@@ -16,7 +16,8 @@ public class ValidationUtils {
     
     
     //Basic email validation regex pattern.
-    private static final String email_Regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    private static final String email_Regex = "^[a-zA-Z0-9_.±]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$";
+    //Found the regex in: https://support.boldsign.com/kb/article/15962/how-to-create-regular-expressions-regex-for-email-address-validation
 
 
     private static final String userName_Regex = "^[a-zA-Z0-9]+$"; //Basic username Regex patern.
