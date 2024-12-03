@@ -23,21 +23,13 @@ public class TictactoeLB implements IScreen {
         // Title Label
         Label titleLabel = new Label("TIC-TAC-TOE LEADERBOARD");
         titleLabel.getStyleClass().add("leaderboard-title");
-        Leaderboard leaderboard = new Leaderboard();
-
         // Leaderboard Entries Section
 
-        VBox leaderboardEntries = createLeaderboardEntries(leaderboard.getTicTacToeLeaderboard());
-
-        client.sendTTTLeaderboardToServer(leaderboard.getTicTacToeLeaderboard(), () -> {
-            if (leaderboard.getTicTacToeLeaderboard()!=null) {
-                System.out.println("\n" + "Tic-Tac-Toe Leaderboard successfully updated");
-                System.out.println("==========================");
-            } else {
-                System.out.println("Tic-Tac-Toe Leaderboard is empty");
-                System.out.println("==========================");
-            }
+        String[][] leaderboard = client.getTTTLeaderboard(() -> {
+                System.out.println("\n" + "Tic-Tac-Toe Leaderboard GET call succeeded");
         });
+
+        VBox leaderboardEntries = createLeaderboardEntries(leaderboard);
 
         // Back Button
         Button backButton = new Button("Back to LeaderBoard Menu");
