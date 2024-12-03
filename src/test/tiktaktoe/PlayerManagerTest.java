@@ -4,10 +4,14 @@ import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.HumanPlayer;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
+import src.ca.ucalgary.seng300.leaderboard.data.Player;
 
 import static org.junit.Assert.assertEquals;
 
 public class PlayerManagerTest {
+    private Player player_1;
+    private Player player_2;
+
     private HumanPlayer player1;
     private HumanPlayer player2;
     private PlayerManager playerManager;
@@ -15,8 +19,8 @@ public class PlayerManagerTest {
 
     @Before
     public void setup(){
-        player1 = new HumanPlayer('X');
-        player2 = new HumanPlayer('O');
+        player1 = new HumanPlayer(player_1,'X');
+        player2 = new HumanPlayer(player_2,'O');
         playerManager = new PlayerManager(player1,player2);
     }
 

@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -20,34 +21,34 @@ public class TictactoeLB implements IScreen {
 
     public TictactoeLB(Stage stage, LeaderboardController controller, Client client) {
         // Title Label
-        Label titleLabel = createLabel("Tic-Tac-Toe Leaderboard", 24, Pos.CENTER);
-        Leaderboard leaderboard = new Leaderboard();
-
+        Label titleLabel = new Label("TIC-TAC-TOE LEADERBOARD");
+        titleLabel.getStyleClass().add("leaderboard-title");
         // Leaderboard Entries Section
 
-        VBox leaderboardEntries = createLeaderboardEntries(leaderboard.getTicTacToeLeaderboard());
-
-        client.sendTTTLeaderboardToServer(leaderboard.getTicTacToeLeaderboard(), () -> {
-            if (leaderboard.getTicTacToeLeaderboard()!=null) {
-                System.out.println("\n" + "Tic-Tac-Toe Leaderboard successfully updated");
-                System.out.println("==========================");
-            } else {
-                System.out.println("Tic-Tac-Toe Leaderboard is empty");
-                System.out.println("==========================");
-            }
+        String[][] leaderboard = client.getTTTLeaderboard(() -> {
+                System.out.println("\n" + "Tic-Tac-Toe Leaderboard GET call succeeded");
         });
 
+        VBox leaderboardEntries = createLeaderboardEntries(leaderboard);
 
         // Back Button
-        Button backButton = createButton("Back to LeaderBoard Menu", 16, 300, "#4CAF50", e -> controller.showLeaderBoardMenu());
+        Button backButton = new Button("Back to LeaderBoard Menu");
+        backButton.getStyleClass().add("leaderboard-button");
+        backButton.getStyleClass().add("leaderboard-button-primary");
+        backButton.setOnAction(e -> controller.showLeaderBoardMenu());
 
         // Main Layout
         VBox layout = new VBox(20, titleLabel, leaderboardEntries, backButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
 
+        BorderPane rootPane = new BorderPane();
+        rootPane.setCenter(layout);
+        rootPane.getStyleClass().add("leaderboard-pane");
+
         // Scene
-        scene = new Scene(layout, 1280, 900);
+        scene = new Scene(rootPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("LeaderboardStyles.css").toExternalForm()));
     }
 
     private Label createLabel(String text, int fontSize, Pos alignment) {
@@ -147,3 +148,5 @@ public class TictactoeLB implements IScreen {
         return scene;
     }
 }
+
+

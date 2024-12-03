@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -85,16 +86,22 @@ public class ChatUtility {
 
         for (int i = 0; i < emojis.length; i++) {
             Button emojiButton = new Button(emojis[i]);
-            emojiButton.setPrefWidth(80);
-            emojiButton.setFont(new Font("Arial", 24));
+            emojiButton.getStyleClass().add("emoji-button");
             emojiButton.setOnAction(e -> {
                 chatInput.appendText(emojiButton.getText());
                 emojiStage.close(); // Close menu after selection
             });
+            //chatgpt generated
             emojiGrid.add(emojiButton, i % 3, i / 3);
         }
 
-        Scene emojiScene = new Scene(emojiGrid, 300, 200);
+        BorderPane rootPane = new BorderPane();
+        rootPane.setCenter(emojiGrid);
+        rootPane.getStyleClass().add("root-pane");
+
+
+        Scene emojiScene = new Scene(rootPane, 300, 200);
+        emojiScene.getStylesheets().add((ChatUtility.class.getClassLoader().getResource("styles.css").toExternalForm()));
         emojiStage.setScene(emojiScene);
         emojiStage.initOwner(parentStage);
 

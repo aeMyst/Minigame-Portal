@@ -5,12 +5,6 @@ package src.ca.ucalgary.seng300.leaderboard.interfaces;
  */
 public interface ILeaderboard {
 
-    /**
-     * Sorts the leaderboard for a specific game type.
-     *
-     * @param gameType The type of game for which the leaderboard should be sorted.
-     * @return A 2D array of Strings representing the sorted leaderboard.
-     */
     String[][] sortLeaderboard(String gameType);
 
     /**

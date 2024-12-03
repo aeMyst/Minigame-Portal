@@ -22,6 +22,11 @@ import src.ca.ucalgary.seng300.gamelogic.Connect4.UserPiece;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * This code represents the Connect 4 game screen.
+ * Handles the game board creation, game logic integration, player interactions,
+ * and chat functionalities.
+ */
 public class Connect4Screen implements IScreen {
     private Scene scene;
 
@@ -41,6 +46,14 @@ public class Connect4Screen implements IScreen {
     private boolean isEmojiOpen = false;
     private ArrayList<Player> match;
 
+    /**
+     * Constructs a scene to display a game of connect 4
+     *
+     * @param stage the primary stage for the application
+     * @param controller the controller used to manage screen transitions
+     * @param client The client used to fetch information from the server
+     * @param match A list of the players playing
+     */
     public Connect4Screen(Stage stage, ScreenController controller, Client client, ArrayList<Player> match) {
         this.stage = stage;
         this.client = client;
@@ -58,12 +71,14 @@ public class Connect4Screen implements IScreen {
         turnManager = new TurnManager(playerRed, playerBlue);
 
         // UI setup
-        Label title = new Label("Connect4");
-        title.setFont(new Font("Arial", 24));
-        title.setTextFill(Color.DARKBLUE);
+        Label title = new Label("CONNECT FOUR GAME");
+        title.getStyleClass().add("title-label");
 
+        //Create the gameboard
         GridPane gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);
+        gameBoard.setMaxWidth(500); // Total width of the board
+        gameBoard.setMaxHeight(800); // Total height of the board
         gameBoard.setHgap(5);
         gameBoard.setVgap(5);
         gameBoard.setPadding(new Insets(10));
@@ -72,7 +87,7 @@ public class Connect4Screen implements IScreen {
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
                 Button button = new Button();
-                button.setPrefSize(40, 40);
+                button.setPrefSize(120, 120);
                 int finalCol = col;
                 button.setOnAction(e -> gameButtonClicked(finalCol, controller));
                 gameButtons[row][col] = button;
@@ -80,31 +95,31 @@ public class Connect4Screen implements IScreen {
             }
         }
 
+        //Create all text sections and buttons to display
+        // Label that displays current player
         turnIndicator = new Label("Player turn: " + currentPlayer.getPlayer().getPlayerID() + " (RED)");
-        turnIndicator.setFont(new Font("Arial", 18));
-        turnIndicator.setTextFill(Color.DARKGREEN);
+        turnIndicator.getStyleClass().add("label-turn-indicator");
 
+        // TextArea that displays messages
         chatArea = new TextArea();
         chatArea.setEditable(false);
         chatArea.setPrefHeight(150);
-        chatArea.setStyle("-fx-control-inner-background: #f8f8ff; -fx-text-fill: black; -fx-font-size: 14px;");
+        chatArea.getStyleClass().add("text-area-chat");
 
+        // TextField that allows for players to input messages
         chatInput = new TextField();
         chatInput.setPromptText("Type your message...");
-        chatInput.setPrefWidth(250);
-        chatInput.setStyle("-fx-background-color: #e0e0e0;");
+        chatInput.getStyleClass().add("input-field");
         chatInput.setOnAction(e -> sendMessage());
 
+        // Button that sends message when clicked
         Button sendButton = new Button("Send");
-        sendButton.setFont(new Font("Arial", 16));
-        sendButton.setPrefWidth(150);
-        sendButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        sendButton.getStyleClass().add("button-send");
         sendButton.setOnAction(e -> sendMessage());
 
+        // Button that opens emoji menu when clicked
         Button emojiButton = new Button("Emoji Menu");
-        emojiButton.setFont(new Font("Arial", 16));
-        emojiButton.setPrefWidth(150);
-        emojiButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        emojiButton.getStyleClass().add("button-emoji");
         emojiButton.setOnAction(e -> {
             if (!isEmojiOpen) {
                 isEmojiOpen = true;
@@ -115,9 +130,8 @@ public class Connect4Screen implements IScreen {
         });
 
         Button forfeitButton = new Button("Forfeit");
-        forfeitButton.setFont(new Font("Arial", 16));
-        forfeitButton.setPrefWidth(200);
-        forfeitButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: #FFFFFF;");
+        forfeitButton.getStyleClass().add("button");
+        forfeitButton.getStyleClass().add("button-forfeit");
         forfeitButton.setOnAction(e -> {
             // Create a confirmation dialog
             // chatgpt generated
@@ -126,10 +140,10 @@ public class Connect4Screen implements IScreen {
             confirmationDialog.setTitle("Confirm Forfeit");
 
             Label header = new Label("Are you sure you want to forfeit?");
-            header.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #d9534f;");
+            header.getStyleClass().add("dialog-header");
 
             Label content = new Label("Forfeiting will end the game and declare the opponent as the winner and you will lose elo.");
-            content.setStyle("-fx-font-size: 14px; -fx-text-fill: #5a5a5a;");
+            content.getStyleClass().add("dialog-content");
 
             VBox dialogContent = new VBox(10, header, content);
             dialogContent.setAlignment(Pos.CENTER_LEFT);
@@ -194,15 +208,30 @@ public class Connect4Screen implements IScreen {
 
         VBox layout = new VBox(15, title, turnIndicator, gameBoard, chatArea, chatBox, forfeitButton);
         layout.setAlignment(Pos.CENTER);
+        layout.setMaxWidth(1200);
         layout.setPadding(new Insets(20));
-        layout.setStyle("-fx-background-color: #f5f5f5;");
 
-        scene = new Scene(layout, 1280, 900);
+        BorderPane rootPane = new BorderPane();
+        rootPane.setCenter(layout);
+        rootPane.getStyleClass().add("root-pane");
+
+        scene = new Scene(rootPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("GamesStyles.css").toExternalForm()));
     }
 
     private boolean moveInProgress = false;
 
-    // handle move attempted by player when button on game board is clicked
+    /**
+     * Handles move attempted by player when button on game board is clicked.
+     * @param column The column index of the button clicked.
+     * @param controller The screen controller for navigation between screens.
+     */
+    /**
+     * Handles a move attempted by a player when the click the game screen
+     *
+     * @param column the column the player clicked
+     * @param controller A controller to navigate screens
+     */
     private void gameButtonClicked(int column, ScreenController controller) {
         if (moveInProgress) {
             return;
@@ -246,12 +275,24 @@ public class Connect4Screen implements IScreen {
         }
     }
 
+    /**
+     * A method to switch who's turn it is
+     */
+    /**
+     * Switches current player.
+     */
     private void switchTurns() {
         currentPlayer = (currentPlayer == playerRed) ? playerBlue : playerRed;
         turnIndicator.setText("Player turn: " + currentPlayer.getPlayer().getPlayerID()
                 + (currentPlayer == playerRed ? " (RED)" : " (BLUE)"));
     }
 
+    /**
+     * A method to disable the board and all the buttons
+     */
+    /**
+     * Disables all buttons on the game board.
+     */
     private void disableBoard() {
         for (int i = 0; i < gameButtons.length; i++) {
             for (int j = 0; j < gameButtons[i].length; j++) {
@@ -260,6 +301,12 @@ public class Connect4Screen implements IScreen {
         }
     }
 
+    /**
+     * A method to enable the board and all the buttons
+     */
+    /**
+     * Enables all buttons on the game board.
+     */
     private void enableBoard() {
         for (int i = 0; i < gameButtons.length; i++) {
             for (int j = 0; j < gameButtons[i].length; j++) {
@@ -268,6 +315,12 @@ public class Connect4Screen implements IScreen {
         }
     }
 
+    /**
+     * A method to allow players to send a message the server
+     */
+    /**
+     * Sends a chat message to the server and displays it in the chat area.
+     */
     private void sendMessage() {
         String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
@@ -276,18 +329,30 @@ public class Connect4Screen implements IScreen {
         }
     }
 
+    /**
+     * A method to display an alert
+     *
+     * @param alertType The type of alert to display
+     * @param title The title of the alert
+     * @param message The alert message
+     */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
 
         Label content = new Label(message);
-        content.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+        content.getStyleClass().add("dialog-content");
 
         alert.getDialogPane().setContent(content);
         alert.showAndWait();
     }
 
+    /**
+     * Retrieves the scene for the connect 4 game
+     *
+     * @return the scene displaying the connect 4 game
+     */
     @Override
     public Scene getScene() {
         return scene;
