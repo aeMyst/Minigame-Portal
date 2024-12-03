@@ -3,7 +3,7 @@ package src.ca.ucalgary.seng300.Profile.services;
 import org.junit.jupiter.api.Test;
 import org.junit.*;
 
-
+import org.junit.Before;
 import org.junit.Test;
 import src.ca.ucalgary.seng300.Profile.models.User;
 
