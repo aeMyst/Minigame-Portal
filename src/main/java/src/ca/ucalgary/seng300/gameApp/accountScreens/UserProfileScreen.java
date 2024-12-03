@@ -19,19 +19,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * UserProfileScreen represents the user profile screen in the application
- * Allows the user to view their profile and search for other player profiles
+ * Represents the user profile screen in the application.
+ * Allows the user to view their profile and search for other player profiles.
  */
 public class UserProfileScreen implements IScreen {
     private Scene scene;
     private VBox userProfileInfoLayout;
     private String currentUser;
     /**
-     * Constructs the UserProfileScreen with the given stage, controller, and client
+     * Constructs the UserProfileScreen with the given stage, controller, and client.
      *
-     * @param stage The primary stage of the application
-     * @param controller The screen controller for navigating between different screens
-     * @param client The client for interacting with the network
+     * @param stage The primary stage of the application.
+     * @param controller The screen controller for navigating between different screens.
+     * @param client The client for interacting with the network.
      */
     public UserProfileScreen(Stage stage, ScreenController controller, Client client, String initialUser) {
         // User Profile Title
@@ -132,6 +132,7 @@ public class UserProfileScreen implements IScreen {
         userProfileLayout.setAlignment(Pos.CENTER);
         userProfileLayout.setPadding(new Insets(20));
 
+        // Create a BorderPane layout for the screen to set the user profile layout
         BorderPane rootPane = new BorderPane();
         rootPane.setCenter(userProfileLayout);
         rootPane.getStyleClass().add("root-pane");
@@ -142,9 +143,9 @@ public class UserProfileScreen implements IScreen {
     }
 
     /**
-     * Displays the given profile information in the user profile screen
+     * Displays the given profile information in the user profile screen.
      *
-     * @param profileInfo The user profile information to show
+     * @param profileInfo The user profile information to show.
      */
     private void displayProfile(String profileInfo) {
         // Clear the existing content from the profile display area
@@ -163,7 +164,7 @@ public class UserProfileScreen implements IScreen {
         // Iterate through each user profile block to extract key-value pairs
         for (String block : profileLists) {
             String[] lines = block.split("\n");
-            // Store key-value pairs from the profile block
+            // Store key-value pairs from the profile block to organize profile information
             Map<String, String> profileData = new HashMap<>();
             // Iterate through each line in block to split by delimiter
             for (String line : lines) {
@@ -199,10 +200,10 @@ public class UserProfileScreen implements IScreen {
     }
 
     /**
-     * Displays an error message in a dialog box
+     * Displays an error message in a dialog box.
      *
-     * @param title The title of the error message dialog box
-     * @param message The content of the error message dialog box
+     * @param title The title of the error message dialog box.
+     * @param message The content of the error message dialog box.
      */
     private void showErrorMessage(String title, String message) {
         // Create and display an error message alert with the appropriate title and content
@@ -214,9 +215,9 @@ public class UserProfileScreen implements IScreen {
     }
 
     /**
-     * Returns the constructed scene for the user profile screen
+     * Returns the constructed scene for the user profile screen.
      *
-     * @return Scene representing the user profile screen
+     * @return The scene representing the user profile screen.
      */
     @Override
     public Scene getScene() {

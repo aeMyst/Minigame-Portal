@@ -12,21 +12,21 @@ import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
 /**
- * ResetPasswordScreen represents the screen for user to reset their account password
- * Allows user to enter and confirm a new password to use for signing in purposes
+ * Represents the screen for user to reset their account password.
+ * Allows user to enter and confirm a new password to use for signing in purposes.
  */
 public class ResetPasswordScreen {
     private Scene scene;
 
     /**
-     * Constructs the ResetPasswordScreen with necessary elements
+     * Constructs the ResetPasswordScreen with necessary elements.
      *
-     * @param stage The primary stage for the application
-     * @param controller Controller for transitioning between different screens
-     * @param client Client for handling network communications
-     * @param username The username of the account being reset
-     * @param email The email associated with the account
-     * @param authService The service for handling user account authentication operations
+     * @param stage The primary stage for the application.
+     * @param controller Controller for transitioning between different screens.
+     * @param client Client for handling network communications.
+     * @param username The username of the account being reset.
+     * @param email The email associated with the account.
+     * @param authService The service for handling user account authentication operations.
      */
     public ResetPasswordScreen(Stage stage, ScreenController controller, Client client, String username, String email, AuthService authService) {
         // Title Label
@@ -86,7 +86,7 @@ public class ResetPasswordScreen {
                     showAlert(Alert.AlertType.ERROR, "Error", "Password does not meet requirements!");
                     return;
                 }
-                // Modify account password and update user on feedback
+                // Modify account password and update user on success feedback
                 authService.modifyUserPassword(username, newPassword);
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Password successfully reset!");
                 controller.showSignInScreen();
@@ -111,13 +111,14 @@ public class ResetPasswordScreen {
     }
 
     /**
-     * Displays an alert with the specified type, title, and message
+     * Displays an alert with the specified type, title, and message.
      *
-     * @param alertType Type of alert being displayed
-     * @param title Title of the alert dialog
-     * @param message Content of the alert
+     * @param alertType Type of alert being displayed.
+     * @param title Title of the alert dialog.
+     * @param message Content of the alert.
      */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
+        // Create alert with the appropriate type, title, and message
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -126,9 +127,9 @@ public class ResetPasswordScreen {
     }
 
     /**
-     * Returns the constructed scene for the reset password screen
+     * Returns the constructed scene for the reset password screen.
      *
-     * @return Scene representing the reset password screen
+     * @return The scene representing the reset password screen.
      */
     public Scene getScene() {
         return scene;

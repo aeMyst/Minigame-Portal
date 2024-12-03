@@ -13,18 +13,18 @@ import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
 /**
- * SignInScreen represents the screen for user to log in to the application
- * Allows user to sign in with username and password, create account, reset account, or exit
+ * Represents the screen for user to log in to the application.
+ * Allows user to sign in with username and password, create account, reset account, or exit.
  */
 public class SignInScreen implements IScreen {
     private Scene scene;
 
     /**
-     * Constructs the SignInScreen and sets up the interface elements
+     * Constructs the SignInScreen and sets up the interface elements.
      *
-     * @param stage The primary stage for the application
-     * @param controller Controller for transitioning between different screens
-     * @param client Client for handling login operations via network communication
+     * @param stage The primary stage for the application.
+     * @param controller Controller for transitioning between different screens.
+     * @param client Client for handling login operations via network communication.
      */
     public SignInScreen(Stage stage, ScreenController controller, Client client) {
         // Sign in screen title
@@ -119,11 +119,11 @@ public class SignInScreen implements IScreen {
     }
 
     /**
-     * Displays an alert with the specified type, title, and message
+     * Displays an alert with the specified type, title, and message.
      *
-     * @param alertType Type of alert being displayed
-     * @param title Title of the alert dialog
-     * @param message Content of the alert
+     * @param alertType Type of alert being displayed.
+     * @param title Title of the alert dialog.
+     * @param message Content of the alert.
      */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         // Create alert with appropriate type, title, and message
@@ -135,9 +135,9 @@ public class SignInScreen implements IScreen {
     }
 
     /**
-     * Returns the constructed scene for the sign in screen
+     * Returns the constructed scene for the sign in screen.
      *
-     * @return Scene representing the sign in screen
+     * @return The scene representing the sign in screen.
      */
     @Override
     public Scene getScene() {
