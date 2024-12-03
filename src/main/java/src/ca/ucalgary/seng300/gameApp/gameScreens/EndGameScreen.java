@@ -1,6 +1,5 @@
 package src.ca.ucalgary.seng300.gameApp.gameScreens;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -8,9 +7,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import src.ca.ucalgary.seng300.gamelogic.Checkers.GameState;
+
+import src.ca.ucalgary.seng300.leaderboard.data.HistoryPlayer;
+import src.ca.ucalgary.seng300.leaderboard.data.HistoryStorage;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.logic.EloRating;
+import src.ca.ucalgary.seng300.leaderboard.logic.MatchHistory;
 import src.ca.ucalgary.seng300.leaderboard.utility.FileManagement;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
@@ -19,10 +21,13 @@ import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Logic;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class EndGameScreen implements IScreen {
     private Scene scene;
+    MatchHistory matchHistory;
 
     public EndGameScreen(Stage stage, ScreenController controller, Client client, int gameType,
                          BoardManager boardManager, Connect4Logic connect4Logic, CheckersGameLogic checkersGameLogic,
@@ -39,6 +44,9 @@ public class EndGameScreen implements IScreen {
         String loserString = "";
         String eloGain = "";
         String eloLoss = "";
+        matchHistory = new MatchHistory();
+        HistoryStorage storage = new HistoryStorage();
+
 
         // Loser Player object
         Player loser;
@@ -56,6 +64,16 @@ public class EndGameScreen implements IScreen {
 
             eloGain = String.valueOf(winner.getElo() - currentWinnerElo);
             eloLoss = String.valueOf(currentLoserElo - loser.getElo());
+
+            for (Player player : match) {
+                storage.addPlayerHistory(new HistoryPlayer(player.getGameType(), player.getPlayerID(),winnerString, loserString, Integer.parseInt(eloGain), Integer.parseInt(eloLoss),LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM dd yyyy"))));
+
+
+            }
+            matchHistory.updateMatchHistory(storage, client.getCurrentUsername());
+
+
+
 
         } else {
             for (Player player : match) {
