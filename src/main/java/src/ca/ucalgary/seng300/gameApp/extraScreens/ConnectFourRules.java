@@ -12,22 +12,26 @@ import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 import src.ca.ucalgary.seng300.gameApp.Utility.RulesUtility;
 import src.ca.ucalgary.seng300.network.Client;
+
 /**
- * A class that creates a scene to display the rules for the connect 4 game
+ * Represents the rule screen for connect 4 in the application.
+ * Displays rules of the game for connect 4 fetched from the server for user to view.
  */
 public class ConnectFourRules implements IScreen {
     private Scene scene;
 
     /**
-     * Constructes a ConnectFourRules object
-     * 
-     * @param stage The primary stage for the application
-     * @param controller The Screencontroller to manage screen transitions
-     * @param client The client to fetch the game rules from
+     * Constructs the ConnectFourRules screen and sets up the interface elements.
+     *
+     * @param stage The primary stage of the application.
+     * @param controller The screen controller for navigating between different screens.
+     * @param client The client to communicate with the server.
      */
     public ConnectFourRules(Stage stage, ScreenController controller, Client client) {
-        //load the riles text from the server
+        // Fetch the rules file path for connect 4 from the server
         String filePathFromServer = client.getRulesPath(1);
+
+        // Load the rules for connect 4 using a utility class
         String rulesText = RulesUtility.getRules(filePathFromServer);
 
         //create labels to display
@@ -36,31 +40,31 @@ public class ConnectFourRules implements IScreen {
         Label content = new Label(rulesText);
         content.getStyleClass().add("rules-content");
 
-        //Create the back button
+        // Button to go back to the help screen
         Button backButton = new Button("Back");
         backButton.getStyleClass().add("rules-button");
         backButton.getStyleClass().add("rules-button-back");
         backButton.setOnAction(e -> controller.showHelpScreen());
 
-        //set the postions of everything 
+        // Arrange all the necessary elements into a VBox layout
         VBox layout = new VBox(15, rulesTitle, content, backButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
         layout.getStyleClass().add("rules-pane");
 
-        //Create a border pane
+        // Use a BorderPane to structure the main layout of the screen
         BorderPane mainPane = new BorderPane();
         mainPane.setCenter(layout);
 
-        // Scene
+        // Initialize the scene for the checkers' rules screen
         scene = new Scene(mainPane, 1280, 900);
         scene.getStylesheets().add((getClass().getClassLoader().getResource("RulesSyles.css").toExternalForm()));
     }
 
     /**
-     * Retrieves the connect 4 rules scene
-     * 
-     * @return the scene displaying teh connect 4 rules
+     * Returns the constructed scene for the connect 4 rules screen.
+     *
+     * @return The scene representing the connect 4 rules screen.
      */
     @Override
     public Scene getScene() {
