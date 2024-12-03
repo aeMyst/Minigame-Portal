@@ -1,7 +1,5 @@
 package src.ca.ucalgary.seng300.network;
 
-import src.ca.ucalgary.seng300.leaderboard.interfaces.ILeaderboard;
-
 public interface IClient {
 
 
@@ -26,7 +24,4 @@ public interface IClient {
     /// queue for a specific game and return a starting game
     void  queueGame();
 
-    /// Get the current leaderboard
-    ILeaderboard getLeaderBoard();
-  
 }

@@ -36,19 +36,12 @@ public class Connect4LB implements IScreen {
         Label titleLabel = new Label("CONNECT FOUR LEADERBOARD");
         titleLabel.getStyleClass().add("leaderboard-title");
 
-        Leaderboard leaderboard = new Leaderboard();
+        String[][] leaderboard = client.getC4Leaderboard(() -> {
+            System.out.println("\n" + "Connect4 Leaderboard GET call succeeded");
+        });
 
         //Get leaderboard information
-        VBox leaderboardEntries = createLeaderboardEntries(leaderboard.getC4Leaderboard());
-        client.sendC4LeaderboardToServer(leaderboard.getC4Leaderboard(), () -> {
-            if (leaderboard.getC4Leaderboard()!=null) {
-                System.out.println("\n" + "Connect 4 Leaderboard successfully updated");
-                System.out.println("==========================");
-            } else {
-                System.out.println("Connect 4 Leaderboard is empty");
-                System.out.println("==========================");
-            }
-        });
+        VBox leaderboardEntries = createLeaderboardEntries(leaderboard);
 
         // Back Button
         Button backButton = new Button("Back to LeaderBoard Menu");
