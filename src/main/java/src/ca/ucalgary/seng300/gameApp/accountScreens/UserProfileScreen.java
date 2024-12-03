@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * UserProfileScreen represents the user profile screen in the application
- * It allows the user to view their profile and search for other player profiles
+ * Allows the user to view their profile and search for other player profiles
  */
 public class UserProfileScreen implements IScreen {
     private Scene scene;
@@ -199,7 +199,7 @@ public class UserProfileScreen implements IScreen {
     }
 
     /**
-     * Displays an error message in a dialog box.
+     * Displays an error message in a dialog box
      *
      * @param title   the title of the error message dialog box
      * @param message the content of the error message dialog box
