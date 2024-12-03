@@ -12,9 +12,20 @@ import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
+/**
+ * Represents the game menu screen where the user can choose a game to play.
+ * Provides options for Tic-Tac-Toe, Connect 4, Checkers, or returning to the main menu.
+ */
 public class GameMenuScreen implements IScreen {
     private Scene scene;
 
+    /**
+     * Constructor for the GameMenuScreen class.
+     *
+     * @param stage      The main application stage.
+     * @param controller The controller to manage screen transitions.
+     * @param client     The client for handling network interactions.
+     */
     public GameMenuScreen(Stage stage, ScreenController controller, Client client) {
         // Title label
         Label titleLabel = new Label("CHOOSE A GAME");

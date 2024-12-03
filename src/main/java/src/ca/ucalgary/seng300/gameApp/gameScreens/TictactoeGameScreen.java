@@ -20,6 +20,10 @@ import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * This code represents a Tic-Tac-Toe game screen.
+ * Handles game board creation, game logic integration, player interactions, and chat functionality.
+ */
 public class TictactoeGameScreen {
     private Scene scene;
     private String currentPlayer = "X";
@@ -35,6 +39,13 @@ public class TictactoeGameScreen {
     private boolean isEmojiOpen = false;
     private boolean moveInProgress = false;
 
+    /**
+     * Constructor for TictactoeGameScreen.
+     *
+     * @param stage      The primary stage for the application.
+     * @param controller The screen controller for navigation between screens.
+     * @param client     The network client for server communication.
+     */
     public TictactoeGameScreen(Stage stage, ScreenController controller, Client client, ArrayList<Player> match) {
         this.stage = stage;
         this.client = client;
@@ -87,10 +98,12 @@ public class TictactoeGameScreen {
         chatInput.setPromptText("Type your message...");
         chatInput.setOnAction(e -> sendMessage());
 
+        // Send button
         Button sendButton = new Button("Send");
         sendButton.getStyleClass().add("button-send");
         sendButton.setOnAction(e -> sendMessage());
 
+        // Emoji button to show emoji menu
         Button emojiButton = new Button("Emoji Menu");
         emojiButton.getStyleClass().add("button-emoji");
         emojiButton.setOnAction(e -> {
@@ -102,6 +115,7 @@ public class TictactoeGameScreen {
             }
         });
 
+        // Chat layout
         HBox chatBox = new HBox(10, chatInput, emojiButton, sendButton);
         chatBox.setAlignment(Pos.CENTER);
 
@@ -109,6 +123,7 @@ public class TictactoeGameScreen {
         chatLayout.setAlignment(Pos.CENTER);
         chatLayout.setPadding(new Insets(10));
 
+        // Forfeit button to exit the game
         Button forfeitButton = new Button("Forfeit");
         forfeitButton.getStyleClass().add("button");
         forfeitButton.getStyleClass().add("button-forfeit");
@@ -196,9 +211,16 @@ public class TictactoeGameScreen {
         scene.getStylesheets().add((getClass().getClassLoader().getResource("GamesStyles.css").toExternalForm()));
     }
 
+    /**
+     * Handles a move made by the player.
+     *
+     * @param row        The row of the move.
+     * @param col        The column of the move.
+     * @param controller The screen controller for navigating screens.
+     */
     private void handleMove(int row, int col, ScreenController controller, ArrayList<Player> match) {
         if (moveInProgress) {
-            return;
+            return;     // Ignore input if a move is already in progress
         }
 
         moveInProgress = true;
@@ -207,12 +229,14 @@ public class TictactoeGameScreen {
         HumanPlayer currentPlayerObj = playerManager.getCurrentPlayer();
         Player currentPlayerData = currentPlayerObj.getPlayer(); // Get associated Player data
 
-        if (boardManager.isValidMove(row, col)) {
+        if (boardManager.isValidMove(row, col)) { // Check if move is valid
             boardManager.placeSymbol(currentPlayerObj.getSymbol(), row, col);
 
             client.sendMoveToServer(boardManager, playerManager, status, () -> {
+                // Update GUI after "server acknowledgment"
                 buttons[row][col].setText(String.valueOf(currentPlayerObj.getSymbol()));
 
+                // Check for game outcomes
                 if (boardManager.isWinner(currentPlayerObj.getSymbol())) {
                     this.status = "DONE";
                     System.out.println("Winner: " + currentPlayerData.getPlayerID());
@@ -239,6 +263,9 @@ public class TictactoeGameScreen {
         }
     }
 
+    /**
+     * Disables all buttons on the game board.
+     */
     private void disableBoard() {
         for (int i = 0; i < buttons.length; i++) {
             for (int j = 0; j < buttons[i].length; j++) {
@@ -247,6 +274,9 @@ public class TictactoeGameScreen {
         }
     }
 
+    /**
+     * Enables all buttons on the game board.
+     */
     private void enableBoard() {
         for (int i = 0; i < buttons.length; i++) {
             for (int j = 0; j < buttons[i].length; j++) {
@@ -255,6 +285,9 @@ public class TictactoeGameScreen {
         }
     }
 
+    /**
+     * Sends a message typed in the chat input field to the server.
+     */
     private void sendMessage() {
         String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
@@ -277,6 +310,11 @@ public class TictactoeGameScreen {
         alert.showAndWait();
     }
 
+    /**
+     * Returns the scene for the Tic-Tac-Toe game screen.
+     *
+     * @return The game screen.
+     */
     public Scene getScene() {
         return scene;
     }

@@ -13,7 +13,6 @@ import src.ca.ucalgary.seng300.gamelogic.Connect4.TurnManager;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
-import src.ca.ucalgary.seng300.leaderboard.interfaces.ILeaderboard;
 
 import java.util.Random;
 import java.net.InetAddress;
@@ -23,6 +22,11 @@ public class Client implements IClient {
 
     AuthInterface auth;
     ProfileInterface profile;
+    ClientCheckers clientCheckers;
+    ClientConnect4 clientConnect4;
+    ClientTicTacToe clientTicTacToe;
+    ClientLeaderboard clientLeaderboard;
+    ClientAuth clientAuth;
 
     /**
      * starts server
@@ -33,6 +37,11 @@ public class Client implements IClient {
         System.out.println("==========================");
         auth = new AuthService();
         profile = new ProfileService((AuthService) auth);
+        clientCheckers = new ClientCheckers();
+        clientConnect4 = new ClientConnect4();
+        clientTicTacToe = new ClientTicTacToe();
+        clientLeaderboard = new ClientLeaderboard();
+        clientAuth = new ClientAuth(auth);
     }
 
     public void initializeProfile(String username) {
@@ -51,22 +60,15 @@ public class Client implements IClient {
     }
 
     public boolean logInUser(String username, String password) {
-        return auth.login(username, password);
+        return clientAuth.logInUser(username, password);
     }
 
     public void logoutUser() {
-        // first check that the user is currently logged in
-        User cur_user = auth.isLoggedIn();
-        if (cur_user == null) {
-            // if not just return as the user is logged out
-            return;
-        }
-        // logout user
-        auth.logout(cur_user);
+        clientAuth.logoutUser();
     }
 
     public boolean registerUser(String username, String password, String email) {
-        return auth.register(email, username, password);
+        return clientAuth.registerUser(username, password, email);
     }
 
     public boolean validateRecoveryInfo(String username, String recoveryInfo) {
@@ -84,8 +86,7 @@ public class Client implements IClient {
     }
 
     public User loggedIn(){
-        User currentUser = auth.isLoggedIn();
-        return currentUser;
+        return clientAuth.isLoggedIn();
     }
 // search for and return a profile
     public String getCurrentUserProfile() {
@@ -166,14 +167,6 @@ public class Client implements IClient {
         }
     }
 
-    /**
-     * get leaderboard
-     * @return null
-     */
-    @Override
-    public ILeaderboard getLeaderBoard() {
-        return null;
-    }
 
     /**
      * start new game session
@@ -218,216 +211,41 @@ public class Client implements IClient {
     // ###########################################Tic-Tac-Toe Server Methods##########################################//
 
     /**
-     *
-     * @param boardManager
-     * @param playerManager
-     * @param status
-     * initialize a move print the current board and current player whose turn it is
-     */
-    public void newMoveTTT(BoardManager boardManager, PlayerManager playerManager, String status) {
-        System.out.println("Game Status: " + status);
-        System.out.println("Current Player: " + playerManager.getCurrentPlayer().getSymbol());
-        for (char[] row : boardManager.getBoard()) {
-            for (char cell : row) {
-                System.out.print(cell + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    /**
      * once move has occurred send to server to update stats/leaderboard and the gamestate
      * @param boardManager the current board
      * @param playerManager the players and the current player
      * @param status of the game, the current gamestate
      * @param callback call after server response
      */
-
-    public void sendMoveToServer(BoardManager boardManager, PlayerManager playerManager, String status, Runnable callback) {
-        Random rand = new Random();
-        int time = rand.nextInt(1000);
-        new Thread(() -> {
-            try {
-                Thread.sleep(time); // Simulate 1-second delay
-                System.out.println("Server Communication now...");
-                System.out.println("Move acknowledged by server: " + status);
-                newMoveTTT(boardManager, playerManager, status);
-                Platform.runLater(callback);// Call the callback after the "server" responds
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
+    public void sendTTTMoveToServer(BoardManager boardManager, PlayerManager playerManager, String status, Runnable callback) {
+        clientTicTacToe.sendMoveToServer(boardManager, playerManager, status, callback);
     }
     // ###########################################Connect 4 Server Methods############################################//
 
-    /**
-     * connect 4 move setup
-     * @param logicManager
-     * @param turnManager
-     * @param status
-     */
-
-    public void newMoveC4(Connect4Logic logicManager, TurnManager turnManager, String status) {
-        System.out.println("Game Status: " + status);
-        System.out.println("Current Player: " + turnManager.getCurrentPlayer().getPiece());
-
-        int[][] board = logicManager.getBoard();
-        System.out.println("   1   2   3   4   5   6   7");
-        System.out.println("   --------------------------");
-
-        for (int[] row : board) {
-            for (int cell : row) {
-                System.out.print((cell == 0 ? " " : cell) + " | ");
-            }
-            System.out.println();
-            System.out.println("   -----------------------------");
-        }
-    }
-
     public void sendC4MoveToServer(Connect4Logic logicManager, TurnManager turnManager, String status, Runnable callback) {
-        Random rand = new Random();
-        int time = rand.nextInt(1000); // delay
-        new Thread(() -> {
-            try {
-                Thread.sleep(time); // simulate server delay
-                System.out.println("Server Communication now...");
-                System.out.println("Move acknowledged by server: " + status);
-                newMoveC4(logicManager, turnManager, status); // updates the board and game state
-                Platform.runLater(callback); // calls the callback after the fake server responds
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        clientConnect4.sendC4MoveToServer(logicManager, turnManager, status, callback);
     }
 
-    public void sendC4LeaderboardToServer(String[][] leaderboard, Runnable callback) {
-        Random rand = new Random();
-        int time = rand.nextInt(1000); // simulate server delay
-
-        new Thread(() -> {
-            try {
-                Thread.sleep(time);
-                System.out.println("Server Communication for Leaderboard...");
-                System.out.println("Leaderboard for Connect 4 being updated..." + "\n");
-
-                int count = 1;
-
-                System.out.println("Sorted Leaderboard for Connect 4:\n");
-                System.out.printf("%-10s %-16s %-10s %-10s%n", "Rank", "Player ID", "Rating", "Wins");
-                for (String[] entry : leaderboard) {
-                    System.out.printf("%-10d %-16s %-10s %-10s%n", count, entry[0], entry[1], entry[2]);
-
-                    count++;
-                }
-
-                // update the GUI
-                Platform.runLater(callback);
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
+    public String[][] getC4Leaderboard(Runnable callback) {
+        return clientLeaderboard.getC4Leaderboard(callback);
     }
     // ###########################################Connect 4 Server Methods############################################//
 
     // ###########################################Checkers Server Methods#############################################//
 
     public void sendCheckerMoveToServer(CheckersGameLogic gameLogic, int fromRow, int fromCol, int toRow, int toCol, Player player, Runnable callback) {
-        Random rand = new Random();
-        int time = rand.nextInt(10);
-
-        new Thread(() -> {
-            try {
-                Thread.sleep(time); // Simulate server processing time
-                System.out.println("Server Communication: Processing move...");
-                System.out.printf("Move acknowledged by server: [%d, %d] -> [%d, %d]\n", fromRow, fromCol, toRow, toCol);
-
-                // Log the board state after the move
-                newMoveCheckers(gameLogic, player);
-
-                Platform.runLater(callback); // Execute the callback on the JavaFX thread
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
-
-    public void newMoveCheckers(CheckersGameLogic logicManager, Player currentPlayer) {
-        System.out.println("Current Player: " + currentPlayer.getPlayerID());
-
-        int[][] board = logicManager.getBoard();
-        System.out.println("     1  2  3  4  5  6  7  8");
-        System.out.println("   +------------------------+");
-        for (int row = 0; row < board.length; row++) {
-            System.out.print((row + 1) + " | ");
-            for (int col = 0; col < board[row].length; col++) {
-                switch (board[row][col]) {
-                    case 1 -> System.out.print("W  "); // White piece
-                    case 2 -> System.out.print("B  "); // Black piece
-                    case 3 -> System.out.print("WK "); // White king
-                    case 4 -> System.out.print("BK "); // Black king
-                    default -> System.out.print(".  "); // Empty square
-                }
-            }
-            System.out.println("|");
-        }
-        System.out.println("   +------------------------+");
-    }
-
-    public void sendCheckersLeaderboardToServer(String[][] leaderboard, Runnable callback) {
-        Random rand = new Random();
-        int time = rand.nextInt(500) + 500; // Simulate server delay between 500ms and 1000ms
-
-        new Thread(() -> {
-            try {
-                Thread.sleep(time);
-                System.out.println("Server Communication for Checkers...");
-                System.out.println("Leaderboard for Checkers being updated...\n");
-
-                int count = 1;
-                System.out.println("Sorted Leaderboard for Checkers:\n");
-                System.out.printf("%-10s %-16s %-10s %-10s%n", "Rank", "Player ID", "Rating", "Wins");
-                for (String[] entry : leaderboard) {
-                    System.out.printf("%-10d %-16s %-10s %-10s%n", count, entry[0], entry[1], entry[2]);
-                    count++;
-                }
-
-                // Update the GUI on the JavaFX thread
-                Platform.runLater(callback);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        clientCheckers.sendCheckerMoveToServer(gameLogic, fromRow, fromCol, toRow, toCol, player, callback);
     }
 
 
-    public void sendTTTLeaderboardToServer(String[][] leaderboard, Runnable callback) {
-        Random rand = new Random();
-        int time = rand.nextInt(1000); // simulate server delay
 
-        new Thread(() -> {
-            try {
-                Thread.sleep(time);
-                System.out.println("Server Communication for Leaderboard...");
-                System.out.println("Leaderboard for Tic-Tac-Toe being updated..." + "\n");
+    public String[][] getCheckersLeaderboard(Runnable callback) {
+        return clientLeaderboard.getCheckersLeaderboard(callback);
+    }
 
-                int count = 1;
 
-                System.out.println("Sorted Leaderboard for Tic-Tac-Toe:\n");
-                System.out.printf("%-10s %-16s %-10s %-10s%n", "Rank", "Player ID", "Rating", "Wins");
-                for (String[] entry : leaderboard) {
-                    System.out.printf("%-10d %-16s %-10s %-10s%n", count, entry[0], entry[1], entry[2]);
-
-                    count++;
-                }
-
-                // update the GUI
-                Platform.runLater(callback);
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
+    public String[][] getTTTLeaderboard(Runnable callback) {
+        return clientLeaderboard.getTTTLeaderboard(callback);
     }
 
     // ###########################################Checkers Server Methods#############################################//
