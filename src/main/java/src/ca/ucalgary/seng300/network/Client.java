@@ -74,14 +74,6 @@ public class Client implements IClient {
         return true;
     }
 
-    public void updatePassword(String username, String newPassword) {
-        System.out.println("updatePassword");
-    }
-
-    public String retrieveUsername(String recoveryInfo) {
-        return "some string";
-    }
-
     @Override
     public String getCurrentUsername() {
         User cur_user = auth.isLoggedIn();
@@ -511,6 +503,7 @@ public class Client implements IClient {
         return "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
     }
 
+    // TODO: fix method call in matchHistoryScreen
     public void sendMatchHistoryToServer(String[][] matchHistory, Runnable callback) {
         Random rand = new Random();
         int time = rand.nextInt(500) + 500; // Simulate server delay between 500ms and 1000ms

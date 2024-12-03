@@ -22,11 +22,11 @@ public class UserProfileScreen implements IScreen {
     private Scene scene;
     private VBox userProfileInfoLayout;
 
-    public UserProfileScreen(Stage stage, ScreenController controller, Client client) {
+    public UserProfileScreen(Stage stage, ScreenController controller, Client client, String initialUser) {
         String currentUsername = client.getCurrentUsername();
 
         // User Profile Title
-        Label userProfileTitle = new Label("USER PROFILE: " + currentUsername);
+        Label userProfileTitle = new Label("USER PROFILE: " + initialUser);
         userProfileTitle.getStyleClass().add("title-label");
 
         // The layout for displaying user profile details
@@ -36,8 +36,8 @@ public class UserProfileScreen implements IScreen {
         userProfileInfoLayout.getStyleClass().add("user-profile-box");
 
         // Display user profile details (initially the logged-in user's profile)
-        String profileInfo = client.getCurrentUserProfile();
-        displayProfile(profileInfo);
+        String userProfile = client.searchProfile(initialUser);
+        displayProfile(userProfile);
 
         // TextField to search for another profile
         Label searchProfileLabel = new Label("Search Profile:");
@@ -66,7 +66,7 @@ public class UserProfileScreen implements IScreen {
         });
 
         // Button to return to the logged-in user's profile
-        Button xButton = new Button("X");
+        Button xButton = new Button("Return to Your Profile");
         xButton.getStyleClass().add("button");
         xButton.getStyleClass().add("exit-button");
         xButton.setOnAction(e -> {
@@ -93,7 +93,15 @@ public class UserProfileScreen implements IScreen {
         Button matchHistoryButton = new Button("Match History");
         matchHistoryButton.getStyleClass().add("button");
         matchHistoryButton.getStyleClass().add("submit-button");
-        matchHistoryButton.setOnAction(e -> controller.showMatchHistoryScreen());
+        matchHistoryButton.setOnAction(e -> {
+            String searchResults = searchProfileField.getText();
+            if (searchResults.isEmpty()) {
+                controller.showMatchHistoryScreen(client.getCurrentUsername());
+            } else {
+                controller.showMatchHistoryScreen(searchResults);
+            }
+
+        });
 
         // Layout for search
         HBox searchLayout = new HBox(10, searchProfileLabel, searchProfileField, searchButton, xButton);

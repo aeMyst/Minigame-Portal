@@ -16,16 +16,16 @@ import src.ca.ucalgary.seng300.gameApp.ScreenController;
 import src.ca.ucalgary.seng300.leaderboard.logic.MatchHistory;
 import src.ca.ucalgary.seng300.network.Client;
 
-import java.util.Arrays;
-
 public class MatchHistoryScreen implements IScreen {
     private Scene scene;
     private VBox matchHistoryInfoLayout;
+    private String currentUser;
 
-    public MatchHistoryScreen(Stage stage, ScreenController controller, Client client) {
+    public MatchHistoryScreen(Stage stage, ScreenController controller, Client client, String initialUser) {
         MatchHistory matchHistory = new MatchHistory();
+        this.currentUser = initialUser;
 
-        Label historyTitle = new Label("USER MATCH HISTORY: " + client.getCurrentUsername());
+        Label historyTitle = new Label("USER MATCH HISTORY: " + initialUser);
         historyTitle.getStyleClass().add("title-label");
 
         matchHistoryInfoLayout = new VBox(10);
@@ -34,8 +34,7 @@ public class MatchHistoryScreen implements IScreen {
         matchHistoryInfoLayout.getStyleClass().add("user-profile-box");
 
         // display current user logged-in first
-        String profileInfo = client.getCurrentUsername();
-        displayHistory(matchHistory.getMatchHistory(profileInfo), profileInfo);
+        displayHistory(matchHistory.getMatchHistory(initialUser), initialUser);
 
         Label searchProfileLabel = new Label("Search Profile:");
         searchProfileLabel.getStyleClass().add("search-label");
@@ -64,16 +63,23 @@ public class MatchHistoryScreen implements IScreen {
 
         Button backButton = new Button("back");
         backButton.getStyleClass().add("back-button");
-        backButton.setOnAction(e -> controller.showUserProfileScreen());
+        backButton.setOnAction(e -> {
+            if (searchProfileField.getText().isEmpty()) {
+                controller.showUserProfileScreen(currentUser);
+            } else {
+                controller.showUserProfileScreen(searchProfileField.getText());
+            }
+        });
 
         // Button to return to the logged-in user's profile
-        Button xButton = new Button("X");
+        Button xButton = new Button("Return to Your Profile");
         xButton.getStyleClass().add("button");
         xButton.getStyleClass().add("exit-button");
         xButton.setOnAction(e -> {
             // Reset to the logged-in user's profile
             displayHistory(matchHistory.getMatchHistory(client.getCurrentUsername()), client.getCurrentUsername());
             String currentUsernameReset = client.getCurrentUsername();
+            this.currentUser = client.getCurrentUsername();
             historyTitle.setText("USER PROFILE: " + currentUsernameReset);
             searchProfileField.clear();
         });
@@ -108,8 +114,6 @@ public class MatchHistoryScreen implements IScreen {
 
     private void displayHistory(String[][] data, String profile) {
         matchHistoryInfoLayout.getChildren().clear();
-
-        System.out.println(Arrays.deepToString(data));
 
         VBox display = new VBox(5);
         display.setPadding(new Insets(10));

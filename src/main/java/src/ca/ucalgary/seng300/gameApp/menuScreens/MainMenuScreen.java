@@ -40,7 +40,7 @@ public class MainMenuScreen implements IScreen {
         Button viewProfileButton = new Button("View Profile");
         viewProfileButton.getStyleClass().add("button");
         viewProfileButton.getStyleClass().add("submit-button");
-        viewProfileButton.setOnAction(e -> controller.showUserProfileScreen());
+        viewProfileButton.setOnAction(e -> controller.showUserProfileScreen(client.getCurrentUsername()));
 
         Button logOutButton = new Button("Log Out");
         logOutButton.getStyleClass().add("button");

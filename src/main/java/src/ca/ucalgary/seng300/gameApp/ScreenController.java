@@ -2,8 +2,6 @@ package src.ca.ucalgary.seng300.gameApp;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import src.ca.ucalgary.seng300.Profile.controllers.AuthController;
-import src.ca.ucalgary.seng300.Profile.controllers.ProfileController;
 import src.ca.ucalgary.seng300.Profile.services.AuthService;
 import src.ca.ucalgary.seng300.Profile.services.ProfileService;
 import src.ca.ucalgary.seng300.gameApp.extraScreens.CheckersRules;
@@ -17,7 +15,6 @@ import src.ca.ucalgary.seng300.gameApp.accountScreens.*;
 import src.ca.ucalgary.seng300.gameApp.gameScreens.EndGameScreen;
 import src.ca.ucalgary.seng300.gameApp.extraScreens.HelpScreen;
 import src.ca.ucalgary.seng300.gameApp.gameScreens.*;
-import src.ca.ucalgary.seng300.gameApp.loadingScreens.LoadingScreen;
 import src.ca.ucalgary.seng300.gameApp.loadingScreens.QueueScreen;
 import src.ca.ucalgary.seng300.gameApp.loadingScreens.ServerConnectionScreen;
 import src.ca.ucalgary.seng300.gameApp.menuScreens.GameMenuScreen;
@@ -73,12 +70,6 @@ public final class ScreenController extends Application {
         primaryStage.setScene(ticTacToe.getScene());
     }
 
-    public void showLoadingScreen() {
-        LoadingScreen loadingScreen = new  LoadingScreen(primaryStage, this, client);
-        primaryStage.setTitle("View Player Profile");
-        primaryStage.setScene(loadingScreen.getScene());
-    }
-
     public void showServerConnectionScreen(boolean disconnectCheck) {
         ServerConnectionScreen connection = new ServerConnectionScreen(primaryStage, this, client, disconnectCheck);
         primaryStage.setScene(connection.getScene());
@@ -123,8 +114,8 @@ public final class ScreenController extends Application {
 
     }
 
-    public void showUserProfileScreen() {
-        UserProfileScreen userProfile = new UserProfileScreen(primaryStage, this, client);
+    public void showUserProfileScreen(String initialUser) {
+        UserProfileScreen userProfile = new UserProfileScreen(primaryStage, this, client, initialUser);
         primaryStage.setTitle("View Profile");
         primaryStage.setScene(userProfile.getScene());
 
@@ -207,8 +198,8 @@ public final class ScreenController extends Application {
         primaryStage.setScene(challengeScreen.getScene());
     }
 
-    public void showMatchHistoryScreen() {
-        MatchHistoryScreen matchHistoryScreen = new MatchHistoryScreen(primaryStage, this, client);
+    public void showMatchHistoryScreen(String userDisplay) {
+        MatchHistoryScreen matchHistoryScreen = new MatchHistoryScreen(primaryStage, this, client, userDisplay);
         primaryStage.setTitle("Match History");
         primaryStage.setScene(matchHistoryScreen.getScene());
     }
