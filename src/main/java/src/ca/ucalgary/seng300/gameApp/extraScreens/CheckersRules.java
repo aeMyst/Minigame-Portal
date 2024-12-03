@@ -34,18 +34,19 @@ public class CheckersRules implements IScreen {
         // Load the rules for checkers using a utility class
         String rulesText = RulesUtility.getRules(filePathFromServer);
 
+        // Create the title label for the rules screen
         Label rulesTitle = new Label("CHECKERS' RULES:");
         rulesTitle.getStyleClass().add("rules-title");
 
-        // Content label for rules display
+        // Create a label to display the rules content
         Label content = new Label(rulesText);
         content.getStyleClass().add("rules-content");
 
-        // Button to go back to the help screen
+        // Create a back button to navigate to the help screen
         Button backButton = new Button("Back");
         backButton.getStyleClass().add("rules-button");
         backButton.getStyleClass().add("rules-button-back");
-        backButton.setOnAction(e -> controller.showHelpScreen());
+        backButton.setOnAction(e -> controller.showHelpScreen());// Define action for the button
 
         // Arrange all the necessary elements into a VBox layout
         VBox layout = new VBox(15, rulesTitle, content, backButton);
@@ -53,12 +54,14 @@ public class CheckersRules implements IScreen {
         layout.setPadding(new Insets(20));
         layout.getStyleClass().add("rules-pane");
 
-        // Use a BorderPane to structure the main layout of the screen
+        // Create a BorderPane and set the layout to the center
         BorderPane mainPane = new BorderPane();
         mainPane.setCenter(layout);
 
-        // Initialize the scene for the checkers' rules screen
+        // Initialize the scene with the main pane and set dimensions
         scene = new Scene(mainPane, 1280, 900);
+
+        // Load and apply the external stylesheet
         scene.getStylesheets().add((getClass().getClassLoader().getResource("RulesSyles.css").toExternalForm()));
     }
 
