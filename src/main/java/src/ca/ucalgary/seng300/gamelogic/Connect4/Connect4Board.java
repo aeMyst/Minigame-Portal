@@ -25,7 +25,7 @@ public class Connect4Board {
     /**
      * prints out current board state to the console labels
      * 
-     * @param the board to be printed
+     * @param board the board to be printed
      */
     public static void printBoard(int[][] board) {
         //Print out the collumn labels
