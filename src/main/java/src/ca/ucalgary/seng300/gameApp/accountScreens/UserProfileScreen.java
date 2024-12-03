@@ -21,11 +21,12 @@ import java.util.Map;
 public class UserProfileScreen implements IScreen {
     private Scene scene;
     private VBox userProfileInfoLayout;
+    private String currentUser;
 
     public UserProfileScreen(Stage stage, ScreenController controller, Client client, String initialUser) {
-        String currentUsername = client.getCurrentUsername();
-
         // User Profile Title
+        this.currentUser = initialUser;
+
         Label userProfileTitle = new Label("USER PROFILE: " + initialUser);
         userProfileTitle.getStyleClass().add("title-label");
 
@@ -66,14 +67,15 @@ public class UserProfileScreen implements IScreen {
         });
 
         // Button to return to the logged-in user's profile
-        Button xButton = new Button("Return to Your Profile");
+        Button xButton = new Button("View Your Profile");
         xButton.getStyleClass().add("button");
         xButton.getStyleClass().add("exit-button");
         xButton.setOnAction(e -> {
             // Reset to the logged-in user's profile
             String updatedProfileInfo = client.getCurrentUserProfile();
-            displayProfile(updatedProfileInfo);
             String currentUsernameReset = client.getCurrentUsername();
+            this.currentUser = currentUsernameReset;
+            displayProfile(updatedProfileInfo);
             userProfileTitle.setText("USER PROFILE: " + currentUsernameReset);
             searchProfileField.clear();
         });
@@ -96,11 +98,10 @@ public class UserProfileScreen implements IScreen {
         matchHistoryButton.setOnAction(e -> {
             String searchResults = searchProfileField.getText();
             if (searchResults.isEmpty()) {
-                controller.showMatchHistoryScreen(client.getCurrentUsername());
+                controller.showMatchHistoryScreen(currentUser);
             } else {
                 controller.showMatchHistoryScreen(searchResults);
             }
-
         });
 
         // Layout for search

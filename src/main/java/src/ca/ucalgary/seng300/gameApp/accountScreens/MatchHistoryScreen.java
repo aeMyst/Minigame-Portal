@@ -54,6 +54,8 @@ public class MatchHistoryScreen implements IScreen {
                     showErrorMessage("Error", "Profile not found for username: " + profileName);
                 } else {
                     displayHistory(matchHistory.getMatchHistory(profileName), profileName);
+                    this.currentUser = profileName;
+                    MatchHistoryServer(client, matchHistory);
                     historyTitle.setText("USER MATCH HISTORY: " + profileName);
                 }
             } else {
@@ -65,14 +67,15 @@ public class MatchHistoryScreen implements IScreen {
         backButton.getStyleClass().add("back-button");
         backButton.setOnAction(e -> {
             if (searchProfileField.getText().isEmpty()) {
-                controller.showUserProfileScreen(currentUser);
+                System.out.println(currentUser);
+                controller.showUserProfileScreen(this.currentUser);
             } else {
                 controller.showUserProfileScreen(searchProfileField.getText());
             }
         });
 
         // Button to return to the logged-in user's profile
-        Button xButton = new Button("Return to Your Profile");
+        Button xButton = new Button("View Your Profile");
         xButton.getStyleClass().add("button");
         xButton.getStyleClass().add("exit-button");
         xButton.setOnAction(e -> {
@@ -80,6 +83,7 @@ public class MatchHistoryScreen implements IScreen {
             displayHistory(matchHistory.getMatchHistory(client.getCurrentUsername()), client.getCurrentUsername());
             String currentUsernameReset = client.getCurrentUsername();
             this.currentUser = client.getCurrentUsername();
+            MatchHistoryServer(client, matchHistory);
             historyTitle.setText("USER PROFILE: " + currentUsernameReset);
             searchProfileField.clear();
         });
@@ -87,18 +91,8 @@ public class MatchHistoryScreen implements IScreen {
         HBox searchLayout = new HBox(10, searchProfileLabel, searchProfileField, searchButton, xButton);
         searchLayout.setAlignment(Pos.CENTER);
 
-// TODO: figure out how to make this so that it always prints out the correct user
-
-//        String currentPlayer = client.getCurrentUsername();
-//        client.sendMatchHistoryToServer(matchHistory.getMatchHistory(currentPlayer), () -> {
-//            if (matchHistory.getMatchHistory(currentPlayer)!=null) {
-//                System.out.println("\n" + "Player Match History successfully updated");
-//                System.out.println("==========================");
-//            } else {
-//                System.out.println("Player Match History is empty");
-//                System.out.println("==========================");
-//            }
-//        });
+        // send request to server
+        MatchHistoryServer(client, matchHistory);
 
         VBox matchHistoryLayout = new VBox(10, historyTitle, matchHistoryInfoLayout, searchLayout, backButton);
         matchHistoryLayout.setAlignment(Pos.CENTER);
@@ -147,7 +141,6 @@ public class MatchHistoryScreen implements IScreen {
                 historyBox.getChildren().add(entryBox);
             }
         }
-
         matchHistoryInfoLayout.getChildren().add(historyBox);
     }
 
@@ -157,6 +150,18 @@ public class MatchHistoryScreen implements IScreen {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void MatchHistoryServer(Client client, MatchHistory matchHistory) {
+        client.sendMatchHistoryToServer(matchHistory.getMatchHistory(currentUser), () -> {
+            if (matchHistory.getMatchHistory(currentUser)!=null) {
+                System.out.println("\n" + "Player Match History successfully updated");
+                System.out.println("==========================");
+            } else {
+                System.out.println("Player Match History is empty");
+                System.out.println("==========================");
+            }
+        });
     }
 
     @Override
