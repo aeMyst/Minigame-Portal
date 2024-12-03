@@ -22,6 +22,9 @@ import src.ca.ucalgary.seng300.gamelogic.Connect4.UserPiece;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * A class that creates a scene to display the connect 4 game
+ */
 public class Connect4Screen implements IScreen {
     private Scene scene;
 
@@ -41,6 +44,14 @@ public class Connect4Screen implements IScreen {
     private boolean isEmojiOpen = false;
     private ArrayList<Player> match;
 
+    /**
+     * Constructs a scene to display a game of connect 4
+     * 
+     * @param stage the primary stage for the application
+     * @param controller the controller used to manage screen transitions
+     * @param client The client used to fetch information from the server
+     * @param match A list of the players playing
+     */
     public Connect4Screen(Stage stage, ScreenController controller, Client client, ArrayList<Player> match) {
         this.stage = stage;
         this.client = client;
@@ -61,6 +72,7 @@ public class Connect4Screen implements IScreen {
         Label title = new Label("CONNECT FOUR GAME");
         title.getStyleClass().add("title-label");
 
+        //Create the gameboard
         GridPane gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);
         gameBoard.setMaxWidth(500); // Total width of the board
@@ -81,6 +93,7 @@ public class Connect4Screen implements IScreen {
             }
         }
 
+        //Create all text sections and buttons to display
         turnIndicator = new Label("Player turn: " + currentPlayer.getPlayer().getPlayerID() + " (RED)");
         turnIndicator.getStyleClass().add("label-turn-indicator");
 
@@ -201,7 +214,12 @@ public class Connect4Screen implements IScreen {
 
     private boolean moveInProgress = false;
 
-    // handle move attempted by player when button on game board is clicked
+    /**
+     * Handles a move attempted by a player when the click the game screen
+     * 
+     * @param column the column the player clicked
+     * @param controller A controller to navigate screens
+     */
     private void gameButtonClicked(int column, ScreenController controller) {
         if (moveInProgress) {
             return;
@@ -245,12 +263,18 @@ public class Connect4Screen implements IScreen {
         }
     }
 
+    /**
+     * A method to switch who's turn it is
+     */
     private void switchTurns() {
         currentPlayer = (currentPlayer == playerRed) ? playerBlue : playerRed;
         turnIndicator.setText("Player turn: " + currentPlayer.getPlayer().getPlayerID()
                 + (currentPlayer == playerRed ? " (RED)" : " (BLUE)"));
     }
 
+    /**
+     * A method to disable the board and all the buttons
+     */
     private void disableBoard() {
         for (int i = 0; i < gameButtons.length; i++) {
             for (int j = 0; j < gameButtons[i].length; j++) {
@@ -259,6 +283,9 @@ public class Connect4Screen implements IScreen {
         }
     }
 
+    /**
+     * A method to enable the board and all the buttons
+     */
     private void enableBoard() {
         for (int i = 0; i < gameButtons.length; i++) {
             for (int j = 0; j < gameButtons[i].length; j++) {
@@ -267,6 +294,9 @@ public class Connect4Screen implements IScreen {
         }
     }
 
+    /**
+     * A method to allow players to send a message the server
+     */
     private void sendMessage() {
         String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
@@ -275,6 +305,13 @@ public class Connect4Screen implements IScreen {
         }
     }
 
+    /**
+     * A method to display an alert
+     * 
+     * @param alertType The type of alert to display
+     * @param title The title of the alert 
+     * @param message The alert message
+     */    
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -287,6 +324,11 @@ public class Connect4Screen implements IScreen {
         alert.showAndWait();
     }
 
+    /**
+     * Retrieves the scene for the connect 4 game
+     * 
+     * @return the scene displaying the connect 4 game
+     */
     @Override
     public Scene getScene() {
         return scene;
