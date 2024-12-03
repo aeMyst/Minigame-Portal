@@ -59,11 +59,13 @@ public class MatchMaker implements IMatchmaker {
     public void addPlayerToQueue(String user, String gameType) {
         // Create a default player representation for the user
         Player currentUserPlayer = Player.defaultPlayer(gameType, user);
-        queue.add(currentUserPlayer);
+        if (!queue.contains(currentUserPlayer)) {
+            queue.add(currentUserPlayer);
+        }
 
         // Add all players of the same game type to the queue
         for (Player player : storage.getPlayers()) {
-            if (player.getGameType().equals(gameType)) {
+            if (player.getGameType().equals(gameType) && !queue.contains(player)) {
                 queue.add(player);
             }
         }
@@ -85,7 +87,6 @@ public class MatchMaker implements IMatchmaker {
         for (Player player : queue) {
             if (player.getPlayerID().equals(user)) {
                 userPlayer = player;
-                queue.remove(userPlayer); // Remove the user from the queue temporarily
                 break;
             }
         }
@@ -100,20 +101,17 @@ public class MatchMaker implements IMatchmaker {
 
         // Find the closest match based on Elo ratings within the threshold
         for (Player player : queue) {
-            int eloDifference = Math.abs(userPlayer.getElo() - player.getElo());
-            if (eloDifference <= THRESHOLD) {
-                closestMatch = player;
+            if (!player.getPlayerID().equals(user)) {
+                int eloDifference = Math.abs(userPlayer.getElo() - player.getElo());
+                if (eloDifference <= THRESHOLD) {
+                    closestMatch = player;
+                    break;
+                }
             }
         }
 
-        // If no suitable match is found, choose the first available player
-        if (closestMatch == null) {
-            for (Player player : queue) {
-                if (!player.getPlayerID().equals(user)) {
-                    closestMatch = player;
-                    break; // Take the first available player
-                }
-            }
+        if (closestMatch == null && !queue.isEmpty()) {
+            closestMatch = queue.get(0);
         }
 
         // If a match is found, add both players to the match list
