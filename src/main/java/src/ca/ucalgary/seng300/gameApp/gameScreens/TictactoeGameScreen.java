@@ -232,7 +232,7 @@ public class TictactoeGameScreen {
         if (boardManager.isValidMove(row, col)) { // Check if move is valid
             boardManager.placeSymbol(currentPlayerObj.getSymbol(), row, col);
 
-            client.sendMoveToServer(boardManager, playerManager, status, () -> {
+            client.sendTTTMoveToServer(boardManager, playerManager, status, () -> {
                 // Update GUI after "server acknowledgment"
                 buttons[row][col].setText(String.valueOf(currentPlayerObj.getSymbol()));
 
