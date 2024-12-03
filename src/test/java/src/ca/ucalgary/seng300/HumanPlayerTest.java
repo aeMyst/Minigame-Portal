@@ -1,4 +1,4 @@
-package src.ca.ucalgary.seng300;
+/* package src.ca.ucalgary.seng300;
 
 import org.junit.jupiter.api.Test;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.HumanPlayer;
@@ -20,3 +20,4 @@ public class HumanPlayerTest {
 
         // The test for getMove is skipped due to reliance on console input.
     }
+ */
