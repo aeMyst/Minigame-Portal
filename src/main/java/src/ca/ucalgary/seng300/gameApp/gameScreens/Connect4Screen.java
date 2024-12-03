@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 /**
- * A class that creates a scene to display the connect 4 game
+ * This code represents the Connect 4 game screen.
+ * Handles the game board creation, game logic integration, player interactions,
+ * and chat functionalities.
  */
 public class Connect4Screen implements IScreen {
     private Scene scene;
@@ -46,7 +48,7 @@ public class Connect4Screen implements IScreen {
 
     /**
      * Constructs a scene to display a game of connect 4
-     * 
+     *
      * @param stage the primary stage for the application
      * @param controller the controller used to manage screen transitions
      * @param client The client used to fetch information from the server
@@ -94,23 +96,28 @@ public class Connect4Screen implements IScreen {
         }
 
         //Create all text sections and buttons to display
+        // Label that displays current player
         turnIndicator = new Label("Player turn: " + currentPlayer.getPlayer().getPlayerID() + " (RED)");
         turnIndicator.getStyleClass().add("label-turn-indicator");
 
+        // TextArea that displays messages
         chatArea = new TextArea();
         chatArea.setEditable(false);
         chatArea.setPrefHeight(150);
         chatArea.getStyleClass().add("text-area-chat");
 
+        // TextField that allows for players to input messages
         chatInput = new TextField();
         chatInput.setPromptText("Type your message...");
         chatInput.getStyleClass().add("input-field");
         chatInput.setOnAction(e -> sendMessage());
 
+        // Button that sends message when clicked
         Button sendButton = new Button("Send");
         sendButton.getStyleClass().add("button-send");
         sendButton.setOnAction(e -> sendMessage());
 
+        // Button that opens emoji menu when clicked
         Button emojiButton = new Button("Emoji Menu");
         emojiButton.getStyleClass().add("button-emoji");
         emojiButton.setOnAction(e -> {
@@ -215,8 +222,13 @@ public class Connect4Screen implements IScreen {
     private boolean moveInProgress = false;
 
     /**
+     * Handles move attempted by player when button on game board is clicked.
+     * @param column The column index of the button clicked.
+     * @param controller The screen controller for navigation between screens.
+     */
+    /**
      * Handles a move attempted by a player when the click the game screen
-     * 
+     *
      * @param column the column the player clicked
      * @param controller A controller to navigate screens
      */
@@ -266,6 +278,9 @@ public class Connect4Screen implements IScreen {
     /**
      * A method to switch who's turn it is
      */
+    /**
+     * Switches current player.
+     */
     private void switchTurns() {
         currentPlayer = (currentPlayer == playerRed) ? playerBlue : playerRed;
         turnIndicator.setText("Player turn: " + currentPlayer.getPlayer().getPlayerID()
@@ -274,6 +289,9 @@ public class Connect4Screen implements IScreen {
 
     /**
      * A method to disable the board and all the buttons
+     */
+    /**
+     * Disables all buttons on the game board.
      */
     private void disableBoard() {
         for (int i = 0; i < gameButtons.length; i++) {
@@ -286,6 +304,9 @@ public class Connect4Screen implements IScreen {
     /**
      * A method to enable the board and all the buttons
      */
+    /**
+     * Enables all buttons on the game board.
+     */
     private void enableBoard() {
         for (int i = 0; i < gameButtons.length; i++) {
             for (int j = 0; j < gameButtons[i].length; j++) {
@@ -297,21 +318,24 @@ public class Connect4Screen implements IScreen {
     /**
      * A method to allow players to send a message the server
      */
+    /**
+     * Sends a chat message to the server and displays it in the chat area.
+     */
     private void sendMessage() {
         String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
-            chatArea.appendText(client.getCurrentUsername() + ": " + client.sendMessageToServer(message, client) + "\n");
+            chatArea.appendText(client.getCurrentUsername() + client.sendMessageToServer(message, client) + "\n");
             chatInput.clear();
         }
     }
 
     /**
      * A method to display an alert
-     * 
+     *
      * @param alertType The type of alert to display
-     * @param title The title of the alert 
+     * @param title The title of the alert
      * @param message The alert message
-     */    
+     */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -326,7 +350,7 @@ public class Connect4Screen implements IScreen {
 
     /**
      * Retrieves the scene for the connect 4 game
-     * 
+     *
      * @return the scene displaying the connect 4 game
      */
     @Override
