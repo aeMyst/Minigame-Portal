@@ -18,7 +18,7 @@ public class ValidationUtilsTest {
     public void testInValidEmail() {
         //Testing for email with invalid format.
         assertFalse(ValidationUtils.isValidEmail("user@.com")); //domain should not start with .
-        assertFalse(ValidationUtils.isValidEmail("user@domain")); //needs to be a .something eg; .com //NOT WORKING RN.
+        assertFalse(ValidationUtils.isValidEmail("user@domain")); //needs to be a .something eg; .com
         assertFalse(ValidationUtils.isValidEmail("invalid-email")); //Missing @
 
     }
