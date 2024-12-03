@@ -14,7 +14,7 @@ import src.ca.ucalgary.seng300.gameApp.Utility.RulesUtility;
 import src.ca.ucalgary.seng300.network.Client;
 
 /**
- * Represents the rule screen for checkers in the application.
+ * Represents the rules screen for checkers in the application.
  * Displays rules of the game for checkers fetched from the server for user to view.
  */
 public class CheckersRules implements IScreen {

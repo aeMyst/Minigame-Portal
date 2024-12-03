@@ -14,7 +14,7 @@ import src.ca.ucalgary.seng300.gameApp.Utility.RulesUtility;
 import src.ca.ucalgary.seng300.network.Client;
 
 /**
- * Represents the rule screen for connect 4 in the application.
+ * Represents the rules screen for connect 4 in the application.
  * Displays rules of the game for connect 4 fetched from the server for user to view.
  */
 public class ConnectFourRules implements IScreen {
