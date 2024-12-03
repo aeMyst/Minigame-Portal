@@ -9,6 +9,8 @@ import src.ca.ucalgary.seng300.network.Client;
 
 public class ClientTest {
 //Testing connection with server for TTT
+    private Player player1;
+    private Player player2;
         @Test
         public void testNewMoveTTT() {
             // Setup actual BoardManager
@@ -20,8 +22,8 @@ public class ClientTest {
             BoardManager boardManager = new BoardManager(); // Assuming a constructor for initializing board
 
             // Setup actual PlayerManager
-            HumanPlayer playerX = new HumanPlayer('X');
-            HumanPlayer playerO = new HumanPlayer('O');
+            HumanPlayer playerX = new HumanPlayer(player1,'X');
+            HumanPlayer playerO = new HumanPlayer(player2,'O');
             PlayerManager playerManager = new PlayerManager(playerX, playerO); // Assuming a constructor for players
             if (playerManager.getCurrentPlayer() !=playerX) {
                 playerManager.switchPlayer();
@@ -45,10 +47,11 @@ public class ClientTest {
             BoardManager boardManager = new BoardManager();
 
             // Setup actual PlayerManager
-            HumanPlayer playerX = new HumanPlayer('X');
-            HumanPlayer playerO= new HumanPlayer('O');
+
+            HumanPlayer playerX = new HumanPlayer(player1, 'X');
+            HumanPlayer playerO= new HumanPlayer(player2,'O');
             PlayerManager playerManager = new PlayerManager(playerX, playerO);
-            if (playerManager.getCurrentPlayer() !=player1) {
+            if (playerManager.getCurrentPlayer() !=playerX) {
                 playerManager.switchPlayer();
             }
 
