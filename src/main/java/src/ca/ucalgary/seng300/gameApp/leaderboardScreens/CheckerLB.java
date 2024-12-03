@@ -24,20 +24,12 @@ public class CheckerLB implements IScreen {
         Label titleLabel = new Label("CHECKERS' LEADERBOARD");
         titleLabel.getStyleClass().add("leaderboard-title");
 
-        Leaderboard leaderboard = new Leaderboard();
-
-        VBox leaderboardEntries = createLeaderboardEntries(leaderboard.getCheckersLeaderboard());
-
-        client.sendCheckersLeaderboardToServer(leaderboard.getCheckersLeaderboard(), () -> {
-            if (leaderboard.getCheckersLeaderboard()!=null) {
-                System.out.println("\n" + "Checkers Leaderboard successfully updated");
-                System.out.println("==========================");
-            } else {
-                System.out.println("Checkers Leaderboard is empty");
-                System.out.println("==========================");
-            }
+        String[][] leaderboard = client.getCheckersLeaderboard(() -> {
+            System.out.println("\n" + "Checkers Leaderboard GET call succeeded");
         });
 
+        //Get leaderboard information
+        VBox leaderboardEntries = createLeaderboardEntries(leaderboard);
 
         // Back Button
         Button backButton = new Button("Back to LeaderBoard Menu");

@@ -210,7 +210,7 @@ public class TictactoeGameScreen {
         if (boardManager.isValidMove(row, col)) {
             boardManager.placeSymbol(currentPlayerObj.getSymbol(), row, col);
 
-            client.sendMoveToServer(boardManager, playerManager, status, () -> {
+            client.sendTTTMoveToServer(boardManager, playerManager, status, () -> {
                 buttons[row][col].setText(String.valueOf(currentPlayerObj.getSymbol()));
 
                 if (boardManager.isWinner(currentPlayerObj.getSymbol())) {
