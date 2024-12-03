@@ -84,16 +84,16 @@ public class MatchmakeChoiceScreen implements IScreen {
                 showAlert(Alert.AlertType.ERROR, "Error", "Please fill out the field."); // Show error if the field is empty
             }
             // Handle invalid cases for challenges
-                if (enterOwnUser) {
-                    showAlert(Alert.AlertType.ERROR, "Error", "You cannot challenge yourself. Try again.");
-                } else if (!playerFound) {
-                    showAlert(Alert.AlertType.ERROR, "Error", "There is no user with that username. Try again.");
-                } else {
-                    controller.showChallengePlayerScreen(challengeName, gameChoice); // Navigate to the challenge screen
-                }
+            if (enterOwnUser) {
+                showAlert(Alert.AlertType.ERROR, "Error", "You cannot challenge yourself. Try again.");
+            } else if (!playerFound) {
+                showAlert(Alert.AlertType.ERROR, "Error", "There is no user with that username. Try again.");
+            } else {
+                controller.showChallengePlayerScreen(challengeName, gameChoice); // Navigate to the challenge screen
+            }
         });
 
-        
+
         // Layout for the challenge player section
         HBox challengeLayout = new HBox(10, challengeLabel, challengeField, challengeButton);
         challengeLayout.setAlignment(Pos.CENTER);
