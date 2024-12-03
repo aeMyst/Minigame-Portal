@@ -7,3 +7,5 @@ TICTACTOE,test,test,lefaa1,35,35,December 02 2024
 TICTACTOE,lefaa1,test,lefaa1,35,35,December 02 2024
 CONNECT4,test,test,nick,64,0,December 02 2024
 CONNECT4,nick,test,nick,64,0,December 02 2024
+CHECKERS,test,lefaa1,test,65,65,December 03 2024
+CHECKERS,lefaa1,lefaa1,test,65,65,December 03 2024
