@@ -13,6 +13,15 @@ public class User {
         this.email = email;
     }
 
+    public static User fromCsv(String csv) {
+        String[] data = csv.split(",");
+        return new User(data[1], data[2], data[0]);
+    }
+
+    public String toCsv() {
+        return email + "," + username + "," + password;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }

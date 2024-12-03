@@ -7,47 +7,63 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 import src.ca.ucalgary.seng300.gameApp.Utility.RulesUtility;
 import src.ca.ucalgary.seng300.network.Client;
-
+/**
+ * A class that creates a scene to display the rules for the connect 4 game
+ */
 public class ConnectFourRules implements IScreen {
     private Scene scene;
 
+    /**
+     * Constructes a ConnectFourRules object
+     * 
+     * @param stage The primary stage for the application
+     * @param controller The Screencontroller to manage screen transitions
+     * @param client The client to fetch the game rules from
+     */
     public ConnectFourRules(Stage stage, ScreenController controller, Client client) {
-        String filePath = "src/main/java/src/ca/ucalgary/seng300/database/connect_four_rules.txt";
-        String rulesText = RulesUtility.getRules(filePath);
+        //load the riles text from the server
+        String filePathFromServer = client.getRulesPath(1);
+        String rulesText = RulesUtility.getRules(filePathFromServer);
 
-        Label Rules = new Label("Connect Four Rules: ");
-        Rules.setFont(new Font("Arial", 24));
-        Rules.setTextFill(Color.DARKBLUE);
-
+        //create labels to display
+        Label rulesTitle = new Label("CONNECT FOUR RULES:");
+        rulesTitle.getStyleClass().add("rules-title");
         Label content = new Label(rulesText);
-        content.setStyle("-fx-font-weight: bold");
-        Rules.setFont(new Font("Arial", 24));
+        content.getStyleClass().add("rules-content");
 
-        Button backButton = new Button("back");
-        backButton.setFont(new Font("Arial", 16));
-        backButton.setPrefWidth(200);
-        backButton.setStyle("-fx-background-color: #808080; -fx-text-fill: white;");
+        //Create the back button
+        Button backButton = new Button("Back");
+        backButton.getStyleClass().add("rules-button");
+        backButton.getStyleClass().add("rules-button-back");
         backButton.setOnAction(e -> controller.showHelpScreen());
 
-        VBox layout = new VBox(15, Rules, content, backButton);
+        //set the postions of everything 
+        VBox layout = new VBox(15, rulesTitle, content, backButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
-        layout.setStyle("-fx-background-color: #f0f8ff;");
+        layout.getStyleClass().add("rules-pane");
 
-        BorderPane mainMenuPane = new BorderPane();
-        mainMenuPane.setCenter(layout);
+        //Create a border pane
+        BorderPane mainPane = new BorderPane();
+        mainPane.setCenter(layout);
 
-        // Scene for the main menu
-        scene = new Scene(mainMenuPane, 1280, 900);
+        // Scene
+        scene = new Scene(mainPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("RulesSyles.css").toExternalForm()));
     }
 
+    /**
+     * Retrieves the connect 4 rules scene
+     * 
+     * @return the scene displaying teh connect 4 rules
+     */
     @Override
-    public Scene getScene() { return scene; }
+    public Scene getScene() {
+        return scene;
+    }
 }

@@ -6,9 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Profile.models.User;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
@@ -17,88 +17,91 @@ public class ManageProfileScreen implements IScreen {
     private Scene scene;
 
     public ManageProfileScreen(Stage stage, ScreenController controller, Client client) {
-        // Label for Manage Profile title
-        Label titleLabel = new Label("Manage Profile");
-        titleLabel.setFont(new Font("Arial", 24));
-        titleLabel.setTextFill(Color.DARKBLUE);
+        // Title Label
+        Label titleLabel = new Label("MANAGE PROFILE");
+        titleLabel.getStyleClass().add("title-label");
 
-        // Label and field for changing email
+        // Change Email Section
         Label changeEmailLabel = new Label("Change Email:");
-        TextField changeEmailField = new TextField();
-        changeEmailField.setPromptText("Enter new Email");
+        changeEmailLabel.getStyleClass().add("search-label");
 
-        HBox emailLayout = new HBox(10, changeEmailLabel, changeEmailField);
+        TextField changeEmailField = new TextField();
+        changeEmailField.getStyleClass().add("input-field");
+        changeEmailField.setPromptText("Enter new email");
+        changeEmailField.setMaxWidth(350);
+
+        VBox emailLayout = new VBox(5, changeEmailLabel, changeEmailField);
         emailLayout.setAlignment(Pos.CENTER);
 
-        // Label and field for changing username
+        // Change Username Section
         Label changeUsernameLabel = new Label("Change Username:");
-        TextField changeUsernameField = new TextField();
-        changeUsernameField.setPromptText("Enter new username");
+        changeUsernameLabel.getStyleClass().add("search-label");
 
-        HBox usernameLayout = new HBox(10, changeUsernameLabel, changeUsernameField);
+        TextField changeUsernameField = new TextField();
+        changeUsernameField.getStyleClass().add("input-field");
+        changeUsernameField.setPromptText("Enter new username");
+        changeUsernameField.setMaxWidth(350);
+
+        VBox usernameLayout = new VBox(5, changeUsernameLabel, changeUsernameField);
         usernameLayout.setAlignment(Pos.CENTER);
 
-        // Label and field for changing password
+        // Change Password Section
         Label changePasswordLabel = new Label("Change Password:");
-        PasswordField changePasswordField = new PasswordField();
-        changePasswordField.setPromptText("Enter new password");
+        changePasswordLabel.getStyleClass().add("search-label");
 
-        HBox passwordLayout = new HBox(10, changePasswordLabel, changePasswordField);
+        PasswordField changePasswordField = new PasswordField();
+        changePasswordField.getStyleClass().add("input-field");
+        changePasswordField.setPromptText("Enter new password");
+        changePasswordField.setMaxWidth(350);
+
+        VBox passwordLayout = new VBox(5, changePasswordLabel, changePasswordField);
         passwordLayout.setAlignment(Pos.CENTER);
 
-        // Button for updating new profile changes
+        // Buttons
         Button updateButton = new Button("Update Profile");
-        updateButton.setFont(new Font("Arial", 16));
-        updateButton.setPrefWidth(200);
-        updateButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        updateButton.getStyleClass().add("button");
+        updateButton.getStyleClass().add("submit-button");
         updateButton.setOnAction(e -> {
+            User currentUser = client.loggedIn();
 
-            // if email field is filled, change the email
-            if (!(changeEmailField.getText().isEmpty())) {
-
-                // add information to profile here
-                String newEmail = changeEmailField.getText();
-                System.out.println(newEmail);
+            if (currentUser == null) {
+                showErrorMessage("Error", "No user is currently logged in.");
+                return;
             }
 
-            // if password field is filled, change the password
-            if (!(changePasswordField.getText().isEmpty())) {
+            // Get input values
+            String newEmail = changeEmailField.getText().isEmpty() ? null : changeEmailField.getText();
+            String newUsername = changeUsernameField.getText().isEmpty() ? null : changeUsernameField.getText();
+            String newPassword = changePasswordField.getText().isEmpty() ? null : changePasswordField.getText();
 
-                // add information to profile here
-                String newPassword = changePasswordField.getText();
-                System.out.println(newPassword);
-            }
+            // Call the editProfile method
+            client.editProfile(currentUser, newUsername, newEmail, newPassword);
 
-            // if username field is filled, change the username
-            if (!(changeUsernameField.getText().isEmpty())) {
-
-                // add information to profile here
-                String newUsername = changeUsernameField.getText();
-                System.out.println(newUsername);
-            }
-
-            // Simulate updating profile
+            // Provide feedback to the user
             showInfoMessage("Success", "Profile updated successfully!");
             controller.showMainMenu();
         });
 
-        // Button for going back
         Button backButton = new Button("Back");
-        backButton.setFont(new Font("Arial", 16));
-        backButton.setPrefWidth(200);
-        backButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        backButton.setOnAction(e -> controller.showMainMenu());
+        backButton.getStyleClass().add("button");
+        backButton.getStyleClass().add("back-button");
+        backButton.setOnAction(e -> controller.showUserProfileScreen(client.getCurrentUsername()));
 
-        // Layout for buttons
-        HBox buttonLayout = new HBox(20, updateButton, backButton);
+        HBox buttonLayout = new HBox(15, updateButton, backButton);
         buttonLayout.setAlignment(Pos.CENTER);
 
         // Main Layout
         VBox layout = new VBox(20, titleLabel, emailLayout, usernameLayout, passwordLayout, buttonLayout);
         layout.setAlignment(Pos.CENTER);
-        layout.setPadding(new Insets(20));
+        layout.setPadding(new Insets(40));
 
-        scene = new Scene(layout, 1280, 900);
+        BorderPane rootPane = new BorderPane();
+        rootPane.setCenter(layout);
+        rootPane.getStyleClass().add("root-pane");
+
+        // Scene
+        scene = new Scene(rootPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("styles.css").toExternalForm()));
     }
 
     private void showErrorMessage(String title, String message) {
@@ -117,9 +120,9 @@ public class ManageProfileScreen implements IScreen {
         alert.showAndWait();
     }
 
-
     @Override
     public Scene getScene() {
         return scene;
     }
 }
+

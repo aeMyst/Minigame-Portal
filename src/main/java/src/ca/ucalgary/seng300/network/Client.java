@@ -2,15 +2,17 @@ package src.ca.ucalgary.seng300.network;
 
 import javafx.application.Platform;
 import src.ca.ucalgary.seng300.Profile.interfaces.AuthInterface;
+import src.ca.ucalgary.seng300.Profile.interfaces.ProfileInterface;
 import src.ca.ucalgary.seng300.Profile.models.User;
 import src.ca.ucalgary.seng300.Profile.services.AuthService;
+import src.ca.ucalgary.seng300.Profile.services.ProfileService;
 import src.ca.ucalgary.seng300.gameApp.Utility.ChatUtility;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
-import src.ca.ucalgary.seng300.gamelogic.Checkers.PlayerID;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Logic;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.TurnManager;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
+import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.ILeaderboard;
 
 import java.util.Random;
@@ -20,6 +22,7 @@ public class Client implements IClient {
     private volatile boolean isQueueCanceled = false;
 
     AuthInterface auth;
+    ProfileInterface profile;
 
     /**
      * starts server
@@ -29,14 +32,19 @@ public class Client implements IClient {
         System.out.println("Waiting for Request...");
         System.out.println("==========================");
         auth = new AuthService();
+        profile = new ProfileService((AuthService) auth);
+    }
+
+    public void initializeProfile(String username) {
+        profile.initializeProfile(username);
     }
 
     public void disconnect() {
         System.out.println("Disconnection Successful. Application will now Safely Close.");
     };
 
-    public String sendMessageToServer(String message) {
-        String filteredMessage = ChatUtility.filterMessage(message);
+    public String sendMessageToServer(String message, Client client) {
+        String filteredMessage = ChatUtility.filterMessage(message, client);
         System.out.println("Sending Message to Server: " + message);
         System.out.println("==========================");
         return filteredMessage;
@@ -66,14 +74,6 @@ public class Client implements IClient {
         return true;
     }
 
-    public void updatePassword(String username, String newPassword) {
-        System.out.println("updatePassword");
-    }
-
-    public String retrieveUsername(String recoveryInfo) {
-        return "some string";
-    }
-
     @Override
     public String getCurrentUsername() {
         User cur_user = auth.isLoggedIn();
@@ -82,9 +82,23 @@ public class Client implements IClient {
         }
         return cur_user.getUsername();
     }
+
+    public User loggedIn(){
+        User currentUser = auth.isLoggedIn();
+        return currentUser;
+    }
 // search for and return a profile
+    public String getCurrentUserProfile() {
+        return profile.viewProfile();
+    }
     public String findProfileInfo(String User) {
         return User;
+    }
+    public void editProfile(User user, String username, String email, String password){
+        profile.updateProfile(user,username,email,password);
+    }
+    public String searchProfile(String username) {
+        return profile.searchProfile(username);
     }
 
     // ###################################Connect-Disconnect to Server Methods########################################//
@@ -317,16 +331,20 @@ public class Client implements IClient {
     // ###########################################Connect 4 Server Methods############################################//
 
     // ###########################################Checkers Server Methods#############################################//
-    public void sendCheckerMoveToServer(CheckersGameLogic gameLogic, int fromRow, int fromCol, int toRow, int toCol,PlayerID playerID, Runnable callback) {
+
+    public void sendCheckerMoveToServer(CheckersGameLogic gameLogic, int fromRow, int fromCol, int toRow, int toCol, Player player, Runnable callback) {
         Random rand = new Random();
-        int time = rand.nextInt(10); // Simulate random delay between 500ms and 1500ms
+        int time = rand.nextInt(10);
 
         new Thread(() -> {
             try {
                 Thread.sleep(time); // Simulate server processing time
                 System.out.println("Server Communication: Processing move...");
                 System.out.printf("Move acknowledged by server: [%d, %d] -> [%d, %d]\n", fromRow, fromCol, toRow, toCol);
-                newMoveCheckers(gameLogic,playerID);
+
+                // Log the board state after the move
+                newMoveCheckers(gameLogic, player);
+
                 Platform.runLater(callback); // Execute the callback on the JavaFX thread
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -334,8 +352,8 @@ public class Client implements IClient {
         }).start();
     }
 
-    public void newMoveCheckers(CheckersGameLogic logicManager, PlayerID currentPlayer) {
-        System.out.println("Current Player: " + (currentPlayer == PlayerID.PLAYER1 ? "Player 1 (White)" : "Player 2 (Black)"));
+    public void newMoveCheckers(CheckersGameLogic logicManager, Player currentPlayer) {
+        System.out.println("Current Player: " + currentPlayer.getPlayerID());
 
         int[][] board = logicManager.getBoard();
         System.out.println("     1  2  3  4  5  6  7  8");
@@ -356,9 +374,9 @@ public class Client implements IClient {
         System.out.println("   +------------------------+");
     }
 
-    public void sendCheckersLeaderboardToServer(String [][] leaderboard, Runnable callback) {
+    public void sendCheckersLeaderboardToServer(String[][] leaderboard, Runnable callback) {
         Random rand = new Random();
-        int time = rand.nextInt(1000); // simulate server delay
+        int time = rand.nextInt(500) + 500; // Simulate server delay between 500ms and 1000ms
 
         new Thread(() -> {
             try {
@@ -367,23 +385,21 @@ public class Client implements IClient {
                 System.out.println("Leaderboard for Checkers being updated...\n");
 
                 int count = 1;
-
                 System.out.println("Sorted Leaderboard for Checkers:\n");
                 System.out.printf("%-10s %-16s %-10s %-10s%n", "Rank", "Player ID", "Rating", "Wins");
                 for (String[] entry : leaderboard) {
                     System.out.printf("%-10d %-16s %-10s %-10s%n", count, entry[0], entry[1], entry[2]);
-
                     count++;
                 }
 
-                // update the GUI
+                // Update the GUI on the JavaFX thread
                 Platform.runLater(callback);
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }).start();
     }
+
 
     public void sendTTTLeaderboardToServer(String[][] leaderboard, Runnable callback) {
         Random rand = new Random();
@@ -415,4 +431,102 @@ public class Client implements IClient {
     }
 
     // ###########################################Checkers Server Methods#############################################//
+
+    public String getRulesPath(int gameType) {
+        System.out.println("Server Request Started for fetching Rules");
+        // tictactoe rules
+        if (gameType == 0) {
+            System.out.println("returning file path in database for rules");
+            System.out.println("==========================");
+            return "src/main/java/src/ca/ucalgary/seng300/database/tictactoe_rules.txt";
+            // connect four rules
+        } else if (gameType == 1) {
+            System.out.println("returning file path in database for rules");
+            System.out.println("==========================");
+            return "src/main/java/src/ca/ucalgary/seng300/database/connect_four_rules.txt";
+            // checkers rules
+        } else if (gameType == 2) {
+            System.out.println("returning file path in database for rules");
+            System.out.println("==========================");
+            return "src/main/java/src/ca/ucalgary/seng300/database/checkers_rules.txt";
+        } else {
+            System.out.println("No file path found...");
+            System.out.println("==========================");
+            return "No File Path for GameType: " + gameType;
+        }
+    }
+
+    public String getTipsPath(int gameType) {
+        System.out.println("Server Request Started for fetching Tips");
+        // tictactoe tips
+        if (gameType == 0) {
+            System.out.println("returning file path in database for tips");
+            return "src/main/java/src/ca/ucalgary/seng300/database/tictactoe_tips.txt";
+            // connect four tips
+        } else if (gameType == 1) {
+            System.out.println("returning file path in database for tips");
+            return "src/main/java/src/ca/ucalgary/seng300/database/connect4_tips.txt";
+            // checkers tips
+        } else if (gameType == 2) {
+            System.out.println("returning file path in database for tips");
+            return "src/main/java/src/ca/ucalgary/seng300/database/checkers_tips.txt";
+        } else {
+            // default
+            System.out.println("No file path found... using default...");
+            return "Enjoy and Have Fun!";
+        }
+    }
+
+    public String getChatElements(int utilityType) {
+        System.out.println("Server Request Started for fetching Chat Elements");
+        if (utilityType == 0) {
+            System.out.println("returning file path in database for filtered words");
+            System.out.println("==========================");
+            return "src/main/java/src/ca/ucalgary/seng300/database/banned_words.txt";
+        } else if (utilityType == 1) {
+            System.out.println("returning file path in database for Emojis");
+            System.out.println("==========================");
+            return "src/main/java/src/ca/ucalgary/seng300/database/emojis.txt";
+        } else {
+            System.out.println("No file Path Found");
+            return null; // no path, return null
+        }
+    }
+
+    public String getStatPath() {
+        System.out.println("Server Request Started for fetching Stats");
+        return "src/main/java/src/ca/ucalgary/seng300/database/profiles.csv";
+    }
+
+    public String getAccountsPath() {
+        System.out.println("Server Request started for fetching Accounts in System");
+        return "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
+    }
+
+    // TODO: fix method call in matchHistoryScreen
+    public void sendMatchHistoryToServer(String[][] matchHistory, Runnable callback) {
+        Random rand = new Random();
+        int time = rand.nextInt(500) + 500; // Simulate server delay between 500ms and 1000ms
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(time);
+                System.out.println("Server Communication for Player Match History...");
+                System.out.println("User Match History being updated...\n");
+
+                System.out.println("Sorted Leaderboard for Checkers:\n");
+                System.out.printf("%-15s %-15s %-15s %-15s %-15s %-10s %-15s%n",
+                        "Game Type", "Player ID", "Winner ID", "Loser ID", "Elo Gained", "Elo Lost", "Date");
+                for (String[] entry : matchHistory) {
+                    System.out.printf("%-15s %-15s %-15s %-15s %-15s %-10s %-15s%n", entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6]);
+                }
+
+                // Update the GUI on the JavaFX thread
+                Platform.runLater(callback);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
 }

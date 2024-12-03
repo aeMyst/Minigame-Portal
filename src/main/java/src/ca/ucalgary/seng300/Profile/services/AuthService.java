@@ -5,12 +5,45 @@ import src.ca.ucalgary.seng300.Profile.models.User;
 import src.ca.ucalgary.seng300.Profile.utils.ValidationUtils;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class AuthService implements AuthInterface {
 
     private User currentUser = null;
+    private ArrayList<User> users = new ArrayList<>();
 
-    private static final String USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/Profile/services/users.txt";
+    private static final String USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
+
+    public AuthService() {
+        ArrayList<User> newUsers = new ArrayList<>();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                User user = User.fromCsv(line);
+                newUsers.add(user);
+            }
+            reader.close();
+            this.users = newUsers;
+        } catch (IOException e) {
+            System.err.println("An error occurred when reading user data: " + e.getMessage());
+        }
+    }
+
+    public void saveUsers() {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE));
+            for (User user : users) {
+                writer.write(user.toCsv());
+                writer.newLine();
+            }
+            writer.close();
+            System.out.println("User data successfully saved.");
+        } catch (IOException e) {
+            System.err.println("An error occurred when saving user data: " + e.getMessage());
+        }
+    }
 
     // This will register a new user based on the credentials that our users provide.
     // Once registration is completed without an issue, returns true.
@@ -31,20 +64,24 @@ public class AuthService implements AuthInterface {
         return false;
     }
     // This will Validate the credentials based on formatting rules from ValidationUtils.
-    private boolean validateCredentials(String username, String password, String email) {
+    public boolean validateCredentials(String username, String password, String email) {
         // I added isValidUsername here to filter out invalid usernames to prevent SQL injection attack.
         return ValidationUtils.isValidUsername(username) &&
                 ValidationUtils.isValidPassword(password) &&
                 ValidationUtils.isValidEmail(email);
     }
 
+
+
     // To store user info to a text file, let me know if we need to hash the password later on.
     private boolean storeUser(User user) {
+        this.users.add(user);
+
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, true));
-            writer.write(user.getEmail() + "," + user.getUsername() + "," + user.getPassword());
+            writer.write(user.toCsv());
             writer.newLine();
-            writer.close(); // Close the writer to save changes
+            writer.close();
             System.out.println("User successfully registered and stored.");
             return true;
         } catch (IOException e) {
@@ -53,27 +90,38 @@ public class AuthService implements AuthInterface {
         }
     }
 
+    public void modifyUserPassword(String username, String password) {
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                user.setPassword(password);
+                saveUsers();
+                break;
+            }
+        }
+
+    }
+
+
+    public ArrayList<User> getSanitizedUsers() {
+        ArrayList<User> sanitizedUsers = new ArrayList<>();
+        for (User user : users) {
+            sanitizedUsers.add(new User(user.getUsername(), null, user.getEmail()));
+        }
+        return sanitizedUsers;
+    }
+
 
 
     @Override
     public boolean login(String username, String password) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] userDetails = line.split(",");
-                if (userDetails.length == 3) {
-                    String storedUsername = userDetails[1];
-                    String storedPassword = userDetails[2];
-                    if (storedUsername.equals(username) && storedPassword.equals(password)) {
-                        currentUser = new User(storedUsername, storedPassword, null);
-                        System.out.println("Login successful : " + username);
-                        return true;
-                    }
-                }
+        for (User user : users) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                currentUser = user;
+                System.out.println("Login successful: " + username);
+                return true;
             }
-        } catch (IOException e) {
-            System.err.println("Login failed: " + e.getMessage());
         }
+        System.out.println("Login failed: Invalid username or password.");
         return false;
     }
 
@@ -92,6 +140,13 @@ public class AuthService implements AuthInterface {
     @Override
     public User isLoggedIn() {
         return currentUser;
+    }
+
+    public void updateCurrentUser(String newUsername, String newEmail) {
+        if (currentUser != null) {
+            currentUser.setUsername(newUsername);
+            currentUser.setEmail(newEmail);
+        }
     }
 
 

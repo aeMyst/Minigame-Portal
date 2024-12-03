@@ -1,17 +1,18 @@
 package src.ca.ucalgary.seng300.gamelogic.Checkers;
 
+import src.ca.ucalgary.seng300.leaderboard.data.Player;
+
 public interface ICheckers {
-    Graphic getGraphic();
 
     GameState getGameState();
 
     int getNumPlayers();
 
-    boolean playerSelectedPiece(int row, int col, PlayerID playerID);
+    boolean playerSelectedPiece(int row, int col, Player player);
 
-    boolean playerMovedPiece(int fromRow, int fromCol, int toRow, int toCol, PlayerID playerID);
+    boolean playerMovedPiece(int fromRow, int fromCol, int toRow, int toCol, Player player);
 
-    boolean playerCapturedPiece(int fromRow, int fromCol, int toRow, int toCol, PlayerID playerID);
+    boolean playerCapturedPiece(int fromRow, int fromCol, int toRow, int toCol, Player player);
 
-    void promoteToKing(int row, int col, PlayerID playerID);
+    void promoteToKing(int row, int col, Player player);
 }

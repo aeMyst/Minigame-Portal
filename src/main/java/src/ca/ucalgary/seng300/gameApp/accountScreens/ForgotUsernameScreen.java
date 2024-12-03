@@ -5,47 +5,51 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Profile.models.User;
+import src.ca.ucalgary.seng300.Profile.services.AuthService;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
+
+import java.util.ArrayList;
 
 public class ForgotUsernameScreen {
     private Scene scene;
 
-    public ForgotUsernameScreen(Stage stage, ScreenController controller, Client client) {
-        Label titleLabel = new Label("Forgot Username");
-        titleLabel.setFont(new Font("Arial", 36));
-        titleLabel.setTextFill(Color.DARKBLUE);
+    public ForgotUsernameScreen(Stage stage, ScreenController controller, Client client, AuthService authService) {
+        // Title Label
+        Label titleLabel = new Label("FORGOT USERNAME");
+        titleLabel.getStyleClass().add("title-label");
 
         // Email or Recovery Info Section
-        Label recoveryLabel = new Label("Enter Registered Email or Recovery Information:");
-        recoveryLabel.setFont(new Font("Arial", 16));
+        Label recoveryLabel = new Label("Enter Registered Email:");
+        recoveryLabel.getStyleClass().add("search-label");
 
         TextField recoveryField = new TextField();
-        recoveryField.setPrefWidth(350);
-        recoveryField.setPrefHeight(30);
-        recoveryField.setPromptText("Enter your email or recovery info");
+        recoveryField.getStyleClass().add("input-field");
+        recoveryField.setPromptText("Enter your registered email");
+        recoveryField.setMaxWidth(350);
 
-        HBox recoveryHbox = new HBox(recoveryLabel, recoveryField);
-        recoveryHbox.setAlignment(Pos.CENTER);
-
-        VBox recoveryLayout = new VBox(10, recoveryHbox);
+        VBox recoveryLayout = new VBox(5, recoveryLabel, recoveryField);
         recoveryLayout.setAlignment(Pos.CENTER);
 
         // Submit Button
         Button submitButton = new Button("Submit");
-        submitButton.setFont(new Font("Arial", 16));
-        submitButton.setPrefWidth(200);
-        submitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        submitButton.getStyleClass().add("button");
+        submitButton.getStyleClass().add("submit-button");
         submitButton.setOnAction(e -> {
             String recoveryInfo = recoveryField.getText();
 
             // Validate recovery info using client logic
-            String username = client.retrieveUsername(recoveryInfo);
+            ArrayList<User> sanitizedUsers = authService.getSanitizedUsers();
+            String username = null;
+            for (User user : sanitizedUsers) {
+                if (user.getEmail().equals(recoveryInfo)) {
+                    username = user.getUsername();
+                    break;
+                }
+            }
             if (username != null) {
                 showAlert(Alert.AlertType.INFORMATION, "Username Retrieved", "Your username is: " + username);
                 controller.showSignInScreen();
@@ -56,9 +60,8 @@ public class ForgotUsernameScreen {
 
         // Back Button
         Button backButton = new Button("Back");
-        backButton.setFont(new Font("Arial", 16));
-        backButton.setPrefWidth(200);
-        backButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: white;");
+        backButton.getStyleClass().add("button");
+        backButton.getStyleClass().add("back-button");
         backButton.setOnAction(e -> controller.showSignInScreen());
 
         // Layout
@@ -68,8 +71,11 @@ public class ForgotUsernameScreen {
 
         BorderPane rootPane = new BorderPane();
         rootPane.setCenter(inputLayout);
+        rootPane.getStyleClass().add("root-pane");
 
+        // Scene
         scene = new Scene(rootPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("styles.css").toExternalForm()));
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
@@ -84,4 +90,5 @@ public class ForgotUsernameScreen {
         return scene;
     }
 }
+
 

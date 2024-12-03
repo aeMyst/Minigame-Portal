@@ -1,4 +1,6 @@
 package src.ca.ucalgary.seng300.leaderboard.utility;
+import src.ca.ucalgary.seng300.leaderboard.data.HistoryPlayer;
+import src.ca.ucalgary.seng300.leaderboard.data.HistoryStorage;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.data.Storage;
 
@@ -10,6 +12,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class FileManagement {
@@ -31,7 +34,6 @@ public class FileManagement {
             }
             Storage newStorage = new Storage(players);
             storage = newStorage;
-            reader.close();
         } catch (IOException error) {
             if (error instanceof FileNotFoundException) {
                 System.out.println("File not found");
@@ -57,4 +59,138 @@ public class FileManagement {
             error.printStackTrace();
         }
     }
+
+    public static HistoryStorage fileReadingHistory(File file) {
+        ArrayList<HistoryPlayer> players = new ArrayList<>();
+        HistoryStorage storage = null;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line = reader.readLine();
+            while (line != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 7) {
+                    HistoryPlayer player = new HistoryPlayer(parts[0], parts[1], parts[2], parts[3], Integer.parseInt(parts[4]), Integer.parseInt(parts[5]), parts[6]);
+                    players.add(player);
+                } else {
+                    throw new IllegalArgumentException("Invalid file format");
+                }
+                line = reader.readLine();
+            }
+            HistoryStorage newStorage = new HistoryStorage(players);
+            storage = newStorage;
+        } catch (IOException error) {
+            if (error instanceof FileNotFoundException) {
+                System.out.println("File not found");
+            } else {
+                System.out.println("Error reading file");
+            }
+        }
+        return storage;
+    }
+
+    public static void fileWritingHistory(File file, HistoryStorage storage) {
+
+        try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file,true))) {
+            //write info to the file in the format of "gametype, player_id, winner, loser, eloGained, eloLost"
+            for (HistoryPlayer hp : storage.getPlayersHistory()) {
+                String[] player = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};
+                writerBuffer.write(String.join(",", player));
+                writerBuffer.newLine();
+            }
+
+        } catch (IOException error) {
+            System.out.println("Error writing file");
+            error.printStackTrace();
+        }
+    }
+
+    public static void fileWritingHistoryNewFile(File file, HistoryStorage storage) {
+        try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file))) {
+            //write info to the file in the format of "gametype, player_id, winner, loser, eloGained, eloLost"
+            for (HistoryPlayer hp : storage.getPlayersHistory()) {
+                String[] player = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};
+                writerBuffer.write(String.join(",", player));
+                writerBuffer.newLine();
+            }
+
+        } catch (IOException error) {
+            System.out.println("Error writing file");
+            error.printStackTrace();
+        }
+    }
+
+    public static int countLinesInCSV(File file) {
+        int count = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (!line.trim().isEmpty() && !line.matches("^,+$")) {
+                    count++;
+                }
+            }
+            return count;
+        } catch (IOException error) {
+            System.out.println("Error reading file");
+            error.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static int countLinesInTextFile(File file) {
+        int count = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (!line.trim().isEmpty()) {
+                    count++;
+                }
+            }
+            return count;
+        } catch (IOException error) {
+            System.out.println("Error reading file");
+            error.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static void updateProfilesInCsv(String filePath, ArrayList<Player> players) {
+        List<String[]> allRows = new ArrayList<>();
+
+        // Step 1: Read existing CSV rows
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                allRows.add(line.split(",")); // Split CSV into columns
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading profiles.csv: " + e.getMessage());
+            return;
+        }
+
+        // Step 2: Update matching rows
+        for (Player player : players) {
+            for (String[] row : allRows) {
+                if (row[0].equals(player.getGameType()) && row[1].equals(player.getPlayerID())) {
+                    // Replace row with updated player data
+                    row[2] = String.valueOf(player.getElo());
+                    row[3] = String.valueOf(player.getWins());
+                    row[4] = String.valueOf(player.getLosses());
+                    row[5] = String.valueOf(player.getTies());
+                    break; // Move to the next player
+                }
+            }
+        }
+
+        // Step 3: Write updated rows back to the CSV
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (String[] row : allRows) {
+                writer.write(String.join(",", row));
+                writer.newLine();
+            }
+            System.out.println("Profiles successfully updated in CSV.");
+        } catch (IOException e) {
+            System.err.println("Error writing to profiles.csv: " + e.getMessage());
+        }
+    }
+
 }

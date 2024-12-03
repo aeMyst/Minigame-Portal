@@ -1,0 +1,145 @@
+/* General Background */
+.root-pane {
+    -fx-background-color: linear-gradient(to bottom, #f0f4f7, #c4dbe8);
+}
+
+/* Buttons */
+.button {
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-size: 16px;
+    -fx-pref-width: 220;
+    -fx-pref-height: 40;
+    -fx-background-radius: 8;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 8, 0.5, 0, 2);
+}
+
+.submit-button {
+    -fx-background-color: #28a745; /* Success Green */
+}
+
+.forgot-button {
+    -fx-background-color: #ffc107; /* Warning Yellow */
+}
+
+.exit-button {
+    -fx-background-color: #dc3545; /* Danger Red */
+}
+
+.create-account-button {
+    -fx-background-color: #007bff; /* Primary Blue */
+}
+
+.emoji-button {
+    -fx-font-family: 'Arial';
+    -fx-background-color: #FFFFF0;
+    -fx-font-size: 20px;
+    -fx-pref-width: 220;
+    -fx-pref-height: 40;
+    -fx-text-fill: black;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 8, 0.5, 0, 2);
+}
+
+
+.submit-button {
+    -fx-background-color: #28a745; /* Success Green */
+}
+
+.create-account-button {
+    -fx-background-color: #007bff; /* Primary Blue */
+}
+
+.forgot-button {
+    -fx-background-color: #ffc107; /* Warning Yellow */
+}
+
+.exit-button {
+    -fx-background-color: #dc3545; /* Danger Red */
+}
+
+.back-button {
+    -fx-background-color: #808080; /* Dark Grey */
+}
+
+/* Buttons Hover Effect */
+.button:hover {
+    -fx-opacity: 0.6;
+}
+
+/* Title Label */
+.title-label {
+    -fx-font-family: 'Segoe UI Bold', sans-serif;
+    -fx-font-size: 30px;
+    -fx-text-fill: #333;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0, 3);
+    -fx-padding: 10;
+}
+
+/* Text Fields */
+.input-field {
+    -fx-pref-width: 400;
+    -fx-pref-height: 40;
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5;
+    -fx-padding: 0 10;
+    -fx-font-size: 16px;
+}
+
+/* Form Labels */
+.search-label {
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #555; /* Light gray text */
+    -fx-padding: 5 0 5 0; /* Add some space around the label */
+}
+
+/* Tip Label Styling */
+.tip-label {
+    -fx-font-family: 'Arial';
+    -fx-font-size: 16px;
+    -fx-text-fill: darkgreen;
+}
+
+/* Password Requirements Label */
+.password-details-label {
+    -fx-font-family: 'Segoe UI Italic', sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #888; /* Slightly lighter gray */
+    -fx-padding: 5 0 0 0; /* Space above the password requirements */
+    -fx-line-spacing: 2px; /* Better spacing between lines */
+    -fx-wrap-text: true; /* Ensure text wraps properly */
+}
+
+/* Form Layouts */
+.hbox-layout {
+    -fx-alignment: center;
+}
+
+.vbox-layout {
+    -fx-alignment: center-left;
+    -fx-spacing: 10px; /* Spacing between vertical elements */
+}
+
+/* Profile Box Styling */
+.profile-box {
+    -fx-border-color: #ccc;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 10;
+    -fx-background-color: #f9f9f9;
+}
+
+/* User Profile Info Styling */
+.user-profile-box {
+    -fx-padding: 20;
+    -fx-spacing: 10;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+}
+
+

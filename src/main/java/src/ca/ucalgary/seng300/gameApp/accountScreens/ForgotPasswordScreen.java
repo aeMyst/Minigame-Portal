@@ -7,61 +7,66 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import src.ca.ucalgary.seng300.Profile.models.User;
+import src.ca.ucalgary.seng300.Profile.services.AuthService;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
+
+import java.util.ArrayList;
 
 public class ForgotPasswordScreen {
     private Scene scene;
 
-    public ForgotPasswordScreen(Stage stage, ScreenController controller, Client client) {
-        Label titleLabel = new Label("Forgot Password");
-        titleLabel.setFont(new Font("Arial", 36));
-        titleLabel.setTextFill(Color.DARKBLUE);
+    public ForgotPasswordScreen(Stage stage, ScreenController controller, Client client, AuthService authService) {
+        // Title Label
+        Label titleLabel = new Label("FORGOT PASSWORD");
+        titleLabel.getStyleClass().add("title-label");
 
         // Username Section
-        Label usernameLabel = new Label("Enter Username: ");
-        usernameLabel.setFont(new Font("Arial", 16));
+        Label usernameLabel = new Label("Username:");
+        usernameLabel.getStyleClass().add("search-label");
 
         TextField usernameField = new TextField();
-        usernameField.setPrefWidth(350);
-        usernameField.setPrefHeight(30);
+        usernameField.getStyleClass().add("input-field");
         usernameField.setPromptText("Enter your Username");
+        usernameField.setMaxWidth(350);
 
-        HBox usernameLayout = new HBox(10, usernameLabel, usernameField);
+        VBox usernameLayout = new VBox(5, usernameLabel, usernameField);
         usernameLayout.setAlignment(Pos.CENTER);
 
-        // Security Question or Email Section
-        Label recoveryLabel = new Label("Enter your email associated with your account:");
-        recoveryLabel.setFont(new Font("Arial", 16));
+        // Email Section
+        Label recoveryLabel = new Label("Recovery Email:");
+        recoveryLabel.getStyleClass().add("search-label");
 
         TextField recoveryField = new TextField();
-        recoveryField.setPrefWidth(350);
-        recoveryField.setPrefHeight(30);
+        recoveryField.getStyleClass().add("input-field");
         recoveryField.setPromptText("Enter your email");
+        recoveryField.setMaxWidth(350);
 
-        HBox recoveryHBox = new HBox(10, recoveryLabel, recoveryField);
-        recoveryHBox.setAlignment(Pos.CENTER);
-
-        VBox recoveryLayout = new VBox(10, recoveryHBox);
+        VBox recoveryLayout = new VBox(5, recoveryLabel, recoveryField);
         recoveryLayout.setAlignment(Pos.CENTER);
 
         // Submit Button
         Button submitButton = new Button("Submit");
-        submitButton.setFont(new Font("Arial", 16));
-        submitButton.setPrefWidth(200);
-        submitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        submitButton.getStyleClass().add("button");
+        submitButton.getStyleClass().add("submit-button");
         submitButton.setOnAction(e -> {
             String username = usernameField.getText();
-            String recoveryInfo = recoveryField.getText();
+            String email = recoveryField.getText();
 
-            // Validate the recovery info using client logic
-            boolean isRecoverySuccessful = client.validateRecoveryInfo(username, recoveryInfo);
+            ArrayList<User> users = authService.getSanitizedUsers();
+            boolean isRecoverySuccessful = false;
+            for (User user : users) {
+                if (user.getUsername().equals(username) && user.getEmail().equals(email)) {
+                    isRecoverySuccessful = true;
+                    break;
+                }
+            }
+
             if (isRecoverySuccessful) {
                 // Simulate successful recovery and show a reset password screen
-                controller.showResetPasswordScreen(username);
+                controller.showResetPasswordScreen(username, email);
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "Invalid recovery information.");
             }
@@ -69,20 +74,24 @@ public class ForgotPasswordScreen {
 
         // Back Button
         Button backButton = new Button("Back");
-        backButton.setFont(new Font("Arial", 16));
-        backButton.setPrefWidth(200);
-        backButton.setStyle("-fx-background-color: #af4c4c; -fx-text-fill: white;");
+        backButton.getStyleClass().add("button");
+        backButton.getStyleClass().add("back-button");
         backButton.setOnAction(e -> controller.showSignInScreen());
 
         // Layout
-        VBox inputLayout = new VBox(15, titleLabel, usernameLayout, recoveryLayout, submitButton, backButton);
+        HBox buttonsLayout = new HBox(15, submitButton, backButton);
+        buttonsLayout.setAlignment(Pos.CENTER);
+
+        VBox inputLayout = new VBox(20, titleLabel, usernameLayout, recoveryLayout, buttonsLayout);
         inputLayout.setAlignment(Pos.CENTER);
         inputLayout.setPadding(new Insets(20));
 
         BorderPane rootPane = new BorderPane();
         rootPane.setCenter(inputLayout);
+        rootPane.getStyleClass().add("root-pane");
 
         scene = new Scene(rootPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("styles.css").toExternalForm()));
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
@@ -97,3 +106,4 @@ public class ForgotPasswordScreen {
         return scene;
     }
 }
+

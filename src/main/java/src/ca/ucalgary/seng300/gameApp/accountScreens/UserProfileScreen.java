@@ -10,91 +10,106 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UserProfileScreen implements IScreen {
     private Scene scene;
+    private VBox userProfileInfoLayout;
+    private String currentUser;
 
-    public UserProfileScreen(Stage stage, ScreenController controller, Client client) {
+    public UserProfileScreen(Stage stage, ScreenController controller, Client client, String initialUser) {
         // User Profile Title
-        Label userProfileTitle = new Label("USER PROFILE");
-        userProfileTitle.setFont(new Font("Arial", 32));
+        this.currentUser = initialUser;
+
+        Label userProfileTitle = new Label("USER PROFILE: " + initialUser);
+        userProfileTitle.getStyleClass().add("title-label");
+
+        // The layout for displaying user profile details
+        userProfileInfoLayout = new VBox(10);
+        userProfileInfoLayout.setAlignment(Pos.CENTER_LEFT);
+        userProfileInfoLayout.setPadding(new Insets(20));
+        userProfileInfoLayout.getStyleClass().add("user-profile-box");
 
         // Display user profile details (initially the logged-in user's profile)
-        Label rankLabel = new Label("Rank: #7");
-        rankLabel.setFont(new Font("Arial", 16));
-        Label statusLabel = new Label("Current Status: Online");
-        statusLabel.setFont(new Font("Arial", 16));
-        Label matchHistoryLabel = new Label("Recent Match History: Checkers...");
-        matchHistoryLabel.setFont(new Font("Arial", 16));
-        Label totalGamesPlayedLabel = new Label("Total Games Played: 21");
-        totalGamesPlayedLabel.setFont(new Font("Arial", 16));
-        Label totalGamesWonLabel = new Label("Total Games Won: 12");
-        totalGamesWonLabel.setFont(new Font("Arial", 16));
-        Label totalGamesLostLabel = new Label("Total Games Lost: 9");
-        totalGamesLostLabel.setFont(new Font("Arial", 16));
+        String userProfile = client.searchProfile(initialUser);
+        displayProfile(userProfile);
 
         // TextField to search for another profile
         Label searchProfileLabel = new Label("Search Profile:");
-        searchProfileLabel.setFont(new Font("Arial", 16));
+        searchProfileLabel.getStyleClass().add("search-label");
+
         TextField searchProfileField = new TextField();
+        searchProfileField.getStyleClass().add("input-field");
         searchProfileField.setPromptText("Enter profile name");
 
         Button searchButton = new Button("Search");
-        searchButton.setFont(new Font("Arial", 16));
-        searchButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF;");
+        searchButton.getStyleClass().add("button");
+        searchButton.getStyleClass().add("submit-button");
         searchButton.setOnAction(e -> {
             String profileName = searchProfileField.getText();
             if (!profileName.isEmpty()) {
-                controller.showLoadingScreen();
+                String searchResult = client.searchProfile(profileName);
+                if (searchResult.startsWith("Profile not found")) {
+                    showErrorMessage("Error", "Profile not found for username: " + profileName);
+                } else {
+                    displayProfile(searchResult);
+                    userProfileTitle.setText("USER PROFILE: " + profileName);
+                }
             } else {
                 showErrorMessage("Error", "Please enter a valid profile name.");
             }
         });
 
         // Button to return to the logged-in user's profile
-        Button xButton = new Button("X");
-        xButton.setFont(new Font("Arial", 16));
-        xButton.setStyle("-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF;");
+        Button xButton = new Button("View Your Profile");
+        xButton.getStyleClass().add("button");
+        xButton.getStyleClass().add("exit-button");
         xButton.setOnAction(e -> {
             // Reset to the logged-in user's profile
-            rankLabel.setText("Rank: #7");
-            statusLabel.setText("Current Status: Online");
-            matchHistoryLabel.setText("Recent Match History: Checkers...");
-            totalGamesPlayedLabel.setText("Total Games Played: 21");
-            totalGamesWonLabel.setText("Total Games Won: 12");
-            totalGamesLostLabel.setText("Total Games Lost: 9");
-            userProfileTitle.setText("USER PROFILE");
+            String updatedProfileInfo = client.getCurrentUserProfile();
+            String currentUsernameReset = client.getCurrentUsername();
+            this.currentUser = currentUsernameReset;
+            displayProfile(updatedProfileInfo);
+            userProfileTitle.setText("USER PROFILE: " + currentUsernameReset);
             searchProfileField.clear();
         });
 
         // Manage Profile Button
         Button manageProfileButton = new Button("Manage Profile");
-        manageProfileButton.setFont(new Font("Arial", 18));
-        manageProfileButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: #FFFFFF;");
+        manageProfileButton.getStyleClass().add("button");
+        manageProfileButton.getStyleClass().add("submit-button");
         manageProfileButton.setOnAction(e -> controller.showManageProfileScreen());
 
         // Back Button
         Button backButton = new Button("Back");
-        backButton.setFont(new Font("Arial", 18));
-        backButton.setStyle("-fx-background-color: #AAAAAA; -fx-text-fill: #FFFFFF;");
+        backButton.getStyleClass().add("button");
+        backButton.getStyleClass().add("back-button");
         backButton.setOnAction(e -> controller.showMainMenu());
 
-        // Layout for profile info
-        VBox userProfileInfoLayout = new VBox(10, rankLabel, statusLabel, matchHistoryLabel, totalGamesPlayedLabel, totalGamesWonLabel, totalGamesLostLabel);
-        userProfileInfoLayout.setAlignment(Pos.CENTER);
-        userProfileInfoLayout.setPadding(new Insets(0, 0, 0, 20));
+        Button matchHistoryButton = new Button("Match History");
+        matchHistoryButton.getStyleClass().add("button");
+        matchHistoryButton.getStyleClass().add("submit-button");
+        matchHistoryButton.setOnAction(e -> {
+            String searchResults = searchProfileField.getText();
+            if (searchResults.isEmpty()) {
+                controller.showMatchHistoryScreen(currentUser);
+            } else {
+                controller.showMatchHistoryScreen(searchResults);
+            }
+        });
 
         // Layout for search
         HBox searchLayout = new HBox(10, searchProfileLabel, searchProfileField, searchButton, xButton);
         searchLayout.setAlignment(Pos.CENTER);
 
         // Layout for buttons
-        HBox buttonsLayout = new HBox(20, manageProfileButton, backButton);
+        HBox buttonsLayout = new HBox(20, matchHistoryButton, manageProfileButton, backButton);
         buttonsLayout.setAlignment(Pos.CENTER);
 
         // Main layout
@@ -104,8 +119,51 @@ public class UserProfileScreen implements IScreen {
 
         BorderPane rootPane = new BorderPane();
         rootPane.setCenter(userProfileLayout);
+        rootPane.getStyleClass().add("root-pane");
 
         scene = new Scene(rootPane, 1280, 900);
+        scene.getStylesheets().add((getClass().getClassLoader().getResource("styles.css").toExternalForm()));
+    }
+
+    private void displayProfile(String profileInfo) {
+        userProfileInfoLayout.getChildren().clear();
+
+        if (profileInfo.startsWith("Profile not found")) {
+            Label notFoundLabel = new Label(profileInfo);
+            notFoundLabel.getStyleClass().add("search-label");
+            userProfileInfoLayout.getChildren().add(notFoundLabel);
+            return;
+        }
+
+        String[] profileLists = profileInfo.split("\n\n");
+        for (String block : profileLists) {
+            String[] lines = block.split("\n");
+            Map<String, String> profileData = new HashMap<>();
+            for (String line : lines) {
+                String[] parts = line.split(": ");
+                if (parts.length == 2) {
+                    profileData.put(parts[0], parts[1]);
+                }
+            }
+
+            VBox profileBox = new VBox(5);
+            profileBox.setPadding(new Insets(10));
+            profileBox.getStyleClass().add("profile-box");
+
+            Label gametypeLabel = new Label("Gametype: " + profileData.getOrDefault("Gametype", ""));
+            Label playerIDLabel = new Label("PlayerID: " + profileData.getOrDefault("PlayerID", ""));
+            Label eloLabel = new Label("Elo: " + profileData.getOrDefault("Elo", ""));
+            Label winsLabel = new Label("Wins: " + profileData.getOrDefault("Wins", ""));
+            Label lossesLabel = new Label("Losses: " + profileData.getOrDefault("Losses", ""));
+            Label drawsLabel = new Label("Draws: " + profileData.getOrDefault("Draws", ""));
+            Label gamesPlayedLabel = new Label("Games Played: " + profileData.getOrDefault("Games Played", ""));
+
+            profileBox.getChildren().addAll(
+                    gametypeLabel, playerIDLabel, eloLabel, winsLabel, lossesLabel, drawsLabel, gamesPlayedLabel
+            );
+
+            userProfileInfoLayout.getChildren().add(profileBox);
+        }
     }
 
     private void showErrorMessage(String title, String message) {
@@ -116,9 +174,9 @@ public class UserProfileScreen implements IScreen {
         alert.showAndWait();
     }
 
-
     @Override
     public Scene getScene() {
         return scene;
     }
 }
+

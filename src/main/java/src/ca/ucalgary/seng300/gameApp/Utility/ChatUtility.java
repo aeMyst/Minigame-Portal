@@ -5,19 +5,28 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import src.ca.ucalgary.seng300.network.Client;
 
 public class ChatUtility {
-    private static final String banned_words = "src/main/java/src/ca/ucalgary/seng300/database/banned_words.txt";
-    private static final String emojis_words = "src/main/java/src/ca/ucalgary/seng300/database/emojis.txt";
+
+    private static String getFilePath(Client client, int utilityType) {
+        if (utilityType == 0) {
+            return client.getChatElements(utilityType);
+        } else if (utilityType == 1) {
+            return client.getChatElements(utilityType);
+        } else {
+            return null; // if no path found return null
+        }
+    }
 
     /**
      * Reads the contents of a file and returns them as a List of Strings.
@@ -46,8 +55,8 @@ public class ChatUtility {
      * @param message The input message to filter.
      * @return A filtered message with banned words replaced by asterisks.
      */
-    public static String filterMessage(String message) {
-        String[] bannedWords = readFile(banned_words); // Use readFile
+    public static String filterMessage(String message, Client client) {
+        String[] bannedWords = readFile(getFilePath(client, 0)); // Use readFile
 
         for (String word : bannedWords) {
             String replacement = "*".repeat(word.length());
@@ -63,11 +72,11 @@ public class ChatUtility {
      * @param chatInput  The TextField to which selected emojis will be appended.
      * @param parentStage The parent Stage to which the emoji menu belongs.
      */
-    public static Stage showEmojiMenu(TextField chatInput, Stage parentStage, Runnable onClose) {
+    public static Stage showEmojiMenu(TextField chatInput, Stage parentStage, Runnable onClose, Client client) {
         Stage emojiStage = new Stage();
         emojiStage.setTitle("Select an Emoji");
 
-        String[] emojis = readFile(emojis_words); // Use readFile
+        String[] emojis = readFile(getFilePath(client, 1)); // Use readFile
 
         GridPane emojiGrid = new GridPane();
         emojiGrid.setAlignment(Pos.CENTER);
@@ -77,16 +86,22 @@ public class ChatUtility {
 
         for (int i = 0; i < emojis.length; i++) {
             Button emojiButton = new Button(emojis[i]);
-            emojiButton.setPrefWidth(80);
-            emojiButton.setFont(new Font("Arial", 24));
+            emojiButton.getStyleClass().add("emoji-button");
             emojiButton.setOnAction(e -> {
                 chatInput.appendText(emojiButton.getText());
                 emojiStage.close(); // Close menu after selection
             });
+            //chatgpt generated
             emojiGrid.add(emojiButton, i % 3, i / 3);
         }
 
-        Scene emojiScene = new Scene(emojiGrid, 300, 200);
+        BorderPane rootPane = new BorderPane();
+        rootPane.setCenter(emojiGrid);
+        rootPane.getStyleClass().add("root-pane");
+
+
+        Scene emojiScene = new Scene(rootPane, 300, 200);
+        emojiScene.getStylesheets().add((ChatUtility.class.getClassLoader().getResource("styles.css").toExternalForm()));
         emojiStage.setScene(emojiScene);
         emojiStage.initOwner(parentStage);
 
