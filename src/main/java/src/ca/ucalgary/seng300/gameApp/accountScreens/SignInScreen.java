@@ -24,10 +24,10 @@ public class SignInScreen implements IScreen {
      *
      * @param stage The primary stage for the application
      * @param controller Controller for transitioning between different screens
-     * @param client Client for handling login operations
+     * @param client Client for handling login operations via network communication
      */
     public SignInScreen(Stage stage, ScreenController controller, Client client) {
-        // Sign in title label
+        // Sign in screen title
         Label titleLabel = new Label("SIGN IN");
         titleLabel.getStyleClass().add("title-label");
 
