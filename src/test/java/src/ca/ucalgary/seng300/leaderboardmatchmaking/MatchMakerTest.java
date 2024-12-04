@@ -91,7 +91,7 @@ public class MatchMakerTest {
         Storage storage = new Storage();
         MatchMaker matchMaker = new MatchMaker(storage);
         Player player1 = new Player("CONNECT4", "Player1", 1000, 10, 5, 0);
-        Player player2 = new Player("TIKTAKT", "Player2", 1100, 15, 7, 0);
+        Player player2 = new Player("TIKTAKTOE", "Player2", 1100, 15, 7, 0);
         storage.addPlayer(player1);
         storage.addPlayer(player2);
 
