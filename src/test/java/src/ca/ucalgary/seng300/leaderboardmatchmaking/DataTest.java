@@ -2,8 +2,7 @@ package src.ca.ucalgary.seng300.leaderboardmatchmaking;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import src.ca.ucalgary.seng300.leaderboard.data.Player;
-import src.ca.ucalgary.seng300.leaderboard.data.Storage;
+import src.ca.ucalgary.seng300.leaderboard.data.*;
 
 import java.util.ArrayList;
 
@@ -51,5 +50,75 @@ public class DataTest {
         assertEquals("Player2", retrievedPlayer.getPlayerID());
         assertEquals(1050, retrievedPlayer.getElo());
         assertEquals(8, retrievedPlayer.getWins());
+    }
+
+    /**
+     * Test setting the game type history.
+     */
+    @Test
+    public void testSetGameTypeHistory() {
+        HistoryPlayer player = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player2", 10, -10, "2024-12-03");
+        player.setGameTypeHistory("CHESS");
+        assertEquals("CHESS", player.getGameTypeHistory());
+    }
+
+    /**
+     * Test setting the player ID history.
+     */
+    @Test
+    public void testSetPlayerIDHistory() {
+        HistoryPlayer player = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player2", 10, -10, "2024-12-03");
+        player.setPlayerIDHistory("Player2");
+        assertEquals("Player2", player.getPlayerIDHistory());
+    }
+
+    /**
+     * Test setting the winner string.
+     */
+    @Test
+    public void testSetWinnerString() {
+        HistoryPlayer player = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player2", 10, -10, "2024-12-03");
+        player.setWinnerString("Player3");
+        assertEquals("Player3", player.getWinnerString());
+    }
+
+    /**
+     * Test setting the loser string.
+     */
+    @Test
+    public void testSetLoserString() {
+        HistoryPlayer player = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player2", 10, -10, "2024-12-03");
+        player.setLoserString("Player4");
+        assertEquals("Player4", player.getLoserString());
+    }
+
+    /**
+     * Test setting the Elo gained.
+     */
+    @Test
+    public void testSetEloGained() {
+        HistoryPlayer player = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player2", 10, -10, "2024-12-03");
+        player.setEloGained(20);
+        assertEquals(20, player.getEloGained());
+    }
+
+    /**
+     * Test setting the Elo lost.
+     */
+    @Test
+    public void testSetEloLost() {
+        HistoryPlayer player = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player2", 10, -10, "2024-12-03");
+        player.setEloLost(-20);
+        assertEquals(-20, player.getEloLost());
+    }
+
+    /**
+     * Test setting the date.
+     */
+    @Test
+    public void testSetDate() {
+        HistoryPlayer player = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player2", 10, -10, "2024-12-03");
+        player.setDate("2024-12-04");
+        assertEquals("2024-12-04", player.getDate());
     }
 }
