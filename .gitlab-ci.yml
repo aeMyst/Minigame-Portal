@@ -30,6 +30,17 @@ test:
       - .gradle
 
 
+build-gradle-project:
+  image: eclipse-temurin:latest
+
+  script:
+    - ./gradlew build
+
+  artifacts:
+    reports:
+      junit: '**/build/test-results/**/TEST-*.xml'
+
+
 before_script:
 
   - GRADLE_USER_HOME="$(pwd)/.gradle"
