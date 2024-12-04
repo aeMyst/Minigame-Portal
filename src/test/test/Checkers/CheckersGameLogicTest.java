@@ -1,9 +1,12 @@
-package src.ca.ucalgary.seng300.gamelogic.Checkers;
+package Checkers;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
+import src.ca.ucalgary.seng300.gamelogic.Checkers.GameState;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 
 public class CheckersGameLogicTest {
@@ -14,8 +17,8 @@ public class CheckersGameLogicTest {
 
     @BeforeEach
     public void setup() {
-        player1 = new Player("Player 1");
-        player2 = new Player("Player 2");
+        player1 = new Player( "Player 1");
+        player2 = new Player( "Player 2");
         gameLogic = new CheckersGameLogic(player1, player2);
     }
 
@@ -49,6 +52,6 @@ public class CheckersGameLogicTest {
     @Test
     public void testForfeitGame() {
         gameLogic.forfeitGame();
-        assertEquals(GameState.PLAYER2_WIN, gameLogic.getGameState(), "Player 2 should win after Player 1 forfeits.");
+        Assertions.assertEquals(GameState.PLAYER2_WIN, gameLogic.getGameState(), "Player 2 should win after Player 1 forfeits.");
     }
 }
