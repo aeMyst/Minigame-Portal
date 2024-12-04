@@ -69,10 +69,11 @@ public class CheckerScreen implements IScreen {
         // Correctly assign to the class-level gameLogic field
         this.gameLogic = new CheckersGameLogic(playerOne, playerTwo);
 
-        // Set up UI components
+        // Create title label
         Label titleLabel = new Label("CHECKERS GAME");
         titleLabel.getStyleClass().add("title-label");
 
+        // Create turn indicator label
         turnIndicator = new Label("Turn: " + gameLogic.getCurrentPlayer().getPlayerID());
         turnIndicator.getStyleClass().add("label-turn-indicator");
 
@@ -116,7 +117,7 @@ public class CheckerScreen implements IScreen {
             }
         });
 
-        // Forfeit button
+        // Create forfeit button
         Button forfeitButton = new Button("Forfeit");
         forfeitButton.getStyleClass().add("button");
         forfeitButton.getStyleClass().add("button-forfeit");
