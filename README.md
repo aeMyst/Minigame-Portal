@@ -14,5 +14,15 @@ and how to backup stored data.
 2. Navigate to the root directory of the project
 3. run `gradle run` to run the program
 
+## How to Run Tests
+Inside intellij right click on the test folder, and click "run all tests"
+![assets/img.png](assets/img.png)
+
+## How to Run Tests With Coverage
+Inside intellij
+1. Right click on the test folder, and
+2. Click "More Run/Debug"
+3. Click "Run 'All Tests' with Coverage"
+![img.png](assets/img2.png)
 ## File Overview:
 
