@@ -62,21 +62,22 @@ public class CheckerScreen implements IScreen {
         this.client = client;
         this.match = match;
 
+        // Initialize players
         Player playerOne = match.get(0);
         Player playerTwo = match.get(1);
 
         // Correctly assign to the class-level gameLogic field
         this.gameLogic = new CheckersGameLogic(playerOne, playerTwo);
 
+        // Set up UI components
         Label titleLabel = new Label("CHECKERS GAME");
         titleLabel.getStyleClass().add("title-label");
 
         turnIndicator = new Label("Turn: " + gameLogic.getCurrentPlayer().getPlayerID());
         turnIndicator.getStyleClass().add("label-turn-indicator");
 
-        //Game board creation
-        boardButtons = new Button[8][8];
-        GridPane gameBoard = createGameBoard();
+        boardButtons = new Button[8][8];// Initialize the board button array
+        GridPane gameBoard = createGameBoard();// Create the game board UI
         gameBoard.setMaxWidth(800); // Total width of the board
         gameBoard.setMaxHeight(800); // Total height of the board
 
@@ -96,10 +97,9 @@ public class CheckerScreen implements IScreen {
         chatInput = new TextField();
         chatInput.setPromptText("Type your message...");
         chatInput.getStyleClass().add("input-field");
-        ;
         chatInput.setOnAction(e -> sendMessage());
 
-        // Send button
+        // Send and emoji buttons
         Button sendButton = new Button("Send");
         sendButton.getStyleClass().add("button-send");
         sendButton.setOnAction(e -> sendMessage());
@@ -116,6 +116,7 @@ public class CheckerScreen implements IScreen {
             }
         });
 
+        // Forfeit button
         Button forfeitButton = new Button("Forfeit");
         forfeitButton.getStyleClass().add("button");
         forfeitButton.getStyleClass().add("button-forfeit");
@@ -183,8 +184,7 @@ public class CheckerScreen implements IScreen {
 
                 controller.showMainMenu(); // Navigate back to the main menu
 
-                https:
-//docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
+// https:docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
                 showAlert(Alert.AlertType.INFORMATION, "The game was Forfeited", "You have Loss -" + eloLoss + " Elo");
             } else {
                 // User canceled forfeiting
@@ -205,14 +205,15 @@ public class CheckerScreen implements IScreen {
         rootPane.setCenter(layout);
         rootPane.getStyleClass().add("root-pane");
 
+        // Initialize scene
         scene = new Scene(rootPane, 1280, 900);
         scene.getStylesheets().add((getClass().getClassLoader().getResource("GamesStyles.css").toExternalForm()));
     }
 
     /**
-     * Creates the game board for Checkers.
+     * Creates the game board with button elements for each square.
      *
-     * @return Checkers game board.
+     * @return A GridPane representing the game board.
      */
     private GridPane createGameBoard() {
         GridPane gameBoard = new GridPane();
@@ -257,7 +258,7 @@ public class CheckerScreen implements IScreen {
     }
 
     /**
-     * Updates the game board with the current state from the game logic.
+     * Updates the board with current game state.
      */
     private void updateBoard() {
         int[][] board = gameLogic.getBoard();
@@ -304,10 +305,10 @@ public class CheckerScreen implements IScreen {
     }
 
     /**
-     * Handles a player's move.
+     * Handles the movement of pieces on the board.
      *
-     * @param row The row of the clicked square.
-     * @param col The column of the clicked square.
+     * @param row The row of the clicked button.
+     * @param col The column of the clicked button.
      */
     private void handleMove(int row, int col) {
         if (selectedRow == -1 && selectedCol == -1) {
@@ -418,6 +419,9 @@ public class CheckerScreen implements IScreen {
         }
     }
 
+    /**
+     * Clears all highlights from the board.
+     */
     private void clearHighlights() {
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
@@ -476,6 +480,13 @@ public class CheckerScreen implements IScreen {
         return false; // No winner yet
     }
 
+    /**
+     * Displays an alert dialog with the specified type, title, and message.
+     *
+     * @param alertType The type of alert to display.
+     * @param title     The title of the alert dialog.
+     * @param message   The message to display in the alert.
+     */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
