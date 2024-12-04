@@ -9,6 +9,10 @@ import java.util.Random;
 public class ClientLeaderboard {
     ILeaderboard leaderboard = new Leaderboard();
 
+    public ClientLeaderboard(ILeaderboard lb) {
+        leaderboard = lb;
+    }
+
     public String[][] getConnect4Leaderboard() {
         return leaderboard.getC4Leaderboard();
     }

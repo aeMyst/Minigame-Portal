@@ -13,6 +13,8 @@ import src.ca.ucalgary.seng300.gamelogic.Connect4.TurnManager;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
+import src.ca.ucalgary.seng300.leaderboard.interfaces.ILeaderboard;
+import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
 
 import java.util.Random;
 import java.net.InetAddress;
@@ -40,16 +42,21 @@ public class Client implements IClient {
         clientCheckers = new ClientCheckers();
         clientConnect4 = new ClientConnect4();
         clientTicTacToe = new ClientTicTacToe();
-        clientLeaderboard = new ClientLeaderboard();
+        clientLeaderboard = new ClientLeaderboard(new Leaderboard());
         clientAuth = new ClientAuth(auth);
     }
 
-    public Client(AuthInterface authInterface, ProfileInterface profileInterface) {
+    public Client(AuthInterface authInterface, ProfileInterface profileInterface, ILeaderboard leaderboard) {
         System.out.println("Server Started");
         System.out.println("Waiting for Request...");
         System.out.println("==========================");
         auth = authInterface;
         profile = profileInterface;
+        clientCheckers = new ClientCheckers();
+        clientConnect4 = new ClientConnect4();
+        clientTicTacToe = new ClientTicTacToe();
+        clientLeaderboard = new ClientLeaderboard(leaderboard);
+        clientAuth = new ClientAuth(auth);
     }
 
     public void initializeProfile(String username) {
