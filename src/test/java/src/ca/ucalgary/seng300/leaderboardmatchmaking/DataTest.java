@@ -58,8 +58,8 @@ public class DataTest {
     @Test
     public void testSetGameTypeHistory() {
         HistoryPlayer player = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player2", 10, -10, "2024-12-03");
-        player.setGameTypeHistory("CHESS");
-        assertEquals("CHESS", player.getGameTypeHistory());
+        player.setGameTypeHistory("CHECKERS");
+        assertEquals("CHECKERS", player.getGameTypeHistory());
     }
 
     /**

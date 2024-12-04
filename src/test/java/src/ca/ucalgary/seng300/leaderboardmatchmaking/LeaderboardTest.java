@@ -107,7 +107,7 @@ public class LeaderboardTest {
      */
     @Test
     public void testLeaderboardHandlesEmptyResult() throws IOException {
-        String[][] result = leaderboard.sortLeaderboard("CHESS");
+        String[][] result = leaderboard.sortLeaderboard("CONNECT4");
 
         assertEquals(0, result.length); // Expect an empty result array for a non-existent game.
     }
