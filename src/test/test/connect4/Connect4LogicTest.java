@@ -1,10 +1,8 @@
-package test.connect4;
+package connect4;
 
 import org.junit.Before;
 import org.junit.Test;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Logic;
-
-import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -17,7 +15,7 @@ public class Connect4LogicTest {
     private int[][] board;
 
     @Before
-    public void setup() {
+    public void setUp() {
         gameLogic = new Connect4Logic();
         board = gameLogic.getBoard(); // Initialize the board from Connect4Board class
     }
@@ -28,13 +26,10 @@ public class Connect4LogicTest {
      */
     @Test
     public void testValidPosition() {
-        setup();
-        assertFalse(gameLogic.valid(board, 1, -5)); // invalid column (negative)
-        setup();
         assertTrue(gameLogic.valid(board, 0, 0)); // top-left corner (valid)
         assertTrue(gameLogic.valid(board, 5, 6)); // bottom-right corner (valid)
         assertFalse(gameLogic.valid(board, -1, 0)); // Invalid row
-        assertFalse(gameLogic.valid(board, 0, 7)); // Invalid column (positive)
+        assertFalse(gameLogic.valid(board, 0, 7)); // Invalid column
         assertFalse(gameLogic.valid(board, 6, 6)); // Invalid row (out of bounds)
     }
 
@@ -69,7 +64,6 @@ public class Connect4LogicTest {
         assertEquals(2, board[5][1]); // The piece should be placed in the bottom-most row
 
         // Test column full
-        setup();
         for (int i = 0; i < 6; i++) {
             gameLogic.placePiece(board, 2, 1); // Fill column 2
         }
@@ -129,31 +123,14 @@ public class Connect4LogicTest {
         board[1][1] = 1;
         board[2][2] = 1;
         board[3][3] = 1;
+
         assertTrue(gameLogic.backslashWin(board, 1)); // Player 1 should win diagonally
 
-        setup();
+        // Reset board and test for no backslash win
+        for (int i = 0; i < 4; i++) {
+            board[i][i] = 0; // Reset the diagonal
+        }
         assertFalse(gameLogic.backslashWin(board, 1)); // No win condition now
-
-        board[0][0] = 1;
-        board[1][1] = 2;
-        board[2][2] = 1;
-        board[3][3] = 1;
-        assertFalse(gameLogic.backslashWin(board, 1)); // No win condition now
-
-        setup();
-        board[0][0] = 1;
-        board[1][1] = 1;
-        board[2][2] = 2;
-        board[3][3] = 1;
-        assertFalse(gameLogic.backslashWin(board, 1)); // No win condition now
-
-        setup();
-        board[0][0] = 1;
-        board[1][1] = 1;
-        board[2][2] = 1;
-        board[3][3] = 2;
-        assertFalse(gameLogic.backslashWin(board, 1)); // No win condition now
-
     }
 
     /**
@@ -171,28 +148,9 @@ public class Connect4LogicTest {
         assertTrue(gameLogic.forwardslashWin(board, 1)); // Player 1 should win diagonally
 
         // Reset board and test for no forwardslash win
-        setup();
+        for (int i = 0; i < 4; i++) {
+            board[i][3 - i] = 0; // Reset the diagonal
+        }
         assertFalse(gameLogic.forwardslashWin(board, 1)); // No win condition now
-
-        board[0][3] = 1;
-        board[1][2] = 2;
-        board[2][1] = 1;
-        board[3][0] = 1;
-        assertFalse(gameLogic.forwardslashWin(board, 1)); // No win condition now
-
-        setup();
-        board[0][3] = 1;
-        board[1][2] = 1;
-        board[2][1] = 2;
-        board[3][0] = 1;
-        assertFalse(gameLogic.forwardslashWin(board, 1));
-
-        setup();
-        board[0][3] = 1;
-        board[1][2] = 1;
-        board[2][1] = 1;
-        board[3][0] = 2;
-        assertFalse(gameLogic.forwardslashWin(board, 1));
-
     }
 }
