@@ -45,5 +45,9 @@ bin/
 /commits.csv
 
 ### Other
+gradlew
+gradlew.bat
+gradle/
 htmlReport/
+.gradle/
 .idea/
