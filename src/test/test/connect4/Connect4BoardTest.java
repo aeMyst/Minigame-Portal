@@ -1,10 +1,12 @@
-package test.connect4;
+package Connect4;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Board;
 
-import static org.junit.Assert.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test suite for Connect4Board class.
@@ -39,13 +41,14 @@ public class Connect4BoardTest {
      * Verifies that the getBoard method returns the correct 2D array representing the board state.
      */
     @Test
-    public void testGetBoard() {
-        int[][] boardState = board.getBoard();
+    public void TestConstructorInit(){
+        Connect4Board board = new Connect4Board();
+        int[][] board_array = board.getBoard();
 
-        // Ensure the board is initialized to 0 (empty spaces)
-        for (int i = 0; i < boardState.length; i++) {
-            for (int j = 0; j < boardState[i].length; j++) {
-                assertEquals(0, boardState[i][j]);
+        for (int i=0; i<6; i++){
+            for (int j=0; j<7; j++){
+                // Assert all cells are initialized to 0
+                assertEquals(0, board_array[i][j]);
             }
         }
     }
@@ -56,29 +59,36 @@ public class Connect4BoardTest {
      * Since printBoard outputs to the console, we won't assert anything in this test.
      */
     @Test
-    public void testPrintBoard() {
-        // Here, we can't assert the printed output directly.
-        // However, you can manually verify the output after running the tests.
-        Connect4Board.printBoard(board.getBoard());
-    }
+    public void TestPrintBoard(){
+        Connect4Board board= new Connect4Board();
+        int[][] board_array = board.getBoard();
+        // Redirect System.out to capture output
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outputStream));
 
-    /**
-     * Test the printBoard method with a custom board setup.
-     * This verifies if the printBoard method correctly prints a non-empty board.
-     */
-    @Test
-    public void testPrintCustomBoard() {
-        int[][] customBoard = {
-                {1, 2, 1, 2, 1, 2, 1},
-                {2, 1, 2, 1, 2, 1, 2},
-                {1, 2, 1, 2, 1, 2, 1},
-                {2, 1, 2, 1, 2, 1, 2},
-                {1, 2, 1, 2, 1, 2, 1},
-                {2, 1, 2, 1, 2, 1, 2}
-        };
+        // Call printBoard and restore original System.out
+        Board.printBoard(board_array);
+        System.setOut(originalOut);
 
-        // Use the printBoard method to display the custom board
-        Connect4Board.printBoard(customBoard);
+        // Verify the output matches the expected printed board format
+        String expectedOutput =
+                "   1   2   3   4   5   6   7   \n" +
+                        " -----------------------------   \n" +
+                        " | 0 | 0 | 0 | 0 | 0 | 0 | 0 | \n" +
+                        " -----------------------------   \n" +
+                        " | 0 | 0 | 0 | 0 | 0 | 0 | 0 | \n" +
+                        " -----------------------------   \n" +
+                        " | 0 | 0 | 0 | 0 | 0 | 0 | 0 | \n" +
+                        " -----------------------------   \n" +
+                        " | 0 | 0 | 0 | 0 | 0 | 0 | 0 | \n" +
+                        " -----------------------------   \n" +
+                        " | 0 | 0 | 0 | 0 | 0 | 0 | 0 | \n" +
+                        " -----------------------------   \n" +
+                        " | 0 | 0 | 0 | 0 | 0 | 0 | 0 | \n" +
+                        " -----------------------------   \n";
+
+        assertEquals(expectedOutput.replace("\r\n", "\n"), outputStream.toString().replace("\r\n", "\n"));
     }
 
     /**
