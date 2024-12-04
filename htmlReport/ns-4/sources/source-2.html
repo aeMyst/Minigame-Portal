@@ -1,0 +1,98 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ILeaderboard</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">src.ca.ucalgary.seng300.leaderboard.interfaces</a>
+</div>
+
+<h1>Coverage Summary for Class: ILeaderboard (src.ca.ucalgary.seng300.leaderboard.interfaces)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ILeaderboard</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package src.ca.ucalgary.seng300.leaderboard.interfaces;
+&nbsp;
+&nbsp;/**
+&nbsp; * Interface for leaderboard functionality in a leaderboard system.
+&nbsp; */
+&nbsp;public interface ILeaderboard {
+&nbsp;
+&nbsp;    String[][] sortLeaderboard(String gameType);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the leaderboard for Connect Four.
+&nbsp;     *
+&nbsp;     * @return A 2D array of Strings representing the Connect Four leaderboard.
+&nbsp;     */
+&nbsp;    String[][] getC4Leaderboard();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the leaderboard for Tic Tac Toe.
+&nbsp;     *
+&nbsp;     * @return A 2D array of Strings representing the Tic Tac Toe leaderboard.
+&nbsp;     */
+&nbsp;    String[][] getTicTacToeLeaderboard();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the leaderboard for Checkers.
+&nbsp;     *
+&nbsp;     * @return A 2D array of Strings representing the Checkers leaderboard.
+&nbsp;     */
+&nbsp;    String[][] getCheckersLeaderboard();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-03 17:51</div>
+</div>
+</body>
+</html>

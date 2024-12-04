@@ -121,4 +121,87 @@ public class DataTest {
         player.setDate("2024-12-04");
         assertEquals("2024-12-04", player.getDate());
     }
+
+    @Test
+    public void testConstructorInitializesCorrectly() {
+        Player player = new Player("CHECKERS", "123", 1500, 10, 5, 2);
+        assertEquals("CHECKERS", player.getGameType());
+        assertEquals("123", player.getPlayerID());
+        assertEquals(1500, player.getElo());
+        assertEquals(10, player.getWins());
+        assertEquals(5, player.getLosses());
+        assertEquals(2, player.getTies());
+    }
+
+    @Test
+    public void testDefaultPlayerMethodCreatesPlayerWithZeroedStats() {
+        Player player = Player.defaultPlayer("CHECKERS", "456");
+        assertEquals("CHECKERS", player.getGameType());
+        assertEquals("456", player.getPlayerID());
+        assertEquals(0, player.getElo());
+        assertEquals(0, player.getWins());
+        assertEquals(0, player.getLosses());
+        assertEquals(0, player.getTies());
+    }
+
+    @Test
+    public void testSetAndGetGameType() {
+        Player player = new Player("CONNECT4", "123", 1500, 10, 5, 2);
+        player.setGameType("CHECKERS");
+        assertEquals("CHECKERS", player.getGameType());
+    }
+
+    @Test
+    public void testSetAndGetPlayerID() {
+        Player player = new Player("TICTACTOE", "123", 1500, 10, 5, 2);
+        player.setPlayerID("789");
+        assertEquals("789", player.getPlayerID());
+    }
+
+    @Test
+    public void testSetAndGetElo() {
+        Player player = new Player("TICTACTOE", "123", 1500, 10, 5, 2);
+        player.setElo(1600);
+        assertEquals(1600, player.getElo());
+    }
+
+    @Test
+    public void testSetAndGetWins() {
+        Player player = new Player("CONNECT4", "123", 1500, 10, 5, 2);
+        player.setWins(20);
+        assertEquals(20, player.getWins());
+    }
+
+    @Test
+    public void testSetAndGetLosses() {
+        Player player = new Player("CHECKERS", "123", 1500, 10, 5, 2);
+        player.setLosses(15);
+        assertEquals(15, player.getLosses());
+    }
+
+    @Test
+    public void testSetAndGetTies() {
+        Player player = new Player("TICTACTOE", "123", 1500, 10, 5, 2);
+        player.setTies(7);
+        assertEquals(7, player.getTies());
+    }
+
+    @Test
+    public void testToCsvConvertsCorrectly() {
+        Player player = new Player("CHECKERS", "123", 1500, 10, 5, 2);
+        String csv = player.toCsv();
+        assertEquals("CHECKERS,123,1500,10,5,2", csv);
+    }
+
+    @Test
+    public void testFromCsvParsesCorrectly() {
+        String csv = "TICTACTOE,456,1200,15,10,5";
+        Player player = Player.fromCsv(csv);
+        assertEquals("TICTACTOE", player.getGameType());
+        assertEquals("456", player.getPlayerID());
+        assertEquals(1200, player.getElo());
+        assertEquals(15, player.getWins());
+        assertEquals(10, player.getLosses());
+        assertEquals(5, player.getTies());
+    }
 }
