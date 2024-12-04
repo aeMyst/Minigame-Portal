@@ -43,3 +43,7 @@ bin/
 .DS_Store
 /.idea/
 /commits.csv
+
+### Other
+htmlReport/
+.idea/
