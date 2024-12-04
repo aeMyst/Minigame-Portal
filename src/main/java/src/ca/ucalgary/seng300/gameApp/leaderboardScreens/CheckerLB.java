@@ -16,42 +16,20 @@ import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 
-/**
- * The CheckerLB class represents the leaderboard screen for the Checkers game.
- * This screen displays the current leaderboard and provides a way to navigate back to the leaderboard menu.
- */
 public class CheckerLB implements IScreen {
-    private Scene scene;// The scene representing the leaderboard screen
+    private Scene scene;
 
-    /**
-     * Constructs a new CheckerLB screen.
-     *
-     * @param stage      The primary stage for the application.
-     * @param controller The controller for handling screen navigation.
-     * @param client     The client instance for server communication.
-     */
     public CheckerLB(Stage stage, LeaderboardController controller, Client client) {
         // Title Label
         Label titleLabel = new Label("CHECKERS' LEADERBOARD");
         titleLabel.getStyleClass().add("leaderboard-title");
 
-        // Initialize leaderboard data
-        Leaderboard leaderboard = new Leaderboard();
-
-        // Create leaderboard entries layout
-        VBox leaderboardEntries = createLeaderboardEntries(leaderboard.getCheckersLeaderboard());
-
-        // Send leaderboard data to the server and print success or failure messages
-        client.sendCheckersLeaderboardToServer(leaderboard.getCheckersLeaderboard(), () -> {
-            if (leaderboard.getCheckersLeaderboard()!=null) {
-                System.out.println("\n" + "Checkers Leaderboard successfully updated");
-                System.out.println("==========================");
-            } else {
-                System.out.println("Checkers Leaderboard is empty");
-                System.out.println("==========================");
-            }
+        String[][] leaderboard = client.getCheckersLeaderboard(() -> {
+            System.out.println("\n" + "Checkers Leaderboard GET call succeeded");
         });
 
+        //Get leaderboard information
+        VBox leaderboardEntries = createLeaderboardEntries(leaderboard);
 
         // Back Button
         Button backButton = new Button("Back to LeaderBoard Menu");
@@ -64,7 +42,6 @@ public class CheckerLB implements IScreen {
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
 
-        // Root Pane for the leaderboard screen
         BorderPane rootPane = new BorderPane();
         rootPane.setCenter(layout);
         rootPane.getStyleClass().add("leaderboard-pane");
@@ -74,14 +51,6 @@ public class CheckerLB implements IScreen {
         scene.getStylesheets().add((getClass().getClassLoader().getResource("LeaderboardStyles.css").toExternalForm()));
     }
 
-    /**
-     * Creates a styled label.
-     *
-     * @param text      The text for the label.
-     * @param fontSize  The font size for the label.
-     * @param alignment The alignment for the label.
-     * @return A styled Label instance.
-     */
     private Label createLabel(String text, int fontSize, Pos alignment) {
         Label label = new Label(text);
         label.setFont(new Font("Arial", fontSize));
@@ -89,31 +58,22 @@ public class CheckerLB implements IScreen {
         return label;
     }
 
-    /**
-     * Creates a VBox containing the leaderboard entries.
-     *
-     * @param data A 2D array containing leaderboard data where each row represents a player.
-     * @return A VBox containing the formatted leaderboard entries.
-     */
     private VBox createLeaderboardEntries(String[][] data) {
-        int lastEntry = data.length - 1;// Identify the last entry to style the box differently
-        int count = 0;// Counter for the current entry index
+        int lastEntry = data.length - 1;
+        int count = 0;
 
-        // VBox to hold all leaderboard entries
         VBox entriesBox = new VBox(5);
         entriesBox.setAlignment(Pos.CENTER);
         entriesBox.setPadding(new Insets(10));
         entriesBox.setMaxWidth(420);
         entriesBox.setStyle("-fx-border-color: grey; -fx-border-width: 2; -fx-border-radius: 10 10 10 10;");
 
-        // Header for the leaderboard table
         HBox headerBox = new HBox(10);
         headerBox.setAlignment(Pos.CENTER);
         headerBox.setMaxWidth(400);
         headerBox.setPrefWidth(400);
         headerBox.setStyle("-fx-background-color: grey; -fx-padding: 10; -fx-background-radius: 10 10 0 0;");
 
-        // Create header labels for Player ID, Rating, and Wins
         Label nameHeader = new Label("PLAYERID");
         nameHeader.setFont(Font.font("Arial",FontWeight.BOLD,20));
         nameHeader.setPrefWidth(220);
@@ -132,11 +92,9 @@ public class CheckerLB implements IScreen {
         winsHeader.setAlignment(Pos.CENTER);
         winsHeader.setTextFill(Color.WHITE);
 
-        // Add headers to the header box
         headerBox.getChildren().addAll(nameHeader,eloHeader,winsHeader);
         entriesBox.getChildren().add(headerBox);
 
-        // Add each entry from the data to the leaderboard
         for (String[] entry : data) {
             HBox entryBox = new HBox(10);
             entryBox.setSpacing(40);
@@ -144,8 +102,6 @@ public class CheckerLB implements IScreen {
             entryBox.setPrefWidth(400);
             entryBox.setMinWidth(400);
             entryBox.setMaxWidth(400);
-
-            // Style the last entry differently
             if (count == lastEntry) {
                 entryBox.setStyle("-fx-padding: 5; -fx-background-color: lightgrey; -fx-background-radius: 0 0 10 10;");
 
@@ -153,7 +109,6 @@ public class CheckerLB implements IScreen {
 
             entryBox.setAlignment(Pos.BASELINE_LEFT);
 
-            // Create labels for each field in the entry
             Label playerLabel = new Label(entry[0]);
             playerLabel.setFont(Font.font("Arial", FontWeight.BOLD,16));
             playerLabel.setPrefWidth(160);
@@ -169,7 +124,7 @@ public class CheckerLB implements IScreen {
             eloLabel.setPrefWidth(100);
             eloLabel.setAlignment(Pos.CENTER);
 
-            // Add labels to the entry box
+
             entryBox.getChildren().addAll(playerLabel, eloLabel, winsLabel);
             entriesBox.getChildren().add(entryBox);
 
@@ -178,16 +133,6 @@ public class CheckerLB implements IScreen {
         return entriesBox;
     }
 
-    /**
-     * Creates a styled button.
-     *
-     * @param text      The text for the button.
-     * @param fontSize  The font size for the button text.
-     * @param width     The width of the button.
-     * @param bgColor   The background color for the button.
-     * @param action    The event handler for the button.
-     * @return A styled Button instance.
-     */
     private Button createButton(String text, int fontSize, double width, String bgColor, javafx.event.EventHandler<javafx.event.ActionEvent> action) {
         Button button = new Button(text);
         button.setFont(new Font("Arial", fontSize));
@@ -197,11 +142,6 @@ public class CheckerLB implements IScreen {
         return button;
     }
 
-    /**
-     * Returns the scene for this screen.
-     *
-     * @return The Scene instance for this screen.
-     */
     @Override
     public Scene getScene() {
         return scene;

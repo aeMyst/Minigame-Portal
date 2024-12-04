@@ -14,24 +14,24 @@ import src.ca.ucalgary.seng300.gameApp.Utility.RulesUtility;
 import src.ca.ucalgary.seng300.network.Client;
 
 /**
- * Represents the screen displaying the rules for the Checkers game.
- * Implements the IScreen interface to provide the screen's Scene.
+ * Represents the rules screen for checkers in the application.
+ * Displays rules of the game for checkers fetched from the server for user to view.
  */
 public class CheckersRules implements IScreen {
     private Scene scene;
 
     /**
-     * Constructs the CheckersRules screen with the given parameters.
+     * Constructs the CheckersRules screen and sets up the interface elements.
      *
-     * @param stage      the main stage of the application.
-     * @param controller the screen controller to handle screen transitions.
-     * @param client     the client used to retrieve the rules text.
+     * @param stage The primary stage of the application.
+     * @param controller The screen controller for navigating between different screens.
+     * @param client The client to communicate with the server.
      */
     public CheckersRules(Stage stage, ScreenController controller, Client client) {
-        // Retrieve the path to the rules file from the server
+        // Fetch the rules file path for checkers from the server
         String filePathFromServer = client.getRulesPath(2);
 
-        // Load the rules content using a utility class
+        // Load the rules for checkers using a utility class
         String rulesText = RulesUtility.getRules(filePathFromServer);
 
         // Create the title label for the rules screen
@@ -48,7 +48,7 @@ public class CheckersRules implements IScreen {
         backButton.getStyleClass().add("rules-button-back");
         backButton.setOnAction(e -> controller.showHelpScreen());// Define action for the button
 
-        // Arrange components in a vertical layout
+        // Arrange all the necessary elements into a VBox layout
         VBox layout = new VBox(15, rulesTitle, content, backButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
@@ -66,13 +66,12 @@ public class CheckersRules implements IScreen {
     }
 
     /**
-     * Returns the scene associated with this screen.
+     * Returns the constructed scene for the checkers' rules screen.
      *
-     * @return the Scene object for the rules screen.
+     * @return The scene representing the checkers' rules screen.
      */
     @Override
     public Scene getScene() {
         return scene;
     }
 }
-
