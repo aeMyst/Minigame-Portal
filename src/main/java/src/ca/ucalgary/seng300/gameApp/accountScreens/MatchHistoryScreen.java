@@ -16,11 +16,21 @@ import src.ca.ucalgary.seng300.gameApp.ScreenController;
 import src.ca.ucalgary.seng300.leaderboard.logic.MatchHistory;
 import src.ca.ucalgary.seng300.network.Client;
 
+/**
+ * Class that specifies the appearance of match history screen in the GUI
+ */
 public class MatchHistoryScreen implements IScreen {
     private Scene scene;
     private VBox matchHistoryInfoLayout;
     private String currentUser;
 
+    /**
+     * Contains the components (buttons, labels, etc.) and layout used in the match history screen in the GUI
+     * @param stage Describes the properties & containers of the screen of the current match history window
+     * @param controller Used the manage the switching of screens
+     * @param client A class that is used to emulate a server
+     * @param initialUser A String that contains the PlayerID of the current player being displayed in the match history screen
+     */
     public MatchHistoryScreen(Stage stage, ScreenController controller, Client client, String initialUser) {
         MatchHistory matchHistory = new MatchHistory();
         this.currentUser = initialUser;
@@ -106,6 +116,11 @@ public class MatchHistoryScreen implements IScreen {
         scene.getStylesheets().add((getClass().getClassLoader().getResource("styles.css").toExternalForm()));
     }
 
+    /**
+     * Method used to get the string of HistoryPlayers and display them in the GUI with its specified designs
+     * @param data  A 2D array of HistoryPlayers of String data type
+     * @param profile   The playerID of the current player being displayed in the match history screen
+     */
     private void displayHistory(String[][] data, String profile) {
         matchHistoryInfoLayout.getChildren().clear();
 
@@ -121,6 +136,7 @@ public class MatchHistoryScreen implements IScreen {
         VBox historyBox = new VBox(5);
         historyBox.setPadding(new Insets(10));
 
+        // go through the 2D array and display the information in its own VBox
         for (String[] entry : data) {
             if (!(entry[1] == null)) {
                 VBox entryBox = new VBox(5);
@@ -144,6 +160,11 @@ public class MatchHistoryScreen implements IScreen {
         matchHistoryInfoLayout.getChildren().add(historyBox);
     }
 
+    /**
+     * Method used to display an error message when an error occurs
+     * @param title The title of the error window
+     * @param message The String error message displayed in the error window
+     */
     private void showErrorMessage(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -152,6 +173,11 @@ public class MatchHistoryScreen implements IScreen {
         alert.showAndWait();
     }
 
+    /**
+     * Method used to display the match history in the console along with the GUI
+     * @param client A class that emulates a server
+     * @param matchHistory A class that fetches the data in the database used for match history
+     */
     private void MatchHistoryServer(Client client, MatchHistory matchHistory) {
         client.sendMatchHistoryToServer(matchHistory.getMatchHistory(currentUser), () -> {
             if (matchHistory.getMatchHistory(currentUser)!=null) {
@@ -164,6 +190,10 @@ public class MatchHistoryScreen implements IScreen {
         });
     }
 
+    /**
+     * A getter method for the scene
+     * @return scene
+     */
     @Override
     public Scene getScene() {
         return scene;

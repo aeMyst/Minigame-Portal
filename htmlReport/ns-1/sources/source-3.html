@@ -1,0 +1,224 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Player</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">src.ca.ucalgary.seng300.leaderboard.data</a>
+</div>
+
+<h1>Coverage Summary for Class: Player (src.ca.ucalgary.seng300.leaderboard.data)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Player</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    41.2%
+  </span>
+  <span class="absValue">
+    (7/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    54.2%
+  </span>
+  <span class="absValue">
+    (13/24)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package src.ca.ucalgary.seng300.leaderboard.data;
+&nbsp;
+&nbsp;/**
+&nbsp; * Class representing a player in the leaderboard system.
+&nbsp; */
+&nbsp;public class Player {
+&nbsp;    private String gameType;
+&nbsp;    private String playerID;
+&nbsp;    private int elo;
+&nbsp;    private int wins;
+&nbsp;    private int losses;
+&nbsp;    private int ties;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructor to initialize a Player object with specified attributes.
+&nbsp;     *
+&nbsp;     * @param gameType The type of game the player is playing.
+&nbsp;     * @param playerID The unique identifier for the player.
+&nbsp;     * @param elo The Elo rating of the player.
+&nbsp;     * @param wins The number of wins the player has.
+&nbsp;     * @param losses The number of losses the player has.
+&nbsp;     * @param ties The number of ties the player has.
+&nbsp;     */
+<b class="fc">&nbsp;    public Player(String gameType, String playerID, int elo, int wins, int losses, int ties) {</b>
+<b class="fc">&nbsp;        this.gameType = gameType;</b>
+<b class="fc">&nbsp;        this.playerID = playerID;</b>
+<b class="fc">&nbsp;        this.elo = elo;</b>
+<b class="fc">&nbsp;        this.wins = wins;</b>
+<b class="fc">&nbsp;        this.losses = losses;</b>
+<b class="fc">&nbsp;        this.ties = ties;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Static method to create a default Player object with zeroed statistics.
+&nbsp;     *
+&nbsp;     * @param gameType The type of game the player is playing.
+&nbsp;     * @param playerID The unique identifier for the player.
+&nbsp;     * @return A new Player object with default values.
+&nbsp;     */
+&nbsp;    public static Player defaultPlayer(String gameType, String playerID) {
+<b class="fc">&nbsp;        return new Player(gameType, playerID, 0, 0, 0, 0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Getter and setter methods for the player&#39;s attributes
+&nbsp;
+&nbsp;    public void setGameType(String gameType) {
+<b class="nc">&nbsp;        this.gameType = gameType;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getGameType() {
+<b class="fc">&nbsp;        return gameType;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPlayerID(String playerID) {
+<b class="nc">&nbsp;        this.playerID = playerID;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getPlayerID() {
+<b class="fc">&nbsp;        return playerID;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setElo(int elo) {
+<b class="fc">&nbsp;        this.elo = elo;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getElo() {
+<b class="fc">&nbsp;        return elo;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setWins(int wins) {
+<b class="nc">&nbsp;        this.wins = wins;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getWins() {
+<b class="fc">&nbsp;        return wins;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setLosses(int losses) {
+<b class="nc">&nbsp;        this.losses = losses;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getLosses() {
+<b class="nc">&nbsp;        return losses;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setTies(int ties) {
+<b class="nc">&nbsp;        this.ties = ties;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getTies() {
+<b class="nc">&nbsp;        return ties;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static Player fromCsv(String csv) {
+<b class="nc">&nbsp;        String[] parts = csv.split(&quot;,&quot;);</b>
+&nbsp;        // game, playerID, elo, wins, losses, ties
+<b class="nc">&nbsp;        return new Player(parts[0], parts[1], Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5]));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String toCsv() {
+<b class="nc">&nbsp;        return this.getGameType() + &quot;,&quot; + this.getPlayerID() + &quot;,&quot; + this.getElo() + &quot;,&quot; + this.getWins() + &quot;,&quot; + this.getLosses() + &quot;,&quot; + this.getTies();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a string representation of the player&#39;s attributes.
+&nbsp;     *
+&nbsp;     * @return A string containing the player&#39;s game type, ID, Elo rating, wins, losses, and ties.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public String toString() {
+<b class="nc">&nbsp;        return &quot;GameType: &quot; + gameType +</b>
+&nbsp;                &quot;\tPlayerID: &quot; + playerID +
+&nbsp;                &quot;\tElo: &quot; + elo +
+&nbsp;                &quot;\tWins: &quot; + wins +
+&nbsp;                &quot;\tLosses: &quot; + losses +
+&nbsp;                &quot;\tTies: &quot; + ties;
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-03 17:51</div>
+</div>
+</body>
+</html>
