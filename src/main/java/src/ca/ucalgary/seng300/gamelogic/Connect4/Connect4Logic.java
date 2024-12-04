@@ -47,11 +47,15 @@ public class Connect4Logic extends Connect4Board {
      * main method for placing pieces, looping until board is full or win condition is achieved
      * 
      * @param board The board that we are checking
+     * @param piece The kind of piece that is being placed
      * @param col The collumn of the position we want to check
-     * @param piece the piece to place (1 or 2)
      * @return True if the piece is properly placed, false otherwise
      */
     public boolean placePiece(int[][] board, int col, int piece) {
+        //checks for full column
+        if (board[0][col] != 0) {
+            return false; 
+        }
         //find and place the piece in the first available row in the selected collumn
         for (int row = board.length - 1; row >= 0; row--) {
             if (board[row][col] == 0) {
