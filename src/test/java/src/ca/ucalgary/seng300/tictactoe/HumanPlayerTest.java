@@ -1,10 +1,8 @@
 /* package src.ca.ucalgary.seng300;
 
-import org.junit.jupiter.api.Test;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.HumanPlayer;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 
-import static org.junit.Assert.assertEquals;
 
 public class HumanPlayerTest {
     private Player player1;
