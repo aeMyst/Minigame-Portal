@@ -112,7 +112,7 @@ public class FileManagement {
     /**
      * Method that appends data to the existing data in the file used for match histories
      * @param file File containing the data used in match history
-     * @param storage Storage containing the HistoryPlayer objects to be added to the existing file
+     * @param storage Storage containing the HistoryPlayer objects to be written to the existing file
      */
     public static void fileWritingHistory(File file, HistoryStorage storage) {
         try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file,true))) {
