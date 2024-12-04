@@ -10,6 +10,7 @@ import java.util.Random;
  * The Connect 4 component of the Client class
  */
 public class ClientConnect4 {
+
     /**
      * Sends a connect 4 move over to the server
      * @param logicManager The Connect4 Logic system
