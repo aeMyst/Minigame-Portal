@@ -152,23 +152,6 @@ public class FileManagement {
         return -1;
     }
 
-    public static int countLinesInTextFile(File file) {
-        int count = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (!line.trim().isEmpty()) {
-                    count++;
-                }
-            }
-            return count;
-        } catch (IOException error) {
-            System.out.println("Error reading file");
-            error.printStackTrace();
-        }
-        return -1;
-    }
-
     /**
      * Updates player profiles in a specified CSV file based on a list of players.
      * Matches existing rows in the CSV with the players in the list and updates their attributes.
