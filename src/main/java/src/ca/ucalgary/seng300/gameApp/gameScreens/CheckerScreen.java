@@ -68,9 +68,11 @@ public class CheckerScreen implements IScreen {
         // Correctly assign to the class-level gameLogic field
         this.gameLogic = new CheckersGameLogic(playerOne, playerTwo);
 
+        // Create title label
         Label titleLabel = new Label("CHECKERS GAME");
         titleLabel.getStyleClass().add("title-label");
 
+        // Create turn indicator label
         turnIndicator = new Label("Turn: " + gameLogic.getCurrentPlayer().getPlayerID());
         turnIndicator.getStyleClass().add("label-turn-indicator");
 
@@ -116,6 +118,7 @@ public class CheckerScreen implements IScreen {
             }
         });
 
+        // Create forfeit button
         Button forfeitButton = new Button("Forfeit");
         forfeitButton.getStyleClass().add("button");
         forfeitButton.getStyleClass().add("button-forfeit");
@@ -418,6 +421,11 @@ public class CheckerScreen implements IScreen {
         }
     }
 
+    /**
+     * Clears all highlights on the game board.
+     * Resets the background color of each button to its original state
+     * based on the alternating color pattern of the checkers board.
+     */
     private void clearHighlights() {
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
@@ -476,6 +484,13 @@ public class CheckerScreen implements IScreen {
         return false; // No winner yet
     }
 
+    /**
+     * Displays an alert dialog to the user.
+     *
+     * @param alertType the type of alert (e.g., INFORMATION, WARNING, ERROR)
+     * @param title     the title of the alert dialog
+     * @param message   the message to display in the alert dialog
+     */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
