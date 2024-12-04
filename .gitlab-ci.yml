@@ -10,18 +10,25 @@
 # https://gradle.org/
 # https://github.com/gradle/gradle
 
-# image: gradle:alpine
+image: gradle:alpine
+
+before_script:
+  - GRADLE_USER_HOME="$(pwd)/.gradle"
+  - export GRADLE_USER_HOME
+
+build:
+  stage: build
+  script: gradle --build-cache assemble
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build
+      - .gradle
 
 test:
-  image: eclipse-temurin:latest
-
-  script:
-    - sh ./gradlew test
-
-  artifacts:
-    reports:
-      junit: '**/build/test-results/**/TEST-*.xml'
-
+  stage: test
+  script: gradle check
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: pull
@@ -29,39 +36,7 @@ test:
       - build
       - .gradle
 
-
-build-gradle-project:
-  image: eclipse-temurin:latest
-
-  script:
-    - sh ./gradlew build
-
-  artifacts:
-    reports:
-      junit: '**/build/test-results/**/TEST-*.xml'
-
-
-before_script:
-
-  - GRADLE_USER_HOME="$(pwd)/.gradle"
-  - export GRADLE_USER_HOME
-
-# build:
-#   stage: build
-#   script: gradle --build-cache assemble
-#   cache:
-#     key: "$CI_COMMIT_REF_NAME"
-#     policy: push
-#     paths:
-#       - build
-#       - .gradle
-
-# test:
-#   stage: test
-#   script: gradle test
-#   cache:
-#     key: "$CI_COMMIT_REF_NAME"
-#     policy: pull
-#     paths:
-#       - build
-#       - .gradle
+deploy:
+  stage: deploy
+  script: echo "Define your deployment script!"
+  environment: production
