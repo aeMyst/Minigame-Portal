@@ -76,15 +76,20 @@ public class FileManagement {
         }
     }
 
+    /**
+     * Used to read the file containing data to be used in match histories
+     * @param file File to be read that contains the match history data
+     * @return Storage of HistoryStorage data type that contains the MatchPlayer objects from the file
+     */
     public static HistoryStorage fileReadingHistory(File file) {
-        ArrayList<HistoryPlayer> players = new ArrayList<>();
+        ArrayList<HistoryPlayer> players = new ArrayList<>();   // empty array list where the HistoryPlayer data will be added from the file
         HistoryStorage storage = null;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line = reader.readLine();
             while (line != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 7) {
+                if (parts.length == 7) {    // if the line in the file contains 7 elements, then create a new instance of HistoryPlayer to be added to arraylist
                     HistoryPlayer player = new HistoryPlayer(parts[0], parts[1], parts[2], parts[3], Integer.parseInt(parts[4]), Integer.parseInt(parts[5]), parts[6]);
                     players.add(player);
                 } else {
@@ -92,7 +97,7 @@ public class FileManagement {
                 }
                 line = reader.readLine();
             }
-            HistoryStorage newStorage = new HistoryStorage(players);
+            HistoryStorage newStorage = new HistoryStorage(players);    // add the arraylist containing the data from the file to the storage
             storage = newStorage;
         } catch (IOException error) {
             if (error instanceof FileNotFoundException) {
@@ -104,13 +109,17 @@ public class FileManagement {
         return storage;
     }
 
+    /**
+     * Method that appends data to the existing data in the file used for match histories
+     * @param file File containing the data used in match history
+     * @param storage Storage containing the HistoryPlayer objects to be written to the existing file
+     */
     public static void fileWritingHistory(File file, HistoryStorage storage) {
-
         try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file,true))) {
             //write info to the file in the format of "gametype, player_id, winner, loser, eloGained, eloLost"
             for (HistoryPlayer hp : storage.getPlayersHistory()) {
-                String[] player = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};
-                writerBuffer.write(String.join(",", player));
+                String[] player = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};  // get the attributes of the HistoryPlayer and store it in a String array
+                writerBuffer.write(String.join(",", player)); // write the string with element separated by a comma
                 writerBuffer.newLine();
             }
 
@@ -120,12 +129,17 @@ public class FileManagement {
         }
     }
 
+    /**
+     * Method that writes a new file with data from match history
+     * @param file File used to contain the data from match history
+     * @param storage Storage containing the HistoryPlayer objects to be written in the new file
+     */
     public static void fileWritingHistoryNewFile(File file, HistoryStorage storage) {
         try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file))) {
             //write info to the file in the format of "gametype, player_id, winner, loser, eloGained, eloLost"
             for (HistoryPlayer hp : storage.getPlayersHistory()) {
-                String[] player = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};
-                writerBuffer.write(String.join(",", player));
+                String[] player = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};  // fetch the attributes of each HistoryPlayer and add them to a String array
+                writerBuffer.write(String.join(",", player));   // write the string array to the file with each element separated by a comma
                 writerBuffer.newLine();
             }
 
@@ -133,40 +147,6 @@ public class FileManagement {
             System.out.println("Error writing file");
             error.printStackTrace();
         }
-    }
-
-    public static int countLinesInCSV(File file) {
-        int count = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (!line.trim().isEmpty() && !line.matches("^,+$")) {
-                    count++;
-                }
-            }
-            return count;
-        } catch (IOException error) {
-            System.out.println("Error reading file");
-            error.printStackTrace();
-        }
-        return -1;
-    }
-
-    public static int countLinesInTextFile(File file) {
-        int count = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (!line.trim().isEmpty()) {
-                    count++;
-                }
-            }
-            return count;
-        } catch (IOException error) {
-            System.out.println("Error reading file");
-            error.printStackTrace();
-        }
-        return -1;
     }
 
     /**
