@@ -92,31 +92,31 @@ public class ProfileControllerTest {
     }
 
     // Test: Search Profile when user exists
-//    @Test
-//    public void testSearchProfile_UserExists() {
-//        String username = "testUser";
-//        String email = "testUser@example.com";
-//        String password = "Password123!";
-//
-//        authService.register(email, username, password); // Register the user
-//
-//        // Now, search for the profile using the controller
-//        profileController.initializeProfile(username); // Initialize profile for the user (to ensure it exists)
-//
-//        String result = profileController.searchProfile(username); // Search for profile
-//
-//        Assert.assertNotNull("Profile should be found", result);
-//        Assert.assertTrue("Profile should contain username", result.contains(username));
-//    }
-//
-//    // Test: Search Profile when user does not exist
-//    @Test
-//    public void testSearchProfile_UserDoesNotExist() {
-//        String username = "nonExistentUser";
-//
-//        // Attempt to search for a non-existent user profile
-//        String result = profileController.searchProfile(username); // Search for non-existent user
-//
-//        Assert.assertEquals("Profile not found for non-existent user", "Profile not found for " + username, result);
-//    }
+    @Test
+    public void testSearchProfile_UserExists() {
+        String username = "testUser";
+        String email = "testUser@example.com";
+        String password = "Password123!";
+
+        authService.register(email, username, password); // Register the user
+
+        // Now, search for the profile using the controller
+        profileController.initializeProfile(username); // Initialize profile for the user (to ensure it exists)
+
+        String result = profileController.searchProfile(username); // Search for profile
+
+        Assert.assertNotNull("Profile should be found", result);
+        Assert.assertTrue("Profile should contain username", result.contains(username));
+    }
+
+    // Test: Search Profile when user does not exist
+    @Test
+    public void testSearchProfile_UserDoesNotExist() {
+        String username = "nonExistentUser";
+
+        // Attempt to search for a non-existent user profile
+        String result = profileController.searchProfile(username); // Search for non-existent user
+
+        Assert.assertEquals("Profile not found for non-existent user", "Profile not found for " + username, result);
+    }
 }
