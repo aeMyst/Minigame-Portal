@@ -1,10 +1,15 @@
-package src.ca.ucalgary.seng300.Profile.utils;
+package test.Profile;
 
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import src.ca.ucalgary.seng300.Profile.utils.ValidationUtils;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 //Aiming for close to 100% coverage.
 public class ValidationUtilsTest {
+//NEED TO CHECK EMAIL REGEX TEST NOT WORKING WELL.
 
     @Test
     public void testValidEmail() {
@@ -49,7 +54,7 @@ public class ValidationUtilsTest {
         assertFalse(ValidationUtils.isValidPassword("")); // Empty string input should return false
     }
 
-}
+
     @Test
     public void testValidUsername() {
         //Testing basic valid username. (Just letters and numbers)
@@ -70,7 +75,6 @@ public class ValidationUtilsTest {
         assertFalse(ValidationUtils.isValidUsername(null)); // Null  should return false
         assertFalse(ValidationUtils.isValidUsername("")); // Empty string should return false
     }
-
 
 
 
