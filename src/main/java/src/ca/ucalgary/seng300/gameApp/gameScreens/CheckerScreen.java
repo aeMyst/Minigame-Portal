@@ -23,19 +23,23 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * The CheckerScreen class represents the graphical user interface for a Checkers game.
+ * It integrates game logic, player interactions, and a chat system within a JavaFX application.
+ */
 public class CheckerScreen implements IScreen {
-    private Scene scene;
-    private Client client;
-    private final CheckersGameLogic gameLogic;
-    private Label turnIndicator;
-    private TextArea chatArea;
-    private TextField chatInput;
-    private Button[][] boardButtons;
-    private final ScreenController controller;
+    private Scene scene;// The scene representing the Checkers game screen
+    private Client client; // Client instance for communication with the server
+    private final CheckersGameLogic gameLogic;// The logic for the Checkers game
+    private Label turnIndicator;// Label displaying the current player's turn
+    private TextArea chatArea;// TextArea for displaying chat messages
+    private TextField chatInput;// TextField for entering chat messages
+    private Button[][] boardButtons;// 2D array representing the game board buttons
+    private final ScreenController controller;// Controller for screen navigation
     private int selectedRow = -1;
     private int selectedCol = -1;
-    private boolean isEmojiOpen = false;
-    private ArrayList<Player> match;
+    private boolean isEmojiOpen = false;// Tracks if the emoji menu is open
+    private ArrayList<Player> match;// List of players in the current match
 
     // Paths to images
     // https://www.tutorialspoint.com/javafx/javafx_images.htm
@@ -44,25 +48,35 @@ public class CheckerScreen implements IScreen {
     private final String WHITE_KING_IMAGE_PATH = "src/main/java/src/ca/ucalgary/seng300/images/white_king_piece.png";
     private final String BLACK_KING_IMAGE_PATH = "src/main/java/src/ca/ucalgary/seng300/images/black_king_piece.png";
 
+    /**
+     * Constructs a new CheckerScreen.
+     *
+     * @param stage      The primary stage for the application.
+     * @param controller The screen controller for managing transitions.
+     * @param client     The client instance for server communication.
+     * @param match      The list of players in the current game.
+     */
     public CheckerScreen(Stage stage, ScreenController controller, Client client, ArrayList<Player> match) {
         this.controller = controller;
         this.client = client;
         this.match = match;
 
+        // Initialize players
         Player playerOne = match.get(0);
         Player playerTwo = match.get(1);
 
         // Correctly assign to the class-level gameLogic field
         this.gameLogic = new CheckersGameLogic(playerOne, playerTwo);
 
+        // Set up UI components
         Label titleLabel = new Label("CHECKERS GAME");
         titleLabel.getStyleClass().add("title-label");
 
         turnIndicator = new Label("Turn: " + gameLogic.getCurrentPlayer().getPlayerID());
         turnIndicator.getStyleClass().add("label-turn-indicator");
 
-        boardButtons = new Button[8][8];
-        GridPane gameBoard = createGameBoard();
+        boardButtons = new Button[8][8];// Initialize the board button array
+        GridPane gameBoard = createGameBoard();// Create the game board UI
         gameBoard.setMaxWidth(800); // Total width of the board
         gameBoard.setMaxHeight(800); // Total height of the board
 
@@ -70,7 +84,7 @@ public class CheckerScreen implements IScreen {
         gameLayout.setAlignment(Pos.CENTER);
         gameLayout.maxWidth(250);
 
-
+        // Chat area and input setup
         chatArea = new TextArea();
         chatArea.setEditable(false);
         chatArea.setMaxHeight(100);
@@ -81,6 +95,7 @@ public class CheckerScreen implements IScreen {
         chatInput.getStyleClass().add("input-field");;
         chatInput.setOnAction(e -> sendMessage());
 
+        // Send and emoji buttons
         Button sendButton = new Button("Send");
         sendButton.getStyleClass().add("button-send");
         sendButton.setOnAction(e -> sendMessage());
@@ -96,7 +111,7 @@ public class CheckerScreen implements IScreen {
             }
         });
 
-
+        // Forfeit button
         Button forfeitButton = new Button("Forfeit");
         forfeitButton.getStyleClass().add("button");
         forfeitButton.getStyleClass().add("button-forfeit");
@@ -172,9 +187,11 @@ public class CheckerScreen implements IScreen {
             }
         });
 
+        // Chat input box
         HBox chatBox = new HBox(10, chatInput, emojiButton, sendButton);
         chatBox.setAlignment(Pos.CENTER);
 
+        // Main layout
         VBox layout = new VBox(15, titleLabel, turnIndicator, gameLayout, chatArea, chatBox, forfeitButton);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(50));
@@ -183,10 +200,16 @@ public class CheckerScreen implements IScreen {
         rootPane.setCenter(layout);
         rootPane.getStyleClass().add("root-pane");
 
+        // Initialize scene
         scene = new Scene(rootPane, 1280, 900);
         scene.getStylesheets().add((getClass().getClassLoader().getResource("GamesStyles.css").toExternalForm()));
     }
 
+    /**
+     * Creates the game board with button elements for each square.
+     *
+     * @return A GridPane representing the game board.
+     */
     private GridPane createGameBoard() {
         GridPane gameBoard = new GridPane();
         gameBoard.setAlignment(Pos.CENTER);
@@ -229,6 +252,9 @@ public class CheckerScreen implements IScreen {
         return gameBoard;
     }
 
+    /**
+     * Updates the board with current game state.
+     */
     private void updateBoard() {
         int[][] board = gameLogic.getBoard();
         for (int row = 0; row < 8; row++) {
@@ -273,6 +299,12 @@ public class CheckerScreen implements IScreen {
         }
     }
 
+    /**
+     * Handles the movement of pieces on the board.
+     *
+     * @param row The row of the clicked button.
+     * @param col The column of the clicked button.
+     */
     private void handleMove(int row, int col) {
         if (selectedRow == -1 && selectedCol == -1) {
             // No piece is currently selected
@@ -351,6 +383,12 @@ public class CheckerScreen implements IScreen {
         }
     }
 
+    /**
+     * Highlights possible moves or captures for the selected piece.
+     *
+     * @param row The row of the selected piece.
+     * @param col The column of the selected piece.
+     */
     private void highlightPossibleMoves(int row, int col) {
         Player currentPlayer = gameLogic.getCurrentPlayer();
         boolean mustCapture = gameLogic.hasAnyValidCaptures(currentPlayer);
@@ -376,6 +414,9 @@ public class CheckerScreen implements IScreen {
         }
     }
 
+    /**
+     * Clears all highlights from the board.
+     */
     private void clearHighlights() {
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
@@ -388,6 +429,9 @@ public class CheckerScreen implements IScreen {
         }
     }
 
+    /**
+     * Sends a chat message entered by the player to the server.
+     */
     private void sendMessage() {
         String message = chatInput.getText().trim();
         if (!message.isEmpty()) {
@@ -397,6 +441,11 @@ public class CheckerScreen implements IScreen {
         }
     }
 
+    /**
+     * Checks the current game state for a winner or ongoing play.
+     *
+     * @return True if the game has ended, false otherwise.
+     */
     private boolean checkGameState() {
         int whiteCount = 0;
         int blackCount = 0;
@@ -426,6 +475,13 @@ public class CheckerScreen implements IScreen {
         return false; // No winner yet
     }
 
+    /**
+     * Displays an alert dialog with the specified type, title, and message.
+     *
+     * @param alertType The type of alert to display.
+     * @param title     The title of the alert dialog.
+     * @param message   The message to display in the alert.
+     */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
