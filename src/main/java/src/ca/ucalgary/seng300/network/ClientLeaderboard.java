@@ -6,6 +6,9 @@ import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
 
 import java.util.Random;
 
+/**
+ * The Leaderboard component of the Client class
+ */
 public class ClientLeaderboard {
     ILeaderboard leaderboard = new Leaderboard();
 

@@ -6,7 +6,15 @@ import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
 
 import java.util.Random;
 
+/**
+ * The Tic-Tac-Toe component of the Client class
+ */
 public class ClientTicTacToe {
+    /**
+     * @param boardManager the current board
+     * @param playerManager the players and the current player
+     * @param status of the game, the current gamestate either "ONGOING" or "DONE"
+     */
     private void newMoveTTT(BoardManager boardManager, PlayerManager playerManager, String status) {
         System.out.println("Game Status: " + status);
         System.out.println("Current Player: " + playerManager.getCurrentPlayer().getSymbol());
@@ -22,7 +30,7 @@ public class ClientTicTacToe {
      * once move has occurred send to server to update stats/leaderboard and the gamestate
      * @param boardManager the current board
      * @param playerManager the players and the current player
-     * @param status of the game, the current gamestate
+     * @param status of the game, the current gamestate either "ONGOING" or "DONE"
      * @param callback call after server response
      */
     public void sendMoveToServer(BoardManager boardManager, PlayerManager playerManager, String status, Runnable callback) {
