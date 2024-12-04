@@ -1,4 +1,4 @@
-package test.Profile;
+package Profile;
 
 import org.junit.Assert;
 import org.junit.Before;
