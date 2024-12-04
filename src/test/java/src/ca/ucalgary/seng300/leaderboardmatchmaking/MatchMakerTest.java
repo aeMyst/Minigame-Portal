@@ -4,7 +4,11 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import src.ca.ucalgary.seng300.leaderboard.logic.*;
 import src.ca.ucalgary.seng300.leaderboard.data.*;
+import src.ca.ucalgary.seng300.leaderboard.utility.*;
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MatchMakerTest {
 
@@ -121,5 +125,64 @@ public class MatchMakerTest {
         // Check that no match is created
         assertEquals(1, match.size());
         assertTrue(match.contains(player1));
+    }
+
+    @Test
+    public void testUpdateMatchHistory() {
+        HistoryStorage storage = new HistoryStorage();
+        MatchHistory matchHistory = new MatchHistory();
+        HistoryPlayer player1 = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player2", 10, -10, "2024-12-03");
+        storage.addPlayerHistory(player1);
+
+        // Update match history
+        matchHistory.updateMatchHistory(storage, "Player1");
+
+        // Verify that the file is written correctly
+        File file = new File("src/main/java/src/ca/ucalgary/seng300/database/match_history.txt");
+        assertTrue(file.exists());
+
+        // Clean up
+        file.delete();
+    }
+
+    @Test
+    public void testGetMatchHistory() {
+        HistoryStorage storage = new HistoryStorage();
+        MatchHistory matchHistory = new MatchHistory();
+        HistoryPlayer player1 = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player2", 10, -10, "2024-12-03");
+        HistoryPlayer player2 = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player3", 15, -15, "2024-12-04");
+        storage.addPlayerHistory(player1);
+        storage.addPlayerHistory(player2);
+
+        // Update match history to ensure the file is created
+        matchHistory.updateMatchHistory(storage, "Player1");
+
+        // Retrieve match history
+        String[][] history = matchHistory.getMatchHistory("Player1");
+
+        // Verify the match history
+        assertEquals(2, history.length);
+
+        // Verify the first match (most recent)
+        assertEquals("CONNECT4", history[0][0]);
+        assertEquals("Player1", history[0][1]);
+        assertEquals("Player1", history[0][2]);
+        assertEquals("Player3", history[0][3]);
+        assertEquals("15", history[0][4]);
+        assertEquals("-15", history[0][5]);
+        assertEquals("2024-12-04", history[0][6]);
+
+        // Verify the second match (older)
+        assertEquals("CONNECT4", history[1][0]);
+        assertEquals("Player1", history[1][1]);
+        assertEquals("Player1", history[1][2]);
+        assertEquals("Player2", history[1][3]);
+        assertEquals("10", history[1][4]);
+        assertEquals("-10", history[1][5]);
+        assertEquals("2024-12-03", history[1][6]);
+
+        // Clean up
+        File file = new File("src/main/java/src/ca/ucalgary/seng300/database/match_history.txt");
+        file.delete();
     }
 }
