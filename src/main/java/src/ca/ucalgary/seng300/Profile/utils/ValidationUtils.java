@@ -12,7 +12,7 @@ public class ValidationUtils {
     // Minimum eight characters, at least one letter, one number and one special character. Perhaps tell the user this is the requirements.
     private static final String password_Regex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$";
     // Found the regex in:  https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
-    //double check to see if \\ worked
+
     
     
     //Basic email validation regex pattern.
