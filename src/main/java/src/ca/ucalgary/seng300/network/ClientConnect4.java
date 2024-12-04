@@ -6,7 +6,19 @@ import src.ca.ucalgary.seng300.gamelogic.Connect4.TurnManager;
 
 import java.util.Random;
 
+/**
+ * The Connect 4 component of the Client class
+ */
 public class ClientConnect4 {
+
+    /**
+     * Sends a connect 4 move over to the server
+     * @param logicManager The Connect4 Logic system
+     * @param turnManager The Turn manager
+     * @param status What the status of the game is, either "ONGOING" or "DONE"
+     * @param callback A function that executes after the server has done processing
+     *                  the move, generally will just update the GUI
+     */
     public void sendC4MoveToServer(Connect4Logic logicManager, TurnManager turnManager, String status, Runnable callback) {
         Random rand = new Random();
         int time = rand.nextInt(1000); // delay
@@ -23,6 +35,12 @@ public class ClientConnect4 {
         }).start();
     }
 
+    /**
+     * Shows the current board state to the server
+     * @param logicManager The logic manager for the current game
+     * @param turnManager the turn manager for keeping track of who's turn it is
+     * @param status The status of the game, either "ONGOING" or "DONE"
+     */
     private void newMoveC4(Connect4Logic logicManager, TurnManager turnManager, String status) {
         System.out.println("Game Status: " + status);
         System.out.println("Current Player: " + turnManager.getCurrentPlayer().getPiece());
