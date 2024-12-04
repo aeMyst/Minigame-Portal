@@ -18,28 +18,39 @@ import src.ca.ucalgary.seng300.gameApp.ScreenController;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents the user profile screen in the application.
+ * Allows the user to view their profile and search for other player profiles.
+ */
 public class UserProfileScreen implements IScreen {
     private Scene scene;
     private VBox userProfileInfoLayout;
-
-    public UserProfileScreen(Stage stage, ScreenController controller, Client client) {
-        String currentUsername = client.getCurrentUsername();
-
+    private String currentUser;
+    /**
+     * Constructs the UserProfileScreen with the given stage, controller, and client.
+     *
+     * @param stage The primary stage of the application.
+     * @param controller The screen controller for navigating between different screens.
+     * @param client The client for interacting with the network.
+     */
+    public UserProfileScreen(Stage stage, ScreenController controller, Client client, String initialUser) {
         // User Profile Title
-        Label userProfileTitle = new Label("USER PROFILE: " + currentUsername);
+        this.currentUser = initialUser;
+
+        Label userProfileTitle = new Label("USER PROFILE: " + initialUser);
         userProfileTitle.getStyleClass().add("title-label");
 
-        // The layout for displaying user profile details
+        // Layout for displaying user profile information
         userProfileInfoLayout = new VBox(10);
         userProfileInfoLayout.setAlignment(Pos.CENTER_LEFT);
         userProfileInfoLayout.setPadding(new Insets(20));
         userProfileInfoLayout.getStyleClass().add("user-profile-box");
 
         // Display user profile details (initially the logged-in user's profile)
-        String profileInfo = client.getCurrentUserProfile();
-        displayProfile(profileInfo);
+        String userProfile = client.searchProfile(initialUser);
+        displayProfile(userProfile);
 
-        // TextField to search for another profile
+        // Label and text field for searching another user's profile
         Label searchProfileLabel = new Label("Search Profile:");
         searchProfileLabel.getStyleClass().add("search-label");
 
@@ -47,73 +58,100 @@ public class UserProfileScreen implements IScreen {
         searchProfileField.getStyleClass().add("input-field");
         searchProfileField.setPromptText("Enter profile name");
 
+        // Search button to find and display another user's profile information
         Button searchButton = new Button("Search");
         searchButton.getStyleClass().add("button");
         searchButton.getStyleClass().add("submit-button");
         searchButton.setOnAction(e -> {
+            // Search for profile name based on username entered
             String profileName = searchProfileField.getText();
             if (!profileName.isEmpty()) {
                 String searchResult = client.searchProfile(profileName);
+                // If profile unable to be found, then display error message
                 if (searchResult.startsWith("Profile not found")) {
                     showErrorMessage("Error", "Profile not found for username: " + profileName);
                 } else {
+                    // Display the searched user profile result information
                     displayProfile(searchResult);
                     userProfileTitle.setText("USER PROFILE: " + profileName);
                 }
             } else {
+                // Display an error message if searched user profile input is empty
                 showErrorMessage("Error", "Please enter a valid profile name.");
             }
         });
 
         // Button to return to the logged-in user's profile
-        Button xButton = new Button("X");
+        Button xButton = new Button("View Your Profile");
         xButton.getStyleClass().add("button");
         xButton.getStyleClass().add("exit-button");
         xButton.setOnAction(e -> {
-            // Reset to the logged-in user's profile
+            // Reset to the logged-in user's profile information
             String updatedProfileInfo = client.getCurrentUserProfile();
-            displayProfile(updatedProfileInfo);
             String currentUsernameReset = client.getCurrentUsername();
+            this.currentUser = currentUsernameReset;
+            displayProfile(updatedProfileInfo);
             userProfileTitle.setText("USER PROFILE: " + currentUsernameReset);
             searchProfileField.clear();
         });
 
-        // Manage Profile Button
+        // Button to go to the manage profile screen
         Button manageProfileButton = new Button("Manage Profile");
         manageProfileButton.getStyleClass().add("button");
         manageProfileButton.getStyleClass().add("submit-button");
         manageProfileButton.setOnAction(e -> controller.showManageProfileScreen());
 
-        // Back Button
+        // Button to go back to the main menu
         Button backButton = new Button("Back");
         backButton.getStyleClass().add("button");
         backButton.getStyleClass().add("back-button");
         backButton.setOnAction(e -> controller.showMainMenu());
 
-        // Layout for search
+        Button matchHistoryButton = new Button("Match History");
+        matchHistoryButton.getStyleClass().add("button");
+        matchHistoryButton.getStyleClass().add("submit-button");
+        matchHistoryButton.setOnAction(e -> {
+            String searchResults = searchProfileField.getText();
+            if (searchResults.isEmpty()) {
+                controller.showMatchHistoryScreen(currentUser);
+            } else {
+                controller.showMatchHistoryScreen(searchResults);
+            }
+        });
+
+        // Layout for search user profile components
         HBox searchLayout = new HBox(10, searchProfileLabel, searchProfileField, searchButton, xButton);
         searchLayout.setAlignment(Pos.CENTER);
 
-        // Layout for buttons
-        HBox buttonsLayout = new HBox(20, manageProfileButton, backButton);
+        // Layout for user profile screen buttons
+        HBox buttonsLayout = new HBox(20, matchHistoryButton, manageProfileButton, backButton);
         buttonsLayout.setAlignment(Pos.CENTER);
 
-        // Main layout
+        // Main layout of the user profile screen
         VBox userProfileLayout = new VBox(20, userProfileTitle, userProfileInfoLayout, searchLayout, buttonsLayout);
         userProfileLayout.setAlignment(Pos.CENTER);
         userProfileLayout.setPadding(new Insets(20));
 
+        // Create a BorderPane layout for the screen to set the user profile layout
         BorderPane rootPane = new BorderPane();
         rootPane.setCenter(userProfileLayout);
         rootPane.getStyleClass().add("root-pane");
 
+        // Initialize the scene for the user profile screen
         scene = new Scene(rootPane, 1280, 900);
         scene.getStylesheets().add((getClass().getClassLoader().getResource("styles.css").toExternalForm()));
     }
 
+    /**
+     * Displays the given profile information in the user profile screen.
+     *
+     * @param profileInfo The user profile information to show.
+     */
     private void displayProfile(String profileInfo) {
+        // Clear the existing content from the profile display area
         userProfileInfoLayout.getChildren().clear();
 
+        // Handle condition when the user profile cannot be found
         if (profileInfo.startsWith("Profile not found")) {
             Label notFoundLabel = new Label(profileInfo);
             notFoundLabel.getStyleClass().add("search-label");
@@ -121,21 +159,28 @@ public class UserProfileScreen implements IScreen {
             return;
         }
 
+        // Parse and display every user profile information into blocks
         String[] profileLists = profileInfo.split("\n\n");
+        // Iterate through each user profile block to extract key-value pairs
         for (String block : profileLists) {
             String[] lines = block.split("\n");
+            // Store key-value pairs from the profile block to organize profile information
             Map<String, String> profileData = new HashMap<>();
+            // Iterate through each line in block to split by delimiter
             for (String line : lines) {
                 String[] parts = line.split(": ");
+                // Add valid key-value pairs to the map
                 if (parts.length == 2) {
                     profileData.put(parts[0], parts[1]);
                 }
             }
 
+            // Layout to display user profile information
             VBox profileBox = new VBox(5);
             profileBox.setPadding(new Insets(10));
             profileBox.getStyleClass().add("profile-box");
 
+            // Create all necessary user profile information labels
             Label gametypeLabel = new Label("Gametype: " + profileData.getOrDefault("Gametype", ""));
             Label playerIDLabel = new Label("PlayerID: " + profileData.getOrDefault("PlayerID", ""));
             Label eloLabel = new Label("Elo: " + profileData.getOrDefault("Elo", ""));
@@ -144,15 +189,24 @@ public class UserProfileScreen implements IScreen {
             Label drawsLabel = new Label("Draws: " + profileData.getOrDefault("Draws", ""));
             Label gamesPlayedLabel = new Label("Games Played: " + profileData.getOrDefault("Games Played", ""));
 
+            // Add all user profile information labels to the layout
             profileBox.getChildren().addAll(
                     gametypeLabel, playerIDLabel, eloLabel, winsLabel, lossesLabel, drawsLabel, gamesPlayedLabel
             );
 
+            // Add the user profile box to the main layout to display
             userProfileInfoLayout.getChildren().add(profileBox);
         }
     }
 
+    /**
+     * Displays an error message in a dialog box.
+     *
+     * @param title The title of the error message dialog box.
+     * @param message The content of the error message dialog box.
+     */
     private void showErrorMessage(String title, String message) {
+        // Create and display an error message alert with the appropriate title and content
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -160,6 +214,11 @@ public class UserProfileScreen implements IScreen {
         alert.showAndWait();
     }
 
+    /**
+     * Returns the constructed scene for the user profile screen.
+     *
+     * @return The scene representing the user profile screen.
+     */
     @Override
     public Scene getScene() {
         return scene;

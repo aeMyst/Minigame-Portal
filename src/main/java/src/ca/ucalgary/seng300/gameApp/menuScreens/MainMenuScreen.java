@@ -12,9 +12,19 @@ import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
+/**
+ * Represents the main menu screen of the application where users can navigate to different features.
+ */
 public class MainMenuScreen implements IScreen {
     private Scene scene;
 
+    /**
+     * Constructs the MainMenuScreen with the necessary UI components.
+     *
+     * @param stage      The primary stage of the application.
+     * @param controller The controller used to navigate between screens.
+     * @param client     The client handling client interactions.
+     */
     public MainMenuScreen(Stage stage, ScreenController controller, Client client) {
         // Title label
         String username = client.getCurrentUsername();
@@ -40,7 +50,7 @@ public class MainMenuScreen implements IScreen {
         Button viewProfileButton = new Button("View Profile");
         viewProfileButton.getStyleClass().add("button");
         viewProfileButton.getStyleClass().add("submit-button");
-        viewProfileButton.setOnAction(e -> controller.showUserProfileScreen());
+        viewProfileButton.setOnAction(e -> controller.showUserProfileScreen(client.getCurrentUsername()));
 
         Button logOutButton = new Button("Log Out");
         logOutButton.getStyleClass().add("button");

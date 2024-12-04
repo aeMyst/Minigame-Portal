@@ -1,6 +1,5 @@
 package src.ca.ucalgary.seng300.gameApp.gameScreens;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -8,9 +7,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import src.ca.ucalgary.seng300.gamelogic.Checkers.GameState;
+
+import src.ca.ucalgary.seng300.leaderboard.data.HistoryPlayer;
+import src.ca.ucalgary.seng300.leaderboard.data.HistoryStorage;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.logic.EloRating;
+import src.ca.ucalgary.seng300.leaderboard.logic.MatchHistory;
 import src.ca.ucalgary.seng300.leaderboard.utility.FileManagement;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
@@ -19,11 +21,30 @@ import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Logic;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/**
+ * Represents the end-game screen for displaying match results.
+ */
 public class EndGameScreen implements IScreen {
     private Scene scene;
+    MatchHistory matchHistory;
 
+    /**
+     * Constructor for the EndGameScreen class.
+     *
+     * @param stage             The main application stage.
+     * @param controller        Controller for screen navigation.
+     * @param client            Client for handling client interactions.
+     * @param gameType          The type of the game (0 for Tic-Tac-Toe, 1 for Connect4, 2 for Checkers).
+     * @param boardManager      The board manager for Tic-Tac-Toe.
+     * @param connect4Logic     Logic for Connect4.
+     * @param checkersGameLogic Logic for Checkers.
+     * @param match             List of players involved in the match.
+     * @param winner            The winner of the match (null if it's a draw).
+     */
     public EndGameScreen(Stage stage, ScreenController controller, Client client, int gameType,
                          BoardManager boardManager, Connect4Logic connect4Logic, CheckersGameLogic checkersGameLogic,
                          ArrayList<Player> match, Player winner) {
@@ -39,6 +60,9 @@ public class EndGameScreen implements IScreen {
         String loserString = "";
         String eloGain = "";
         String eloLoss = "";
+        matchHistory = new MatchHistory();
+        HistoryStorage storage = new HistoryStorage();
+
 
         // Loser Player object
         Player loser;
@@ -57,13 +81,23 @@ public class EndGameScreen implements IScreen {
             eloGain = String.valueOf(winner.getElo() - currentWinnerElo);
             eloLoss = String.valueOf(currentLoserElo - loser.getElo());
 
+            for (Player player : match) {
+                storage.addPlayerHistory(new HistoryPlayer(player.getGameType(), player.getPlayerID(),winnerString, loserString, Integer.parseInt(eloGain), Integer.parseInt(eloLoss),LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM dd yyyy"))));
+
+
+            }
+            matchHistory.updateMatchHistory(storage, client.getCurrentUsername());
+
+
+
+
         } else {
             for (Player player : match) {
                 player.setTies(player.getTies() + 1);
             }
         }
 
-        // Update stats db
+        // update stats db after match has finished
         FileManagement.updateProfilesInCsv(client.getStatPath(), match);
 
         if (gameType == 0) {
@@ -126,6 +160,14 @@ public class EndGameScreen implements IScreen {
         scene.getStylesheets().add((getClass().getClassLoader().getResource("GamesStyles.css").toExternalForm()));
     }
 
+    /**
+     * Generates a game results based on the game type.
+     *
+     * @param charArray Character array.
+     * @param intArray  Integer array.
+     * @param gameType  The type of game.
+     * @return A formatted string representation of game results.
+     */
     public String printGameResults(char[][] charArray, int[][] intArray, int gameType) {
         StringBuilder buildString = new StringBuilder();
 
