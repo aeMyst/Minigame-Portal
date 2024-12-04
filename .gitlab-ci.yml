@@ -34,7 +34,7 @@ build-gradle-project:
   image: eclipse-temurin:latest
 
   script:
-    - ./gradlew build
+    - sh ./gradlew build
 
   artifacts:
     reports:
