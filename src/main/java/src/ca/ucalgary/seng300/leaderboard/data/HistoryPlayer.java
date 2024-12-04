@@ -34,6 +34,8 @@ public class HistoryPlayer {
         this.date = date;
     }
 
+    // setters for the HistoryPlayer attributes
+
     public void setGameTypeHistory(String gameType) { this.gameType = gameType; }
 
     public void setPlayerIDHistory(String playerID) { this.playerID = playerID; }
@@ -47,6 +49,8 @@ public class HistoryPlayer {
     public void setEloLost(int eloLost) { this.eloLost = eloLost; }
 
     public void setDate(String date) { this.date = date; }
+
+    // getters for the HistoryPlayer attributes
 
     public String getGameTypeHistory() { return gameType; }
 
