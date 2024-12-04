@@ -322,7 +322,7 @@ public class CheckersGameLogic implements ICheckers {
      * @param player the player owning the piece.
      * @return true if the piece qualifies for king promotion; false otherwise.
      */
-    boolean checkKingPromotion(int row, int col, Player player) {
+    public boolean checkKingPromotion(int row, int col, Player player) {
         // Player 1 promotes upon reaching the last row (index 7)
         if (player == player1 && row == 7) {
             return true;
