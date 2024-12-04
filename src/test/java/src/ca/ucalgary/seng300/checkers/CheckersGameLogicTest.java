@@ -1,10 +1,5 @@
 //package src.ca.ucalgary.seng300.checkers;
 //
-//import org.junit.jupiter.api.Assertions;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import static org.junit.jupiter.api.Assertions.*;
-//
 //import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
 //import src.ca.ucalgary.seng300.gamelogic.Checkers.GameState;
 //import src.ca.ucalgary.seng300.leaderboard.data.Player;
