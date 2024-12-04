@@ -1,4 +1,4 @@
-package src.ca.ucalgary.seng300;
+package src.ca.ucalgary.seng300.tictactoe;
 
 import org.junit.jupiter.api.Test;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.Board;
@@ -39,11 +39,11 @@ public class BoardTest {
         String expectedOutput =
                 "      1       2       3   \n" +
                         "    -----------------------\n" +
-                        "1  |     |     |     |  \n" +
+                        "1  |      |      |      |  \n" +
                         "    -----------------------\n" +
-                        "2  |     |     |     |  \n" +
+                        "2  |      |      |      |  \n" +
                         "    -----------------------\n" +
-                        "3  |     |     |     |  \n" +
+                        "3  |      |      |      |  \n" +
                         "    -----------------------\n";
 
         assertEquals(expectedOutput.replace("\r\n", "\n"), outputStream.toString().replace("\r\n", "\n"));

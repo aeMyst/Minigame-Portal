@@ -1,6 +1,8 @@
-package src.ca.ucalgary.seng300.gamelogic.Checkers;
+package src.ca.ucalgary.seng300.checkers;
 
 import org.junit.jupiter.api.Test;
+import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersBoard;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CheckersBoardTest {
