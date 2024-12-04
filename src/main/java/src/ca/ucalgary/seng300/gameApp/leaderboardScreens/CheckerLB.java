@@ -35,13 +35,23 @@ public class CheckerLB implements IScreen {
         Label titleLabel = new Label("CHECKERS' LEADERBOARD");
         titleLabel.getStyleClass().add("leaderboard-title");
 
-        // Retrieve leaderboard data from the client
-        String[][] leaderboard = client.getCheckersLeaderboard(() -> {
-            System.out.println("\n" + "Checkers Leaderboard GET call succeeded");
+        // Initialize leaderboard data
+        Leaderboard leaderboard = new Leaderboard();
+
+        // Create leaderboard entries layout
+        VBox leaderboardEntries = createLeaderboardEntries(leaderboard.getCheckersLeaderboard());
+
+        // Send leaderboard data to the server and print success or failure messages
+        client.sendCheckersLeaderboardToServer(leaderboard.getCheckersLeaderboard(), () -> {
+            if (leaderboard.getCheckersLeaderboard()!=null) {
+                System.out.println("\n" + "Checkers Leaderboard successfully updated");
+                System.out.println("==========================");
+            } else {
+                System.out.println("Checkers Leaderboard is empty");
+                System.out.println("==========================");
+            }
         });
 
-        //Get leaderboard information
-        VBox leaderboardEntries = createLeaderboardEntries(leaderboard);
 
         // Back Button
         Button backButton = new Button("Back to LeaderBoard Menu");
@@ -96,7 +106,7 @@ public class CheckerLB implements IScreen {
         entriesBox.setMaxWidth(420);
         entriesBox.setStyle("-fx-border-color: grey; -fx-border-width: 2; -fx-border-radius: 10 10 10 10;");
 
-        // Header row with column titles.
+        // Header for the leaderboard table
         HBox headerBox = new HBox(10);
         headerBox.setAlignment(Pos.CENTER);
         headerBox.setMaxWidth(400);
@@ -135,7 +145,7 @@ public class CheckerLB implements IScreen {
             entryBox.setMinWidth(400);
             entryBox.setMaxWidth(400);
 
-            // Apply special style for the last entry.
+            // Style the last entry differently
             if (count == lastEntry) {
                 entryBox.setStyle("-fx-padding: 5; -fx-background-color: lightgrey; -fx-background-radius: 0 0 10 10;");
 
@@ -143,7 +153,7 @@ public class CheckerLB implements IScreen {
 
             entryBox.setAlignment(Pos.BASELINE_LEFT);
 
-            // Create labels for player ID, rating, and wins
+            // Create labels for each field in the entry
             Label playerLabel = new Label(entry[0]);
             playerLabel.setFont(Font.font("Arial", FontWeight.BOLD,16));
             playerLabel.setPrefWidth(160);
