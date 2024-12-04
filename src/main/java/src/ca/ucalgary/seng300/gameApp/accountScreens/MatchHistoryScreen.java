@@ -26,7 +26,7 @@ public class MatchHistoryScreen implements IScreen {
 
     /**
      * Contains the components (buttons, labels, etc.) and layout used in the match history screen in the GUI
-     * @param stage Describes the properties & containers of the screen of the current match history window
+     * @param stage Describes the properties and containers of the screen of the current match history window
      * @param controller Used the manage the switching of screens
      * @param client A class that is used to emulate a server
      * @param initialUser A String that contains the PlayerID of the current player being displayed in the match history screen
