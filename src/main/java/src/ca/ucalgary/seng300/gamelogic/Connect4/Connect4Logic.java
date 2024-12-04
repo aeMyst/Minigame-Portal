@@ -47,7 +47,7 @@ public class Connect4Logic extends Connect4Board {
      * main method for placing pieces, looping until board is full or win condition is achieved
      * 
      * @param board The board that we are checking
-     * @param row The row of the position we want to check
+     * @param piece The kind of piece that is being placed
      * @param col The collumn of the position we want to check
      * @return True if the piece is properly placed, false otherwise
      */
