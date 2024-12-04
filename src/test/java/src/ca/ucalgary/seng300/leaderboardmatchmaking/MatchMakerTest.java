@@ -4,6 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import src.ca.ucalgary.seng300.leaderboard.logic.*;
 import src.ca.ucalgary.seng300.leaderboard.data.*;
+import java.util.ArrayList;
 
 public class MatchMakerTest {
 
@@ -40,8 +41,6 @@ public class MatchMakerTest {
         assertEquals(0, matchMaker.queue.size());
         assertEquals(0, matchMaker.match.size());
     }
-
-    // New tests
 
     /**
      * Test adding a player to the queue.
@@ -101,5 +100,26 @@ public class MatchMakerTest {
         assertEquals(1, matchMaker.match.size());
         assertTrue(matchMaker.match.contains(player1));
         assertFalse(matchMaker.match.contains(player2));
+    }
+
+    /**
+     * Test creating a match with insufficient players.
+     */
+    @Test
+    public void testCreateMatchWithInsufficientPlayers() {
+        Storage storage = new Storage();
+        MatchMaker matchMaker = new MatchMaker(storage);
+        Player player1 = new Player("CONNECT4", "Player1", 1000, 10, 5, 0);
+        storage.addPlayer(player1);
+
+        // Add one player to the match list directly
+        matchMaker.match.add(player1);
+
+        // Attempt to create a match
+        ArrayList<Player> match = matchMaker.createMatch();
+
+        // Check that no match is created
+        assertEquals(1, match.size());
+        assertTrue(match.contains(player1));
     }
 }
