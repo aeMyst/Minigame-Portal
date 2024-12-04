@@ -25,6 +25,12 @@ tasks.withType(JavaCompile) {
   options.encoding = 'UTF-8'
 }
 
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(21))
+  }
+}
+
 application {
     mainModule = 'src.ca.ucalgary.seng300'
     mainClass = 'src.ca.ucalgary.seng300.Main'
