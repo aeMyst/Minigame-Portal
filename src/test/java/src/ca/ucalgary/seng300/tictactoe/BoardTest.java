@@ -1,11 +1,11 @@
 package src.ca.ucalgary.seng300.tictactoe;
 
-import org.junit.jupiter.api.Test;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.Board;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class BoardTest {
