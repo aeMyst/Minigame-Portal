@@ -190,6 +190,10 @@ public class MatchHistoryScreen implements IScreen {
         });
     }
 
+    /**
+     * A getter method for the scene
+     * @return scene
+     */
     @Override
     public Scene getScene() {
         return scene;
