@@ -18,12 +18,17 @@ public class AuthService implements AuthInterface {
 
     // Initiate currentUser as null
     private User currentUser = null;
+    // Initialize ArrayList to store users
     private ArrayList<User> users = new ArrayList<>();
     // Set pathname for users data
     private static final String USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
 
+    /**
+     * Method to read new user data from file and store in ArrayList
+     */
     public AuthService() {
         ArrayList<User> newUsers = new ArrayList<>();
+        // Read from USER_DATA_FILE and add users
         try {
             BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE));
             String line;
@@ -38,7 +43,11 @@ public class AuthService implements AuthInterface {
         }
     }
 
+    /**
+     * Method to store current list of users in USER_DATA_FILE
+      */
     public void saveUsers() {
+        // Write to USER_DATA_FILE to store new users
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE));
             for (User user : users) {
@@ -93,14 +102,15 @@ public class AuthService implements AuthInterface {
 
 
     /**
-     * Function to store new user information to user txt file
+     * Function to store new user information to user data file file
      * @param user
      * @return True if information was added without error
      * @return False if error occurs
      */
     private boolean storeUser(User user) {
+        // Add user to ArrayList
         this.users.add(user);
-
+        // Write to USER_DATA_FILE to add new user information
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, true));
             writer.write(user.toCsv());
@@ -114,8 +124,15 @@ public class AuthService implements AuthInterface {
         }
     }
 
+    /**
+     * Function to modify user password given username and new desired password
+     * @param username
+     * @param password
+     */
     public void modifyUserPassword(String username, String password) {
+        // Find selected user
         for (User user : users) {
+            // If username matches, replace password with new input
             if (user.getUsername().equals(username)) {
                 user.setPassword(password);
                 saveUsers();
@@ -125,15 +142,19 @@ public class AuthService implements AuthInterface {
 
     }
 
-
+    /**
+     * Function to produce list of sanitized users
+     * @return sanitizedUsers
+     */
     public ArrayList<User> getSanitizedUsers() {
+        // Initialize new ArrayList
         ArrayList<User> sanitizedUsers = new ArrayList<>();
+        // Add each user to new ArrayList
         for (User user : users) {
             sanitizedUsers.add(new User(user.getUsername(), null, user.getEmail()));
         }
         return sanitizedUsers;
     }
-
 
     /**
      * Function to login user given username and password to validate in user data file
@@ -144,8 +165,10 @@ public class AuthService implements AuthInterface {
      */
     @Override
     public boolean login(String username, String password) {
+        // Validate username and password exist in user ArrayList
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                // Establish as current user
                 currentUser = user;
                 System.out.println("Login successful: " + username);
                 return true;
@@ -163,24 +186,35 @@ public class AuthService implements AuthInterface {
      */
     @Override
     public boolean logout(User user) {
+        // Check if user is null or does not match current user
         if (user == null || !user.equals(currentUser)) {
             System.out.println("User Invalid.");
             return false;
         }
-
+        // Set current user to null
         currentUser = null;
         System.out.println("User successfully logged out.");
         return true;
     }
 
-    // Method to check if a user is logged in, will return null if no user is logged in
+    /**
+     * Function to check if current user is logged in
+     * @return currentUser
+     */
     @Override
     public User isLoggedIn() {
         return currentUser;
     }
 
+    /**
+     * Function to update current user logged in
+     * @param newUsername
+     * @param newEmail
+     */
     public void updateCurrentUser(String newUsername, String newEmail) {
+        // Check if currentUser is null
         if (currentUser != null) {
+            // Update user if currentUser is null
             currentUser.setUsername(newUsername);
             currentUser.setEmail(newEmail);
         }

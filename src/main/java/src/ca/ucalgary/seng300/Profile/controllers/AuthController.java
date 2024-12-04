@@ -53,7 +53,9 @@ public class AuthController {
         return authService.logout(currentUser);
     }
 
-    // Method to check if a user is logged in, will return null if no user is logged in
+    /**
+     * Function to check if a user is logged in
+     */
     public User isLoggedIn(){
         // Implement method from AuthService class
         return authService.isLoggedIn();
