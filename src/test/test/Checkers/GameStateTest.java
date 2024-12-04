@@ -1,4 +1,4 @@
-package test.Checkers;
+package src.ca.ucalgary.seng300.gamelogic.Checkers;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

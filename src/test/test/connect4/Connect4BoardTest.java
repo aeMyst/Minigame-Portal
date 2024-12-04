@@ -1,4 +1,4 @@
-package Connect4;
+package connect4;
 
 import org.junit.jupiter.api.Test;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Board;
@@ -32,7 +32,7 @@ public class Connect4BoardTest {
         System.setOut(new PrintStream(outputStream));
 
         // Call printBoard and restore original System.out
-        Board.printBoard(board_array);
+        board.printBoard(board_array);
         System.setOut(originalOut);
 
         // Verify the output matches the expected printed board format
