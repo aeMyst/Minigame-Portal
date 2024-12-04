@@ -3,7 +3,6 @@ package src.ca.ucalgary.seng300.leaderboard.logic;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.data.Storage;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.IMatchmaker;
-
 import java.util.ArrayList;
 
 /**
