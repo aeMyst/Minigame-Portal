@@ -16,7 +16,7 @@ public class ValidationUtils {
     
     
     //Basic email validation regex pattern.
-    private static final String email_Regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\n";
+    private static final String email_Regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
 
     private static final String userName_Regex = "^[a-zA-Z0-9]+$"; //Basic username Regex patern.
