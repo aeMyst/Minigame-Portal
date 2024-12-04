@@ -109,13 +109,17 @@ public class FileManagement {
         return storage;
     }
 
+    /**
+     * Method that appends data to the existing data in the file used for match histories
+     * @param file File containing the data used in match history
+     * @param storage Storage containing the HistoryPlayer objects to be added to the existing file
+     */
     public static void fileWritingHistory(File file, HistoryStorage storage) {
-
         try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file,true))) {
             //write info to the file in the format of "gametype, player_id, winner, loser, eloGained, eloLost"
             for (HistoryPlayer hp : storage.getPlayersHistory()) {
-                String[] player = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};
-                writerBuffer.write(String.join(",", player));
+                String[] player = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};  // get the attributes of the HistoryPlayer and store it in a String array
+                writerBuffer.write(String.join(",", player)); // write the string with element separated by a comma
                 writerBuffer.newLine();
             }
 
