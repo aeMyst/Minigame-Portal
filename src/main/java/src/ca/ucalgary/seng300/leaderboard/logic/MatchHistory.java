@@ -12,9 +12,8 @@ import java.util.ListIterator;
 
 public class MatchHistory implements IMatchHistory {
 
-    // File paths for match history and user data
+    // File path for match history (converted to file)
     private static final String FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/match_history.txt";
-    private static final String USERS_PATH = "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
     private File file = new File(FILE_PATH);
 
     /**
