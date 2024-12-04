@@ -204,4 +204,19 @@ public class DataTest {
         assertEquals(10, player.getLosses());
         assertEquals(5, player.getTies());
     }
+
+    @Test
+    public void testToStringProducesCorrectOutput() {
+        // Arrange: Create a Player instance with sample attributes
+        Player player = new Player("Chess", "123", 1500, 10, 5, 2);
+
+        // Expected string representation
+        String expected = "GameType: Chess\tPlayerID: 123\tElo: 1500\tWins: 10\tLosses: 5\tTies: 2";
+
+        // Act: Call the toString method
+        String actual = player.toString();
+
+        // Assert: Verify the output matches the expected string
+        assertEquals(expected, actual);
+    }
 }
