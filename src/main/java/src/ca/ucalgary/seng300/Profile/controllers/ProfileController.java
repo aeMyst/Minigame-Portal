@@ -21,8 +21,7 @@ public class ProfileController {
 
     // View a user's profile
     public String viewProfile() {
-        // Implement method from ProfileService
-        return profileService.viewProfile();
+       return profileService.viewProfile();
     }
 
     /**
@@ -33,29 +32,23 @@ public class ProfileController {
      * @param newPassword
      */
     public void updateProfile(User user, String newUsername, String newEmail, String newPassword) {
-        // Implement method from profileService class
         profileService.updateProfile(user, newUsername, newEmail, newPassword);
     }
 
     /**
-     * Method to track player game history, increment games played
-     * @param user
-     * @param profile
+     * Method to initialize profile for new user
+     * @param username
      */
-    public void trackGameHistory(User user, Profile profile) {
-        // Implement method from profileService class
-        profileService.trackGameHistory(user, profile);
+    public void initializeProfile(String username) {
+        profileService.initializeProfile(username);
     }
 
     /**
-     * Method to updating player ranking after game finishes
-     * @param user
-     * @param rank
+     * Method to search a user's profile
+     * @param username
      */
-    public void updateRanking(User user, int rank) {
-        // Implement method from profileService class
-        profileService.updateRanking(user, rank);
+    public String searchProfile(String username) {
+        return profileService.searchProfile(username);
     }
-
 
 }
