@@ -76,15 +76,20 @@ public class FileManagement {
         }
     }
 
+    /**
+     * Used to read the file containing data to be used in match histories
+     * @param file File to be read that contains the match history data
+     * @return Storage of HistoryStorage data type that contains the MatchPlayer objects from the file
+     */
     public static HistoryStorage fileReadingHistory(File file) {
-        ArrayList<HistoryPlayer> players = new ArrayList<>();
+        ArrayList<HistoryPlayer> players = new ArrayList<>();   // empty array list where the HistoryPlayer data will be added from the file
         HistoryStorage storage = null;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line = reader.readLine();
             while (line != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 7) {
+                if (parts.length == 7) {    // if the line in the file contains 7 elements, then create a new instance of HistoryPlayer to be added to arraylist
                     HistoryPlayer player = new HistoryPlayer(parts[0], parts[1], parts[2], parts[3], Integer.parseInt(parts[4]), Integer.parseInt(parts[5]), parts[6]);
                     players.add(player);
                 } else {
@@ -92,7 +97,7 @@ public class FileManagement {
                 }
                 line = reader.readLine();
             }
-            HistoryStorage newStorage = new HistoryStorage(players);
+            HistoryStorage newStorage = new HistoryStorage(players);    // add the arraylist containing the data from the file to the storage
             storage = newStorage;
         } catch (IOException error) {
             if (error instanceof FileNotFoundException) {
