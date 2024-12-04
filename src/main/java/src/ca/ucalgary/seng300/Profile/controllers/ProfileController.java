@@ -47,8 +47,8 @@ public class ProfileController {
      * Method to search a user's profile
      * @param username
      */
-    public void searchProfile(String username) {
-        profileService.searchProfile(username);
+    public String searchProfile(String username) {
+        return profileService.searchProfile(username);
     }
 
 }
