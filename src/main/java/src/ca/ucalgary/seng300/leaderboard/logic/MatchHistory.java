@@ -67,6 +67,7 @@ public class MatchHistory implements IMatchHistory {
 
             if (history.isEmpty()) {
                 System.out.println("No match history is available.");
+                throw new AssertionError("No match history is available.");
             }
 
             // Convert the history list to a 2D array
@@ -91,6 +92,18 @@ public class MatchHistory implements IMatchHistory {
         } else {
             System.out.println("[ERROR] File does not exist.");
             return new String[0][];
+        }
+    }
+    public void clearMatchHistory() {
+        try {
+            // Clear the contents of the file by writing an empty HistoryStorage object to the file
+            HistoryStorage emptyStorage = new HistoryStorage(); // Create an empty HistoryStorage
+            FileManagement.fileWritingHistoryNewFile(file, emptyStorage); // Write the empty history to the file
+            System.out.println("Match history has been cleared.");
+        } catch (Exception e) {
+            System.out.println("Error clearing match history");
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

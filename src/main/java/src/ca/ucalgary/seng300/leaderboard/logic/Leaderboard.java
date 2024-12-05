@@ -94,10 +94,10 @@ public class Leaderboard implements ILeaderboard {
                     break; // Limit to the top 10 players
                 }
             }
-
+            /*
             if (C4Players.isEmpty()) {
                 System.out.println("No player data available.");
-            }
+            }*/
 
             // Sorting CONNECT4 players by Elo rating in descending order
             C4Players.sort((player1, player2) -> Integer.compare(player2.getElo(), player1.getElo()));
