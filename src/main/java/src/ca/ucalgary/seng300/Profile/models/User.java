@@ -1,12 +1,16 @@
 package src.ca.ucalgary.seng300.Profile.models;
 
-
+/**
+ * Class for User object and methods
+ */
 public class User {
 
+    // Fields of User object
     private String username;
     private String password;
     private String email;
 
+    // Constructor for User object
     public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
@@ -22,6 +26,7 @@ public class User {
         return email + "," + username + "," + password;
     }
 
+    // Getter and setter methods for username
     public void setUsername(String username) {
         this.username = username;
     }
@@ -30,10 +35,12 @@ public class User {
         return username;
     }
 
+    // Getter and setter methods for password
     public String getPassword() {
         return password;
     }
 
+    // Getter and setter methods for email
     public void setEmail(String email) {
         this.email = email;
     }

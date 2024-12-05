@@ -1,3 +1,8 @@
+/**
+ * Class to implement methods from ProfileService to handle profile information
+ * @author
+ */
+
 package src.ca.ucalgary.seng300.Profile.controllers;
 
 import src.ca.ucalgary.seng300.Profile.models.Profile;
@@ -6,8 +11,10 @@ import src.ca.ucalgary.seng300.Profile.services.ProfileService;
 
 public class ProfileController {
 
+    // Initialize ProfileService field
     private final ProfileService profileService;
 
+    // Constructor for ProfileController object
     public ProfileController(ProfileService profileService) {
         this.profileService = profileService;
     }
@@ -17,20 +24,31 @@ public class ProfileController {
        return profileService.viewProfile();
     }
 
-    // Update a user's profile (username, email, password)
+    /**
+     * Method to update profile information
+     * @param user
+     * @param newUsername
+     * @param newEmail
+     * @param newPassword
+     */
     public void updateProfile(User user, String newUsername, String newEmail, String newPassword) {
         profileService.updateProfile(user, newUsername, newEmail, newPassword);
     }
 
-    // Track game history (increment games played)
+    /**
+     * Method to initialize profile for new user
+     * @param username
+     */
     public void initializeProfile(String username) {
         profileService.initializeProfile(username);
     }
 
-    // Update ranking
-    public void searchProfile(String username) {
-        profileService.searchProfile(username);
+    /**
+     * Method to search a user's profile
+     * @param username
+     */
+    public String searchProfile(String username) {
+        return profileService.searchProfile(username);
     }
-
 
 }
