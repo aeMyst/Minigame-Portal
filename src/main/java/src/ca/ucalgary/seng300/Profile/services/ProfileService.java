@@ -183,7 +183,7 @@ public class ProfileService implements ProfileInterface {
             while ((line = reader.readLine()) != null) {
                 lines.add(line.split(","));
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Error reading from file: " + e.getMessage());
         }
         return lines;
@@ -200,7 +200,7 @@ public class ProfileService implements ProfileInterface {
                 writer.write(String.join(",", line));
                 writer.newLine();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Error writing file: " + e.getMessage());
         }
     }
@@ -214,7 +214,7 @@ public class ProfileService implements ProfileInterface {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
             writer.write(line);
             writer.newLine();
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Error appending to file: " + e.getMessage());
         }
     }
