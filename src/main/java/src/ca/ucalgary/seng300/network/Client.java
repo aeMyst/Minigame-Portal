@@ -77,9 +77,7 @@ public class Client implements IClient {
         clientAuth = new ClientAuth(auth);
     }
 
-    public void initializeProfile(String username) {
-        profile.initializeProfile(username);
-    }
+
 
     /**
      * Disconnect the client from the network
@@ -128,10 +126,7 @@ public class Client implements IClient {
         return clientAuth.registerUser(username, password, email);
     }
 
-    public boolean validateRecoveryInfo(String username, String recoveryInfo) {
-        System.out.println("validateRecoveryInfo");
-        return true;
-    }
+
 
     /**
      * Gets the username of the user
