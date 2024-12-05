@@ -21,7 +21,7 @@ public class AuthService implements AuthInterface {
     // Initialize ArrayList to store users
     private ArrayList<User> users = new ArrayList<>();
     // Set pathname for users data
-    private static final String USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
+    public String USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
 
     /**
      * Method to read new user data from file and store in ArrayList
