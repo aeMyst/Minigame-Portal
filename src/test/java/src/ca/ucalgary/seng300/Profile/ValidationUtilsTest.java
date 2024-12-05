@@ -22,7 +22,6 @@ public class ValidationUtilsTest {
         Assert.assertFalse(ValidationUtils.isValidEmail("user@.com")); //domain should not start with .
         Assert.assertFalse(ValidationUtils.isValidEmail("user@domain")); //needs to be a .something eg; .com
         Assert.assertFalse(ValidationUtils.isValidEmail("invalid-email")); //Missing @
-
     }
     @Test
     public void testEmptyOrNullEmail() {
