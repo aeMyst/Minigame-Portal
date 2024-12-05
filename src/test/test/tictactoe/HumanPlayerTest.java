@@ -1,4 +1,4 @@
-package tiktaktoe;
+package test.tictactoe;
 
 import org.junit.Before;
 import org.junit.Test;
