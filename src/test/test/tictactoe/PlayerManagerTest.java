@@ -1,4 +1,4 @@
-package test.tictactoe;
+package src.ca.ucalgary.seng300;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -59,3 +59,5 @@ public class PlayerManagerTest {
         assertEquals("After switching again, the current player should be player1", player1, playerManager.getCurrentPlayer());
     }
 }
+
+
