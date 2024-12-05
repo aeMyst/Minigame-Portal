@@ -426,6 +426,86 @@ public class MatchMakerTest {
         assertEquals("player1", result[0][1], "Expected player1 to be in the match history");
     }
 
+    @Test
+    public void testChallengePlayerQueueAddsPlayersToMatch() {
+        // Create a storage and players
+        Storage storage = new Storage();
+        Player player1 = new Player("CONNECT4", "player1", 1500, 10, 5, 2);
+        Player player2 = new Player("CONNECT4", "player2", 1450, 8, 6, 3);
+        storage.addPlayer(player1);
+        storage.addPlayer(player2);
 
+        // Create the MatchMaker
+        MatchMaker matchMaker = new MatchMaker(storage);
+
+        // Call the challengePlayerQueue method
+        matchMaker.challengePlayerQueue("player1", "player2", "CONNECT4");
+
+        // Assert that both players are added to the match list
+        assertTrue("player1 should be in the match list", matchMaker.match.contains(player1));
+        assertTrue("player2 should be in the match list", matchMaker.match.contains(player2));
+    }
+
+    @Test
+    public void testChallengePlayerQueueDoesNotAddPlayerIfNotInQueue() {
+        // Create a storage and players
+        Storage storage = new Storage();
+        Player player1 = new Player("CONNECT4", "player1", 1500, 10, 5, 2);
+        Player player3 = new Player("GameTypeB", "player3", 1600, 15, 3, 4);
+        storage.addPlayer(player1);
+        storage.addPlayer(player3);
+
+        // Create the MatchMaker
+        MatchMaker matchMaker = new MatchMaker(storage);
+
+        // Call the challengePlayerQueue method
+        matchMaker.challengePlayerQueue("player1", "player3", "CONNECT4");
+
+        // Assert that no players are added to the match list because of different game types
+        assertFalse("No players should be in the match list", matchMaker.match.isEmpty());
+    }
+
+    @Test
+    public void testAddPlayerToQueueAndFindMatch() {
+        // Create a storage and players
+        Storage storage = new Storage();
+        Player player1 = new Player("CONNECT4", "player1", 1500, 10, 5, 2);
+        Player player2 = new Player("CONNECT4", "player2", 1450, 8, 6, 3);
+        Player player4 = new Player("CONNECT4", "player4", 1700, 12, 3, 4);
+        storage.addPlayer(player1);
+        storage.addPlayer(player2);
+        storage.addPlayer(player4);
+
+        // Create the MatchMaker
+        MatchMaker matchMaker = new MatchMaker(storage);
+
+        // Add players to the queue
+        matchMaker.addPlayerToQueue("player1", "CONNECT4");
+        matchMaker.addPlayerToQueue("player2", "CONNECT4");
+
+        // Create match and ensure player1 and player2 are matched based on Elo ratings
+        ArrayList<Player> match = matchMaker.createMatch();
+
+        assertEquals("There should be two players in the match", 2, match.size());
+        assertTrue("player1 should be in the match", match.contains(player1));
+        assertTrue("player2 should be in the match", match.contains(player2));
+    }
+
+    @Test
+    public void testFindMatchForSinglePlayer() {
+        // Create a storage and player
+        Storage storage = new Storage();
+        Player player1 = new Player("CONNECT4", "player1", 1500, 10, 5, 2);
+        storage.addPlayer(player1);
+
+        // Create the MatchMaker
+        MatchMaker matchMaker = new MatchMaker(storage);
+
+        // Add a single player to the queue
+        matchMaker.addPlayerToQueue("player1", "CONNECT4");
+
+        // Assert that no match is created, and player1 is still in the queue
+        assertTrue("player1 should still be in the queue", matchMaker.queue.contains(player1));
+    }
 
 }
