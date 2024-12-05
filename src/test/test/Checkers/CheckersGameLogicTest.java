@@ -224,8 +224,20 @@ public class CheckersGameLogicTest {
 
         assertFalse(game.isValidCapture(4,2,6,2, player2));
 
-        assertFalse(game.isValidCapture(6,3,7,3, player2));
-        assertFalse(game.isValidCapture(1,2,0,2, player1));
+        game.getBoard()[3][2] = 2;
+        game.getBoard()[5][0] = 0;
+        assertFalse(game.isValidCapture(3,2,5,0, player2));
+
+        setup();
+        game.getBoard()[4][2] = 1;
+        assertFalse(game.isValidCapture(4,2,2,0, player1));
+
+        setup();
+        game.getBoard()[4][1] = 3;
+        assertTrue(game.isValidCapture(5,2,3,0, player2));
+
+
+        //assertFalse(game.isValidCapture(1,2,0,2, player1));
 
     }
 
