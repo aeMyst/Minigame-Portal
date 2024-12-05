@@ -1,4 +1,4 @@
-package test.tictactoe;
+package src.ca.ucalgary.seng300;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -103,3 +103,9 @@ TICTACTOE,newUser,0,0,0,0
 CHECKERS,testUser,0,0,0,0
 CONNECT4,testUser,0,0,0,0
 TICTACTOE,testUser,0,0,0,0
+CHECKERS,newUser,0,0,0,0
+CONNECT4,newUser,0,0,0,0
+TICTACTOE,newUser,0,0,0,0
+CHECKERS,testUser,0,0,0,0
+CONNECT4,testUser,0,0,0,0
+TICTACTOE,testUser,0,0,0,0
