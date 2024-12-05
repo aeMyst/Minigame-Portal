@@ -79,23 +79,41 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;import java.util.ArrayList;
 &nbsp;
+&nbsp;/**
+&nbsp; *  Class representing the storage for HistoryPlayers used for match histories
+&nbsp; */
 &nbsp;public class HistoryStorage {
 &nbsp;
 &nbsp;    private ArrayList&lt;HistoryPlayer&gt; players;
 &nbsp;
+&nbsp;    /**
+&nbsp;     * Constructor to initialize the HistoryStorage object with a list of HistoryPlayer used in match histories
+&nbsp;     * @param players
+&nbsp;     */
 <b class="fc">&nbsp;    public HistoryStorage(ArrayList&lt;HistoryPlayer&gt; players){</b>
 <b class="fc">&nbsp;        this.players = players;</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    /**
+&nbsp;     * Default constructor to initialize a HistoryStorage object with an empty list
+&nbsp;     */
 <b class="fc">&nbsp;    public HistoryStorage(){</b>
 <b class="fc">&nbsp;        ArrayList&lt;HistoryPlayer&gt; emptyPlayers = new ArrayList&lt;HistoryPlayer&gt;();</b>
 <b class="fc">&nbsp;        this.players = emptyPlayers;</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    /**
+&nbsp;     * Adds a HistoryPlayer to HistoryStorage
+&nbsp;     * @param player The HistoryPlayer to be added to the storage
+&nbsp;     */
 &nbsp;    public void addPlayerHistory(HistoryPlayer player){
 <b class="fc">&nbsp;        this.players.add(player);</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    /**
+&nbsp;     * Fetches the list of HistoryPlayer objects from HistoryStorage
+&nbsp;     * @return The list of HistoryPlayer objects
+&nbsp;     */
 &nbsp;    public ArrayList&lt;HistoryPlayer&gt; getPlayersHistory(){
 <b class="fc">&nbsp;        return this.players;</b>
 &nbsp;    }
@@ -123,7 +141,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-12-03 17:51</div>
+    <div style="float:right;">generated on 2024-12-04 21:31</div>
 </div>
 </body>
 </html>

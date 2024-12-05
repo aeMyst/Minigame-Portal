@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
-  <title>Coverage Report > ILeaderboard</title>
+  <title>Coverage Report > IMatchmaker</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -22,14 +22,14 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">src.ca.ucalgary.seng300.leaderboard.interfaces</a>
 </div>
 
-<h1>Coverage Summary for Class: ILeaderboard (src.ca.ucalgary.seng300.leaderboard.interfaces)</h1>
+<h1>Coverage Summary for Class: IMatchmaker (src.ca.ucalgary.seng300.leaderboard.interfaces)</h1>
 
 <table class="coverageStats">
 <tr>
   <th class="name">Class</th>
 </tr>
 <tr>
-  <td class="name">ILeaderboard</td>
+  <td class="name">IMatchmaker</td>
 </tr>
 
 </table>
@@ -41,33 +41,35 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package src.ca.ucalgary.seng300.leaderboard.interfaces;
 &nbsp;
+&nbsp;import src.ca.ucalgary.seng300.leaderboard.data.Player;
+&nbsp;import java.util.ArrayList;
+&nbsp;
 &nbsp;/**
-&nbsp; * Interface for leaderboard functionality in a leaderboard system.
+&nbsp; * Interface for matchmaking functionality in a leaderboard system.
 &nbsp; */
-&nbsp;public interface ILeaderboard {
-&nbsp;
-&nbsp;    String[][] sortLeaderboard(String gameType);
+&nbsp;public interface IMatchmaker {
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Retrieves the leaderboard for Connect Four.
+&nbsp;     * Adds a player to the matchmaking queue.
 &nbsp;     *
-&nbsp;     * @return A 2D array of Strings representing the Connect Four leaderboard.
+&nbsp;     * @param user The username of the player.
+&nbsp;     * @param gameType The type of game the player wants to play.
 &nbsp;     */
-&nbsp;    String[][] getC4Leaderboard();
+&nbsp;    void addPlayerToQueue(String user, String gameType);
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Retrieves the leaderboard for Tic Tac Toe.
+&nbsp;     * Finds a match for the specified player.
 &nbsp;     *
-&nbsp;     * @return A 2D array of Strings representing the Tic Tac Toe leaderboard.
+&nbsp;     * @param user The username of the player.
 &nbsp;     */
-&nbsp;    String[][] getTicTacToeLeaderboard();
+&nbsp;    void findMatch(String user);
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Retrieves the leaderboard for Checkers.
+&nbsp;     * Creates a match from the players in the queue.
 &nbsp;     *
-&nbsp;     * @return A 2D array of Strings representing the Checkers leaderboard.
+&nbsp;     * @return An ArrayList of Player objects representing the players in the match.
 &nbsp;     */
-&nbsp;    String[][] getCheckersLeaderboard();
+&nbsp;    ArrayList&lt;Player&gt; createMatch();
 &nbsp;}
 </code>
 </pre>
@@ -92,7 +94,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-12-03 17:51</div>
+    <div style="float:right;">generated on 2024-12-04 21:31</div>
 </div>
 </body>
 </html>
