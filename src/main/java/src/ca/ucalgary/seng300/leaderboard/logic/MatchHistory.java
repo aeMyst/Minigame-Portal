@@ -16,7 +16,7 @@ public class MatchHistory implements IMatchHistory {
     private static final String FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/match_history.txt";
 
 
-    private File file;
+    public File file;
 
     public MatchHistory() {
          file = new File(FILE_PATH);
