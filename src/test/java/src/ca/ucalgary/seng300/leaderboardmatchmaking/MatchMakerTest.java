@@ -6,8 +6,10 @@ import src.ca.ucalgary.seng300.leaderboard.logic.*;
 import src.ca.ucalgary.seng300.leaderboard.data.*;
 import src.ca.ucalgary.seng300.leaderboard.utility.FileManagement;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class MatchMakerTest {
@@ -605,5 +607,21 @@ public class MatchMakerTest {
 
         // Assert: The player should only appear once in the queue
         assertEquals("There should be only one player1 in the queue", 1, matchMaker.queue.stream().filter(p -> p.getPlayerID().equals("player1")).count());
+    }
+
+    @Test
+    public void testNoPlayersForMatch() {
+        Storage mockStorage = new Storage();
+        MatchMaker mm = new MatchMaker(mockStorage);
+
+        Player player1 = new Player("GameTypeA", "player1", 1000, 10, 5, 2);
+        Player player2 = new Player("GameTypeB", "player2", 3000, 10, 5, 2);
+
+       mockStorage.addPlayer(player1);
+       mockStorage.addPlayer(player2);
+
+        mm.addPlayerToQueue("player1", "GameTypeA");
+        mm.addPlayerToQueue("player2", "GameTypeB");
+
     }
 }
