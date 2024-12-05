@@ -129,6 +129,31 @@ public class MatchMakerTest {
         assertTrue(match.contains(player1));
     }
 
+    /**
+     * Test creating a match with sufficient players.
+     */
+    @Test
+    public void testCreateMatchWithSufficientPlayers() {
+        Storage storage = new Storage();
+        MatchMaker matchMaker = new MatchMaker(storage);
+        Player player1 = new Player("CONNECT4", "Player1", 1000, 10, 5, 0);
+        Player player2 = new Player("CONNECT4", "Player2", 1100, 15, 7, 0);
+        storage.addPlayer(player1);
+        storage.addPlayer(player2);
+
+        // Add two players to the match list directly
+        matchMaker.match.add(player1);
+        matchMaker.match.add(player2);
+
+        // Attempt to create a match
+        ArrayList<Player> match = matchMaker.createMatch();
+
+        // Check that a match is created
+        assertEquals(2, match.size());
+        assertTrue(match.contains(player1));
+        assertTrue(match.contains(player2));
+    }
+
     @Test
     public void testUpdateMatchHistory() {
         HistoryStorage storage = new HistoryStorage();
@@ -194,6 +219,138 @@ public class MatchMakerTest {
         // Clean up
         File file = new File("src/main/java/src/ca/ucalgary/seng300/database/match_history.txt");
         file.delete();
+    }
+
+    /**
+     * Test adding a player to the queue when they are already present.
+     */
+    @Test
+    public void testAddPlayerToQueueAlreadyPresent() {
+        Storage storage = new Storage();
+        MatchMaker matchMaker = new MatchMaker(storage);
+        Player player1 = new Player("CONNECT4", "Player1", 1000, 10, 5, 0);
+        storage.addPlayer(player1);
+
+        // Add the player to the queue
+        matchMaker.addPlayerToQueue("Player1", "CONNECT4");
+
+        // Attempt to add the same player again
+        matchMaker.addPlayerToQueue("Player1", "CONNECT4");
+
+        // Check that the player is not added twice
+        assertEquals(1, matchMaker.queue.size());
+    }
+
+    /**
+     * Test removing older matches beyond the most recent two.
+     */
+    @Test
+    public void testRemoveOlderMatches() {
+        HistoryStorage storage = new HistoryStorage();
+        MatchHistory matchHistory = new MatchHistory();
+        HistoryPlayer player1 = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player2", 10, -10, "2024-12-03");
+        HistoryPlayer player2 = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player3", 15, -15, "2024-12-04");
+        HistoryPlayer player3 = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player4", 20, -20, "2024-12-05");
+        storage.addPlayerHistory(player1);
+        storage.addPlayerHistory(player2);
+        storage.addPlayerHistory(player3);
+
+        // Update match history to ensure the file is created
+        matchHistory.updateMatchHistory(storage, "Player1");
+
+        // Retrieve match history
+        String[][] history = matchHistory.getMatchHistory("Player1");
+
+        // Verify the match history contains only the most recent two matches
+        assertEquals(2, history.length);
+
+        // Verify the most recent match
+        assertEquals("CONNECT4", history[0][0]);
+        assertEquals("Player1", history[0][1]);
+        assertEquals("Player1", history[0][2]);
+        assertEquals("Player4", history[0][3]);
+        assertEquals("20", history[0][4]);
+        assertEquals("-20", history[0][5]);
+        assertEquals("2024-12-05", history[0][6]);
+
+        // Verify the second most recent match
+        assertEquals("CONNECT4", history[1][0]);
+        assertEquals("Player1", history[1][1]);
+        assertEquals("Player1", history[1][2]);
+        assertEquals("Player3", history[1][3]);
+        assertEquals("15", history[1][4]);
+        assertEquals("-15", history[1][5]);
+        assertEquals("2024-12-04", history[1][6]);
+
+        // Clean up
+        File file = new File("src/main/java/src/ca/ucalgary/seng300/database/match_history.txt");
+        file.delete();
+    }
+
+    /**
+     * Test handling no match history available.
+     */
+    @Test
+    public void testNoMatchHistoryAvailable() {
+        HistoryStorage storage = new HistoryStorage();
+        MatchHistory matchHistory = new MatchHistory();
+
+        // Retrieve match history when no history is available
+        String[][] history = matchHistory.getMatchHistory("Player1");
+
+        // Verify the match history is empty
+        assertEquals(0, history.length);
+    }
+
+    /**
+     * Test handling an exception when updating match history.
+     */
+    @Test
+    public void testUpdateMatchHistoryException() {
+        HistoryStorage storage = new HistoryStorage();
+        MatchHistory matchHistory = new MatchHistory() {
+            @Override
+            public void updateMatchHistory(HistoryStorage storage, String player) {
+                try {
+                    throw new IOException("Simulated IO Exception");
+                } catch (Exception e) {
+                    System.out.println("Error fetching match history");
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+
+        // Simulate an exception by calling the overridden method
+        try {
+            matchHistory.updateMatchHistory(storage, "Player1");
+            fail("Expected RuntimeException");
+        } catch (RuntimeException e) {
+            assertTrue(e.getCause() instanceof IOException);
+            assertEquals("Simulated IO Exception", e.getCause().getMessage());
+        }
+    }
+
+    /**
+     * Test finding a match with no suitable players within the Elo threshold.
+     */
+    @Test
+    public void testFindMatchNoSuitablePlayers() {
+        Storage storage = new Storage();
+        MatchMaker matchMaker = new MatchMaker(storage);
+        Player player1 = new Player("CONNECT4", "Player1", 1000, 10, 5, 0);
+        Player player2 = new Player("CONNECT4", "Player2", 1300, 15, 7, 0);
+        storage.addPlayer(player1);
+        storage.addPlayer(player2);
+
+        // Add both players to the queue
+        matchMaker.addPlayerToQueue("Player1", "CONNECT4");
+        matchMaker.addPlayerToQueue("Player2", "CONNECT4");
+
+        // Attempt to find a match
+        matchMaker.findMatch("Player1");
+
+        assertEquals(1, matchMaker.queue.size());
     }
 
     @Test

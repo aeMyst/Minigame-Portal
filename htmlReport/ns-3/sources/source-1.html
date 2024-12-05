@@ -52,18 +52,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    44.4%
+    85.7%
   </span>
   <span class="absValue">
-    (4/9)
+    (6/7)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    42.5%
+    92%
   </span>
   <span class="absValue">
-    (51/120)
+    (92/100)
   </span>
 </td>
 </tr>
@@ -120,8 +120,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;            storage = newStorage;</b>
 <b class="fc">&nbsp;            reader.close();</b>
 <b class="fc">&nbsp;        } catch (IOException error) {</b>
-<b class="nc">&nbsp;            if (error instanceof FileNotFoundException) {</b>
-<b class="nc">&nbsp;                System.out.println(&quot;File not found&quot;); // Handle missing file</b>
+<b class="fc">&nbsp;            if (error instanceof FileNotFoundException) {</b>
+<b class="fc">&nbsp;                System.out.println(&quot;File not found&quot;); // Handle missing file</b>
 &nbsp;            } else {
 <b class="nc">&nbsp;                System.out.println(&quot;Error reading file&quot;); // Handle other IO errors</b>
 &nbsp;            }
@@ -137,31 +137,36 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @param file The file object representing the destination CSV file.
 &nbsp;     */
 &nbsp;    public static void fileWriting(Storage storage, File file) {
-<b class="nc">&nbsp;        ArrayList&lt;Player&gt; players = storage.getPlayers();</b>
+<b class="fc">&nbsp;        ArrayList&lt;Player&gt; players = storage.getPlayers();</b>
 &nbsp;
-<b class="nc">&nbsp;        try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file))) {</b>
+<b class="fc">&nbsp;        try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file))) {</b>
 &nbsp;            // Convert Player attributes into CSV format
-<b class="nc">&nbsp;            for (int i = 0; i &lt; players.size(); i++) {</b>
-<b class="nc">&nbsp;                String[] player = {players.get(i).getGameType(), players.get(i).getPlayerID(), String.valueOf(players.get(i).getElo()), String.valueOf(players.get(i).getWins()), String.valueOf(players.get(i).getLosses()), String.valueOf(players.get(i).getTies())};</b>
-<b class="nc">&nbsp;                writerBuffer.write(String.join(&quot;,&quot;, player)); // Write the player&#39;s data to the file</b>
-<b class="nc">&nbsp;                writerBuffer.newLine(); // Add a new line</b>
+<b class="fc">&nbsp;            for (int i = 0; i &lt; players.size(); i++) {</b>
+<b class="fc">&nbsp;                String[] player = {players.get(i).getGameType(), players.get(i).getPlayerID(), String.valueOf(players.get(i).getElo()), String.valueOf(players.get(i).getWins()), String.valueOf(players.get(i).getLosses()), String.valueOf(players.get(i).getTies())};</b>
+<b class="fc">&nbsp;                writerBuffer.write(String.join(&quot;,&quot;, player)); // Write the player&#39;s data to the file</b>
+<b class="fc">&nbsp;                writerBuffer.newLine(); // Add a new line</b>
 &nbsp;            }
 &nbsp;
-<b class="nc">&nbsp;        } catch (IOException error) {</b>
-<b class="nc">&nbsp;            System.out.println(&quot;Error writing file&quot;); // Handle errors during file writing</b>
-<b class="nc">&nbsp;            error.printStackTrace();</b>
-<b class="nc">&nbsp;        }</b>
+<b class="fc">&nbsp;        } catch (IOException error) {</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Error writing file&quot;); // Handle errors during file writing</b>
+<b class="fc">&nbsp;            error.printStackTrace();</b>
+<b class="fc">&nbsp;        }</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    /**
+&nbsp;     * Used to read the file containing data to be used in match histories
+&nbsp;     * @param file File to be read that contains the match history data
+&nbsp;     * @return Storage of HistoryStorage data type that contains the MatchPlayer objects from the file
+&nbsp;     */
 &nbsp;    public static HistoryStorage fileReadingHistory(File file) {
-<b class="fc">&nbsp;        ArrayList&lt;HistoryPlayer&gt; players = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        ArrayList&lt;HistoryPlayer&gt; players = new ArrayList&lt;&gt;();   // empty array list where the HistoryPlayer data will be added from the file</b>
 <b class="fc">&nbsp;        HistoryStorage storage = null;</b>
 &nbsp;
 <b class="fc">&nbsp;        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {</b>
 <b class="fc">&nbsp;            String line = reader.readLine();</b>
 <b class="fc">&nbsp;            while (line != null) {</b>
 <b class="fc">&nbsp;                String[] parts = line.split(&quot;,&quot;);</b>
-<b class="fc">&nbsp;                if (parts.length == 7) {</b>
+<b class="fc">&nbsp;                if (parts.length == 7) {    // if the line in the file contains 7 elements, then create a new instance of HistoryPlayer to be added to arraylist</b>
 <b class="fc">&nbsp;                    HistoryPlayer player = new HistoryPlayer(parts[0], parts[1], parts[2], parts[3], Integer.parseInt(parts[4]), Integer.parseInt(parts[5]), parts[6]);</b>
 <b class="fc">&nbsp;                    players.add(player);</b>
 <b class="fc">&nbsp;                } else {</b>
@@ -169,11 +174,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;                }
 <b class="fc">&nbsp;                line = reader.readLine();</b>
 <b class="fc">&nbsp;            }</b>
-<b class="fc">&nbsp;            HistoryStorage newStorage = new HistoryStorage(players);</b>
+<b class="fc">&nbsp;            HistoryStorage newStorage = new HistoryStorage(players);    // add the arraylist containing the data from the file to the storage</b>
 <b class="fc">&nbsp;            storage = newStorage;</b>
 <b class="fc">&nbsp;        } catch (IOException error) {</b>
-<b class="nc">&nbsp;            if (error instanceof FileNotFoundException) {</b>
-<b class="nc">&nbsp;                System.out.println(&quot;File not found&quot;);</b>
+<b class="fc">&nbsp;            if (error instanceof FileNotFoundException) {</b>
+<b class="fc">&nbsp;                System.out.println(&quot;File not found&quot;);</b>
 &nbsp;            } else {
 <b class="nc">&nbsp;                System.out.println(&quot;Error reading file&quot;);</b>
 &nbsp;            }
@@ -181,28 +186,37 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        return storage;</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    /**
+&nbsp;     * Method that appends data to the existing data in the file used for match histories
+&nbsp;     * @param file File containing the data used in match history
+&nbsp;     * @param storage Storage containing the HistoryPlayer objects to be written to the existing file
+&nbsp;     */
 &nbsp;    public static void fileWritingHistory(File file, HistoryStorage storage) {
-&nbsp;
 <b class="fc">&nbsp;        try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file,true))) {</b>
 &nbsp;            //write info to the file in the format of &quot;gametype, player_id, winner, loser, eloGained, eloLost&quot;
 <b class="fc">&nbsp;            for (HistoryPlayer hp : storage.getPlayersHistory()) {</b>
-<b class="fc">&nbsp;                String[] player = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};</b>
-<b class="fc">&nbsp;                writerBuffer.write(String.join(&quot;,&quot;, player));</b>
+<b class="fc">&nbsp;                String[] player = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};  // get the attributes of the HistoryPlayer and store it in a String array</b>
+<b class="fc">&nbsp;                writerBuffer.write(String.join(&quot;,&quot;, player)); // write the string with element separated by a comma</b>
 <b class="fc">&nbsp;                writerBuffer.newLine();</b>
 <b class="fc">&nbsp;            }</b>
 &nbsp;
 <b class="fc">&nbsp;        } catch (IOException error) {</b>
-<b class="nc">&nbsp;            System.out.println(&quot;Error writing file&quot;);</b>
-<b class="nc">&nbsp;            error.printStackTrace();</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Error writing file&quot;);</b>
+<b class="fc">&nbsp;            error.printStackTrace();</b>
 <b class="fc">&nbsp;        }</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    /**
+&nbsp;     * Method that writes a new file with data from match history
+&nbsp;     * @param file File used to contain the data from match history
+&nbsp;     * @param storage Storage containing the HistoryPlayer objects to be written in the new file
+&nbsp;     */
 &nbsp;    public static void fileWritingHistoryNewFile(File file, HistoryStorage storage) {
 <b class="fc">&nbsp;        try (BufferedWriter writerBuffer = new BufferedWriter(new FileWriter(file))) {</b>
 &nbsp;            //write info to the file in the format of &quot;gametype, player_id, winner, loser, eloGained, eloLost&quot;
 <b class="fc">&nbsp;            for (HistoryPlayer hp : storage.getPlayersHistory()) {</b>
-<b class="fc">&nbsp;                String[] player = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};</b>
-<b class="fc">&nbsp;                writerBuffer.write(String.join(&quot;,&quot;, player));</b>
+<b class="fc">&nbsp;                String[] player = {hp.getGameTypeHistory(), hp.getPlayerIDHistory(), hp.getWinnerString(), hp.getLoserString(), String.valueOf(hp.getEloGained()), String.valueOf(hp.getEloLost()), hp.getDate()};  // fetch the attributes of each HistoryPlayer and add them to a String array</b>
+<b class="fc">&nbsp;                writerBuffer.write(String.join(&quot;,&quot;, player));   // write the string array to the file with each element separated by a comma</b>
 <b class="fc">&nbsp;                writerBuffer.newLine();</b>
 <b class="fc">&nbsp;            }</b>
 &nbsp;
@@ -210,40 +224,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;            System.out.println(&quot;Error writing file&quot;);</b>
 <b class="nc">&nbsp;            error.printStackTrace();</b>
 <b class="fc">&nbsp;        }</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    public static int countLinesInCSV(File file) {
-<b class="nc">&nbsp;        int count = 0;</b>
-<b class="nc">&nbsp;        try (BufferedReader br = new BufferedReader(new FileReader(file))) {</b>
-&nbsp;            String line;
-<b class="nc">&nbsp;            while ((line = br.readLine()) != null) {</b>
-<b class="nc">&nbsp;                if (!line.trim().isEmpty() &amp;&amp; !line.matches(&quot;^,+$&quot;)) {</b>
-<b class="nc">&nbsp;                    count++;</b>
-&nbsp;                }
-&nbsp;            }
-<b class="nc">&nbsp;            return count;</b>
-<b class="nc">&nbsp;        } catch (IOException error) {</b>
-<b class="nc">&nbsp;            System.out.println(&quot;Error reading file&quot;);</b>
-<b class="nc">&nbsp;            error.printStackTrace();</b>
-&nbsp;        }
-<b class="nc">&nbsp;        return -1;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    public static int countLinesInTextFile(File file) {
-<b class="nc">&nbsp;        int count = 0;</b>
-<b class="nc">&nbsp;        try (BufferedReader br = new BufferedReader(new FileReader(file))) {</b>
-&nbsp;            String line;
-<b class="nc">&nbsp;            while ((line = br.readLine()) != null) {</b>
-<b class="nc">&nbsp;                if (!line.trim().isEmpty()) {</b>
-<b class="nc">&nbsp;                    count++;</b>
-&nbsp;                }
-&nbsp;            }
-<b class="nc">&nbsp;            return count;</b>
-<b class="nc">&nbsp;        } catch (IOException error) {</b>
-<b class="nc">&nbsp;            System.out.println(&quot;Error reading file&quot;);</b>
-<b class="nc">&nbsp;            error.printStackTrace();</b>
-&nbsp;        }
-<b class="nc">&nbsp;        return -1;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -255,43 +235,43 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @param players An ArrayList of Player objects containing the updated data.
 &nbsp;     */
 &nbsp;    public static void updateProfilesInCsv(String filePath, ArrayList&lt;Player&gt; players) {
-<b class="nc">&nbsp;        List&lt;String[]&gt; allRows = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        List&lt;String[]&gt; allRows = new ArrayList&lt;&gt;();</b>
 &nbsp;
 &nbsp;        // Step 1: Read existing CSV rows
-<b class="nc">&nbsp;        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {</b>
+<b class="fc">&nbsp;        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {</b>
 &nbsp;            String line;
-<b class="nc">&nbsp;            while ((line = reader.readLine()) != null) {</b>
-<b class="nc">&nbsp;                allRows.add(line.split(&quot;,&quot;)); // Split CSV rows into columns</b>
+<b class="fc">&nbsp;            while ((line = reader.readLine()) != null) {</b>
+<b class="fc">&nbsp;                allRows.add(line.split(&quot;,&quot;)); // Split CSV rows into columns</b>
 &nbsp;            }
-<b class="nc">&nbsp;        } catch (IOException e) {</b>
-<b class="nc">&nbsp;            System.err.println(&quot;Error reading profiles.csv: &quot; + e.getMessage());</b>
+<b class="fc">&nbsp;        } catch (IOException e) {</b>
+<b class="fc">&nbsp;            System.err.println(&quot;Error reading profiles.csv: &quot; + e.getMessage());</b>
 &nbsp;            return;
-<b class="nc">&nbsp;        }</b>
+<b class="fc">&nbsp;        }</b>
 &nbsp;
 &nbsp;        // Step 2: Update matching rows
-<b class="nc">&nbsp;        for (Player player : players) {</b>
-<b class="nc">&nbsp;            for (String[] row : allRows) {</b>
-<b class="nc">&nbsp;                if (row[0].equals(player.getGameType()) &amp;&amp; row[1].equals(player.getPlayerID())) {</b>
+<b class="fc">&nbsp;        for (Player player : players) {</b>
+<b class="fc">&nbsp;            for (String[] row : allRows) {</b>
+<b class="fc">&nbsp;                if (row[0].equals(player.getGameType()) &amp;&amp; row[1].equals(player.getPlayerID())) {</b>
 &nbsp;                    // Updates row with the player&#39;s new data
-<b class="nc">&nbsp;                    row[2] = String.valueOf(player.getElo());</b>
-<b class="nc">&nbsp;                    row[3] = String.valueOf(player.getWins());</b>
-<b class="nc">&nbsp;                    row[4] = String.valueOf(player.getLosses());</b>
-<b class="nc">&nbsp;                    row[5] = String.valueOf(player.getTies());</b>
-<b class="nc">&nbsp;                    break; // Move to the next player</b>
+<b class="fc">&nbsp;                    row[2] = String.valueOf(player.getElo());</b>
+<b class="fc">&nbsp;                    row[3] = String.valueOf(player.getWins());</b>
+<b class="fc">&nbsp;                    row[4] = String.valueOf(player.getLosses());</b>
+<b class="fc">&nbsp;                    row[5] = String.valueOf(player.getTies());</b>
+<b class="fc">&nbsp;                    break; // Move to the next player</b>
 &nbsp;                }
 <b class="nc">&nbsp;            }</b>
-<b class="nc">&nbsp;        }</b>
+<b class="fc">&nbsp;        }</b>
 &nbsp;
 &nbsp;        // Step 3: Write updated rows back to the CSV
-<b class="nc">&nbsp;        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {</b>
-<b class="nc">&nbsp;            for (String[] row : allRows) {</b>
-<b class="nc">&nbsp;                writer.write(String.join(&quot;,&quot;, row)); // Write each row back to the file</b>
-<b class="nc">&nbsp;                writer.newLine(); // Add a new line</b>
-<b class="nc">&nbsp;            }</b>
-<b class="nc">&nbsp;            System.out.println(&quot;Profiles successfully updated in CSV.&quot;); // Confirm success</b>
-<b class="nc">&nbsp;        } catch (IOException e) {</b>
-<b class="nc">&nbsp;            System.err.println(&quot;Error writing to profiles.csv: &quot; + e.getMessage()); // Handle writing errors</b>
-<b class="nc">&nbsp;        }</b>
+<b class="fc">&nbsp;        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {</b>
+<b class="fc">&nbsp;            for (String[] row : allRows) {</b>
+<b class="fc">&nbsp;                writer.write(String.join(&quot;,&quot;, row)); // Write each row back to the file</b>
+<b class="fc">&nbsp;                writer.newLine(); // Add a new line</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Profiles successfully updated in CSV.&quot;); // Confirm success</b>
+<b class="fc">&nbsp;        } catch (IOException e) {</b>
+<b class="fc">&nbsp;            System.err.println(&quot;Error writing to profiles.csv: &quot; + e.getMessage()); // Handle writing errors</b>
+<b class="fc">&nbsp;        }</b>
 &nbsp;    }
 &nbsp;
 &nbsp;}
@@ -318,7 +298,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-12-03 17:51</div>
+    <div style="float:right;">generated on 2024-12-04 21:31</div>
 </div>
 </body>
 </html>
