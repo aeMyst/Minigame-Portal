@@ -1,4 +1,4 @@
-package Checkers;
+package test.Checkers;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
