@@ -493,6 +493,8 @@ public class MatchMakerTest {
 
     @Test
     public void testFindMatchForSinglePlayer() {
+
+        // for threshold testing
         // Create a storage and player
         Storage storage = new Storage();
         Player player1 = new Player("CONNECT4", "player1", 1500, 10, 5, 2);
