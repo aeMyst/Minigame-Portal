@@ -17,49 +17,49 @@ public class EloRatingTest {
     }
 
     @Test
-    public void testCalculateNewElo_PlayerWinsAgainstEqualOpponent() {
+    public void testCalculateNewEloWhenPlayerWinsVsEqualOpponent() {
         int newElo = eloRating.calculateNewElo(1500, 1500, true);
         assertEquals(1600, newElo);
     }
 
     @Test
-    public void testCalculateNewElo_PlayerLosesAgainstEqualOpponent() {
+    public void testCalculateNewEloWhenPlayerLosesVsEqualOpponent() {
         int newElo = eloRating.calculateNewElo(1500, 1500, false);
         assertEquals(1400, newElo);
     }
 
     @Test
-    public void testCalculateNewElo_PlayerWinsAgainstHigherOpponent() {
+    public void testCalculateNewEloWhenPlayerWinsVsHigherOpponent() {
         int newElo = eloRating.calculateNewElo(1500, 1600, true);
         assertEquals(1628, newElo);
     }
 
     @Test
-    public void testCalculateNewElo_PlayerLosesAgainstHigherOpponent() {
+    public void testCalculateNewEloWhenPlayerLosesVsHigherOpponent() {
         int newElo = eloRating.calculateNewElo(1500, 1600, false);
         assertEquals(1429, newElo);
     }
 
     @Test
-    public void testCalculateNewElo_PlayerWinsAgainstLowerOpponent() {
+    public void testCalculateNewEloWhenPlayerWinsVsLowerOpponent() {
         int newElo = eloRating.calculateNewElo(1600, 1500, true);
         assertEquals(1671, newElo);
     }
 
     @Test
-    public void testCalculateNewElo_PlayerLosesAgainstLowerOpponent() {
+    public void testCalculateNewEloWhenPlayerLosesVsLowerOpponent() {
         int newElo = eloRating.calculateNewElo(1600, 1500, false);
         assertEquals(1472, newElo);
     }
 
     @Test
-    public void testCalculateNewElo_PlayerCannotHaveNegativeElo() {
+    public void testCalculateNewEloHandlesNegativeElo() {
         int newElo = eloRating.calculateNewElo(0, 100, false);
         assertEquals(0, newElo);
     }
 
     @Test
-    public void testUpdateElo_WinnerAndLoserRatingsUpdateCorrectly() {
+    public void testUpdateEloHandlesRatingsUpdatingCorrectly() {
         Player winner = new Player("Winner", "1500", 1500, 0, 0, 0);
         Player loser = new Player("Loser", "1501", 1500, 0, 0, 0);
 
@@ -70,7 +70,7 @@ public class EloRatingTest {
     }
 
     @Test
-    public void testUpdateElo_WinnerWithHigherRatingAndLoserWithLowerRating() {
+    public void testUpdateEloHandlesHigherRatingWinnerAndLowerRatingLoser() {
         Player winner = new Player("Winner", "1502", 1600, 0, 0, 0);
         Player loser = new Player("Loser", "1503", 1400, 0, 0, 0);
 
@@ -81,7 +81,7 @@ public class EloRatingTest {
     }
 
     @Test
-    public void testUpdateElo_LoserWithZeroRatingDoesNotGoNegative() {
+    public void testUpdateEloHandlesNegativeElo() {
         Player winner = new Player("Winner", "1504", 100, 0, 0, 0);
         Player loser = new Player("Loser", "1505", 0, 0, 0, 0);
 
