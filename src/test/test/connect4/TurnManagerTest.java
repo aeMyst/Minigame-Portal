@@ -1,4 +1,4 @@
-package connect4;
+package test.connect4;
 
 import src.ca.ucalgary.seng300.gamelogic.Connect4.TurnManager;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.UserPiece;
