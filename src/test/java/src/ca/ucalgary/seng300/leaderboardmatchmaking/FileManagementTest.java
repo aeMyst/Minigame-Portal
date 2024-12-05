@@ -390,4 +390,35 @@ public class FileManagementTest {
         HistoryStorage historyStorage = FileManagement.fileReadingHistory(nonExistentFile);
         assertNull(historyStorage);
     }
+
+    @Test
+    public void testFileNotFoundException() {
+        File nonExistentFile = new File("non_existent.csv");
+        Storage storage = FileManagement.fileReading(nonExistentFile);
+        assertNull(storage);
+    }
+
+    @Test
+    public void testUpdateProfilesInCsvMatch() throws IOException {
+        // Initialize the test file with sample data
+        File testFile = new File("test_players.csv");
+        try (FileWriter writer = new FileWriter(testFile)) {
+            writer.write("type1,ID1,1000,10,5,2\n");
+            writer.write("type2,ID2,1500,15,3,1\n");
+        }
+
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(new Player("type1", "ID1", 1100, 11, 6, 3));
+
+        FileManagement.updateProfilesInCsv(testFile.getPath(), players);
+
+        Storage newStorage = FileManagement.fileReading(testFile);
+        assertEquals(2, newStorage.getPlayers().size());
+        assertEquals(1100, newStorage.getPlayers().get(0).getElo());
+        assertEquals(11, newStorage.getPlayers().get(0).getWins());
+        assertEquals(6, newStorage.getPlayers().get(0).getLosses());
+        assertEquals(3, newStorage.getPlayers().get(0).getTies());
+    }
+
+
 }
