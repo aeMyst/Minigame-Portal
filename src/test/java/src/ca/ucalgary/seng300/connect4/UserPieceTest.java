@@ -1,4 +1,4 @@
-package test.connect4;
+package src.ca.ucalgary.seng300.connect4;
 
 import src.ca.ucalgary.seng300.gamelogic.Connect4.UserPiece;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;

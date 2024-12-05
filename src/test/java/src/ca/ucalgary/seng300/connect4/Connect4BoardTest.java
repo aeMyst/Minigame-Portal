@@ -1,4 +1,4 @@
-package test.connect4;
+package src.ca.ucalgary.seng300.connect4;
 
 import org.junit.Before;
 import org.junit.Test;
