@@ -70,12 +70,12 @@ public class CheckersGameLogic implements ICheckers {
      */
     @Override
     public boolean playerSelectedPiece(int row, int col, Player player) {
-        if (!isWithinBounds(row, col)) return false;//ensure the position is valid
+        if (!isWithinBounds(row, col)) return false;    // ensure the position is valid
         int piece = board[row][col];
         int requiredPiece = (player == player1) ? 1 : 2;
         int kingPiece = requiredPiece + 2;
 
-        // Recognize both normal and king pieces
+        // recognize both normal and king pieces
         return piece == requiredPiece || piece == kingPiece;
     }
 
