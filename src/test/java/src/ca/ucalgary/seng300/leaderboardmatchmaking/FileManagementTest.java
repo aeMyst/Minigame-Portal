@@ -356,4 +356,38 @@ public class FileManagementTest {
         // Restore System.err
         System.setErr(System.err);
     }
+
+    @Test
+    public void testFileReadingInvalidFormat() throws IOException {
+        File invalidFile = new File("invalid_players.csv");
+        try (FileWriter writer = new FileWriter(invalidFile)) {
+            writer.write("type1,ID1,1000,10,5\n"); // Invalid format
+        }
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            FileManagement.fileReading(invalidFile);
+        });
+    }
+
+    @Test
+    public void testFileReadingHistoryInvalidFormat() throws IOException {
+        File invalidFile = new File("invalid_history.csv");
+        try (FileWriter writer = new FileWriter(invalidFile)) {
+            writer.write("type1,ID1,winner1,loser1,20,10\n"); // Invalid format
+        }
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            FileManagement.fileReadingHistory(invalidFile);
+        });
+    }
+
+    @Test
+    public void testFileNotFound() {
+        File nonExistentFile = new File("non_existent.csv");
+        Storage storage = FileManagement.fileReading(nonExistentFile);
+        assertNull(storage);
+
+        HistoryStorage historyStorage = FileManagement.fileReadingHistory(nonExistentFile);
+        assertNull(historyStorage);
+    }
 }
