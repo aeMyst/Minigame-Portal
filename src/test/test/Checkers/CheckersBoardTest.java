@@ -1,4 +1,4 @@
-package Checkers;
+package test.Checkers;
 
 import org.junit.Test;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersBoard;
