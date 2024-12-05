@@ -508,4 +508,31 @@ public class MatchMakerTest {
         assertTrue("player1 should still be in the queue", matchMaker.queue.contains(player1));
     }
 
+    @Test
+    public void testMatchThreshold() {
+
+        Storage storage = new Storage();
+        // Arrange: Add players to the queue
+        Player player1 = new Player("CONNECT4", "player1", 1500, 10, 5, 2);
+        Player player2 = new Player("CONNECT4", "player2", 1510, 10, 5, 2);
+        Player player3 = new Player("CONNECT4", "player3", 2000, 10, 5, 2);
+
+        storage.addPlayer(player1);
+        storage.addPlayer(player2);
+        storage.addPlayer(player3);
+
+        MatchMaker mm = new MatchMaker(storage);
+
+        // Act: Attempt to find a match for User1
+        mm.addPlayerToQueue("player1","CONNECT4");
+        //mm.addPlayerToQueue("player2", "CONNECT4");
+        ArrayList<Player> playersInMatch = mm.createMatch();
+
+        int num = playersInMatch.size();
+
+        // Assert: Verify that a match was found and players were removed from the queue
+        assertEquals("Two players are matched.", 2, num);
+
+    }
+
 }
