@@ -58,4 +58,17 @@ public class ProfileTest {
         String expectedDetails = "Username: testUser, Email: testUser@example.com, Games Played: 0, Wins: 0, Losses: 0, Rank: 0";
         assertEquals(expectedDetails, profile.getProfileDetails());
     }
+
+    @Test
+    public void testToString() {
+        String username = "testuser";
+        String password = "securepassword";
+        String email = "testuser@example.com";
+        User user = new User(username, password, email);
+
+        String actualToString = user.toString();
+
+        String expectedToString = "User(username=" + username + ", email=" + email + ")";
+        assertEquals("The toString method should return the correct string representation.", expectedToString, actualToString);
+    }
 }
