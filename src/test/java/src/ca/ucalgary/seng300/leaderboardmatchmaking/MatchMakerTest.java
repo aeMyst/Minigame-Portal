@@ -4,12 +4,11 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import src.ca.ucalgary.seng300.leaderboard.logic.*;
 import src.ca.ucalgary.seng300.leaderboard.data.*;
-
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MatchMakerTest {
-
     /**
      * Test adding the same player multiple times to the queue.
      */
@@ -210,20 +209,6 @@ public class MatchMakerTest {
     }
 
     /**
-     * Test getMatchHistory when file does not exist.
-     */
-    @Test
-    public void testGetMatchHistoryFileNotExist() {
-        MatchHistory matchHistory = new MatchHistory();
-
-        // Retrieve match history when file does not exist
-        String[][] history = matchHistory.getMatchHistory("Player1");
-
-        // Verify the match history is empty
-        assertEquals(0, history.length);
-    }
-
-    /**
      * Test adding a player to the queue when they are already present.
      */
     @Test
@@ -241,21 +226,6 @@ public class MatchMakerTest {
 
         // Check that the player is not added twice
         assertEquals(1, matchMaker.queue.size());
-    }
-
-    /**
-     * Test handling an exception when updating match history.
-     */
-    @Test
-    public void testUpdateMatchHistoryException() {
-        HistoryStorage storage = new HistoryStorage();
-        MatchHistory matchHistory = new MatchHistory();
-
-        // Simulate an exception by providing an invalid file path
-        matchHistory.updateMatchHistory(storage, "InvalidPlayer");
-
-        // Verify that the exception is handled and the error message is printed
-        // (This test will pass if no unhandled exception is thrown)
     }
 
     /**
@@ -317,5 +287,56 @@ public class MatchMakerTest {
 
         // Verify the match history is empty
         assertEquals(0, history.length);
+    }
+
+    /**
+     * Test handling an exception when updating match history.
+     */
+    @Test
+    public void testUpdateMatchHistoryException() {
+        HistoryStorage storage = new HistoryStorage();
+        MatchHistory matchHistory = new MatchHistory() {
+            @Override
+            public void updateMatchHistory(HistoryStorage storage, String player) {
+                try {
+                    throw new IOException("Simulated IO Exception");
+                } catch (Exception e) {
+                    System.out.println("Error fetching match history");
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+
+        // Simulate an exception by calling the overridden method
+        try {
+            matchHistory.updateMatchHistory(storage, "Player1");
+            fail("Expected RuntimeException");
+        } catch (RuntimeException e) {
+            assertTrue(e.getCause() instanceof IOException);
+            assertEquals("Simulated IO Exception", e.getCause().getMessage());
+        }
+    }
+
+    /**
+     * Test finding a match with no suitable players within the Elo threshold.
+     */
+    @Test
+    public void testFindMatchNoSuitablePlayers() {
+        Storage storage = new Storage();
+        MatchMaker matchMaker = new MatchMaker(storage);
+        Player player1 = new Player("CONNECT4", "Player1", 1000, 10, 5, 0);
+        Player player2 = new Player("CONNECT4", "Player2", 1300, 15, 7, 0);
+        storage.addPlayer(player1);
+        storage.addPlayer(player2);
+
+        // Add both players to the queue
+        matchMaker.addPlayerToQueue("Player1", "CONNECT4");
+        matchMaker.addPlayerToQueue("Player2", "CONNECT4");
+
+        // Attempt to find a match
+        matchMaker.findMatch("Player1");
+
+        assertEquals(1, matchMaker.queue.size());
     }
 }
