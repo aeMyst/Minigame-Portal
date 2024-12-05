@@ -249,7 +249,7 @@ public class Client implements IClient {
 
             System.out.println("Success! Connecting to game session...");
             System.out.println("==========================");
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -487,10 +487,15 @@ public class Client implements IClient {
 
                 // Update the GUI on the JavaFX thread
                 Platform.runLater(callback);
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    // I hate coverage
+    protected void ERROR_OUT(String message) {
+        throw new RuntimeException(message);
     }
 
 }

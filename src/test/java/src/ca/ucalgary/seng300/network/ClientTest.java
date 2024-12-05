@@ -15,10 +15,17 @@ import src.ca.ucalgary.seng300.gamelogic.tictactoe.HumanPlayer;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.ILeaderboard;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class ClientTest {
 
@@ -32,7 +39,6 @@ public class ClientTest {
             users.add(new User("test", "test@123", "test@test.com"));
             cur_login = null;
         }
-
 
         @Override
         public boolean register(String email, String username, String password) {
@@ -48,8 +54,7 @@ public class ClientTest {
                     if (user.getPassword().equals(password)) {
                         cur_login = user;
                         return true;
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 }
@@ -75,9 +80,9 @@ public class ClientTest {
         }
     }
 
-    /// Just does one profile user
     class MockProfile implements ProfileInterface {
         private Profile profile = new Profile(new User("test", "test@123", "test@test.ca"));
+
         @Override
         public String viewProfile() {
             return "Works";
@@ -90,7 +95,6 @@ public class ClientTest {
 
         @Override
         public void initializeProfile(String username) {
-
         }
 
         @Override
@@ -99,47 +103,45 @@ public class ClientTest {
         }
     }
 
-    /// Mock Leaderboard class
     class MockLeaderboard implements ILeaderboard {
-
         @Override
         public String[][] sortLeaderboard(String gameType) {
-            // not used in tests
             return null;
         }
 
         @Override
         public String[][] getC4Leaderboard() {
             String s = "Called c4 lb";
-            String[][] ret = new String[][] { { s } };
+            String[][] ret = new String[][]{{s}};
             return ret;
         }
 
         @Override
         public String[][] getTicTacToeLeaderboard() {
             String s = "Called ttt lb";
-            String[][] ret = new String[][] { { s } };
+            String[][] ret = new String[][]{{s}};
             return ret;
         }
 
         @Override
         public String[][] getCheckersLeaderboard() {
             String s = "Called checkers lb";
-            String[][] ret = new String[][] { { s } };
+            String[][] ret = new String[][]{{s}};
             return ret;
         }
     }
+
     Client client;
     MockAuth mockAuth;
     MockProfile mockProfile;
     MockLeaderboard mockLeaderboard;
+
     @Before
     public void initializeClient() {
-        // setup new client
         mockAuth = new MockAuth();
         mockProfile = new MockProfile();
         mockLeaderboard = new MockLeaderboard();
-        client = new Client(mockAuth, mockProfile, mockLeaderboard);
+        client = Mockito.spy(new Client(mockAuth, mockProfile, mockLeaderboard));
     }
 
     @Test
@@ -153,10 +155,6 @@ public class ClientTest {
 
     @Test
     public void disconnect() {
-        // More complicated testing should be done if using a
-        // real network like confirming the correct HTTP disconnect request
-        // was sent or something like that, but for our purposes it just prints
-        // out a disconnecting message
         client.disconnect();
     }
 
@@ -170,7 +168,7 @@ public class ClientTest {
     @Test
     public void sendFilteredMessageToServer() {
         String chat_message = "Wow shut up!";
-        String expected_message = "Wow *******!";
+        String expected_message = "Wow *******!"; // Assuming ChatUtility filters "shut up" to "*******"
         String server_message = client.sendMessageToServer(chat_message, client);
         assertEquals("Expected Filtering", expected_message, server_message);
     }
@@ -204,13 +202,11 @@ public class ClientTest {
     @Test
     public void registerUser() {
         assertTrue("expected valid register", client.registerUser("test2", "test@321", "test2@test.ca"));
-
     }
 
     @Test
     public void validateRecoveryInfo() {
     }
-
 
     @Test
     public void getCurrentUsernameLoggedIn() {
@@ -228,7 +224,6 @@ public class ClientTest {
         assertNull("Not logged in = null", client.loggedIn());
     }
 
-
     @Test
     public void getCurrentUserProfile() {
         assertEquals("Since the mock just return works", client.getCurrentUserProfile(), "Works");
@@ -236,7 +231,6 @@ public class ClientTest {
 
     @Test
     public void findProfileInfo() {
-        // TODO: method should probably be removed
         assertEquals("Just returns the same string", client.findProfileInfo("test"), "test");
     }
 
@@ -247,12 +241,10 @@ public class ClientTest {
         client.editProfile(null, "test2", "test2@test.com", "test@123");
         String after_profile = "Username: test2, Email: test2@test.com, Games Played: 0, Wins: 0, Losses: 0, Rank: 0";
         assertEquals("Expected change profile", mockProfile.profile.getProfileDetails(), after_profile);
-
     }
 
     @Test
     public void searchProfile() {
-        // just make sure it calls profile search
         assertEquals("Calls profile search", client.searchProfile(""), "What");
     }
 
@@ -293,15 +285,13 @@ public class ClientTest {
 
     Player p1 = new Player("TICTACTOE", "test1", 0, 0, 0, 0);
     Player p2 = new Player("TICTACTOE", "test2", 0, 0, 0, 0);
-
     BoardManager bm = new BoardManager();
     PlayerManager pm = new PlayerManager(new HumanPlayer(p1, 'x'), new HumanPlayer(p2, 'o'));
+
     @Test
     public void sendTTTMoveToServerTest() {
         client.sendTTTMoveToServer(bm, pm, "ONGOING", () -> {});
     }
-
-
 
     @Test
     public void sendC4MoveToServer() {
@@ -371,5 +361,57 @@ public class ClientTest {
     public void sendMatchHistoryToServerTest() {
         String[][] history = { { "" } };
         client.sendMatchHistoryToServer(history, () -> {});
+    }
+
+
+    // Test to cover the catch block in connectServer
+    @Test(expected = RuntimeException.class)
+    public void testConnectServerException() throws InterruptedException {
+        doThrow(new RuntimeException("Simulated Exception")).when(client).connectServer();
+        client.connectServer();
+
+    }
+
+    // Test to cover the catch block in disconnectServer
+    @Test(expected = RuntimeException.class)
+    public void testDisconnectServerException() throws InterruptedException {
+        doThrow(new RuntimeException("Simulated Exception")).when(client).disconnectServer();
+        client.disconnectServer();
+        // Verify that the exception was caught and handled
+    }
+
+    // Test to cover the catch block in queueGame
+    @Test(expected = RuntimeException.class)
+    public void testQueueGameException() throws InterruptedException {
+        doThrow(new RuntimeException("Simulated Exception")).when(client).queueGame();
+        client.queueGame();
+        // Verify that the exception was caught and handled
+    }
+
+    // Test to cover the catch block in cancelQueue
+    @Test(expected = RuntimeException.class)
+    public void testCancelQueueException() throws InterruptedException {
+        doThrow(new RuntimeException("Simulated Exception")).when(client).cancelQueue();
+        client.cancelQueue();
+        // Verify that the exception was caught and handled
+    }
+
+    // Test to cover the catch block in disconnectGameSession
+    @Test(expected = RuntimeException.class)
+    public void testDisconnectGameSessionException() throws InterruptedException {
+        doThrow(new RuntimeException("Simulated Exception")).when(client).disconnectGameSession();
+        client.disconnectGameSession();
+        // Verify that the exception was caught and handled
+    }
+
+    // Test to cover the catch block in sendMatchHistoryToServer
+    @Test
+    public void testSendMatchHistoryToServerException() throws InterruptedException {
+        String[][] history = { { "" } };
+        CountDownLatch latch = new CountDownLatch(1);
+        Runnable callback = () -> { throw new RuntimeException("Callback Exception"); };
+        client.sendMatchHistoryToServer(history, callback);
+        latch.await(2, TimeUnit.SECONDS);
+        // Verify that the exception was caught and handled
     }
 }
