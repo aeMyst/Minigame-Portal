@@ -201,8 +201,8 @@ public class FileManagementTest {
     }
 
     @Test
-    public void testFileReading_FileNotFoundMessage() {
-        File file = new File("non_existent_file.csv"); // Non-existent file
+    public void testFileReadingWithFileNotFoundMessage() {
+        File file = new File(INVALID_FILE); // Non-existent file
 
         // Capture System.out
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -219,7 +219,7 @@ public class FileManagementTest {
     }
 
     @Test
-    public void testFileWriting_ErrorWritingFileMessage() {
+    public void testFileWritingWithErrorWritingFile() {
         File file = new File("read_only_file.csv");
 
         // Make the file read-only
@@ -254,8 +254,8 @@ public class FileManagementTest {
     }
 
     @Test
-    public void testFileReadingHistory_FileNotFoundMessage() {
-        File file = new File("non_existent_history_file.csv");
+    public void testFileReadingHistoryWithFileNotFoundMessage() {
+        File file = new File(INVALID_FILE);
 
         // Capture System.out
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -272,7 +272,7 @@ public class FileManagementTest {
     }
 
     @Test
-    public void testFileWritingHistory_ErrorWritingFileMessage() {
+    public void testFileWritingHistoryWithErrorWritingFile() {
         File file = new File("read_only_history_file.csv");
 
         // Make the file read-only
@@ -307,8 +307,8 @@ public class FileManagementTest {
     }
 
     @Test
-    public void testUpdateProfilesInCsv_ErrorReadingFileMessage() {
-        File file = new File("non_existent_profiles.csv");
+    public void testUpdateProfilesInCsvWithErrorReadingFile() {
+        File file = new File(INVALID_FILE);
 
         // Capture System.err
         ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -325,7 +325,7 @@ public class FileManagementTest {
     }
 
     @Test
-    public void testUpdateProfilesInCsv_ErrorWritingFileMessage() {
+    public void testUpdateProfilesInCsvWithErrorWritingFile() {
         File file = new File("read_only_profiles.csv");
 
         try {
