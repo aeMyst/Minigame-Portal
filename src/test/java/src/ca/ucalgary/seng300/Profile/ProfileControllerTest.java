@@ -1,4 +1,4 @@
-package Profile;
+package src.ca.ucalgary.seng300.Profile;
 
 import org.junit.Assert;
 import org.junit.Before;
