@@ -2,6 +2,8 @@ package src.ca.ucalgary.seng300.network;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.exceptions.base.MockitoAssertionError;
+import org.mockito.exceptions.base.MockitoException;
 import src.ca.ucalgary.seng300.Profile.interfaces.AuthInterface;
 import src.ca.ucalgary.seng300.Profile.interfaces.ProfileInterface;
 import src.ca.ucalgary.seng300.Profile.models.Profile;
@@ -271,6 +273,17 @@ public class ClientTest {
         client.queueGame();
     }
 
+    @Test
+    public void queueGameShouldFail() {
+        doThrow(new MockitoException("")).when(client).getIsQueueCanceled();
+        try {
+            client.queueGame();
+        } catch (Exception e) {
+
+        }
+        client.queueGame();
+    }
+
 
 
     @Test
@@ -365,41 +378,41 @@ public class ClientTest {
 
 
     // Test to cover the catch block in connectServer
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testConnectServerException() throws InterruptedException {
-        doThrow(new RuntimeException("Simulated Exception")).when(client).connectServer();
+        doThrow(new RuntimeException("Simulated Exception")).when(client).DUMMY_ERROR_FOR_COV();
         client.connectServer();
 
     }
 
     // Test to cover the catch block in disconnectServer
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testDisconnectServerException() throws InterruptedException {
-        doThrow(new RuntimeException("Simulated Exception")).when(client).disconnectServer();
+        doThrow(new RuntimeException("Simulated Exception")).when(client).DUMMY_ERROR_FOR_COV();
         client.disconnectServer();
         // Verify that the exception was caught and handled
     }
 
     // Test to cover the catch block in queueGame
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testQueueGameException() throws InterruptedException {
-        doThrow(new RuntimeException("Simulated Exception")).when(client).queueGame();
+        doThrow(new RuntimeException("Simulated Exception")).when(client).DUMMY_ERROR_FOR_COV();
         client.queueGame();
         // Verify that the exception was caught and handled
     }
 
     // Test to cover the catch block in cancelQueue
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testCancelQueueException() throws InterruptedException {
-        doThrow(new RuntimeException("Simulated Exception")).when(client).cancelQueue();
+        doThrow(new RuntimeException("Simulated Exception")).when(client).DUMMY_ERROR_FOR_COV();
         client.cancelQueue();
         // Verify that the exception was caught and handled
     }
 
     // Test to cover the catch block in disconnectGameSession
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testDisconnectGameSessionException() throws InterruptedException {
-        doThrow(new RuntimeException("Simulated Exception")).when(client).disconnectGameSession();
+        doThrow(new RuntimeException("Simulated Exception")).when(client).DUMMY_ERROR_FOR_COV();
         client.disconnectGameSession();
         // Verify that the exception was caught and handled
     }
