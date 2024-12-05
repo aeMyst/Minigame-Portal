@@ -367,6 +367,7 @@ public class FileManagementTest {
         assertThrows(IllegalArgumentException.class, () -> {
             FileManagement.fileReading(invalidFile);
         });
+        invalidFile.delete();
     }
 
     @Test
@@ -379,6 +380,7 @@ public class FileManagementTest {
         assertThrows(IllegalArgumentException.class, () -> {
             FileManagement.fileReadingHistory(invalidFile);
         });
+        invalidFile.delete();
     }
 
     @Test
