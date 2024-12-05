@@ -19,6 +19,7 @@ public class FileManagementTest {
 
     private static final String TEST_FILE = "test_players.csv";
     private static final String TEST_HISTORY_FILE = "test_history.csv";
+    private static final String INVALID_FILE = "invalid_file.csv";
 
     @Before
     public void setUp() throws IOException {
@@ -134,5 +135,225 @@ public class FileManagementTest {
             line = reader.readLine();
             assertEquals("gameType1,player2,1600,20,3,1", line);
         }
+    }
+
+    @Test
+    public void testFileReadingWithFileNotFound() {
+        File file = new File(INVALID_FILE); // Non-existent file
+        Storage storage = FileManagement.fileReading(file);
+
+        // Verify that an error message is printed, and storage is null
+        assertNull("Storage should be null due to file not found", storage);
+    }
+
+    @Test
+    public void testFileReadingHistoryWithFileNotFound() {
+        File file = new File(INVALID_FILE); // Non-existent file
+        HistoryStorage historyStorage = FileManagement.fileReadingHistory(file);
+
+        // Verify that an error message is printed, and historyStorage is null
+        assertNull("HistoryStorage should be null due to file not found", historyStorage);
+    }
+
+    @Test
+    public void testFileWritingHistoryNewFile() throws IOException {
+        File file = new File("new_output_history.csv");
+
+        ArrayList<HistoryPlayer> historyPlayers = new ArrayList<>();
+        historyPlayers.add(new HistoryPlayer("gameType2", "player3", "player3", "player4", 30, -30, "2024-01-02"));
+        HistoryStorage historyStorage = new HistoryStorage(historyPlayers);
+
+        FileManagement.fileWritingHistoryNewFile(file, historyStorage);
+
+        // Verify the contents of the written file
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line = reader.readLine();
+            assertEquals("gameType2,player3,player3,player4,30,-30,2024-01-02", line);
+        }
+
+        file.delete(); // Clean up
+    }
+
+    @Test
+    public void testUpdateProfilesInCsvWithFileNotFound() {
+        ArrayList<Player> updatedPlayers = new ArrayList<>();
+        updatedPlayers.add(new Player("gameType1", "player1", 1550, 15, 6, 3));
+
+        FileManagement.updateProfilesInCsv(INVALID_FILE, updatedPlayers);
+
+        // Since the file doesn't exist, the method should handle the error gracefully.
+    }
+
+    @Test
+    public void testUpdateProfilesInCsvWithValidData() throws IOException {
+        ArrayList<Player> updatedPlayers = new ArrayList<>();
+        updatedPlayers.add(new Player("gameType1", "player1", 1550, 15, 6, 3));
+
+        FileManagement.updateProfilesInCsv(TEST_FILE, updatedPlayers);
+
+        // Verify the updated file
+        try (BufferedReader reader = new BufferedReader(new FileReader(TEST_FILE))) {
+            String line = reader.readLine();
+            assertEquals("gameType1,player1,1550,15,6,3", line);
+            line = reader.readLine();
+            assertEquals("gameType1,player2,1600,20,3,1", line);
+        }
+    }
+
+    @Test
+    public void testFileReading_FileNotFoundMessage() {
+        File file = new File("non_existent_file.csv"); // Non-existent file
+
+        // Capture System.out
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Call the method
+        Storage storage = FileManagement.fileReading(file);
+
+        // Verify the output message
+        assertTrue(outContent.toString().contains("File not found"));
+
+        // Restore System.out
+        System.setOut(System.out);
+    }
+
+    @Test
+    public void testFileWriting_ErrorWritingFileMessage() {
+        File file = new File("read_only_file.csv");
+
+        // Make the file read-only
+        try {
+            file.createNewFile();
+            file.setReadOnly();
+
+            // Capture System.out
+            ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(outContent));
+
+            // Create sample data
+            ArrayList<Player> players = new ArrayList<>();
+            players.add(new Player("gameType1", "player1", 1500, 10, 5, 2));
+            Storage storage = new Storage(players);
+
+            // Call the method
+            FileManagement.fileWriting(storage, file);
+
+            // Verify the output message
+            assertTrue(outContent.toString().contains("Error writing file"));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            file.setWritable(true);
+            file.delete();
+        }
+
+        // Restore System.out
+        System.setOut(System.out);
+    }
+
+    @Test
+    public void testFileReadingHistory_FileNotFoundMessage() {
+        File file = new File("non_existent_history_file.csv");
+
+        // Capture System.out
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Call the method
+        HistoryStorage historyStorage = FileManagement.fileReadingHistory(file);
+
+        // Verify the output message
+        assertTrue(outContent.toString().contains("File not found"));
+
+        // Restore System.out
+        System.setOut(System.out);
+    }
+
+    @Test
+    public void testFileWritingHistory_ErrorWritingFileMessage() {
+        File file = new File("read_only_history_file.csv");
+
+        // Make the file read-only
+        try {
+            file.createNewFile();
+            file.setReadOnly();
+
+            // Capture System.out
+            ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(outContent));
+
+            // Create sample history data
+            ArrayList<HistoryPlayer> historyPlayers = new ArrayList<>();
+            historyPlayers.add(new HistoryPlayer("gameType1", "player1", "player1", "player2", 50, -50, "2024-01-01"));
+            HistoryStorage historyStorage = new HistoryStorage(historyPlayers);
+
+            // Call the method
+            FileManagement.fileWritingHistory(file, historyStorage);
+
+            // Verify the output message
+            assertTrue(outContent.toString().contains("Error writing file"));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            file.setWritable(true);
+            file.delete();
+        }
+
+        // Restore System.out
+        System.setOut(System.out);
+    }
+
+    @Test
+    public void testUpdateProfilesInCsv_ErrorReadingFileMessage() {
+        File file = new File("non_existent_profiles.csv");
+
+        // Capture System.err
+        ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(errContent));
+
+        // Call the method
+        FileManagement.updateProfilesInCsv(file.getPath(), new ArrayList<>());
+
+        // Verify the output message
+        assertTrue(errContent.toString().contains("Error reading profiles.csv"));
+
+        // Restore System.err
+        System.setErr(System.err);
+    }
+
+    @Test
+    public void testUpdateProfilesInCsv_ErrorWritingFileMessage() {
+        File file = new File("read_only_profiles.csv");
+
+        try {
+            file.createNewFile();
+            file.setReadOnly();
+
+            // Capture System.err
+            ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+            System.setErr(new PrintStream(errContent));
+
+            // Create sample data
+            ArrayList<Player> players = new ArrayList<>();
+            players.add(new Player("gameType1", "player1", 1500, 10, 5, 2));
+
+            // Call the method
+            FileManagement.updateProfilesInCsv(file.getPath(), players);
+
+            // Verify the output message
+            assertTrue(errContent.toString().contains("Error writing to profiles.csv"));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            file.setWritable(true);
+            file.delete();
+        }
+
+        // Restore System.err
+        System.setErr(System.err);
     }
 }
