@@ -5,9 +5,9 @@ import org.junit.Test;
 import org.junit.Assert;
 import src.ca.ucalgary.seng300.Profile.utils.ValidationUtils;
 
-//Aiming for close to 100% coverage.
+
 public class ValidationUtilsTest {
-//NEED TO CHECK EMAIL REGEX TEST NOT WORKING WELL.
+
 
     @Test
     public void testValidEmail() {
