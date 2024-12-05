@@ -1,7 +1,6 @@
 package src.ca.ucalgary.seng300.checkers;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.GameState;
 
