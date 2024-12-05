@@ -413,6 +413,7 @@ public class MatchMakerTest {
     @Test
     public void testGetMatchHistoryPlayerWithLessThanTwoMatches() {
         // Simulate the situation where the player has fewer than 2 matches in the history.
+        String TEST_FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/match_history_test.txt";
         MatchHistory matchHistory = new MatchHistory(TEST_FILE_PATH);
         HistoryStorage storage = new HistoryStorage();
         HistoryPlayer player1Match = new HistoryPlayer("player1", "game1", "player1", "player2", 10, 5, "2024-12-01");
