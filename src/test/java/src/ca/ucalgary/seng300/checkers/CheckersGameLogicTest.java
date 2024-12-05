@@ -1,4 +1,4 @@
-package test.Checkers;
+package src.ca.ucalgary.seng300.checkers;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -252,3 +252,4 @@ public class CheckersGameLogicTest {
     }
 
 }
+

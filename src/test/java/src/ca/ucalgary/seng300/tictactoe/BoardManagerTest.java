@@ -1,10 +1,8 @@
-package test.tictactoe;
+package src.ca.ucalgary.seng300.tictactoe;
 
 import org.junit.Before;
 import org.junit.Test;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
-
-import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
