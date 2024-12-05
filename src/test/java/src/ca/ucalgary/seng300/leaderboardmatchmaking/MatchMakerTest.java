@@ -13,7 +13,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 public class MatchMakerTest {
-
+    private static final String TEST_FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/match_history_test.txt";
     /**
      * Test adding the same player multiple times to the queue.
      */
@@ -394,64 +394,38 @@ public class MatchMakerTest {
         assertEquals("game2", result[1][0]); // Second most recent match
     }
 
-//    @Test
-//    public void testFewerThanTwoMatchesForPlayer() throws IOException {
-//        // Step 1: Save the initial state of the file (backup the current file)
-//        File file = new File("src/main/java/src/ca/ucalgary/seng300/database/match_history.txt");
-//        File backupFile = new File("src/main/java/src/ca/ucalgary/seng300/database/match_history_backup.txt");
-//        if (file.exists()) {
-//            Files.copy(file.toPath(), backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-//        }
-//
-//        // Step 2: Clear the match history
-//        MatchHistory matchHistory = new MatchHistory();
-//        matchHistory.clearMatchHistory(); // Clear match history before test
-//
-//        // Step 3: Add one match for player1
-//        HistoryStorage storage = new HistoryStorage();
-//        storage.addPlayerHistory(new HistoryPlayer("game1", "player1", "winner", "loser", 10, -10, "2023-12-04"));
-//        FileManagement.fileWritingHistoryNewFile(file, storage); // Populate file with one match
-//
-//        // Step 4: Fetch match history for "player1"
-//        String[][] result = matchHistory.getMatchHistory("player1");
-//
-//        // Assertions
-//        assertNotNull(result);
-//        assertEquals(1, result.length); // Expect 1 match for "player1"
-//        assertEquals("game1", result[0][0]); // Verify match details
-//
-//        // Step 5: Restore the original file state
-//        if (backupFile.exists()) {
-//            Files.copy(backupFile.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-//            backupFile.delete(); // Clean up the backup file
-//        }
-//    }
-//
-//    @Test
-//    public void testMatchHistoryEmptyForNewPlayer() throws IOException {
-//        // Step 1: Save the initial state of the file (backup the current file)
-//        File file = new File("src/main/java/src/ca/ucalgary/seng300/database/match_history.txt");
-//        File backupFile = new File("src/main/java/src/ca/ucalgary/seng300/database/match_history_backup.txt");
-//        if (file.exists()) {
-//            Files.copy(file.toPath(), backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-//        }
-//
-//        // Step 2: Clear the match history
-//        MatchHistory matchHistory = new MatchHistory();
-//        matchHistory.clearMatchHistory(); // Clear match history before test
-//
-//        // Step 3: Fetch match history for a player with no history
-//        String[][] result = matchHistory.getMatchHistory("new_player");
-//
-//        // Assertions
-//        assertNotNull(result);
-//        assertThrows(); // Expect no matches for "new_player"
-//
-//        // Step 4: Restore the original file state
-//        if (backupFile.exists()) {
-//            Files.copy(backupFile.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-//            backupFile.delete(); // Clean up the backup file
-//        }
-//    }
+    @Test
+    public void testNoDataAvail() throws IOException {
+        File file = new File(TEST_FILE_PATH);
+        if (file.exists()) {
+            file.delete();
+        }
+        file.createNewFile();
+        MatchHistory matchHistory = new MatchHistory(TEST_FILE_PATH);
+
+        String[][] result = matchHistory.getMatchHistory("player1");
+        String[][] expected = new String[0][];
+
+        assertEquals( expected, result); // Second most recent match
+    }
+
+
+    
+    @Test
+    public void testGetMatchHistoryPlayerWithLessThanTwoMatches() {
+        // Simulate the situation where the player has fewer than 2 matches in the history.
+        MatchHistory matchHistory = new MatchHistory(TEST_FILE_PATH);
+        HistoryStorage storage = new HistoryStorage();
+        HistoryPlayer player1Match = new HistoryPlayer("player1", "game1", "player1", "player2", 10, 5, "2024-12-01");
+        storage.addPlayerHistory(player1Match);
+        FileManagement.fileWritingHistoryNewFile(new File(TEST_FILE_PATH), storage);
+
+        // Verify that when count is less than 2, the match is added.
+        String[][] result = matchHistory.getMatchHistory("player1");
+        assertEquals(String.valueOf(1), result.length, "Expected 1 match for player 1");
+        assertEquals("player1", result[0][1], "Expected player1 to be in the match history");
+    }
+
+
 
 }
