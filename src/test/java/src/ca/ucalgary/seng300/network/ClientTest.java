@@ -326,6 +326,18 @@ public class ClientTest {
     }
 
     @Test
+    public void sendCheckerKingMoveToServer() {
+        CheckersGameLogic game = new CheckersGameLogic(p1, p2);
+        // force king promotion on both sides
+        game.getBoard()[0][1] = 2;
+        game.getBoard()[7][0] = 1;
+        game.promoteToKing(0,1, p2);
+        game.promoteToKing(7, 0, p1);
+        assertEquals(4, game.getBoard()[0][1]);
+        client.sendCheckerMoveToServer(game, 6, 1, 4, 3, p2, () -> {});
+    }
+
+    @Test
     public void sendCheckersLeaderboardToServer() {
         String[][] ret = client.getCheckersLeaderboard(() -> {});
         assertEquals("Expected to return checkers leaderboard", ret[0][0], "Called checkers lb");
@@ -373,6 +385,11 @@ public class ClientTest {
     @Test
     public void sendMatchHistoryToServerTest() {
         String[][] history = { { "" } };
+        client.sendMatchHistoryToServer(history, () -> {});
+    }
+    @Test
+    public void sendEmptyMatchHistoryToServerTest() {
+        String[][] history = {  };
         client.sendMatchHistoryToServer(history, () -> {});
     }
 
