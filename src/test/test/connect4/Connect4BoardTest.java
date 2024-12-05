@@ -1,4 +1,4 @@
-package connect4;
+package test.connect4;
 
 import org.junit.Before;
 import org.junit.Test;
