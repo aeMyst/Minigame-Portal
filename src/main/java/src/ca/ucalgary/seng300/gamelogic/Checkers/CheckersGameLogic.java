@@ -232,8 +232,6 @@ public class CheckersGameLogic implements ICheckers {
         if (piece == 1 && rowDiff != 2) return false; // Player 1 captures down
         if (piece == 2 && rowDiff != -2) return false; // Player 2 captures up
 
-        // Kings can capture in any direction
-
         // Determine the position of the piece being captured.
         int midRow = (fromRow + toRow) / 2;
         int midCol = (fromCol + toCol) / 2;
