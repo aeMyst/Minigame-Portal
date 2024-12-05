@@ -479,4 +479,62 @@ public class ProfileServiceTest {
             throw new IOException("Failed to clean up test data");
         }
     }
+
+    @Test
+    public void testUpdateProfileNoChange() {
+        User user = new User("user1", "password1", "user1@example.com");
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        profileService.updateProfile(user, "", "", "");
+
+        assertTrue(outContent.toString().contains("At least one field must be changed."));
+    }
+
+    @Test
+    public void testBuildProfileUserFound() {
+        String profile = profileService.searchProfile("user1");
+
+        assertTrue(profile.contains("Gametype: CHECKERS"));
+        assertTrue(profile.contains("PlayerID: user1"));
+    }
+
+    @Test
+    public void testBuildProfileUserNotFound() {
+        String profile = profileService.searchProfile("nonexistentUser");
+
+        assertEquals("Profile not found for nonexistentUser", profile);
+    }
+
+    @Test
+    public void testReadCsvInvalidDetailsLength() throws IOException {
+        String invalidRow = "CHECKERS,user1,1200,10"; // Missing columns
+        appendToFile(profileService.profilePath, invalidRow);
+
+        ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(errContent));
+
+        String profile = profileService.searchProfile("user1");
+
+        System.setErr(System.err);
+
+        assertTrue(errContent.toString().contains("Error reading from file"));
+        assertEquals("Profile not found for user1", profile);
+    }
+
+    @Test
+    public void testUpdateProfileBlankFields() {
+        String email = "someblank@example.com";
+        String username = "someblankuser";
+        String password = "Password123!";
+        authService.register(email, username, password);
+        authService.login(username, password);
+
+        profileService.updateProfile(authService.isLoggedIn(), "", "newemail@example.com", "");
+
+        User updatedUser = authService.isLoggedIn();
+        assertEquals("newemail@example.com", updatedUser.getEmail());
+        assertEquals(username, updatedUser.getUsername());
+    }
 }

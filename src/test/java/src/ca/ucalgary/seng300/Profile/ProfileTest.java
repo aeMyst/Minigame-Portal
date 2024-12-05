@@ -71,4 +71,7 @@ public class ProfileTest {
         String expectedToString = "User(username=" + username + ", email=" + email + ")";
         assertEquals("The toString method should return the correct string representation.", expectedToString, actualToString);
     }
+
+
+
 }
