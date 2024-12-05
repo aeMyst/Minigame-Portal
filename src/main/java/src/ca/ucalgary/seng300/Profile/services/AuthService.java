@@ -43,6 +43,24 @@ public class AuthService implements AuthInterface {
         }
     }
 
+    public AuthService(String USER_DATA_FILE) {
+        ArrayList<User> newUsers = new ArrayList<>();
+        USER_DATA_FILE = Objects.requireNonNull(USER_DATA_FILE);
+        // Read from USER_DATA_FILE and add users
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                User user = User.fromCsv(line);
+                newUsers.add(user);
+            }
+            reader.close();
+            this.users = newUsers;
+        } catch (IOException e) {
+            System.err.println("An error occurred when reading user data: " + e.getMessage());
+        }
+    }
+
     /**
      * Method to store current list of users in USER_DATA_FILE
       */
@@ -56,7 +74,7 @@ public class AuthService implements AuthInterface {
             }
             writer.close();
             System.out.println("User data successfully saved.");
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("An error occurred when saving user data: " + e.getMessage());
         }
     }
