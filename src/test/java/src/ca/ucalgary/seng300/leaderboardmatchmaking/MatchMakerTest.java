@@ -8,8 +8,6 @@ import src.ca.ucalgary.seng300.leaderboard.utility.FileManagement;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 public class MatchMakerTest {
@@ -154,6 +152,9 @@ public class MatchMakerTest {
         assertTrue(match.contains(player2));
     }
 
+    /**
+     * Test updating match history.
+     */
     @Test
     public void testUpdateMatchHistory() {
         File file = new File(TEST_FILE_PATH);
@@ -173,6 +174,9 @@ public class MatchMakerTest {
         file.delete();
     }
 
+    /**
+     * Test updating match history error.
+     */
     @Test
     public void testUpdateMatchHistoryError() {
         File file = new File(TEST_FILE_PATH);
@@ -183,6 +187,9 @@ public class MatchMakerTest {
         file.delete();
     }
 
+    /**
+     * Test getting match history.
+     */
     @Test
     public void testGetMatchHistory() {
         File file = new File(TEST_FILE_PATH);
@@ -338,6 +345,9 @@ public class MatchMakerTest {
         assertEquals(1, matchMaker.queue.size());
     }
 
+    /**
+     * Test for no match history file.
+     */
     @Test
     public void testFileDoesNotExist() {
         File file = new File(TEST_FILE_PATH);
@@ -351,6 +361,9 @@ public class MatchMakerTest {
         file.delete();
     }
 
+    /**
+     * Test when a player has more than 2 matches.
+     */
     @Test
     public void testMoreThanTwoMatchesForPlayer() throws IOException {
         File file = new File(TEST_FILE_PATH);
@@ -373,6 +386,9 @@ public class MatchMakerTest {
         file.delete();
     }
 
+    /**
+     * Test no data avaialble.
+     */
     @Test
     public void testNoDataAvail() throws IOException {
         File file = new File(TEST_FILE_PATH);
@@ -390,7 +406,9 @@ public class MatchMakerTest {
     }
 
 
-    
+    /**
+     * Test when a player has less than 2 matches.
+     */
     @Test
     public void testGetMatchHistoryPlayerWithLessThanTwoMatches() {
         // Simulate the situation where the player has fewer than 2 matches in the history.
@@ -403,13 +421,16 @@ public class MatchMakerTest {
 
         // Verify that when count is less than 2, the match is added.
         String[][] result = matchHistory.getMatchHistory("player1");
-        assertEquals(0, result.length); // Adjusted to check for 1 match instead of 0
+        assertEquals(0, result.length);
         if (result.length > 0) {
             assertEquals("player1", result[0][1], "Expected player1 to be in the match history");
         }
         file.delete();
     }
 
+    /**
+     * Test challengePlayerQueue.
+     */
     @Test
     public void testChallengePlayerQueueAddsPlayersToMatch() {
         // Create a storage and players
@@ -430,8 +451,11 @@ public class MatchMakerTest {
         assertTrue("player2 should be in the match list", matchMaker.match.contains(player2));
     }
 
+    /**
+     * Test challengePlayerQueue if in different games.
+     */
     @Test
-    public void testChallengePlayerQueueDoesNotAddPlayerIfNotInQueue() {
+    public void testChallengePlayerQueueDoesNotAddPlayerIfDifferentGame() {
         // Create a storage and players
         Storage storage = new Storage();
         Player player1 = new Player("CONNECT4", "player1", 1500, 10, 5, 2);
@@ -449,6 +473,9 @@ public class MatchMakerTest {
         assertFalse("No players should be in the match list", matchMaker.match.isEmpty());
     }
 
+    /**
+     * Test adding players to queue if multiple players.
+     */
     @Test
     public void testAddPlayerToQueueAndFindMatch() {
         // Create a storage and players
@@ -475,6 +502,9 @@ public class MatchMakerTest {
         assertTrue("player2 should be in the match", match.contains(player2));
     }
 
+    /**
+     * Test queue for single player.
+     */
     @Test
     public void testFindMatchForSinglePlayer() {
         // Create a storage and player
@@ -492,6 +522,9 @@ public class MatchMakerTest {
         assertTrue("player1 should still be in the queue", matchMaker.queue.contains(player1));
     }
 
+    /**
+     * Test adding players to queue with far elos.
+     */
     @Test
     public void testNoClosestMatchButQueueIsNotEmpty() {
         Storage storage = new Storage(); // Assuming Storage has a constructor to initialize players
@@ -510,20 +543,28 @@ public class MatchMakerTest {
         // Assert: closestMatch should be null and queue should not be empty
         assertTrue("Queue should not be empty", !matchMaker.queue.isEmpty());
     }
+
+    /**
+     * Test adding players to queue with same game.
+     */
     @Test
     public void testAddPlayerToQueueForCorrectGameType() {
         Storage storage = new Storage(); // Assuming Storage has a constructor to initialize players
         MatchMaker matchMaker = new MatchMaker(storage);
         // Arrange: Create a player and a game type
-        Player player1 = new Player("GameTypeA", "player1", 1500, 10, 5, 2);
+        Player player1 = new Player("CHESS", "player1", 1500, 10, 5, 2);
         storage.addPlayer(player1);
 
         // Act: Add player to the queue for "GameTypeA"
-        matchMaker.addPlayerToQueue("player1", "GameTypeA");
+        matchMaker.addPlayerToQueue("player1", "CHESS");
 
         // Assert: The player should be in the queue
         assertTrue("player1 should be in the queue", matchMaker.queue.contains(player1));
     }
+
+    /**
+     * Test adding players to queue twice.
+     */
     @Test
     public void testPlayerNotAddedToQueueTwice() {
         Storage storage = new Storage(); // Assuming Storage has a constructor to initialize players
