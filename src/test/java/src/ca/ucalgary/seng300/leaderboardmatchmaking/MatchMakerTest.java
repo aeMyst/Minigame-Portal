@@ -323,6 +323,12 @@ public class MatchMakerTest {
         assertThrows(RuntimeException.class, () -> {matchHistory.updateMatchHistory(null, "Player1");});
     }
 
+    @Test
+    public void testMatchHistory() {
+        MatchHistory matchHistory = new MatchHistory();
+        assertTrue(matchHistory.file.exists());
+    }
+
     /**
      * Test finding a match with no suitable players within the Elo threshold.
      */
