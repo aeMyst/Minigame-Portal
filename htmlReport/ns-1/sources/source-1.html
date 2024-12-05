@@ -52,18 +52,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    53.3%
+    100%
   </span>
   <span class="absValue">
-    (8/15)
+    (15/15)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    68.2%
+    100%
   </span>
   <span class="absValue">
-    (15/22)
+    (22/22)
   </span>
 </td>
 </tr>
@@ -77,6 +77,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package src.ca.ucalgary.seng300.leaderboard.data;
 &nbsp;
+&nbsp;/**
+&nbsp; *  Class representing a player object specifically for match histories
+&nbsp; */
 &nbsp;public class HistoryPlayer {
 &nbsp;
 &nbsp;    private String gameType;
@@ -87,6 +90,17 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private int eloLost;
 &nbsp;    private String date;
 &nbsp;
+&nbsp;    /**
+&nbsp;     * Constructor to initialize a HistoryPlayer object with specified attributes for MatchHistory
+&nbsp;     *
+&nbsp;     * @param gameType  The type of game chosen by the player (e.g. TICTACTOE, CHECKERS, CONNECT4)
+&nbsp;     * @param playerID  The unique identifier of the player (username)
+&nbsp;     * @param winnerString  The string identifier of the winner of a match
+&nbsp;     * @param loserString   The string identifier of the loser of a match
+&nbsp;     * @param eloGained The amount of elo gained by the winner of a match
+&nbsp;     * @param eloLost   The amount of elo lost by the loser of a match
+&nbsp;     * @param date  The date of when the match was played
+&nbsp;     */
 <b class="fc">&nbsp;    public HistoryPlayer(String gameType, String playerID, String winnerString, String loserString, int eloGained, int eloLost, String date) {</b>
 <b class="fc">&nbsp;        this.gameType = gameType;</b>
 <b class="fc">&nbsp;        this.playerID = playerID;</b>
@@ -97,19 +111,23 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        this.date = date;</b>
 &nbsp;    }
 &nbsp;
-<b class="nc">&nbsp;    public void setGameTypeHistory(String gameType) { this.gameType = gameType; }</b>
+&nbsp;    // setters for the HistoryPlayer attributes
 &nbsp;
-<b class="nc">&nbsp;    public void setPlayerIDHistory(String playerID) { this.playerID = playerID; }</b>
+<b class="fc">&nbsp;    public void setGameTypeHistory(String gameType) { this.gameType = gameType; }</b>
 &nbsp;
-<b class="nc">&nbsp;    public void setWinnerString(String winnerString) { this.winnerString = winnerString; }</b>
+<b class="fc">&nbsp;    public void setPlayerIDHistory(String playerID) { this.playerID = playerID; }</b>
 &nbsp;
-<b class="nc">&nbsp;    public void setLoserString(String loserString) { this.loserString = loserString; }</b>
+<b class="fc">&nbsp;    public void setWinnerString(String winnerString) { this.winnerString = winnerString; }</b>
 &nbsp;
-<b class="nc">&nbsp;    public void setEloGained(int eloGained) { this.eloGained = eloGained; }</b>
+<b class="fc">&nbsp;    public void setLoserString(String loserString) { this.loserString = loserString; }</b>
 &nbsp;
-<b class="nc">&nbsp;    public void setEloLost(int eloLost) { this.eloLost = eloLost; }</b>
+<b class="fc">&nbsp;    public void setEloGained(int eloGained) { this.eloGained = eloGained; }</b>
 &nbsp;
-<b class="nc">&nbsp;    public void setDate(String date) { this.date = date; }</b>
+<b class="fc">&nbsp;    public void setEloLost(int eloLost) { this.eloLost = eloLost; }</b>
+&nbsp;
+<b class="fc">&nbsp;    public void setDate(String date) { this.date = date; }</b>
+&nbsp;
+&nbsp;    // getters for the HistoryPlayer attributes
 &nbsp;
 <b class="fc">&nbsp;    public String getGameTypeHistory() { return gameType; }</b>
 &nbsp;
@@ -150,7 +168,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-12-03 17:51</div>
+    <div style="float:right;">generated on 2024-12-04 21:31</div>
 </div>
 </body>
 </html>

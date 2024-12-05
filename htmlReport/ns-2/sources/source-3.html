@@ -60,10 +60,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    78%
+    87.8%
   </span>
   <span class="absValue">
-    (32/41)
+    (36/41)
   </span>
 </td>
 </tr>
@@ -89,9 +89,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 <b class="fc">&nbsp;public class MatchHistory implements IMatchHistory {</b>
 &nbsp;
-&nbsp;    // File paths for match history and user data
+&nbsp;    // File path for match history (converted to file)
 &nbsp;    private static final String FILE_PATH = &quot;src/main/java/src/ca/ucalgary/seng300/database/match_history.txt&quot;;
-&nbsp;    private static final String USERS_PATH = &quot;src/main/java/src/ca/ucalgary/seng300/database/users.csv&quot;;
 <b class="fc">&nbsp;    private File file = new File(FILE_PATH);</b>
 &nbsp;
 &nbsp;    /**
@@ -137,9 +136,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;                    // Add the match to the history list if it belongs to the player and the count is less than 2
 <b class="fc">&nbsp;                    history.add(current);</b>
 <b class="fc">&nbsp;                    count++;</b>
-<b class="nc">&nbsp;                } else if (currentID.equals(player) &amp;&amp; count &gt;= 2) {</b>
+<b class="fc">&nbsp;                } else if (currentID.equals(player) &amp;&amp; count &gt;= 2) {</b>
 &nbsp;                    // Remove older matches beyond the most recent two
-<b class="nc">&nbsp;                    itr.remove();</b>
+<b class="fc">&nbsp;                    itr.remove();</b>
 &nbsp;                }
 <b class="fc">&nbsp;            }</b>
 &nbsp;
@@ -167,8 +166,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 <b class="fc">&nbsp;            return historyArr;</b>
 &nbsp;        } else {
-<b class="nc">&nbsp;            System.out.println(&quot;[ERROR] File does not exist.&quot;);</b>
-<b class="nc">&nbsp;            return new String[0][];</b>
+<b class="fc">&nbsp;            System.out.println(&quot;[ERROR] File does not exist.&quot;);</b>
+<b class="fc">&nbsp;            return new String[0][];</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;}
@@ -195,7 +194,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-12-03 17:51</div>
+    <div style="float:right;">generated on 2024-12-04 21:31</div>
 </div>
 </body>
 </html>
