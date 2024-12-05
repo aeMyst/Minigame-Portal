@@ -3,6 +3,7 @@ package src.ca.ucalgary.seng300.leaderboardmatchmaking;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.data.Storage;
 import src.ca.ucalgary.seng300.leaderboard.data.HistoryPlayer;
@@ -119,6 +120,23 @@ public class FileManagementTest {
         }
 
         file.delete(); // Clean up the output file
+    }
+
+    @Test
+    public void testFileWritingHistory2() {
+        // create directory
+        File directoryAsFile = new File("testDir");
+        directoryAsFile.mkdir(); // make sure it's a directory
+
+        HistoryStorage mockStorage = new HistoryStorage();
+        FileManagement.fileWritingHistoryNewFile(directoryAsFile, mockStorage);
+
+        // expect IOException
+        ExpectedException exception = ExpectedException.none();
+        exception.expect(IOException.class);
+
+        // clean
+        directoryAsFile.delete();
     }
 
     @Test
