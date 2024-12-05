@@ -28,7 +28,7 @@ public class Connect4LB implements IScreen {
      * Creates a scene for the connect 4 leaderboard
      * 
      * @param stage the primary stage for the appplication
-     * @param controler the controller for the connect 4 leaderboard
+     * @param controller the controller for the connect 4 leaderboard
      * @param client The client for the server conatining the leaderboard information
      */
     public Connect4LB(Stage stage, LeaderboardController controller, Client client) {

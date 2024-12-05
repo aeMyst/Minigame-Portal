@@ -3,6 +3,9 @@ package src.ca.ucalgary.seng300.network;
 import src.ca.ucalgary.seng300.Profile.interfaces.AuthInterface;
 import src.ca.ucalgary.seng300.Profile.models.User;
 
+/**
+ * The Authentication Subpart of the Client interface
+ */
 public class ClientAuth {
     AuthInterface auth;
     public ClientAuth(AuthInterface authInterface) {
