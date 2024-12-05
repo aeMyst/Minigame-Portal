@@ -1,10 +1,13 @@
 package Profile;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import src.ca.ucalgary.seng300.Profile.models.User;
 import src.ca.ucalgary.seng300.Profile.services.AuthService;
+
+import java.io.*;
 
 public class AuthServiceTest {
     private AuthService authService;
@@ -120,6 +123,36 @@ public class AuthServiceTest {
         Assert.assertNull("We have successfully logged out! No user is currently active in the system", authService.isLoggedIn()); // Assert that no user is logged in after logout
     }
 
+    @After
+    public void tearDown() throws Exception {
+        // Remove the additional rows created through the test cases
+        removeRowFromFile(authService.USER_DATA_FILE, "ValidUser");
+        removeRowFromFile(authService.USER_DATA_FILE, "Invalid@User");
+        removeRowFromFile(authService.USER_DATA_FILE, "WrongUser");
+    }
+
+    private void removeRowFromFile(String filePath, String username) throws IOException {
+        File inputFile = new File(filePath);
+        File tempFile = new File(filePath + ".tmp");
+
+        // Read from current file and write to the temporary file
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+            String currentLine;
+            // Skip rows with the specified username and write other rows to the temp file (which becomes the main file later on)
+            while ((currentLine = reader.readLine()) != null) {
+                if (!currentLine.contains(username)) {
+                    writer.write(currentLine);
+                    writer.newLine();
+                }
+            }
+        }
+        // Essentially deleting the original file and renaming the temp file to the original file.
+        if (!inputFile.delete() || !tempFile.renameTo(inputFile)) {
+            throw new IOException("Failed to clean up test data");
+        }
+    }
 
 
-  }
+
+}
