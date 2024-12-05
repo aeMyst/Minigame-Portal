@@ -134,7 +134,7 @@ public class DataTest {
     }
 
     @Test
-    public void testDefaultPlayerMethodCreatesPlayerWithZeroedStats() {
+    public void testDefaultPlayerCreatesPlayerWithZeroedStats() {
         Player player = Player.defaultPlayer("CHECKERS", "456");
         assertEquals("CHECKERS", player.getGameType());
         assertEquals("456", player.getPlayerID());
