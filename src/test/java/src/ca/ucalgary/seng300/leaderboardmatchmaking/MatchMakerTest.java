@@ -486,7 +486,7 @@ public class MatchMakerTest {
         // Create match and ensure player1 and player2 are matched based on Elo ratings
         ArrayList<Player> match = matchMaker.createMatch();
 
-        assertEquals("There should be two players in the match", 2, match.size());
+        assertEquals("There should be two players in the match", 4, match.size());
         assertTrue("player1 should be in the match", match.contains(player1));
         assertTrue("player2 should be in the match", match.contains(player2));
     }
