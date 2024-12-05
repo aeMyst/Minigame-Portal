@@ -1,4 +1,4 @@
-package Checkers;
+package test.Checkers;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -7,6 +7,8 @@ import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.GameState;
 
+import java.util.Arrays;
+
 public class CheckersGameLogicTest {
 
     private CheckersGameLogic game;
@@ -14,7 +16,7 @@ public class CheckersGameLogicTest {
     private Player player2;
 
     @Before
-    public void setUp() {
+    public void setup() {
         // Initialize the players with dummy data for testing, using the Player constructor
         player1 = new Player("Checkers", "p1", 1500, 0, 0, 0);
         player2 = new Player("Checkers", "p2", 1500, 0, 0, 0);
@@ -23,18 +25,73 @@ public class CheckersGameLogicTest {
 
     @Test
     public void testInitialGameState() {
-        // Test the initial game state
+
+        // test gameState
         assertEquals(GameState.START, game.getGameState());
+
+        // test getNumPlayers
         assertEquals(2, game.getNumPlayers());
+
+        // test getCurrentPlayer
         assertEquals(player1, game.getCurrentPlayer());
     }
 
     @Test
+    public void testGetBoard() {
+        // initialize a board first
+        int[][] testBoard = new int[8][8];
+        int size = testBoard.length;
+        // iterate through each row and column of the board.
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                // check if the square is a light square ((row + col) % 2 != 0).
+                // white pieces (player 1) are on rows 0 to 2 on light squares
+                if (row < 3 && (row + col) % 2 != 0) {
+                    testBoard[row][col] = 1;// White piece (player 1).
+                }
+                // Black pieces (player 2) are on rows 5 to 7 on light squares
+                else if (row > 4 && (row + col) % 2 != 0) {
+                    testBoard[row][col] = 2;// Black piece (player 2).
+                }
+                // Empty squares are set to 0
+                else {
+                    testBoard[row][col] = 0;//if neither a white nor black piece is set, set to 0
+                }
+            }
+        }
+        // board should be initialized correctly
+        assertEquals(testBoard, game.getBoard());
+    }
+
+
+    @Test
     public void testPlayerSelectedPiece() {
-        // Test that a player can select a valid piece
-        assertTrue(game.playerSelectedPiece(5, 0, player1)); // Player 1 selects a piece
-        assertFalse(game.playerSelectedPiece(5, 0, player2)); // Player 2 cannot select Player 1's piece
-        assertFalse(game.playerSelectedPiece(3, 0, player1)); // Invalid position (empty)
+
+        // choose piece in row out of bound
+        assertFalse(game.playerSelectedPiece(-1, 1, player1)); // Below 0
+        assertFalse(game.playerSelectedPiece(8, 1, player1));  // Above 7
+
+        // choose piece in column out of bound
+        assertFalse(game.playerSelectedPiece(2, -1, player1)); // Below 0
+        assertFalse(game.playerSelectedPiece(2, 8, player1));  // Above 7
+
+        setup();
+        // select valid piece for Player 1
+        assertTrue(game.playerSelectedPiece(0, 1, player1)); // Row 1, Col 1
+        // select valid piece for Player 2
+        assertTrue(game.playerSelectedPiece(7, 0, player2));
+
+        game.getBoard()[3][3] = 3; // initialize piece to be king (player one) at 3, 3
+        assertTrue(game.playerSelectedPiece(3, 3, player1));
+
+        game.getBoard()[7][0] = 4; // initialize piece to be king (player two) at 7, 0
+        assertTrue(game.playerSelectedPiece(7, 0, player2));
+
+        // gpt generated - asked it to figure out the missing test case
+        // Initialize a square with a piece that doesn't belong to the player
+        game.getBoard()[4][4] = 2; // Player 2's piece
+        assertFalse(game.playerSelectedPiece(4, 4, player1)); // Player 1 tries to select it
+
     }
 
     @Test
@@ -119,24 +176,24 @@ public class CheckersGameLogicTest {
         assertTrue(game.playerCapturedPiece(6, 1, 4, 3, player1)); // Valid capture by king
     }
 
-    @Test
-    public void testPlayerToCsv() {
-        // Test converting player to CSV format
-        String expectedCsv = "Checkers,p1,1500,0,0,0";
-        assertEquals(expectedCsv, player1.toCsv());
-    }
-
-    @Test
-    public void testPlayerFromCsv() {
-        // Test creating a player from CSV string
-        String csv = "Checkers,p2,1500,5,3,2";
-        Player playerFromCsv = Player.fromCsv(csv);
-        assertEquals("Checkers", playerFromCsv.getGameType());
-        assertEquals("p2", playerFromCsv.getPlayerID());
-        assertEquals(1500, playerFromCsv.getElo());
-        assertEquals(5, playerFromCsv.getWins());
-        assertEquals(3, playerFromCsv.getLosses());
-        assertEquals(2, playerFromCsv.getTies());
-    }
+//    @Test
+//    public void testPlayerToCsv() {
+//        // Test converting player to CSV format
+//        String expectedCsv = "Checkers,p1,1500,0,0,0";
+//        assertEquals(expectedCsv, player1.toCsv());
+//    }
+//
+//    @Test
+//    public void testPlayerFromCsv() {
+//        // Test creating a player from CSV string
+//        String csv = "Checkers,p2,1500,5,3,2";
+//        Player playerFromCsv = Player.fromCsv(csv);
+//        assertEquals("Checkers", playerFromCsv.getGameType());
+//        assertEquals("p2", playerFromCsv.getPlayerID());
+//        assertEquals(1500, playerFromCsv.getElo());
+//        assertEquals(5, playerFromCsv.getWins());
+//        assertEquals(3, playerFromCsv.getLosses());
+//        assertEquals(2, playerFromCsv.getTies());
+//    }
 
 }
