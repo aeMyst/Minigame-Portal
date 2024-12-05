@@ -145,7 +145,9 @@ public class CheckersGameLogic implements ICheckers {
      */
     @Override
     public void promoteToKing(int row, int col, Player player) {
-        if (!isWithinBounds(row, col)) return;
+        if (!isWithinBounds(row, col)) {
+            return;
+        }
 
         int piece = board[row][col];
         int requiredPiece = (player == player1) ? 1 : 2;
