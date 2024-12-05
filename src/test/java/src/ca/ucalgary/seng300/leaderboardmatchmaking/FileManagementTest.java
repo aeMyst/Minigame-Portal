@@ -126,7 +126,7 @@ public class FileManagementTest {
     public void testFileWritingHistory2() {
         // create directory
         File directoryAsFile = new File("testDir");
-        directoryAsFile.mkdir(); // make sure it's a directory
+        directoryAsFile.mkdir();
 
         HistoryStorage mockStorage = new HistoryStorage();
         FileManagement.fileWritingHistoryNewFile(directoryAsFile, mockStorage);
