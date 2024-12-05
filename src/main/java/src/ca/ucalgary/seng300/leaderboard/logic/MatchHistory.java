@@ -14,7 +14,18 @@ public class MatchHistory implements IMatchHistory {
 
     // File path for match history (converted to file)
     private static final String FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/match_history.txt";
-    private File file = new File(FILE_PATH);
+
+
+    public File file;
+
+    public MatchHistory() {
+         file = new File(FILE_PATH);
+    }
+
+    public MatchHistory(String filename) {
+        file = new File(filename);
+    }
+
 
     /**
      * Updates the match history by writing the provided storage data to a file.
@@ -67,6 +78,7 @@ public class MatchHistory implements IMatchHistory {
 
             if (history.isEmpty()) {
                 System.out.println("No match history is available.");
+                return new String[0][];
             }
 
             // Convert the history list to a 2D array

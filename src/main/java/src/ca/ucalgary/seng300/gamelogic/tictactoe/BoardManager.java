@@ -10,18 +10,20 @@ public class BoardManager extends Board {
     public boolean isValidMove(int row, int col) {
         boolean isRowInBounds = row >= 0 && row < 3; // checking row is valid
         boolean isColInBounds = col >= 0 && col < 3; // checking column is valid
-        boolean isCellEmpty = board[row][col] == ' '; // checking if space is empty
 
-        boolean check = isRowInBounds && isColInBounds && isCellEmpty; // combination
+        // verify valid row and col first
+        if (!isRowInBounds || !isColInBounds) {
+            return false;
+        } // otherwise continue
 
-        return check;
+        return board[row][col] == ' '; //  // last check too see if space is empty, then valid move if empty
     }
 
     /**
-     * @param row, col the location of the desired move that has been verified valid
+     * @param row, the row of the desired move that has been verified valid
+     * @param col, the column of the desired move that has been verified valid
      * @param  symbol the symbol that is placed in the location X or O
      */
-
     public void placeSymbol(char symbol, int row, int col) {
         board[row][col] = symbol; // place symbol where user picked if valid
     }

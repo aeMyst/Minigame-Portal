@@ -70,12 +70,12 @@ public class CheckersGameLogic implements ICheckers {
      */
     @Override
     public boolean playerSelectedPiece(int row, int col, Player player) {
-        if (!isWithinBounds(row, col)) return false;//ensure the position is valid
+        if (!isWithinBounds(row, col)) return false;    // ensure the position is valid
         int piece = board[row][col];
         int requiredPiece = (player == player1) ? 1 : 2;
         int kingPiece = requiredPiece + 2;
 
-        // Recognize both normal and king pieces
+        // recognize both normal and king pieces
         return piece == requiredPiece || piece == kingPiece;
     }
 
@@ -145,7 +145,9 @@ public class CheckersGameLogic implements ICheckers {
      */
     @Override
     public void promoteToKing(int row, int col, Player player) {
-        if (!isWithinBounds(row, col)) return;
+        if (!isWithinBounds(row, col)) {
+            return;
+        }
 
         int piece = board[row][col];
         int requiredPiece = (player == player1) ? 1 : 2;
@@ -229,8 +231,6 @@ public class CheckersGameLogic implements ICheckers {
         // For normal pieces, ensure movement is forward
         if (piece == 1 && rowDiff != 2) return false; // Player 1 captures down
         if (piece == 2 && rowDiff != -2) return false; // Player 2 captures up
-
-        // Kings can capture in any direction
 
         // Determine the position of the piece being captured.
         int midRow = (fromRow + toRow) / 2;
@@ -322,7 +322,7 @@ public class CheckersGameLogic implements ICheckers {
      * @param player the player owning the piece.
      * @return true if the piece qualifies for king promotion; false otherwise.
      */
-    boolean checkKingPromotion(int row, int col, Player player) {
+    public boolean checkKingPromotion(int row, int col, Player player) {
         // Player 1 promotes upon reaching the last row (index 7)
         if (player == player1 && row == 7) {
             return true;

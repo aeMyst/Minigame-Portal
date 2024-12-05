@@ -17,6 +17,7 @@ import static org.junit.Assert.*;
 public class LeaderboardTest {
 
     private static final String TEST_FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/profiles_test.csv";
+    private static final String WRONG_TEST_FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/myow_test.csv";
     private Leaderboard leaderboard;
     private File testFile;
 
@@ -133,5 +134,63 @@ public class LeaderboardTest {
 
         assertNotNull(result); // Ensure the leaderboard handles invalid data gracefully.
         
+    }
+
+    @Test
+    public void testFileDoesNotExistSortLeaderboard() throws IOException {
+        Leaderboard leaderboard = new Leaderboard(WRONG_TEST_FILE_PATH);
+
+        String[][] result = leaderboard.sortLeaderboard("CONNECT4");
+
+        String[][] expected = new String[0][3];
+
+        assertEquals(result,expected); // Ensure the leaderboard handles invalid data gracefully.
+
+    }
+
+    @Test
+    public void testFileDoesNotExistGetC4Leaderboard() throws IOException {
+        Leaderboard leaderboard = new Leaderboard(WRONG_TEST_FILE_PATH);
+
+        String[][] result = leaderboard.getC4Leaderboard();
+
+        String[][] expected = new String[0][];
+
+        assertEquals(result,expected); // Ensure the leaderboard handles invalid data gracefully.
+
+    }
+
+    @Test
+    public void testFileDoesNotExistGetTicTacToeLeaderboard() throws IOException {
+        Leaderboard leaderboard = new Leaderboard(WRONG_TEST_FILE_PATH);
+
+        String[][] result = leaderboard.getTicTacToeLeaderboard();
+
+        String[][] expected = new String[0][];
+
+        assertEquals(result,expected); // Ensure the leaderboard handles invalid data gracefully.
+
+    }
+
+    @Test
+    public void testFileDoesNotExistGetCheckersLeaderboard() throws IOException {
+        Leaderboard leaderboard = new Leaderboard(WRONG_TEST_FILE_PATH);
+
+        String[][] result = leaderboard.getCheckersLeaderboard();
+
+        String[][] expected = new String[0][];
+
+        assertEquals(result,expected); // Ensure the leaderboard handles invalid data gracefully.
+
+    }
+
+    @Test
+    public void testDefLeaderboard() throws IOException {
+        Leaderboard leaderboard = new Leaderboard();
+
+        String[][] result = leaderboard.getCheckersLeaderboard();
+
+        assertNotNull(result);
+
     }
 }

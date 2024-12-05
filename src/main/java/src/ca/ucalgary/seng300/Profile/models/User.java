@@ -1,8 +1,8 @@
 package src.ca.ucalgary.seng300.Profile.models;
 
 /**
- * Class for User object and methods
- */
+
+ Class for User object and methods*/
 public class User {
 
     // Fields of User object
