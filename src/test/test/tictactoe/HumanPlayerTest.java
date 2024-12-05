@@ -1,4 +1,4 @@
-package src.ca.ucalgary.seng300;
+package tiktaktoe;
 
 import org.junit.Before;
 import org.junit.Test;
