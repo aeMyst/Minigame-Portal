@@ -338,6 +338,12 @@ public class MatchMakerTest {
         }
     }
 
+    @Test
+    public void testMatchHistory() {
+        MatchHistory matchHistory = new MatchHistory();
+        assertTrue(matchHistory.file.exists());
+    }
+
     /**
      * Test finding a match with no suitable players within the Elo threshold.
      */
