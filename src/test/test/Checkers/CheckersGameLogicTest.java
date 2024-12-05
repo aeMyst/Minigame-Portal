@@ -7,8 +7,6 @@ import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.GameState;
 
-import java.util.Arrays;
-
 public class CheckersGameLogicTest {
 
     private CheckersGameLogic game;
@@ -97,57 +95,60 @@ public class CheckersGameLogicTest {
     @Test
     public void testPlayerMovedPiece() {
         // Test moving a piece
-        assertTrue(game.playerMovedPiece(5, 0, 4, 1, player1)); // Valid move for Player 1
+        assertTrue(game.playerMovedPiece(2, 1, 3, 0, player1)); // valid move for Player 1
         assertFalse(game.playerMovedPiece(5, 0, 3, 1, player1)); // Invalid move (should be forward)
+
+        // check king promotion
+        game.getBoard()[0][3] = 0;
+        game.getBoard()[1][4] = 2;
+        assertTrue(game.playerMovedPiece(1,4,0,3, player2));
+
     }
 
     @Test
     public void testPlayerCapturedPiece() {
-        // Test capturing an opponent's piece
-        game.playerMovedPiece(5, 0, 4, 1, player1); // Move Player 1's piece
-        game.playerMovedPiece(2, 1, 3, 2, player2); // Move Player 2's piece
-        assertTrue(game.playerCapturedPiece(5, 0, 3, 2, player1)); // Valid capture for Player 1
-        assertFalse(game.playerCapturedPiece(5, 0, 4, 2, player1)); // Invalid capture (no opponent piece)
+        // test player capture and immediate king promotion
+        game.getBoard()[2][5] = 2;
+        game.getBoard()[0][3] = 0;
+        assertTrue(game.playerCapturedPiece(2,5,0,3,player2));
+
+        setup();
+        assertFalse(game.playerCapturedPiece(2,1,3,2,player1));
     }
 
     @Test
     public void testKingPromotion() {
-        // Test king promotion when reaching the opponent's back row
-        game.playerMovedPiece(6, 1, 5, 2, player1); // Move Player 1's piece
-        game.playerMovedPiece(1, 0, 2, 1, player2); // Move Player 2's piece
-        game.playerMovedPiece(5, 2, 4, 3, player1); // Move Player 1's piece
-        game.playerMovedPiece(2, 1, 3, 2, player2); // Move Player 2's piece
-        game.playerMovedPiece(4, 3, 3, 4, player1); // Player 1 moves to the last row
-        assertTrue(game.playerMovedPiece(3, 4, 2, 5, player1)); // Move to the last row for promotion
+        // test king proper king promotion
+        game.getBoard()[0][1] = 2;
+        game.promoteToKing(0,1, player2);
+        assertEquals(4, game.getBoard()[0][1]);
+
+        // cannot promote a piece out of bounds
+        game.promoteToKing(8,3, player1);
+
+        game.getBoard()[4][3] = 2;
+        game.promoteToKing(4, 3, player2);
+        assertEquals(2, game.getBoard()[4][3]);
     }
 
     @Test
-    public void testSwitchPlayer() {
-        // Test switching players after a move
-        assertEquals(player1, game.getCurrentPlayer());
-        game.switchPlayer();
-        assertEquals(player2, game.getCurrentPlayer());
-        game.switchPlayer();
-        assertEquals(player1, game.getCurrentPlayer());
-    }
+    public void testIsValidMove() {
+        // test within boundary
+        game.isValidMove(8,3,10,0, player1);
 
-    @Test
-    public void testHasValidCapture() {
-        // Test if a piece has valid captures
-        game.playerMovedPiece(5, 0, 4, 1, player1);
-        game.playerMovedPiece(2, 1, 3, 2, player2);
-        assertTrue(game.hasValidCapture(5, 0, player1)); // Player 1 has a valid capture
-        assertFalse(game.hasValidCapture(5, 1, player2)); // Player 2 has no valid capture
-    }
+        game.getBoard()[5][2] = 4;
+        assertTrue(game.isValidMove(5,2,4,1, player2));
 
-    @Test
-    public void testHasAnyValidCaptures() {
-        // Test if any piece of a player has valid captures
-        game.playerMovedPiece(5, 0, 4, 1, player1);
-        game.playerMovedPiece(2, 1, 3, 2, player2);
-        game.playerMovedPiece(3, 2, 4, 3, player1);
-        assertTrue(game.hasAnyValidCaptures(player1)); // Player 1 has a valid capture
-        assertFalse(game.hasAnyValidCaptures(player2)); // Player 2 has no valid captures
+        //check to see if move is diagonal, if not return false
+        setup();
+        assertFalse(game.isValidMove(5,2,4,2, player2));
+        assertFalse(game.isValidMove(5,2,5,1, player2));
+
+        //check to see if move is forward
+        game.getBoard()[6][3] = 0;
+        assertFalse(game.isValidMove(5,2,6,3, player2));
+        game.getBoard()[1][2] = 0;
+        assertFalse(game.isValidMove(2,1,1,2, player1));
     }
 
     @Test
@@ -155,7 +156,48 @@ public class CheckersGameLogicTest {
         // Test forfeiting the game
         game.forfeitGame();
         assertEquals(GameState.PLAYER2_WIN, game.getGameState()); // Player 1 forfeits, Player 2 wins
+
+        setup();
+        game.switchPlayer();
+        game.forfeitGame();
+        assertEquals(GameState.PLAYER1_WIN, game.getGameState());
     }
+
+    @Test
+    public void testCheckKingPromotion() {
+        game.getBoard()[7][1] = 1;
+        assertTrue(game.checkKingPromotion(7, 1, player1));
+    }
+
+    @Test
+    public void testHasAnyValidCapture() {
+        //player two valid capture
+        game.getBoard()[4][3] = 1;
+        assertTrue(game.hasAnyValidCaptures(player2));
+
+        // player two king piece valid capture
+        game.getBoard()[5][2] = 4;
+        assertTrue(game.hasAnyValidCaptures(player2));
+
+        // player 1 valid capture
+        game.getBoard()[3][2] = 2;
+        assertTrue(game.hasAnyValidCaptures(player1));
+
+        // player 1 has no valid captures
+        setup();
+        assertFalse(game.hasAnyValidCaptures(player1));
+    }
+
+    @Test
+    public void testHasValidCaptures() {
+        // non existent piece
+        assertFalse(game.hasValidCapture(4,3, player1));
+
+        game.getBoard()[2][1] = 3;
+        assertFalse(game.hasValidCapture(2,1, player2));
+
+    }
+
 
     @Test
     public void testInvalidMoveOutOfBounds() {
@@ -176,24 +218,25 @@ public class CheckersGameLogicTest {
         assertTrue(game.playerCapturedPiece(6, 1, 4, 3, player1)); // Valid capture by king
     }
 
-//    @Test
-//    public void testPlayerToCsv() {
-//        // Test converting player to CSV format
-//        String expectedCsv = "Checkers,p1,1500,0,0,0";
-//        assertEquals(expectedCsv, player1.toCsv());
-//    }
-//
-//    @Test
-//    public void testPlayerFromCsv() {
-//        // Test creating a player from CSV string
-//        String csv = "Checkers,p2,1500,5,3,2";
-//        Player playerFromCsv = Player.fromCsv(csv);
-//        assertEquals("Checkers", playerFromCsv.getGameType());
-//        assertEquals("p2", playerFromCsv.getPlayerID());
-//        assertEquals(1500, playerFromCsv.getElo());
-//        assertEquals(5, playerFromCsv.getWins());
-//        assertEquals(3, playerFromCsv.getLosses());
-//        assertEquals(2, playerFromCsv.getTies());
-//    }
+    @Test
+    public void testIsValidCapture() {
+        assertFalse(game.isValidCapture(8,1,1,1, player1));
+
+        assertFalse(game.isValidCapture(4,2,6,2, player2));
+
+        assertFalse(game.isValidCapture(6,3,7,3, player2));
+        assertFalse(game.isValidCapture(1,2,0,2, player1));
+
+    }
+
+    @Test
+    public void testSwitchPlayer() {
+        // Test switching players after a move
+        assertEquals(player1, game.getCurrentPlayer());
+        game.switchPlayer();
+        assertEquals(player2, game.getCurrentPlayer());
+        game.switchPlayer();
+        assertEquals(player1, game.getCurrentPlayer());
+    }
 
 }
