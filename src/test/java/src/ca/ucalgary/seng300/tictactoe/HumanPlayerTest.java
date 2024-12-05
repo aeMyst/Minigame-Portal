@@ -1,8 +1,10 @@
-/* package src.ca.ucalgary.seng300;
+package src.ca.ucalgary.seng300.tictactoe;
 
+import org.junit.jupiter.api.Test;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.HumanPlayer;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 
+import static org.junit.Assert.assertEquals;
 
 public class HumanPlayerTest {
     private Player player1;
@@ -21,4 +23,3 @@ public class HumanPlayerTest {
 
         // The test for getMove is skipped due to reliance on console input.
     }
- */

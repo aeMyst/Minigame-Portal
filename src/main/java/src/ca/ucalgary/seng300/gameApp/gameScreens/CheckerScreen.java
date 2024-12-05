@@ -98,6 +98,7 @@ public class CheckerScreen implements IScreen {
         chatInput = new TextField();
         chatInput.setPromptText("Type your message...");
         chatInput.getStyleClass().add("input-field");
+        ;
         chatInput.setOnAction(e -> sendMessage());
 
         // Send and emoji buttons
@@ -482,11 +483,11 @@ public class CheckerScreen implements IScreen {
     }
 
     /**
-     * Displays an alert dialog with the specified type, title, and message.
+     * Displays an alert dialog to the user.
      *
-     * @param alertType The type of alert to display.
-     * @param title     The title of the alert dialog.
-     * @param message   The message to display in the alert.
+     * @param alertType the type of alert (e.g., INFORMATION, WARNING, ERROR)
+     * @param title     the title of the alert dialog
+     * @param message   the message to display in the alert dialog
      */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);

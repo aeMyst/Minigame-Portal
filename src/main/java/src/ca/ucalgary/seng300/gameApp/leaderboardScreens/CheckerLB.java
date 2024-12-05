@@ -17,18 +17,18 @@ import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 
 /**
- * The CheckerLB class represents the leaderboard screen for the Checkers game.
- * This screen displays the current leaderboard and provides a way to navigate back to the leaderboard menu.
+ * Represents the Checkers Leaderboard screen, implementing the IScreen interface.
+ * This class handles the UI components and layout for displaying the leaderboard.
  */
 public class CheckerLB implements IScreen {
     private Scene scene;// The scene representing the leaderboard screen
 
     /**
-     * Constructs a new CheckerLB screen.
+     * Constructs the Checkers Leaderboard screen.
      *
-     * @param stage      The primary stage for the application.
-     * @param controller The controller for handling screen navigation.
-     * @param client     The client instance for server communication.
+     * @param stage      The primary stage of the application.
+     * @param controller The LeaderboardController to handle navigation.
+     * @param client     The client for retrieving leaderboard data.
      */
     public CheckerLB(Stage stage, LeaderboardController controller, Client client) {
         // Title Label
@@ -80,16 +80,16 @@ public class CheckerLB implements IScreen {
     }
 
     /**
-     * Creates a VBox containing the leaderboard entries.
+     * Creates a VBox containing leaderboard entries.
      *
-     * @param data A 2D array containing leaderboard data where each row represents a player.
-     * @return A VBox containing the formatted leaderboard entries.
+     * @param data A 2D array of leaderboard data, where each row contains player ID, rating, and wins.
+     * @return The VBox containing leaderboard entries.
      */
     private VBox createLeaderboardEntries(String[][] data) {
         int lastEntry = data.length - 1;// Identify the last entry to style the box differently
         int count = 0;// Counter for the current entry index
 
-        // VBox to hold all leaderboard entries
+        // VBox to hold all leaderboard entries.
         VBox entriesBox = new VBox(5);
         entriesBox.setAlignment(Pos.CENTER);
         entriesBox.setPadding(new Insets(10));
@@ -126,7 +126,7 @@ public class CheckerLB implements IScreen {
         headerBox.getChildren().addAll(nameHeader,eloHeader,winsHeader);
         entriesBox.getChildren().add(headerBox);
 
-        // Add each entry from the data to the leaderboard
+        // Add each player's data to the leaderboard
         for (String[] entry : data) {
             HBox entryBox = new HBox(10);
             entryBox.setSpacing(40);
@@ -143,7 +143,6 @@ public class CheckerLB implements IScreen {
 
             entryBox.setAlignment(Pos.BASELINE_LEFT);
 
-            // Create labels for player ID, rating, and wins
             Label playerLabel = new Label(entry[0]);
             playerLabel.setFont(Font.font("Arial", FontWeight.BOLD,16));
             playerLabel.setPrefWidth(160);
