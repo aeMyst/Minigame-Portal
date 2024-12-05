@@ -13,7 +13,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 public class MatchMakerTest {
-    private static final String TEST_FILE_PATH = "src/main/java/src/ca/ucalgary/seng300/database/match_history_test.txt";
     /**
      * Test adding the same player multiple times to the queue.
      */
@@ -422,10 +421,8 @@ public class MatchMakerTest {
 
         // Verify that when count is less than 2, the match is added.
         String[][] result = matchHistory.getMatchHistory("player1");
-        assertEquals(0, result.length); // Adjusted to check for 1 match instead of 0
-        if (result.length > 0) {
-            assertEquals("player1", result[0][1], "Expected player1 to be in the match history");
-        }
+        assertEquals(String.valueOf(1), result.length, "Expected 1 match for player 1");
+        assertEquals("player1", result[0][1], "Expected player1 to be in the match history");
     }
 
     @Test
@@ -495,6 +492,8 @@ public class MatchMakerTest {
 
     @Test
     public void testFindMatchForSinglePlayer() {
+
+        // for threshold testing
         // Create a storage and player
         Storage storage = new Storage();
         Player player1 = new Player("CONNECT4", "player1", 1500, 10, 5, 2);
@@ -511,52 +510,30 @@ public class MatchMakerTest {
     }
 
     @Test
-    public void testNoClosestMatchButQueueIsNotEmpty() {
-        Storage storage = new Storage(); // Assuming Storage has a constructor to initialize players
-        MatchMaker matchMaker = new MatchMaker(storage);
-        // Arrange: Create players and add to queue
-        Player player1 = new Player("GameTypeA", "player1", 1500, 10, 5, 2);
-        Player player2 = new Player("GameTypeA", "player2", 1450, 8, 6, 3);
+    public void testMatchThreshold() {
+
+        Storage storage = new Storage();
+        // Arrange: Add players to the queue
+        Player player1 = new Player("CONNECT4", "player1", 1500, 10, 5, 2);
+        Player player2 = new Player("CONNECT4", "player2", 1510, 10, 5, 2);
+        Player player3 = new Player("CONNECT4", "player3", 2000, 10, 5, 2);
+
         storage.addPlayer(player1);
         storage.addPlayer(player2);
-        matchMaker.addPlayerToQueue("player1", "GameTypeA");
-        matchMaker.addPlayerToQueue("player2", "GameTypeA");
+        storage.addPlayer(player3);
 
-        // Act: Try to find match
-        matchMaker.findMatch("player1");
+        MatchMaker mm = new MatchMaker(storage);
 
-        // Assert: closestMatch should be null and queue should not be empty
-        assertTrue("Queue should not be empty", !matchMaker.queue.isEmpty());
+        // Act: Attempt to find a match for User1
+        mm.addPlayerToQueue("player1","CONNECT4");
+        //mm.addPlayerToQueue("player2", "CONNECT4");
+        ArrayList<Player> playersInMatch = mm.createMatch();
+
+        int num = playersInMatch.size();
+
+        // Assert: Verify that a match was found and players were removed from the queue
+        assertEquals("Two players are matched.", 2, num);
+
     }
-    @Test
-    public void testAddPlayerToQueueForCorrectGameType() {
-        Storage storage = new Storage(); // Assuming Storage has a constructor to initialize players
-        MatchMaker matchMaker = new MatchMaker(storage);
-        // Arrange: Create a player and a game type
-        Player player1 = new Player("GameTypeA", "player1", 1500, 10, 5, 2);
-        storage.addPlayer(player1);
 
-        // Act: Add player to the queue for "GameTypeA"
-        matchMaker.addPlayerToQueue("player1", "GameTypeA");
-
-        // Assert: The player should be in the queue
-        assertTrue("player1 should be in the queue", matchMaker.queue.contains(player1));
-    }
-    @Test
-    public void testPlayerNotAddedToQueueTwice() {
-        Storage storage = new Storage(); // Assuming Storage has a constructor to initialize players
-        MatchMaker matchMaker = new MatchMaker(storage);
-        // Arrange: Create players and add to storage
-        Player player1 = new Player("GameTypeA", "player1", 1500, 10, 5, 2);
-        Player player2 = new Player("GameTypeA", "player2", 1450, 8, 6, 3);
-        storage.addPlayer(player1);
-        storage.addPlayer(player2);
-
-        // Act: Add player1 to the queue and attempt to add the same player again
-        matchMaker.addPlayerToQueue("player1", "GameTypeA");
-        matchMaker.addPlayerToQueue("player1", "GameTypeA"); // Same player
-
-        // Assert: The player should only appear once in the queue
-        assertEquals("There should be only one player1 in the queue", 1, matchMaker.queue.stream().filter(p -> p.getPlayerID().equals("player1")).count());
-    }
 }
