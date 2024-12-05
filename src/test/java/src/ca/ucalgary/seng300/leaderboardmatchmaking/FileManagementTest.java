@@ -420,5 +420,23 @@ public class FileManagementTest {
         assertEquals(3, newStorage.getPlayers().get(0).getTies());
     }
 
+    @Test
+    public void testUpdateProfilesInCsvNoMatch() throws IOException {
+        // Initialize the test file with sample data
+        File testFile = new File("test_players.csv");
+        try (FileWriter writer = new FileWriter(testFile)) {
+            writer.write("type1,ID1,1000,10,5,2\n");
+            writer.write("type2,ID2,1500,15,3,1\n");
+        }
 
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(new Player("type3", "ID3", 1200, 12, 4, 2));
+
+        FileManagement.updateProfilesInCsv(testFile.getPath(), players);
+
+        Storage newStorage = FileManagement.fileReading(testFile);
+        assertEquals(2, newStorage.getPlayers().size());
+        assertEquals(1000, newStorage.getPlayers().get(0).getElo());
+        assertEquals(1500, newStorage.getPlayers().get(1).getElo());
+    }
 }
