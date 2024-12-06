@@ -3,7 +3,6 @@ package src.ca.ucalgary.seng300.network;
 import javafx.application.Platform;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
-
 import java.util.Random;
 
 /**
@@ -23,7 +22,10 @@ public class ClientCheckers {
     public void sendCheckerMoveToServer(CheckersGameLogic gameLogic, int fromRow, int fromCol, int toRow, int toCol, Player player, Runnable callback) {
         Random rand = new Random();
         int time = rand.nextInt(10);
-
+        //
+        // ChatGPT Generated: taught me how to use Thread.sleep and to pause before running next line
+        // this is to simulate a delay in placing a piece in GUI
+        //
         new Thread(() -> {
             try {
                 Thread.sleep(time); // Simulate server processing time

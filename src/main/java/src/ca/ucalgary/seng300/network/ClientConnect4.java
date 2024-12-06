@@ -3,14 +3,12 @@ package src.ca.ucalgary.seng300.network;
 import javafx.application.Platform;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Logic;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.TurnManager;
-
 import java.util.Random;
 
 /**
  * The Connect 4 component of the Client class
  */
 public class ClientConnect4 {
-
     /**
      * Sends a connect 4 move over to the server
      * @param logicManager The Connect4 Logic system
@@ -22,6 +20,10 @@ public class ClientConnect4 {
     public void sendC4MoveToServer(Connect4Logic logicManager, TurnManager turnManager, String status, Runnable callback) {
         Random rand = new Random();
         int time = rand.nextInt(1000); // delay
+        //
+        // ChatGPT Generated: taught me how to use Thread.sleep and to pause before running next line
+        // this is to simulate a delay in placing a piece in GUI
+        //
         new Thread(() -> {
             try {
                 Thread.sleep(time); // simulate server delay
@@ -57,4 +59,5 @@ public class ClientConnect4 {
             System.out.println("   -----------------------------");
         }
     }
+    // Was written with help of AI(better formatting for output)
 }

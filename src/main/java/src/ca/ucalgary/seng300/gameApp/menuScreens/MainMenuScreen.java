@@ -31,27 +31,31 @@ public class MainMenuScreen implements IScreen {
         Label titleLabel = new Label("Welcome " + username + "!");
         titleLabel.getStyleClass().add("title-label");
 
-        // Buttons
+        // button to navigate to playing game
         Button gamesButton = new Button("Play");
         gamesButton.getStyleClass().add("button");
         gamesButton.getStyleClass().add("submit-button");
         gamesButton.setOnAction(e -> controller.showGameMenu());
 
+        // button to view leaderboard
         Button leaderBoardButton = new Button("View Leaderboards");
         leaderBoardButton.getStyleClass().add("button");
         leaderBoardButton.getStyleClass().add("submit-button");
         leaderBoardButton.setOnAction(e -> controller.showLeaderBoard());
 
+        // button to navigate to help
         Button helpButton = new Button("Help");
         helpButton.getStyleClass().add("button");
         helpButton.getStyleClass().add("submit-button");
         helpButton.setOnAction(e -> controller.showHelpScreen());
 
+        // button to navigate to view profile
         Button viewProfileButton = new Button("View Profile");
         viewProfileButton.getStyleClass().add("button");
         viewProfileButton.getStyleClass().add("submit-button");
         viewProfileButton.setOnAction(e -> controller.showUserProfileScreen(client.getCurrentUsername()));
 
+        // button to log out
         Button logOutButton = new Button("Log Out");
         logOutButton.getStyleClass().add("button");
         logOutButton.getStyleClass().add("exit-button");
@@ -62,6 +66,7 @@ public class MainMenuScreen implements IScreen {
         mainMenuLayout.setAlignment(Pos.CENTER);
         mainMenuLayout.setPadding(new Insets(20));
 
+        // setting borderpane as main screen
         BorderPane rootPane = new BorderPane();
         rootPane.setCenter(mainMenuLayout);
         rootPane.getStyleClass().add("root-pane");
@@ -71,6 +76,9 @@ public class MainMenuScreen implements IScreen {
         scene.getStylesheets().add((getClass().getClassLoader().getResource("styles.css").toExternalForm()));
     }
 
+    /**
+     * method for returning the screen
+     */
     @Override
     public Scene getScene() {
         return scene;

@@ -1,5 +1,8 @@
 package src.ca.ucalgary.seng300.gamelogic.tictactoe;
 
+/**
+ * boardManager class to manage board aspects
+ */
 public class BoardManager extends Board {
 
     // check if player has made a valid move

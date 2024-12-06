@@ -74,6 +74,9 @@ public class Leaderboard implements ILeaderboard {
      * @return A 2D array representing the top 10 players' data for the CONNECT4 game, including player ID, Elo, and wins.
      */
     public String[][] getC4Leaderboard() {
+
+        // created with the help of chatgpt
+
         Storage storage;
         int count = 0;
         int sortedCount = 0;
@@ -94,10 +97,6 @@ public class Leaderboard implements ILeaderboard {
                     break; // Limit to the top 10 players
                 }
             }
-            /*
-            if (C4Players.isEmpty()) {
-                System.out.println("No player data available.");
-            }*/
 
             // Sorting CONNECT4 players by Elo rating in descending order
             C4Players.sort((player1, player2) -> Integer.compare(player2.getElo(), player1.getElo()));
@@ -124,6 +123,8 @@ public class Leaderboard implements ILeaderboard {
      * @return A 2D array representing the top 10 players' data for the TICTACTOE game, including player ID, Elo, and wins.
      */
     public String[][] getTicTacToeLeaderboard() {
+
+        // created with the help of chatgpt
         Storage storage;
         int count = 0;
         int sortedCount = 0;
@@ -170,6 +171,7 @@ public class Leaderboard implements ILeaderboard {
      * @return A 2D array representing the top 10 players' data for the CHECKERS game, including player ID, Elo, and wins.
      */
     public String[][] getCheckersLeaderboard() {
+        // created with the help of chatgpt
         Storage storage;
         int count = 0;
         int sortedCount = 0;

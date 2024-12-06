@@ -1,5 +1,8 @@
 package src.ca.ucalgary.seng300.gamelogic.tictactoe;
 
+/**
+ * board class
+ */
 public class Board {
     //instance variables
     protected char[][] board;
@@ -18,11 +21,15 @@ public class Board {
      *
      * @return board a 2d array representation of the chars in the board created by the loop in Board()
      */
-
     public char[][] getBoard() {
         return board;
     }
 
+    /**
+     *
+     * Chat-GPT generated: helped me print a formatted board to console to show the a proper game interface
+     *
+     */
     public static void printBoard(char[][] board) {
         System.out.println("      1       2       3   ");  // Column labels
         System.out.println("    -----------------------");

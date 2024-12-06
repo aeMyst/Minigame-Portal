@@ -8,8 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
@@ -22,12 +20,16 @@ import src.ca.ucalgary.seng300.network.Client;
 import java.io.File;
 import java.util.List;
 import java.util.Random;
-
+/**
+ * screen challengePlayer class
+ */
 public class ChallengePlayerScreen implements IScreen {
     private Scene scene;
 
     private boolean canceled = false;
-
+    /**
+     * challenger player screen constructor
+     */
     public ChallengePlayerScreen(Stage stage, ScreenController controller, Client client, String challengeUser, int gameType) {
         System.out.println("Finding Correct User... Challenge Request sent...");
 
@@ -111,6 +113,9 @@ public class ChallengePlayerScreen implements IScreen {
                 }
 
                 // Update the label to indicate a player was found
+                //
+                // ChatGPT Generated: how to get dynamic labels using a runLater
+                //
                 Platform.runLater(() -> joiningLabel.setText("Player Accepted Challenge!"));
 
                 // Additional delay before setting up the game
@@ -153,6 +158,9 @@ public class ChallengePlayerScreen implements IScreen {
         }).start();
     }
 
+    /**
+     * method for returning the screen
+     */
     @Override
     public Scene getScene() {
         return scene;

@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -15,7 +14,6 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import src.ca.ucalgary.seng300.gameApp.IScreen;
-import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
 import src.ca.ucalgary.seng300.network.Client;
 
 /**
@@ -163,24 +161,6 @@ public class Connect4LB implements IScreen {
             count++;
         }
         return entriesBox;
-    }
-
-    /**
-     * A method to create a new button object
-     * 
-     * @param text The text for the button
-     * @param fontSize The size of the font in the button
-     * @param width The with of the button
-     * @param bgcolor The color of the button
-     * @param action The event handler for when the button is pressed
-     */
-    private Button createButton(String text, int fontSize, double width, String bgColor, javafx.event.EventHandler<javafx.event.ActionEvent> action) {
-        Button button = new Button(text);
-        button.setFont(new Font("Arial", fontSize));
-        button.setPrefWidth(width);
-        button.setStyle(String.format("-fx-background-color: %s; -fx-text-fill: white;", bgColor));
-        button.setOnAction(action);
-        return button;
     }
 
     /**

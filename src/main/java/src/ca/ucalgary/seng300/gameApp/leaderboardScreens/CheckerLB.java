@@ -13,7 +13,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.network.Client;
-import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 
 /**
@@ -66,20 +65,6 @@ public class CheckerLB implements IScreen {
         scene.getStylesheets().add((getClass().getClassLoader().getResource("LeaderboardStyles.css").toExternalForm()));
     }
 
-    /**
-     * Creates a label with the specified properties.
-     *
-     * @param text      The text to display on the label.
-     * @param fontSize  The font size of the label text.
-     * @param alignment The alignment of the label.
-     * @return The created Label object.
-     */
-    private Label createLabel(String text, int fontSize, Pos alignment) {
-        Label label = new Label(text);
-        label.setFont(new Font("Arial", fontSize));
-        label.setAlignment(alignment);
-        return label;
-    }
 
     /**
      * Creates a VBox containing leaderboard entries.
@@ -168,24 +153,6 @@ public class CheckerLB implements IScreen {
         return entriesBox;
     }
 
-    /**
-     * Creates a button with specified properties.
-     *
-     * @param text     The text displayed on the button.
-     * @param fontSize The font size of the button text.
-     * @param width    The preferred width of the button.
-     * @param bgColor  The background color of the button.
-     * @param action   The action to perform when the button is clicked.
-     * @return The created Button object.
-     */
-    private Button createButton(String text, int fontSize, double width, String bgColor, javafx.event.EventHandler<javafx.event.ActionEvent> action) {
-        Button button = new Button(text);
-        button.setFont(new Font("Arial", fontSize));
-        button.setPrefWidth(width);
-        button.setStyle(String.format("-fx-background-color: %s; -fx-text-fill: white;", bgColor));
-        button.setOnAction(action);
-        return button;
-    }
 
     /**
      * Returns the scene object representing the leaderboard screen.

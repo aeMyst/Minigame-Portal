@@ -15,7 +15,6 @@ import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.ILeaderboard;
 import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
-
 import java.util.Random;
 import java.net.InetAddress;
 
@@ -29,6 +28,9 @@ import java.net.InetAddress;
  */
 public class Client implements IClient {
     private volatile boolean isQueueCanceled = false;
+    protected boolean getIsQueueCanceled() {
+        return isQueueCanceled;
+    }
 
     AuthInterface auth;
     ProfileInterface profile;
@@ -74,9 +76,7 @@ public class Client implements IClient {
         clientAuth = new ClientAuth(auth);
     }
 
-    public void initializeProfile(String username) {
-        profile.initializeProfile(username);
-    }
+
 
     /**
      * Disconnect the client from the network
@@ -125,10 +125,7 @@ public class Client implements IClient {
         return clientAuth.registerUser(username, password, email);
     }
 
-    public boolean validateRecoveryInfo(String username, String recoveryInfo) {
-        System.out.println("validateRecoveryInfo");
-        return true;
-    }
+
 
     /**
      * Gets the username of the user
@@ -221,21 +218,26 @@ public class Client implements IClient {
     // ###################################Connect-Disconnect to Server Methods########################################//
     // ############################################Queue Server Methods###############################################//
 
+
     /**
      * Queues up a game
      */
     public void queueGame() {
+        //
+        // ChatGPT Generated: taught me how to use Thread.sleep and to pause before running next line
+        // this is to simulate a queue happening in GUI
+        //
         try {
             System.out.println("Queueing...");
 
             // Check if the queue was canceled during the first delay
             Thread.sleep(1000);
-            if (isQueueCanceled) {
+            if (getIsQueueCanceled()) {
                 return;
             }
 
             Thread.sleep(2000); // Continue the remaining delay
-            if (isQueueCanceled) {
+            if (getIsQueueCanceled()) {
                 return;
             }
 
@@ -243,13 +245,13 @@ public class Client implements IClient {
 
             // Check again before announcing connection
             Thread.sleep(2000);
-            if (isQueueCanceled) {
+            if (getIsQueueCanceled()) {
                 return;
             }
 
             System.out.println("Success! Connecting to game session...");
             System.out.println("==========================");
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -467,7 +469,6 @@ public class Client implements IClient {
         return "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
     }
 
-    // TODO: fix method call in matchHistoryScreen
     public void sendMatchHistoryToServer(String[][] matchHistory, Runnable callback) {
         Random rand = new Random();
         int time = rand.nextInt(500) + 500; // Simulate server delay between 500ms and 1000ms
@@ -487,11 +488,12 @@ public class Client implements IClient {
 
                 // Update the GUI on the JavaFX thread
                 Platform.runLater(callback);
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
     }
+    // Was written with help of AI(better formatting for output)
 
 }
 

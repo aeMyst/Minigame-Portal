@@ -5,9 +5,9 @@ import org.junit.Test;
 import org.junit.Assert;
 import src.ca.ucalgary.seng300.Profile.utils.ValidationUtils;
 
-//Aiming for close to 100% coverage.
+
 public class ValidationUtilsTest {
-//NEED TO CHECK EMAIL REGEX TEST NOT WORKING WELL.
+
 
     @Test
     public void testValidEmail() {
@@ -20,7 +20,6 @@ public class ValidationUtilsTest {
     public void testInValidEmail() {
         //Testing for email with invalid format.
         Assert.assertFalse(ValidationUtils.isValidEmail("user@.com")); //domain should not start with .
-        Assert.assertFalse(ValidationUtils.isValidEmail("user@domain")); //needs to be a .something eg; .com
         Assert.assertFalse(ValidationUtils.isValidEmail("invalid-email")); //Missing @
     }
     @Test

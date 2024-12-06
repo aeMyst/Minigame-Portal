@@ -7,17 +7,21 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
 
+/**
+ * server connection screen class
+ */
 public class ServerConnectionScreen implements IScreen {
     private Scene scene;
     private boolean canceled = false;
 
+    /**
+     * server connection screen constructor upon call
+     */
     public ServerConnectionScreen(Stage stage, ScreenController controller, Client client, boolean disconnectCheck) {
         // Title label
         Label connectingLabel = new Label();
@@ -34,6 +38,7 @@ public class ServerConnectionScreen implements IScreen {
         progressIndicator.setPrefSize(250, 250);
 
         // Button to cancel connection
+        // created with the help of chatgpt
         Button cancelButton = new Button("Cancel");
         cancelButton.getStyleClass().add("button");
         cancelButton.getStyleClass().add("exit-button");
@@ -78,6 +83,9 @@ public class ServerConnectionScreen implements IScreen {
         }).start();
     }
 
+    /**
+     * method for returning the screen
+     */
     @Override
     public Scene getScene() {
         return scene;

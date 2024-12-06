@@ -2,6 +2,9 @@ package src.ca.ucalgary.seng300.gamelogic.Checkers;
 
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 
+/**
+ * ICheckers interface class
+ */
 public interface ICheckers {
 
     /**

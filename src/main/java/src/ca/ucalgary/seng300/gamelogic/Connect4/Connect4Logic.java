@@ -128,6 +128,9 @@ public class Connect4Logic extends Connect4Board {
             for (int col = 0; col <= board[0].length - 4; col++) {
                 //for each copy of the piece, check if the 3 positions Diagonally up and right also contain the piece, if so a win condition is found
                 if (board[row][col] == piece) {
+                    //
+                    // AI helped me create this: it checks whether the pieces are at any point on the board create a back-slash win
+                    //
                     if (board[row + 1][col + 1] == piece && board[row + 2][col + 2] == piece && board[row + 3][col + 3] == piece) {
                         return true;
                     }

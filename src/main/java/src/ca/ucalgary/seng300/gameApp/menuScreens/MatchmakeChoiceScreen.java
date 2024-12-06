@@ -46,6 +46,7 @@ public class MatchmakeChoiceScreen implements IScreen {
         queueButton.getStyleClass().add("submit-button");
         queueButton.setOnAction(e -> controller.showQueueScreen(gameChoice));
 
+        // challenge label
         Label challengeLabel = new Label("Challenge Player:");
         challengeLabel.getStyleClass().add("search-label");
 

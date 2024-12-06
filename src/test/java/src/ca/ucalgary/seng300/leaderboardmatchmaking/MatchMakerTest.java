@@ -599,8 +599,8 @@ public class MatchMakerTest {
         Player player1 = new Player("GameTypeA", "player1", 1000, 10, 5, 2);
         Player player2 = new Player("GameTypeB", "player2", 3000, 10, 5, 2);
 
-       mockStorage.addPlayer(player1);
-       mockStorage.addPlayer(player2);
+        mockStorage.addPlayer(player1);
+        mockStorage.addPlayer(player2);
 
         mm.addPlayerToQueue("player1", "GameTypeA");
         mm.addPlayerToQueue("player2", "GameTypeB");

@@ -9,6 +9,9 @@ import src.ca.ucalgary.seng300.Profile.services.ProfileService;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class ProfileServiceTest {
@@ -76,13 +79,14 @@ public class ProfileServiceTest {
         System.setOut(originalOut);
 
         // Verify that the profile was initialized
-        String expectedOutput = "Default profiles created for user: " + username + "\n";
-        assertTrue(outContent.toString().contains(expectedOutput));
+        String expectedOutput = "Default profiles created for user: " + username;
+        assertTrue(outContent.toString().trim().contains(expectedOutput));
 
         // Verify result is not empty
         assertNotNull(result);
         assertFalse(result.isEmpty());
     }
+
 
     // Test updating profile with valid data
     @Test
@@ -124,13 +128,14 @@ public class ProfileServiceTest {
         // Restore System.out
         System.setOut(originalOut);
         // Verify output
-        String expectedOutput = "At least one field must be changed.\n";
-        assertEquals(expectedOutput, outContent.toString());
+        String expectedOutput = "At least one field must be changed.";
+        assertEquals(expectedOutput, outContent.toString().trim());
         // Verify that user information remains unchanged
         User userAfterUpdate = authService.isLoggedIn();
         assertEquals(username, userAfterUpdate.getUsername());
         assertEquals(email, userAfterUpdate.getEmail());
     }
+
 
     // Test updating profile with invalid username (should fail validation)
     @Test
@@ -152,12 +157,14 @@ public class ProfileServiceTest {
         // Restore System.out
         System.setOut(originalOut);
         // Verify output
-        String expectedOutput = "Invalid username format.\n";
-        assertEquals(expectedOutput, outContent.toString());
+        String expectedOutput = "Invalid username format.";
+        assertEquals(expectedOutput, outContent.toString().trim());
         // Verify that user information remains unchanged
         User userAfterUpdate = authService.isLoggedIn();
         assertEquals(username, userAfterUpdate.getUsername());
+        assertEquals(email, userAfterUpdate.getEmail());
     }
+
 
     // Test updating profile with invalid email (should fail validation)
     @Test
@@ -185,13 +192,15 @@ public class ProfileServiceTest {
         System.setOut(originalOut);
 
         // Verify output
-        String expectedOutput = "Invalid email format.\n";
-        assertEquals(expectedOutput, outContent.toString());
+        String expectedOutput = "Invalid email format.";
+        assertEquals(expectedOutput, outContent.toString().trim());
 
         // Verify that user information remains unchanged
         User userAfterUpdate = authService.isLoggedIn();
         assertEquals(username, userAfterUpdate.getUsername());
+        assertEquals(email, userAfterUpdate.getEmail());
     }
+
 
     // Test updating profile with invalid password (should fail validation)
     @Test
@@ -219,13 +228,15 @@ public class ProfileServiceTest {
         System.setOut(originalOut);
 
         // Verify output
-        String expectedOutput = "Invalid password format.\n";
-        assertEquals(expectedOutput, outContent.toString());
+        String expectedOutput = "Invalid password format.";
+        assertEquals(expectedOutput, outContent.toString().trim());
 
         // Verify that user information remains unchanged
         User userAfterUpdate = authService.isLoggedIn();
         assertEquals(username, userAfterUpdate.getUsername());
+        assertEquals(email, userAfterUpdate.getEmail());
     }
+
 
     // Test updating profile when user is not found in users list
     @Test
@@ -248,9 +259,10 @@ public class ProfileServiceTest {
         // Restore System.out
         System.setOut(originalOut);
         // Verify output
-        String expectedOutput = "User not found.\n";
-        assertEquals(expectedOutput, outContent.toString());
+        String expectedOutput = "User not found.";
+        assertEquals(expectedOutput, outContent.toString().trim());
     }
+
 
     // Test that updating profile username updates the username in profiles as well
     @Test
@@ -479,4 +491,137 @@ public class ProfileServiceTest {
             throw new IOException("Failed to clean up test data");
         }
     }
+
+    @Test
+    public void testUpdateProfileNoChange() throws IOException {
+        User user = new User("user1", "password1", "user1@example.com");
+        profileService.initializeProfile(user.getUsername());
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outContent));
+
+        profileService.updateProfile(user, "", "", "");
+
+        System.setOut(originalOut);
+        assertTrue(outContent.toString().contains("At least one field must be changed."));
+
+        // Cleanup profile and user data
+        removeRowFromFile(profileService.profilePath, user.getUsername());
+        removeRowFromFile(profileService.usersPath, user.getUsername());
+    }
+
+    @Test
+    public void testBuildProfileUserFound() throws IOException {
+        // Setup
+        String email = "user1@example.com";
+        String username = "user1";
+        String password = "Password123!";
+
+        // Register and login
+        authService.register(email, username, password);
+        authService.login(username, password);
+
+        // Initialize the profile for the user
+        profileService.initializeProfile(username);
+
+        // Call searchProfile
+        String profile = profileService.searchProfile(username);
+
+        // Verify that the profile contains the expected details
+        assertTrue(profile.contains("Gametype: CHECKERS"));
+        assertTrue(profile.contains("PlayerID: user1"));
+
+        // Cleanup profile and user data
+        removeRowFromFile(profileService.profilePath, username);
+        removeRowFromFile(profileService.usersPath, username);
+    }
+
+
+
+    @Test
+    public void testBuildProfileUserNotFound() {
+        String profile = profileService.searchProfile("nonexistentUser");
+
+        assertEquals("Profile not found for nonexistentUser", profile);
+    }
+
+    @Test
+    public void testReadCsvInvalidDetailsLength() throws IOException {
+        // Prepare an invalid row with missing columns and append it to profiles.csv
+        String invalidRow = "CHECKERS,user1,1200,10"; // Missing columns
+        appendToFile(profileService.profilePath, invalidRow);
+
+        // Capture error output
+        ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+        PrintStream originalErr = System.err;
+        System.setErr(new PrintStream(errContent));
+
+        // Call searchProfile to see if it handles the invalid row correctly
+        String profile = profileService.searchProfile("user1");
+
+        // Restore System.err
+        System.setErr(originalErr);
+
+        // Extract captured error output
+        String capturedError = errContent.toString().trim();
+
+        // Verify that an error message was printed for the invalid row
+        assertTrue("Expected error message not logged for invalid row", capturedError.contains("Error reading from file"));
+
+        // Verify that the profile was not found due to invalid data
+        assertEquals("Profile not found for user1", profile);
+    }
+
+    @Test
+    public void testUpdateProfileBlankFields() {
+        String email = "someblank@example.com";
+        String username = "someblankuser";
+        String password = "Password123!";
+        authService.register(email, username, password);
+        authService.login(username, password);
+
+        profileService.updateProfile(authService.isLoggedIn(), "", "newemail@example.com", "");
+
+        User updatedUser = authService.isLoggedIn();
+
+        assertEquals("Expected email to be updated", "newemail@example.com", updatedUser.getEmail());
+        assertEquals("Expected username to remain unchanged", username, updatedUser.getUsername());
+        assertEquals("Expected password to remain unchanged", password, updatedUser.getPassword());
+    }
+
+    @Test
+    public void testUpdateProfileCurrentUserCheck() throws IOException {
+        // keep our original csv file
+        String usersFilePath = profileService.usersPath;
+        List<String> originalLines = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(usersFilePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                originalLines.add(line);
+            }
+        }
+
+        String email = "currentcheck@example.com";
+        String oldUsername = "currentCheckUser";
+        String password = "Password123!";
+
+        authService.register(email, oldUsername, password);
+        authService.login(oldUsername, password);
+
+        profileService.updateProfile(authService.isLoggedIn(), "newCurrentUser", "", "");
+
+        User updated = authService.isLoggedIn();
+        assertNotNull(updated);
+        assertEquals("newCurrentUser", updated.getUsername());
+
+        //revert users.csv to original lines to avoid permanent changes
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(usersFilePath))) {
+            for (String l : originalLines) {
+                writer.write(l);
+                writer.newLine();
+            }
+        }
+    }
+
 }

@@ -99,6 +99,9 @@ public class LeaderboardController implements IScreen {
         stage.setScene(scene);
     }
 
+    /**
+     * returns the scene
+     */
     @Override
     public Scene getScene() {
         return scene;

@@ -286,6 +286,9 @@ public final class ScreenController extends Application {
         primaryStage.setScene(challengeScreen.getScene());
     }
 
+    /**
+     * shows the match history Screen
+     */
     public void showMatchHistoryScreen(String userDisplay) {
         MatchHistoryScreen matchHistoryScreen = new MatchHistoryScreen(primaryStage, this, client, userDisplay);
         primaryStage.setTitle("Match History");
