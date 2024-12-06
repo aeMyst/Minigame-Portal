@@ -5,7 +5,6 @@
 
 package src.ca.ucalgary.seng300.Profile.controllers;
 
-import src.ca.ucalgary.seng300.Profile.models.Profile;
 import src.ca.ucalgary.seng300.Profile.models.User;
 import src.ca.ucalgary.seng300.Profile.services.ProfileService;
 
