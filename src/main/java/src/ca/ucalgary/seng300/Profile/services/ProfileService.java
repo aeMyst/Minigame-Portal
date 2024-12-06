@@ -66,42 +66,52 @@ public class ProfileService implements ProfileInterface {
      */
     @Override
     public void updateProfile(User user, String newUsername, String newEmail, String newPassword) {
-        // Check if at least one field is updated
         if (!isValidUpdate(newUsername, newEmail, newPassword)) return;
 
-        // Retrieve information from stored users
         List<String[]> users = readCsv(usersPath);
         boolean userFound = false;
-        // Find user in List
+        String oldUsername = user.getUsername();
+        String finalUsername = oldUsername;
+        String finalEmail = user.getEmail();
+        String finalPassword = user.getPassword();
+
         for (int i = 0; i < users.size(); i++) {
             String[] details = users.get(i);
-            // Find user in csv file
-            if (details.length == 3 && details[1].trim().equalsIgnoreCase(user.getUsername())) {
+            if (details.length == 3 && details[1].trim().equalsIgnoreCase(oldUsername)) {
                 userFound = true;
-                // Update changed information
-                users.set(i, new String[]{
-                        isBlank(newEmail) ? details[0].trim() : newEmail,
-                        isBlank(newUsername) ? details[1].trim() : newUsername,
-                        isBlank(newPassword) ? details[2].trim() : newPassword
-                });
+                finalEmail = isBlank(newEmail) ? details[0].trim() : newEmail.trim();
+                finalUsername = isBlank(newUsername) ? details[1].trim() : newUsername.trim();
+                finalPassword = isBlank(newPassword) ? details[2].trim() : newPassword.trim();
+
+                users.set(i, new String[]{finalEmail, finalUsername, finalPassword});
                 break;
             }
         }
-        // Return error if user not found
+
         if (!userFound) {
             System.out.println("User not found.");
             return;
         }
-        // Update username if desired
-        if (!isBlank(newUsername)) updateProfileUsername(user.getUsername(), newUsername);
+
+        // Update profile username if it changed
+        if (!isBlank(newUsername)) {
+            updateProfileUsername(oldUsername, newUsername);
+        }
+
         writeCsv(usersPath, users);
 
-        if (!isBlank(newUsername)) {
-            authService.updateCurrentUser(newUsername, isBlank(newEmail) ? user.getEmail() : newEmail);
+        // Now ensure the in-memory currentUser is updated even if username didn't change
+        User current = authService.isLoggedIn();
+        if (current != null && current.getUsername().equalsIgnoreCase(oldUsername)) {
+            // Update email and username in-memory
+            current.setEmail(finalEmail);
+            current.setUsername(finalUsername);
+            current.setPassword(finalPassword);
         }
 
         System.out.println("Profile updated successfully.");
     }
+
 
     /**
      * Function to instantiate new profile with default values
@@ -141,14 +151,21 @@ public class ProfileService implements ProfileInterface {
      * @return Profile not found if error occurs
      */
     private String buildProfileString(String username) {
-        // Initialize new StringBuilder
         StringBuilder profileBuilder = new StringBuilder();
-        // Load profile information from csv
         List<String[]> profiles = readCsv(profilePath);
         boolean profileFound = false;
-        // Parse each profile detail from string to integer
+
         for (String[] details : profiles) {
-            if (details.length == 6 && details[1].trim().equalsIgnoreCase(username)) {
+            // Check if this line might be related to the user
+            if (details.length >= 2 && details[1].trim().equalsIgnoreCase(username)) {
+                // If the line doesn't have exactly 6 columns, print error and continue
+                if (details.length != 6) {
+                    System.err.println("Error reading from file: Invalid number of columns for user " + username);
+                    // Don't mark profileFound as true, just continue
+                    continue;
+                }
+
+                // If we reach here, details.length == 6
                 profileFound = true;
                 int elo = parseInt(details[2]);
                 int wins = parseInt(details[3]);
@@ -156,20 +173,19 @@ public class ProfileService implements ProfileInterface {
                 int draws = parseInt(details[5]);
                 int gamesPlayed = wins + losses + draws;
 
-                // Append to Stringbuilder
                 profileBuilder.append(String.format(
                         "Gametype: %s\nPlayerID: %s\nElo: %d\nWins: %d\nLosses: %d\nDraws: %d\nGames Played: %d\n\n",
                         details[0].trim(), details[1].trim(), elo, wins, losses, draws, gamesPlayed
                 ));
             }
         }
-        // Return error message if profile not found
+
         if (!profileFound) {
             System.out.println("Profile not found for username: " + username);
         }
-        // Return profile string
         return profileBuilder.toString().trim();
     }
+
 
     /**
      * Helper function to read from csv file
