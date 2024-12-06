@@ -3,6 +3,7 @@ package src.ca.ucalgary.seng300.checkers;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersBoard;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.GameState;
@@ -240,6 +241,12 @@ public class CheckersGameLogicTest {
         //assertFalse(game.isValidCapture(1,2,0,2, player1));
 
     }
+
+    @Test
+    public void testClass() {
+        CheckersBoard board = new CheckersBoard();
+    }
+
 
     @Test
     public void testSwitchPlayer() {
