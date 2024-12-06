@@ -34,6 +34,7 @@ public class ServerConnectionScreen implements IScreen {
         progressIndicator.setPrefSize(250, 250);
 
         // Button to cancel connection
+        // created with the help of chatgpt
         Button cancelButton = new Button("Cancel");
         cancelButton.getStyleClass().add("button");
         cancelButton.getStyleClass().add("exit-button");
