@@ -137,6 +137,7 @@ public class MatchHistoryScreen implements IScreen {
         historyBox.setPadding(new Insets(10));
 
         // go through the 2D array and display the information in its own VBox
+        // created with the help of chatgpt
         for (String[] entry : data) {
             if (!(entry[1] == null)) {
                 VBox entryBox = new VBox(5);

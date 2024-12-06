@@ -69,6 +69,7 @@ public class ForgotPasswordScreen {
             String email = recoveryField.getText();
 
             // Validate recovery information
+            // created with the help of chatgpt
             ArrayList<User> users = authService.getSanitizedUsers();
             boolean isRecoverySuccessful = false;
             for (User user : users) {
