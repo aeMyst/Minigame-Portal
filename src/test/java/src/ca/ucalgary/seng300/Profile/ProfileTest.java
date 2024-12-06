@@ -6,23 +6,18 @@ import src.ca.ucalgary.seng300.Profile.models.Profile;
 import src.ca.ucalgary.seng300.Profile.models.User;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class ProfileTest {
-
     private Profile profile;
-    private User mockUser;
+    private User user;
 
     @Before
     public void setUp() {
-        // Create a mock User object
-        mockUser = mock(User.class);
-        when(mockUser.getUsername()).thenReturn("testUser");
-        when(mockUser.getEmail()).thenReturn("testUser@example.com");
+        // Create a real User object
+        user = new User("testUser", "passowrd1!", "testUser@example.com");
 
-        // Initialize the Profile object with the mock User
-        profile = new Profile(mockUser);
+        // Initialize the Profile object with the real User
+        profile = new Profile(user);
     }
 
     @Test
