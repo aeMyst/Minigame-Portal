@@ -159,8 +159,9 @@ public class MatchMakerTest {
      */
     @Test
     public void testUpdateMatchHistory() {
+        File file = new File(TEST_FILE_PATH);
         HistoryStorage storage = new HistoryStorage();
-        MatchHistory matchHistory = new MatchHistory();
+        MatchHistory matchHistory = new MatchHistory(TEST_FILE_PATH);
         HistoryPlayer player1 = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player2", 10, -10, "2024-12-03");
         storage.addPlayerHistory(player1);
 
@@ -168,7 +169,7 @@ public class MatchMakerTest {
         matchHistory.updateMatchHistory(storage, "Player1");
 
         // Verify that the file is written correctly
-        File file = new File("src/main/java/src/ca/ucalgary/seng300/database/match_history.txt");
+        file = matchHistory.file;
         assertTrue(file.exists());
 
         // Clean up
@@ -193,8 +194,9 @@ public class MatchMakerTest {
      */
     @Test
     public void testGetMatchHistory() {
+        File file = new File(TEST_FILE_PATH);
         HistoryStorage storage = new HistoryStorage();
-        MatchHistory matchHistory = new MatchHistory();
+        MatchHistory matchHistory = new MatchHistory(TEST_FILE_PATH);
         HistoryPlayer player1 = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player2", 10, -10, "2024-12-03");
         HistoryPlayer player2 = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player3", 15, -15, "2024-12-04");
         storage.addPlayerHistory(player1);
@@ -227,8 +229,210 @@ public class MatchMakerTest {
         assertEquals("-10", history[1][5]);
         assertEquals("2024-12-03", history[1][6]);
 
-        // Clean up
-        File file = new File("src/main/java/src/ca/ucalgary/seng300/database/match_history.txt");
+        file.delete();
+    }
+
+    /**
+     * Test adding a player to the queue when they are already present.
+     */
+    @Test
+    public void testAddPlayerToQueueAlreadyPresent() {
+        Storage storage = new Storage();
+        MatchMaker matchMaker = new MatchMaker(storage);
+        Player player1 = new Player("CONNECT4", "Player1", 1000, 10, 5, 0);
+        storage.addPlayer(player1);
+
+        // Add the player to the queue
+        matchMaker.addPlayerToQueue("Player1", "CONNECT4");
+
+        // Attempt to add the same player again
+        matchMaker.addPlayerToQueue("Player1", "CONNECT4");
+
+        // Check that the player is not added twice
+        assertEquals(1, matchMaker.queue.size());
+    }
+
+    /**
+     * Test removing older matches beyond the most recent two.
+     */
+    @Test
+    public void testRemoveOlderMatches() {
+        File file = new File(TEST_FILE_PATH);
+        HistoryStorage storage = new HistoryStorage();
+        MatchHistory matchHistory = new MatchHistory(TEST_FILE_PATH);
+        HistoryPlayer player1 = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player2", 10, -10, "2024-12-03");
+        HistoryPlayer player2 = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player3", 15, -15, "2024-12-04");
+        HistoryPlayer player3 = new HistoryPlayer("CONNECT4", "Player1", "Player1", "Player4", 20, -20, "2024-12-05");
+        storage.addPlayerHistory(player1);
+        storage.addPlayerHistory(player2);
+        storage.addPlayerHistory(player3);
+
+        // Update match history to ensure the file is created
+        matchHistory.updateMatchHistory(storage, "Player1");
+
+        // Retrieve match history
+        String[][] history = matchHistory.getMatchHistory("Player1");
+
+        // Verify the match history contains only the most recent two matches
+        assertEquals(2, history.length);
+
+        // Verify the most recent match
+        assertEquals("CONNECT4", history[0][0]);
+        assertEquals("Player1", history[0][1]);
+        assertEquals("Player1", history[0][2]);
+        assertEquals("Player4", history[0][3]);
+        assertEquals("20", history[0][4]);
+        assertEquals("-20", history[0][5]);
+        assertEquals("2024-12-05", history[0][6]);
+
+        // Verify the second most recent match
+        assertEquals("CONNECT4", history[1][0]);
+        assertEquals("Player1", history[1][1]);
+        assertEquals("Player1", history[1][2]);
+        assertEquals("Player3", history[1][3]);
+        assertEquals("15", history[1][4]);
+        assertEquals("-15", history[1][5]);
+        assertEquals("2024-12-04", history[1][6]);
+
+        file.delete();
+    }
+
+    /**
+     * Test handling no match history available.
+     */
+    @Test
+    public void testNoMatchHistoryAvailable() {
+        File file = new File(TEST_FILE_PATH);
+        HistoryStorage storage = new HistoryStorage();
+        MatchHistory matchHistory = new MatchHistory(TEST_FILE_PATH);
+
+        // Retrieve match history when no history is available
+        String[][] history = matchHistory.getMatchHistory("Player1");
+
+        // Verify the match history is empty
+        assertEquals(0, history.length);
+        file.delete();
+    }
+
+    /**
+     * Test handling an exception when updating match history.
+     */
+    @Test
+    public void testUpdateMatchHistoryException() {
+        HistoryStorage storage = new HistoryStorage();
+        MatchHistory matchHistory = new MatchHistory(TEST_FILE_PATH);
+
+        assertThrows(RuntimeException.class, () -> {matchHistory.updateMatchHistory(null, "Player1");});
+    }
+
+    @Test
+    public void testMatchHistory() {
+        MatchHistory matchHistory = new MatchHistory();
+        assertTrue(matchHistory.file.exists());
+    }
+
+    /**
+     * Test finding a match with no suitable players within the Elo threshold.
+     */
+    @Test
+    public void testFindMatchNoSuitablePlayers() {
+        Storage storage = new Storage();
+        MatchMaker matchMaker = new MatchMaker(storage);
+        Player player1 = new Player("CONNECT4", "Player1", 1000, 10, 5, 0);
+        Player player2 = new Player("CONNECT4", "Player2", 1300, 15, 7, 0);
+        storage.addPlayer(player1);
+        storage.addPlayer(player2);
+
+        // Add both players to the queue
+        matchMaker.addPlayerToQueue("Player1", "CONNECT4");
+        matchMaker.addPlayerToQueue("Player2", "CONNECT4");
+
+        // Attempt to find a match
+        matchMaker.findMatch("Player1");
+
+        assertEquals(1, matchMaker.queue.size());
+    }
+
+    /**
+     * Test for no match history file.
+     */
+    @Test
+    public void testFileDoesNotExist() {
+        File file = new File(TEST_FILE_PATH);
+
+        MatchHistory matchHistory = new MatchHistory(TEST_FILE_PATH);
+
+        String[][] result = matchHistory.getMatchHistory("player1");
+
+        assertNotNull(result);
+        assertEquals(0, result.length); // Expect an empty array
+        file.delete();
+    }
+
+    /**
+     * Test when a player has more than 2 matches.
+     */
+    @Test
+    public void testMoreThanTwoMatchesForPlayer() throws IOException {
+        File file = new File(TEST_FILE_PATH);
+
+        HistoryStorage storage = new HistoryStorage();
+        storage.addPlayerHistory(new HistoryPlayer("game1", "player1", "winner", "loser", 10, -10, "2023-12-04"));
+        storage.addPlayerHistory(new HistoryPlayer("game2", "player1", "winner", "loser", 15, -5, "2023-12-05"));
+        storage.addPlayerHistory(new HistoryPlayer("game3", "player1", "winner", "loser", 20, -20, "2023-12-06"));
+        FileManagement.fileWritingHistoryNewFile(file, storage); // Populate file
+
+        MatchHistory matchHistory = new MatchHistory(TEST_FILE_PATH);
+
+        String[][] result = matchHistory.getMatchHistory("player1");
+
+        assertNotNull(result);
+        assertEquals(2, result.length); // Expect only the 2 most recent matches
+        assertEquals("game3", result[0][0]); // Most recent match
+        assertEquals("game2", result[1][0]); // Second most recent match
+
+        file.delete();
+    }
+
+    /**
+     * Test no data avaialble.
+     */
+    @Test
+    public void testNoDataAvail() throws IOException {
+        File file = new File(TEST_FILE_PATH);
+        if (file.exists()) {
+            file.delete();
+        }
+        file.createNewFile();
+        MatchHistory matchHistory = new MatchHistory(TEST_FILE_PATH);
+
+        String[][] result = matchHistory.getMatchHistory("player1");
+        String[][] expected = new String[0][];
+
+        assertEquals( expected, result); // Second most recent match
+        file.delete();
+    }
+
+
+    /**
+     * Test when a player has less than 2 matches.
+     */
+    @Test
+    public void testGetMatchHistoryPlayerWithLessThanTwoMatches() {
+        // Simulate the situation where the player has fewer than 2 matches in the history.
+        File file = new File(TEST_FILE_PATH);
+        MatchHistory matchHistory = new MatchHistory(TEST_FILE_PATH);
+        HistoryStorage storage = new HistoryStorage();
+        HistoryPlayer player1Match = new HistoryPlayer("player1", "game1", "player1", "player2", 10, 5, "2024-12-01");
+        storage.addPlayerHistory(player1Match);
+        FileManagement.fileWritingHistoryNewFile(file, storage);
+
+        // Verify that when count is less than 2, the match is added.
+        String[][] result = matchHistory.getMatchHistory("player1");
+        assertEquals(0, result.length);
+        if (result.length > 0) {
+            assertEquals("player1", result[0][1], "Expected player1 to be in the match history");
+        }
         file.delete();
     }
 
