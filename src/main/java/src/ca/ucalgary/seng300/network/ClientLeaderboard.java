@@ -3,7 +3,6 @@ package src.ca.ucalgary.seng300.network;
 import javafx.application.Platform;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.ILeaderboard;
 import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
-
 import java.util.Random;
 
 /**

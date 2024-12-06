@@ -3,7 +3,6 @@ package src.ca.ucalgary.seng300.network;
 import javafx.application.Platform;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.CheckersGameLogic;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
-
 import java.util.Random;
 
 /**

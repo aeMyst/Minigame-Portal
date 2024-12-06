@@ -3,7 +3,6 @@ package src.ca.ucalgary.seng300.network;
 import javafx.application.Platform;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.Connect4Logic;
 import src.ca.ucalgary.seng300.gamelogic.Connect4.TurnManager;
-
 import java.util.Random;
 
 /**

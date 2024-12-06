@@ -3,7 +3,6 @@ package src.ca.ucalgary.seng300.network;
 import javafx.application.Platform;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
-
 import java.util.Random;
 
 /**
