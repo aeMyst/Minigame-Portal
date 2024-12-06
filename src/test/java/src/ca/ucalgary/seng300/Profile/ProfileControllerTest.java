@@ -11,6 +11,7 @@ import src.ca.ucalgary.seng300.Profile.services.AuthService;
 
 import java.io.*;
 
+
 public class ProfileControllerTest {
 
     private ProfileController profileController;
