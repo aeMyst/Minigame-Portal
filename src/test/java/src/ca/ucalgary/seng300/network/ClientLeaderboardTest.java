@@ -2,7 +2,6 @@ package src.ca.ucalgary.seng300.network;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.ILeaderboard;
 import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
 
@@ -11,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
 
 public class ClientLeaderboardTest {
 
