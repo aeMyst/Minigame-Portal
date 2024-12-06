@@ -6,8 +6,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.Utility.ChatUtility;
+import src.ca.ucalgary.seng300.leaderboard.data.HistoryPlayer;
+import src.ca.ucalgary.seng300.leaderboard.data.HistoryStorage;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.logic.EloRating;
+import src.ca.ucalgary.seng300.leaderboard.logic.MatchHistory;
 import src.ca.ucalgary.seng300.leaderboard.utility.FileManagement;
 import src.ca.ucalgary.seng300.network.Client;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
@@ -15,6 +18,8 @@ import src.ca.ucalgary.seng300.gamelogic.tictactoe.BoardManager;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.HumanPlayer;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -151,6 +156,9 @@ public class TictactoeGameScreen {
 
             // Handle user response
             if (result.isPresent() && result.get() == forfeitButtonType) {
+                MatchHistory matchHistory = new MatchHistory();
+                HistoryStorage storage = new HistoryStorage();
+
                 // User confirmed forfeiting
                 System.out.println(client.getCurrentUsername() + " has forfeited the game.");
 
@@ -159,22 +167,29 @@ public class TictactoeGameScreen {
 
                 EloRating eloRating = new EloRating();
                 String eloLoss;
+                String eloGain;
                 int currentLoserElo = 0;
+                int currentWinnerElo = 0;
 
                 // loop to find winner and loser
                 for (Player player : match) {
                     if (!player.getPlayerID().equals(client.getCurrentUsername())) {
                         winner = player;
+                        currentWinnerElo = winner.getElo();
                     } else {
                         loser = player;
                         currentLoserElo = loser.getElo();
                     }
                 }
 
+                String winnerString = winner.getPlayerID();
+                String loserString = loser.getPlayerID();
                 eloRating.updateElo(winner, loser);
                 winner.setWins(winner.getWins() + 1);
                 loser.setLosses(loser.getLosses() + 1);
                 eloLoss = String.valueOf(currentLoserElo - loser.getElo());
+                eloGain = String.valueOf(winner.getElo() - currentWinnerElo);
+
 
                 // loop to edit player profiles in match
                 for (Player player : match) {
@@ -185,16 +200,25 @@ public class TictactoeGameScreen {
                     }
                 }
 
+                for (Player player : match) {
+                    storage.addPlayerHistory(new HistoryPlayer(player.getGameType(), player.getPlayerID(),winnerString, loserString, Integer.parseInt(eloGain), Integer.parseInt(eloLoss), LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM dd yyyy"))));
+                }
+                matchHistory.updateMatchHistory(storage, client.getCurrentUsername());
+
                 FileManagement.updateProfilesInCsv(client.getStatPath(), match);
 
                 controller.showMainMenu(); // Navigate back to the main menu
-                https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
-                showAlert(Alert.AlertType.INFORMATION, "The game was Forfeited", "You have Loss -" + eloLoss +" Elo" );
+
+                //
+                // https//docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
+                // learnt about AlertTypes in JavaFX
+                //
+                showAlert(Alert.AlertType.INFORMATION, "The game was Forfeited", "You have Loss -" + eloLoss + " Elo");
             } else {
                 // User canceled forfeiting
                 System.out.println(client.getCurrentUsername() + " has canceled forfeiting.");
             }
-                });
+        });
 
         // Main Layout
         VBox layout = new VBox(15, title, turnIndicator, gameBoard, chatLayout, forfeitButton);
