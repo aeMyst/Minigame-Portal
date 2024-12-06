@@ -49,7 +49,7 @@ The objective of the game is to capture all of your opponent's pieces or block t
 ## Project Structure
 
 ### Integration
-- ./java/src/ca/ucalgary/seng300/Main.java: The main file for the project
+- ./src/main/java/src/ca/ucalgary/seng300/Main.java: The main file for the project
 - ./build.gradle: The gradle build file
 - ./.gitlab-ci.yml: The gitlab CI file for running tests
 - ./src/test: The test files for the project
