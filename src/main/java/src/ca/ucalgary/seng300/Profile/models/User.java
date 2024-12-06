@@ -19,11 +19,13 @@ public class User {
         this.email = email;
     }
 
+    // get information from csv file
     public static User fromCsv(String csv) {
         String[] data = csv.split(",");
         return new User(data[1], data[2], data[0]);
     }
 
+    // preparing to write to csv by getting User information
     public String toCsv() {
         return email + "," + username + "," + password;
     }
@@ -33,6 +35,7 @@ public class User {
         this.username = username;
     }
 
+    // return the username from User
     public String getUsername() {
         return username;
     }
@@ -47,15 +50,17 @@ public class User {
         this.email = email;
     }
 
+    // return the email of User
     public String getEmail() {
         return email;
     }
 
-
+    // set the password of user
     public void setPassword(String newPassword) {
         this.password = newPassword;
     }
 
+    // converting User to String
     public String toString() {
         return "User(username=" + username + ", email=" + email + ")";
     }
