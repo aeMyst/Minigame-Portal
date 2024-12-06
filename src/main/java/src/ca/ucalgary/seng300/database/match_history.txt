@@ -1,5 +1,7 @@
 TICTACTOE,s1mple,test,s1mple,135,128,December 05 2024
-CHECKERS,test,Karl,test,82,0,December 05 2024
 CHECKERS,Karl,Karl,test,82,0,December 05 2024
-CONNECT4,test,s1mple,test,92,0,December 05 2024
 CONNECT4,s1mple,s1mple,test,92,0,December 05 2024
+TICTACTOE,test,s1mple,test,100,0,December 05 2024
+TICTACTOE,s1mple,s1mple,test,100,0,December 05 2024
+TICTACTOE,test,s1mple,test,71,0,December 05 2024
+TICTACTOE,s1mple,s1mple,test,71,0,December 05 2024
