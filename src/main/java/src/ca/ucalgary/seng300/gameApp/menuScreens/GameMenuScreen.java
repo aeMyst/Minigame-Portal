@@ -31,22 +31,25 @@ public class GameMenuScreen implements IScreen {
         Label titleLabel = new Label("CHOOSE A GAME");
         titleLabel.getStyleClass().add("title-label");
 
-        // Buttons
+        // button to navigate to tictactoe
         Button ticTacToeButton = new Button("Play Tic-Tac-Toe");
         ticTacToeButton.getStyleClass().add("button");
         ticTacToeButton.getStyleClass().add("submit-button");
         ticTacToeButton.setOnAction(e -> controller.showMatchmakeChoiceScreen(0));
 
+        // button to navigate to connect 4
         Button connectFourButton = new Button("Play Connect 4");
         connectFourButton.getStyleClass().add("button");
         connectFourButton.getStyleClass().add("submit-button");
         connectFourButton.setOnAction(e -> controller.showMatchmakeChoiceScreen(1));
 
+        // button to navigate to checkers
         Button checkersButton = new Button("Play Checkers");
         checkersButton.getStyleClass().add("button");
         checkersButton.getStyleClass().add("submit-button");
         checkersButton.setOnAction(e -> controller.showMatchmakeChoiceScreen(2));
 
+        // button to navigate back to main menu
         Button backButton = new Button("Back to Main Menu");
         backButton.getStyleClass().add("button");
         backButton.getStyleClass().add("exit-button");
@@ -57,6 +60,7 @@ public class GameMenuScreen implements IScreen {
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20));
 
+        // setting borderpane as main screen
         BorderPane rootPane = new BorderPane();
         rootPane.setCenter(layout);
         rootPane.getStyleClass().add("root-pane");
@@ -66,6 +70,9 @@ public class GameMenuScreen implements IScreen {
         scene.getStylesheets().add((getClass().getClassLoader().getResource("styles.css").toExternalForm()));
     }
 
+    /**
+     * method for returning the screen
+     */
     @Override
     public Scene getScene() {
         return scene;

@@ -17,15 +17,19 @@ public class TipsUtility {
      * @return A list of tips for the selected game.
      */
     public static List<String> loadTipsFromFile(Client client, int gameType) {
+        // get file path from server
         String fileName = client.getTipsPath(gameType);
 
+        // load all tips into a list to iterate through
         List<String> tips = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)))) {
             String line;
             while ((line = reader.readLine()) != null) {
+                // cut empty spaces
                 tips.add(line.trim());
             }
         } catch (Exception e) {
+            // catch errors if any
             e.printStackTrace();
             tips.add("Error loading tips. Please try again!");
         }

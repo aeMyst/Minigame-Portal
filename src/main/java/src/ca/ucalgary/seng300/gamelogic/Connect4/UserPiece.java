@@ -2,8 +2,6 @@ package src.ca.ucalgary.seng300.gamelogic.Connect4;
 
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 
-import java.io.Console;
-
 /**
  * A class representing a connect 4 game piece, that tracks the piece and it's owner
  */

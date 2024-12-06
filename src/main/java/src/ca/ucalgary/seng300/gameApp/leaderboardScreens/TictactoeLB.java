@@ -13,12 +13,17 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.network.Client;
-import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 
+/**
+ * class for Tictactoe leaderboard Screen
+ */
 public class TictactoeLB implements IScreen {
     private Scene scene;
 
+    /**
+     * Displays the Tic-Tac-Toe leaderboard screen.
+     */
     public TictactoeLB(Stage stage, LeaderboardController controller, Client client) {
         // Title Label
         Label titleLabel = new Label("TIC-TAC-TOE LEADERBOARD");
@@ -49,13 +54,6 @@ public class TictactoeLB implements IScreen {
         // Scene
         scene = new Scene(rootPane, 1280, 900);
         scene.getStylesheets().add((getClass().getClassLoader().getResource("LeaderboardStyles.css").toExternalForm()));
-    }
-
-    private Label createLabel(String text, int fontSize, Pos alignment) {
-        Label label = new Label(text);
-        label.setFont(new Font("Arial", fontSize));
-        label.setAlignment(alignment);
-        return label;
     }
 
     private VBox createLeaderboardEntries(String[][] data) {
@@ -132,16 +130,6 @@ public class TictactoeLB implements IScreen {
         }
         return entriesBox;
     }
-
-    private Button createButton(String text, int fontSize, double width, String bgColor, javafx.event.EventHandler<javafx.event.ActionEvent> action) {
-        Button button = new Button(text);
-        button.setFont(new Font("Arial", fontSize));
-        button.setPrefWidth(width);
-        button.setStyle(String.format("-fx-background-color: %s; -fx-text-fill: white;", bgColor));
-        button.setOnAction(action);
-        return button;
-    }
-
 
     @Override
     public Scene getScene() {

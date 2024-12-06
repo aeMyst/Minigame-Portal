@@ -13,7 +13,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.network.Client;
-import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 
 /**

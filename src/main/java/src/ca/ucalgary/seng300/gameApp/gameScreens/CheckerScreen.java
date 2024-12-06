@@ -7,8 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.Utility.ChatUtility;
 import src.ca.ucalgary.seng300.gamelogic.Checkers.GameState;
@@ -99,7 +97,6 @@ public class CheckerScreen implements IScreen {
         chatInput = new TextField();
         chatInput.setPromptText("Type your message...");
         chatInput.getStyleClass().add("input-field");
-        ;
         chatInput.setOnAction(e -> sendMessage());
 
         // Send and emoji buttons
@@ -187,7 +184,10 @@ public class CheckerScreen implements IScreen {
 
                 controller.showMainMenu(); // Navigate back to the main menu
 
-// https:docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
+                //
+                // https//docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
+                // learnt about AlertTypes in JavaFX
+                //
                 showAlert(Alert.AlertType.INFORMATION, "The game was Forfeited", "You have Loss -" + eloLoss + " Elo");
             } else {
                 // User canceled forfeiting
@@ -244,6 +244,9 @@ public class CheckerScreen implements IScreen {
                 button.setPrefSize(80, 80);
 
                 // Set button background color
+                //
+                // ChatGPT Generated: Learnt how to change a button color for every other button
+                //
                 if ((row + col) % 2 == 0) {
                     button.setStyle("-fx-background-color: #654321;");
                 } else {
@@ -271,6 +274,9 @@ public class CheckerScreen implements IScreen {
                 int piece = board[row][col];
 
                 // Set images based on the piece type
+                //
+                // ChatGPT Generated: learnt about how to add an image to a button instead of a number for GUI
+                //
                 try {
                     if (piece == 1) { // White piece
                         ImageView whitePieceImage = new ImageView(new Image(new FileInputStream(WHITE_PIECE_IMAGE_PATH)));

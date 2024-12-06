@@ -18,6 +18,13 @@ import src.ca.ucalgary.seng300.network.Client;
 
 public class ChatUtility {
 
+    /**
+     * returns a path to a file in DB
+     *
+     * @param client passing the server to access its method
+     * @param utilityType the type to get the correct database file
+     * @return string that paths to a directory
+     */
     public static String getFilePath(Client client, int utilityType) {
         if (utilityType == 0) {
             return client.getChatElements(utilityType);
@@ -95,16 +102,20 @@ public class ChatUtility {
             emojiGrid.add(emojiButton, i % 3, i / 3);
         }
 
+        // borderpane to style main screen
         BorderPane rootPane = new BorderPane();
         rootPane.setCenter(emojiGrid);
         rootPane.getStyleClass().add("root-pane");
 
-
+        // set the screen
         Scene emojiScene = new Scene(rootPane, 300, 200);
         emojiScene.getStylesheets().add((ChatUtility.class.getClassLoader().getResource("styles.css").toExternalForm()));
         emojiStage.setScene(emojiScene);
         emojiStage.initOwner(parentStage);
 
+        //
+        // ChatGPT generated: learnt about how to run the onClose action when the emojiStage is hidden
+        //
         emojiStage.setOnHidden(event -> onClose.run());
 
         emojiStage.show();

@@ -8,8 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.IScreen;
 import src.ca.ucalgary.seng300.gameApp.ScreenController;
@@ -22,11 +20,16 @@ import src.ca.ucalgary.seng300.gameApp.Utility.TipsUtility;
 import java.io.File;
 import java.util.List;
 import java.util.Random;
-
+/**
+ * screen queue class
+ */
 public class QueueScreen implements IScreen {
     private Scene scene;
     private boolean canceled = false;
 
+    /**
+     * queue screen constructor
+     */
     public QueueScreen(Stage stage, ScreenController controller, int gameType, Client client) {
         System.out.println("Queueing...");
 
@@ -155,6 +158,9 @@ public class QueueScreen implements IScreen {
         }).start();
     }
 
+    /**
+     * method for returning the screen
+     */
     @Override
     public Scene getScene() {
         return scene;

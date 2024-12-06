@@ -118,6 +118,9 @@ public class ForgotPasswordScreen {
      * @param alertType the type of alert (e.g., ERROR, INFORMATION)
      * @param title     the title of the alert
      * @param message   the message content of the alert
+     *
+     * ChatGPT Generated: taught me how to pop up a new error menu using Alert.AlertType making sure to display
+     *                  the correct error/alert
      */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);

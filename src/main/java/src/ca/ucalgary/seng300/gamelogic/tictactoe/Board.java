@@ -1,5 +1,8 @@
 package src.ca.ucalgary.seng300.gamelogic.tictactoe;
 
+/**
+ * board class
+ */
 public class Board {
     //instance variables
     protected char[][] board;

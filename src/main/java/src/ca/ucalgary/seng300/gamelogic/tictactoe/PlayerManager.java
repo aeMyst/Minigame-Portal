@@ -1,6 +1,10 @@
 package src.ca.ucalgary.seng300.gamelogic.tictactoe;
 
+/**
+ * PlayerManager class that manages the players in a game
+ */
 public class PlayerManager {
+    // class instance variables
     private HumanPlayer player1;
     private HumanPlayer player2;
     private HumanPlayer currentPlayer;

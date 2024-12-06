@@ -5,8 +5,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import src.ca.ucalgary.seng300.gameApp.Utility.ChatUtility;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
@@ -121,6 +119,10 @@ public class Connect4Screen implements IScreen {
         Button emojiButton = new Button("Emoji Menu");
         emojiButton.getStyleClass().add("button-emoji");
         emojiButton.setOnAction(e -> {
+            //
+            // chatGPT Generated: how to display a new Stage while still running current Stage, this is how we integrated
+            // a new Emoji Menu
+            //
             if (!isEmojiOpen) {
                 isEmojiOpen = true;
                 ChatUtility.showEmojiMenu(chatInput, stage, () -> isEmojiOpen = false, client);
@@ -244,6 +246,9 @@ public class Connect4Screen implements IScreen {
             // Update the UI board
             for (int row = 0; row < logicManager.getBoard().length; row++) {
                 if (logicManager.getBoard()[row][column] == currentPlayer.getPiece()) {
+                    //
+                    // optimized code from Intellij suggestions
+                    //
                     gameButtons[row][column].setStyle(currentPlayer == playerRed
                             ? "-fx-background-color: #e74c3c"
                             : "-fx-background-color: #3498db");

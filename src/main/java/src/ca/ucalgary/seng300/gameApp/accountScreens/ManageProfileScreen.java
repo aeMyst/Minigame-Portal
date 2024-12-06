@@ -137,6 +137,11 @@ public class ManageProfileScreen implements IScreen {
      *
      * @param title   the title of the alert
      * @param message the informational message to display
+     *
+     * https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
+     *                The following resource was used to find out the type of AlertTypes that exist
+     *                the JavaFX library
+     *
      */
     private void showInfoMessage(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
