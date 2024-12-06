@@ -1,7 +1,5 @@
 package src.ca.ucalgary.seng300.Profile.models;
 
-import java.util.Objects;
-
 /**
 
  Class for User object and methods*/
