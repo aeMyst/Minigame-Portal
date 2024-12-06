@@ -36,6 +36,10 @@ public class ClientTicTacToe {
     public void sendMoveToServer(BoardManager boardManager, PlayerManager playerManager, String status, Runnable callback) {
         Random rand = new Random();
         int time = rand.nextInt(1000);
+        //
+        // ChatGPT Generated: taught me how to use Thread.sleep and to pause before running next line
+        // this is to simulate a delay in placing a piece in GUI
+        //
         new Thread(() -> {
             try {
                 Thread.sleep(time); // Simulate 1-second delay

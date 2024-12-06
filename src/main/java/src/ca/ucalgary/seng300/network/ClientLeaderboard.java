@@ -24,6 +24,10 @@ public class ClientLeaderboard {
         Random rand = new Random();
         int time = rand.nextInt(1000); // simulate server delay
         String[][] connect4LB = leaderboard.getC4Leaderboard();
+        //
+        // ChatGPT Generated: taught me how to use Thread.sleep and to pause before running next line
+        // this is to simulate a delay in placing a piece in GUI
+        //
         new Thread(() -> {
             try {
                 sleep(time);

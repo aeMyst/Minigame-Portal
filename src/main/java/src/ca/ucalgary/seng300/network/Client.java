@@ -224,6 +224,10 @@ public class Client implements IClient {
      * Queues up a game
      */
     public void queueGame() {
+        //
+        // ChatGPT Generated: taught me how to use Thread.sleep and to pause before running next line
+        // this is to simulate a queue happening in GUI
+        //
         try {
             System.out.println("Queueing...");
 
@@ -466,7 +470,6 @@ public class Client implements IClient {
         return "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
     }
 
-    // TODO: fix method call in matchHistoryScreen
     public void sendMatchHistoryToServer(String[][] matchHistory, Runnable callback) {
         Random rand = new Random();
         int time = rand.nextInt(500) + 500; // Simulate server delay between 500ms and 1000ms
