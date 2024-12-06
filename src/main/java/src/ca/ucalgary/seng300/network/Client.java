@@ -92,6 +92,11 @@ public class Client implements IClient {
      * @return The filtered Message
      */
     public String sendMessageToServer(String message, Client client) {
+        //Check if the message is empty
+        if (message == null || message.trim().isEmpty()) {
+            return "The message needs to be atleast 1 character.";
+        }
+        
         String filteredMessage = ChatUtility.filterMessage(message, client);
         System.out.println("Sending Message to Server: " + message);
         System.out.println("==========================");
