@@ -587,4 +587,21 @@ public class ProfileServiceTest {
         assertEquals("Expected password to remain unchanged", password, updatedUser.getPassword());
     }
 
+    @Test
+    public void testUpdateProfileCurrentUserCheck() {
+        String email = "currentcheck@example.com";
+        String oldUsername = "currentCheckUser";
+        String password = "Password123!";
+
+        authService.register(email, oldUsername, password);
+        authService.login(oldUsername, password);
+
+        //username is now updated to a new one while still logged in
+        profileService.updateProfile(authService.isLoggedIn(), "newCurrentUser", "", "");
+
+        User updated = authService.isLoggedIn();
+        assertNotNull(updated);
+        assertEquals("newCurrentUser", updated.getUsername());
+    }
+
 }
