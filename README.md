@@ -67,14 +67,11 @@ The objective of the game is to capture all of your opponent's pieces or block t
 - ./src/main/java/src/ca/ucalgary/seng300/gamelogic/tictactoe/*: The tic tac toe game logic
 
 ### Leaderboard
-
 - ./src/ca/ucalgary/seng300/leaderboard/* : The leaderboard for the project
 
 ### Networking
-
 - ./src/main/java/src/ca/ucalgary/seng300/network/Client.java: The client for the networking
 - ./src/main/java/src/ca/ucalgary/seng300/network/Client*.java: The subclasses for different games / purposes
 
-### Profile 
-
+### Profile
 - ./src/main/java/src/ca/ucalgary/seng300/Profile/*: The profile for the project
