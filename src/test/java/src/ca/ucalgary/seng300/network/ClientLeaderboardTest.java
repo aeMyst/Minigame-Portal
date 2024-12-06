@@ -4,11 +4,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.ILeaderboard;
+import src.ca.ucalgary.seng300.leaderboard.logic.Leaderboard;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class ClientLeaderboardTest {
@@ -76,5 +78,17 @@ public class ClientLeaderboardTest {
         clientLeaderboard.getC4Leaderboard(callback);
         latch.await(2, TimeUnit.SECONDS);
         verify(mockLeaderboard, times(1)).getC4Leaderboard();
+
     }
+
+    @Test
+    public void testGetCheckersLeaderboard() {
+        Runnable callback = () -> System.out.println("Callback executed");
+        Client test = new Client();
+        ILeaderboard leaderboard = new Leaderboard();
+        String[][] Array = leaderboard.getCheckersLeaderboard();
+
+        assertEquals(Array, test.getCheckersLeaderboard(callback));
+    }
+
 }

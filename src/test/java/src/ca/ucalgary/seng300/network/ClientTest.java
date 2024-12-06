@@ -2,8 +2,6 @@ package src.ca.ucalgary.seng300.network;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.exceptions.base.MockitoAssertionError;
-import org.mockito.exceptions.base.MockitoException;
 import src.ca.ucalgary.seng300.Profile.interfaces.AuthInterface;
 import src.ca.ucalgary.seng300.Profile.interfaces.ProfileInterface;
 import src.ca.ucalgary.seng300.Profile.models.Profile;
@@ -17,15 +15,11 @@ import src.ca.ucalgary.seng300.gamelogic.tictactoe.HumanPlayer;
 import src.ca.ucalgary.seng300.gamelogic.tictactoe.PlayerManager;
 import src.ca.ucalgary.seng300.leaderboard.data.Player;
 import src.ca.ucalgary.seng300.leaderboard.interfaces.ILeaderboard;
-import org.junit.Before;
-import org.junit.Test;
 import org.mockito.Mockito;
+import org.mockito.exceptions.base.MockitoException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import static org.mockito.Mockito.*;
-
 import java.util.ArrayList;
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
