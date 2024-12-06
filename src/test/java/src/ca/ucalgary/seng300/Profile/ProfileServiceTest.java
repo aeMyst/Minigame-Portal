@@ -9,6 +9,9 @@ import src.ca.ucalgary.seng300.Profile.services.ProfileService;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class ProfileServiceTest {
@@ -588,7 +591,17 @@ public class ProfileServiceTest {
     }
 
     @Test
-    public void testUpdateProfileCurrentUserCheck() {
+    public void testUpdateProfileCurrentUserCheck() throws IOException {
+        // keep our original csv file
+        String usersFilePath = profileService.usersPath;
+        List<String> originalLines = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(usersFilePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                originalLines.add(line);
+            }
+        }
+
         String email = "currentcheck@example.com";
         String oldUsername = "currentCheckUser";
         String password = "Password123!";
@@ -596,12 +609,19 @@ public class ProfileServiceTest {
         authService.register(email, oldUsername, password);
         authService.login(oldUsername, password);
 
-        //username is now updated to a new one while still logged in
         profileService.updateProfile(authService.isLoggedIn(), "newCurrentUser", "", "");
 
         User updated = authService.isLoggedIn();
         assertNotNull(updated);
         assertEquals("newCurrentUser", updated.getUsername());
+
+        //revert users.csv to original lines to avoid permanent changes
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(usersFilePath))) {
+            for (String l : originalLines) {
+                writer.write(l);
+                writer.newLine();
+            }
+        }
     }
 
 }
