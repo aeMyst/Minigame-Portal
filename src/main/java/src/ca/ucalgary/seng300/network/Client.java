@@ -198,7 +198,6 @@ public class Client implements IClient {
             Thread.sleep(2000);
             System.out.println(host + " is now Connected to Server");
             System.out.println("==========================");
-            DUMMY_ERROR_FOR_COV();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -213,7 +212,6 @@ public class Client implements IClient {
             Thread.sleep(2000);
             System.out.println(host + " is now disconnected from Server");
             System.out.println("==========================");
-            DUMMY_ERROR_FOR_COV();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -249,7 +247,6 @@ public class Client implements IClient {
 
             System.out.println("Success! Connecting to game session...");
             System.out.println("==========================");
-            DUMMY_ERROR_FOR_COV();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -273,7 +270,6 @@ public class Client implements IClient {
             Thread.sleep(1000);
             System.out.println("Queue Canceled");
             System.out.println("==========================");
-            DUMMY_ERROR_FOR_COV();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -289,7 +285,6 @@ public class Client implements IClient {
             Thread.sleep(2000);
             System.out.println("Disconnected from Game Session, returning to home screen...");
             System.out.println("==========================");
-            DUMMY_ERROR_FOR_COV();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -494,11 +489,6 @@ public class Client implements IClient {
                 e.printStackTrace();
             }
         }).start();
-    }
-
-    // I hate coverage
-    protected void DUMMY_ERROR_FOR_COV() {
-
     }
 
 }
