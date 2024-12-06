@@ -1,7 +1,7 @@
 package src.ca.ucalgary.seng300.GUI;
 
 import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
+
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.junit.BeforeClass;
