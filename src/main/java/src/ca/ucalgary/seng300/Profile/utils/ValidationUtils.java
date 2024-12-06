@@ -1,6 +1,6 @@
 package src.ca.ucalgary.seng300.Profile.utils;
+
 import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 /**
  * Validates email addresses, passwords and usernames using Regex
