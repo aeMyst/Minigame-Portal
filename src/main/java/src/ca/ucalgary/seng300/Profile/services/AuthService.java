@@ -43,10 +43,6 @@ public class AuthService implements AuthInterface {
         }
     }
 
-    public ArrayList<User> getUsers() {
-        return users;
-    }
-
     public AuthService(String USER_DATA_FILE) {
         ArrayList<User> newUsers = new ArrayList<>();
         USER_DATA_FILE = Objects.requireNonNull(USER_DATA_FILE);
