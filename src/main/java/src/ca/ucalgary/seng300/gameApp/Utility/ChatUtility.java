@@ -18,7 +18,7 @@ import src.ca.ucalgary.seng300.network.Client;
 
 public class ChatUtility {
 
-    private static String getFilePath(Client client, int utilityType) {
+    public static String getFilePath(Client client, int utilityType) {
         if (utilityType == 0) {
             return client.getChatElements(utilityType);
         } else if (utilityType == 1) {
@@ -34,7 +34,7 @@ public class ChatUtility {
      * @param filePath The path to the file.
      * @return A list of lines from the file.
      */
-    private static String[] readFile(String filePath) {
+    public static String[] readFile(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(new File(filePath)))) {
             List<String> lines = new ArrayList<>();
             String line;

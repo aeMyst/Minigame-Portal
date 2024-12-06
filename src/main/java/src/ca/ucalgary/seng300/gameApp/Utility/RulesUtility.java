@@ -12,6 +12,4 @@ public class RulesUtility {
             return "Error while reading or finding file";
         }
     }
-
-
 }
