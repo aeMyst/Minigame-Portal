@@ -3,15 +3,14 @@ package src.ca.ucalgary.seng300.Profile;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import src.ca.ucalgary.seng300.Profile.models.Profile;
 import src.ca.ucalgary.seng300.Profile.models.User;
 import src.ca.ucalgary.seng300.Profile.services.AuthService;
 import src.ca.ucalgary.seng300.Profile.services.ProfileService;
 
 import java.io.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class ProfileTest {
 
