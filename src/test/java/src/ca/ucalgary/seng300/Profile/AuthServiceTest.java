@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.junit.Assert.*;
+
 public class AuthServiceTest {
     private AuthService authService;
     // Keep track of created usernames so we can remove them after tests
@@ -62,7 +64,7 @@ public class AuthServiceTest {
         String USER_DATA_FILE = "/invalid/path/nonexistentfile.csv";
         AuthService authServiceWithInvalidPath = new AuthService(USER_DATA_FILE);
         // Expecting an empty user list due to IOException
-        Assert.assertTrue("User list should be empty due to IOException in constructor",
+        assertTrue("User list should be empty due to IOException in constructor",
                 authServiceWithInvalidPath.getSanitizedUsers().isEmpty());
     }
 
@@ -70,10 +72,10 @@ public class AuthServiceTest {
     public void testSaveUsersSuccess() {
         // Test successful user save
         boolean registrationResult = registerAndTrack("saveuser@example.com", "SaveUser", "Password1!");
-        Assert.assertTrue("Registration should be successful", registrationResult);
+        assertTrue("Registration should be successful", registrationResult);
         try {
             authService.saveUsers(); // Attempt to save the users
-            Assert.assertTrue("Users saved successfully", true);
+            assertTrue("Users saved successfully", true);
         } catch (Exception e) {
             Assert.fail("An exception occurred during saveUsers: " + e.getMessage());
         }
@@ -84,7 +86,7 @@ public class AuthServiceTest {
         // Force saveUsers to encounter an IOException by using an invalid path
         authService.USER_DATA_FILE = "/invalid/path/nonexistentfile.csv";
         authService.saveUsers(); // This should be handled internally
-        Assert.assertTrue("saveUsers executed with IOException", true);
+        assertTrue("saveUsers executed with IOException", true);
         // Reset the file path
         authService.USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
     }
@@ -94,7 +96,7 @@ public class AuthServiceTest {
         // Force a registration failure due to invalid file path
         authService.USER_DATA_FILE = "/invalid/path/nonexistentfile.csv";
         boolean result = registerAndTrack("testregister@example.com", "TestRegisterUser", "Password1!");
-        Assert.assertFalse("Registration should fail due to IOException in storeUser", result);
+        assertFalse("Registration should fail due to IOException in storeUser", result);
         authService.USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/database/users.csv"; // Reset
     }
 
@@ -103,7 +105,7 @@ public class AuthServiceTest {
         // Force a storeUser failure due to invalid file path
         authService.USER_DATA_FILE = "/invalid/path/nonexistentfile.csv";
         boolean result = registerAndTrack("teststore@example.com", "TestStoreUser", "Password1!");
-        Assert.assertFalse("StoreUser should fail due to IOException", result);
+        assertFalse("StoreUser should fail due to IOException", result);
         authService.USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/database/users.csv"; // Reset
     }
 
@@ -111,11 +113,11 @@ public class AuthServiceTest {
     public void testModifyUserPasswordUserExists() {
         // Test modifying an existing user's password
         boolean registrationResult = registerAndTrack("existing@example.com", "ExistingUser", "Password1!");
-        Assert.assertTrue("User should be registered successfully", registrationResult);
+        assertTrue("User should be registered successfully", registrationResult);
         authService.modifyUserPassword("ExistingUser", "NewPassword1!");
         // Verify that the user can log in with the new password
         boolean loginResult = authService.login("ExistingUser", "NewPassword1!");
-        Assert.assertTrue("Should be able to login with new password", loginResult);
+        assertTrue("Should be able to login with new password", loginResult);
     }
 
     @Test
@@ -130,7 +132,7 @@ public class AuthServiceTest {
             }
         }
         // User should not be found
-        Assert.assertFalse("Non-existent user should not be found", userExists);
+        assertFalse("Non-existent user should not be found", userExists);
     }
 
     @Test
@@ -138,7 +140,7 @@ public class AuthServiceTest {
         // Test retrieving sanitized users when users exist
         registerAndTrack("user@example.com", "User1", "Password1!");
         ArrayList<User> sanitizedUsers = authService.getSanitizedUsers();
-        Assert.assertFalse("Sanitized users list should not be empty", sanitizedUsers.isEmpty());
+        assertFalse("Sanitized users list should not be empty", sanitizedUsers.isEmpty());
         for (User user : sanitizedUsers) {
             Assert.assertNull("Password should be null in sanitized user", user.getPassword());
         }
@@ -150,7 +152,7 @@ public class AuthServiceTest {
         String USER_DATA_FILE = "/invalid/path/nonexistentfile.csv";
         AuthService emptyAuthService = new AuthService(USER_DATA_FILE);
         ArrayList<User> sanitizedUsers = emptyAuthService.getSanitizedUsers();
-        Assert.assertTrue("Sanitized users list should be empty", sanitizedUsers.isEmpty());
+        assertTrue("Sanitized users list should be empty", sanitizedUsers.isEmpty());
         // Reset the file path
         authService.USER_DATA_FILE = "src/main/java/src/ca/ucalgary/seng300/database/users.csv";
     }
@@ -159,35 +161,35 @@ public class AuthServiceTest {
     public void testLogoutUserNull() {
         // Test logging out when user is null
         boolean result = authService.logout(null);
-        Assert.assertFalse("Logout should fail when user is null", result);
+        assertFalse("Logout should fail when user is null", result);
     }
 
     @Test
     public void testRegisterValidUser() {
         // Test registration of a valid user
         boolean result = registerAndTrack("valid@example.com", "ValidUser", "Password1!");
-        Assert.assertTrue("We have successfully registered the user!", result);
+        assertTrue("We have successfully registered the user!", result);
     }
 
     @Test
     public void testRegisterInvalidEmail() {
         // Test registration with an invalid email
         boolean result = authService.register("invalid-email", "ValidUser", "Password1!");
-        Assert.assertFalse("Registration failed! The email is invalid", result);
+        assertFalse("Registration failed! The email is invalid", result);
     }
 
     @Test
     public void testRegisterInvalidPassword() {
         // Test registration with an invalid password
         boolean result = authService.register("valid@example.com", "ValidUser", "short");
-        Assert.assertFalse("Registration failed due to invalid password", result);
+        assertFalse("Registration failed due to invalid password", result);
     }
 
     @Test
     public void testRegisterInvalidUsername() {
         // Test registration with an invalid username
         boolean result = authService.register("valid@example.com", "Invalid@User", "Password1!");
-        Assert.assertFalse("Registration failed due to invalid username", result);
+        assertFalse("Registration failed due to invalid username", result);
     }
 
     @Test
@@ -195,7 +197,7 @@ public class AuthServiceTest {
         // Test login with valid credentials
         registerAndTrack("valid@example.com", "ValidUser", "Password1@a");
         boolean result = authService.login("ValidUser", "Password1@a");
-        Assert.assertTrue("User logged in successfully!", result);
+        assertTrue("User logged in successfully!", result);
     }
 
     @Test
@@ -203,7 +205,7 @@ public class AuthServiceTest {
         // Test login with an incorrect password
         registerAndTrack("valid@example.com", "ValidUser", "Password1!");
         boolean result = authService.login("ValidUser", "WrongPassword1!");
-        Assert.assertFalse("Login failed due to incorrect password", result);
+        assertFalse("Login failed due to incorrect password", result);
     }
 
     @Test
@@ -211,23 +213,23 @@ public class AuthServiceTest {
         // Test login with a non-existent username
         registerAndTrack("valid@example.com", "ValidUser", "Password1!");
         boolean result = authService.login("WrongUser", "Password1!");
-        Assert.assertFalse("Login failed due to non-existent username", result);
+        assertFalse("Login failed due to non-existent username", result);
     }
 
     @Test
     public void testLogoutValidUser() {
         // Test logging out a valid user after login
         boolean registrationResult = registerAndTrack("valid@example.com", "ValidUser", "Password1@");
-        Assert.assertTrue("Registration should be successful", registrationResult);
+        assertTrue("Registration should be successful", registrationResult);
 
         boolean loginResult = authService.login("ValidUser", "Password1@");
-        Assert.assertTrue("Login should be successful", loginResult);
+        assertTrue("Login should be successful", loginResult);
 
         User user = authService.isLoggedIn();
         Assert.assertNotNull("A user should be logged in", user);
 
         boolean logoutResult = authService.logout(user);
-        Assert.assertTrue("User logged out successfully!", logoutResult);
+        assertTrue("User logged out successfully!", logoutResult);
     }
 
     @Test
@@ -235,7 +237,7 @@ public class AuthServiceTest {
         // Test logout with an invalid user
         User invalidUser = new User("InvalidUser", "InvalidPassword", "invalid@example.com");
         boolean result = authService.logout(invalidUser);
-        Assert.assertFalse("Logout failed because user is not recognized", result);
+        assertFalse("Logout failed because user is not recognized", result);
     }
 
     @Test
@@ -246,7 +248,7 @@ public class AuthServiceTest {
             Assert.fail("Registration failed, cannot proceed");
         }
         boolean loginResult = authService.login("ValidUser", "Password1@a");
-        Assert.assertTrue("Login should be successful", loginResult);
+        assertTrue("Login should be successful", loginResult);
 
         User loggedInUser = authService.isLoggedIn();
         Assert.assertNotNull("User login confirmed!", loggedInUser);
@@ -354,25 +356,25 @@ public class AuthServiceTest {
     public void testModifyUserPasswordInvalidFormat() {
         // Test modifying password to an invalid format
         boolean registrationResult = registerAndTrack("existing@example.com", "ExistingUser", "Password1!");
-        Assert.assertTrue("User should be registered successfully", registrationResult);
+        assertTrue("User should be registered successfully", registrationResult);
         authService.modifyUserPassword("ExistingUser", "short");
         // Since there's no password validation, the invalid password still works
         boolean loginResult = authService.login("ExistingUser", "short");
-        Assert.assertTrue("User can still log in because invalid password isn't checked", loginResult);
+        assertTrue("User can still log in because invalid password isn't checked", loginResult);
     }
 
     @Test
     public void testRegisterDuplicateUser() {
         // Test registering duplicate users (no uniqueness check in code)
         boolean firstRegistrationResult = registerAndTrack("duplicate@example.com", "DuplicateUser", "Password123!");
-        Assert.assertTrue("First registration should be successful", firstRegistrationResult);
+        assertTrue("First registration should be successful", firstRegistrationResult);
 
         // Use registerAndTrack for AnotherUser to ensure they are tracked and removed later
         boolean secondRegistrationResult = registerAndTrack("duplicate@example.com", "AnotherUser", "Password123!");
-        Assert.assertTrue("Registration succeeds since duplicates aren't checked", secondRegistrationResult);
+        assertTrue("Registration succeeds since duplicates aren't checked", secondRegistrationResult);
 
         boolean thirdRegistrationResult = registerAndTrack("another@example.com", "DuplicateUser", "Password123!");
-        Assert.assertTrue("Registration also succeeds without uniqueness checks", thirdRegistrationResult);
+        assertTrue("Registration also succeeds without uniqueness checks", thirdRegistrationResult);
     }
 
     @Test
@@ -380,33 +382,33 @@ public class AuthServiceTest {
         // Test logging out without anyone logged in
         User notLoggedInUser = new User("NotLoggedIn", "password", "notloggedin@example.com");
         boolean logoutResult = authService.logout(notLoggedInUser);
-        Assert.assertFalse("Logout should fail since no user is logged in", logoutResult);
+        assertFalse("Logout should fail since no user is logged in", logoutResult);
     }
 
     @Test
     public void testRegisterWithNullInputs() {
         // Test registering with null inputs for email, username, or password
         boolean nullEmailResult = authService.register(null, "UserWithNullEmail", "Password123!");
-        Assert.assertFalse("Registration should fail with null email", nullEmailResult);
+        assertFalse("Registration should fail with null email", nullEmailResult);
 
         boolean nullUsernameResult = authService.register("nulluser@example.com", null, "Password123!");
-        Assert.assertFalse("Registration should fail with null username", nullUsernameResult);
+        assertFalse("Registration should fail with null username", nullUsernameResult);
 
         boolean nullPasswordResult = authService.register("nullpassword@example.com", "UserWithNullPassword", null);
-        Assert.assertFalse("Registration should fail with null password", nullPasswordResult);
+        assertFalse("Registration should fail with null password", nullPasswordResult);
     }
 
     @Test
     public void testRegisterWithEmptyInputs() {
         // Test registering with empty strings for email, username, or password
         boolean emptyEmailResult = authService.register("", "UserWithEmptyEmail", "Password123!");
-        Assert.assertFalse("Registration should fail with empty email", emptyEmailResult);
+        assertFalse("Registration should fail with empty email", emptyEmailResult);
 
         boolean emptyUsernameResult = authService.register("emptyuser@example.com", "", "Password123!");
-        Assert.assertFalse("Registration should fail with empty username", emptyUsernameResult);
+        assertFalse("Registration should fail with empty username", emptyUsernameResult);
 
         boolean emptyPasswordResult = authService.register("emptypassword@example.com", "UserWithEmptyPassword", "");
-        Assert.assertFalse("Registration should fail with empty password", emptyPasswordResult);
+        assertFalse("Registration should fail with empty password", emptyPasswordResult);
     }
 
     @Test
@@ -415,16 +417,45 @@ public class AuthServiceTest {
         registerAndTrack("valid@example.com", "ValidUser", "Password123!");
 
         boolean nullUsernameLogin = authService.login(null, "Password123!");
-        Assert.assertFalse("Login should fail with null username", nullUsernameLogin);
+        assertFalse("Login should fail with null username", nullUsernameLogin);
 
         boolean nullPasswordLogin = authService.login("ValidUser", null);
-        Assert.assertFalse("Login should fail with null password", nullPasswordLogin);
+        assertFalse("Login should fail with null password", nullPasswordLogin);
 
         boolean emptyUsernameLogin = authService.login("", "Password123!");
-        Assert.assertFalse("Login should fail with empty username", emptyUsernameLogin);
+        assertFalse("Login should fail with empty username", emptyUsernameLogin);
 
         boolean emptyPasswordLogin = authService.login("ValidUser", "");
-        Assert.assertFalse("Login should fail with empty password", emptyPasswordLogin);
+        assertFalse("Login should fail with empty password", emptyPasswordLogin);
+    }
+
+    @Test
+    public void testAddUser() throws IOException {
+        // Arrange: Create a temporary file with mock user data
+        File tempFile = File.createTempFile("user_data", ".txt");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+        writer.write("email1@example.com,user1,pass1");
+        writer.newLine();
+        writer.write("email2@example.com,user2,pass2");
+        writer.newLine();
+        writer.write("email3@example.com,user3,pass3");
+        writer.close();
+
+        User user1 = new User("user1", "pass1", "email1@example.com");
+        User user2 = new User("user2", "pass2", "email2@example.com");
+        User user3 = new User("user3", "pass3", "email3@example.com");
+
+        // test AuthService(FILE_PATH) method
+        AuthService authService = new AuthService(tempFile.getAbsolutePath());
+
+        assertTrue("Login should succeed for user1", authService.login("user1", "pass1"));
+        assertTrue("Login should succeed for user2", authService.login("user2", "pass2"));
+        assertTrue("Login should succeed for user3", authService.login("user3", "pass3"));
+
+        boolean registrationResult = authService.register("email1@example.com", "user1", "pass1");
+        assertFalse("Registration should fail for existing user1", registrationResult);
+
+        tempFile.delete();
     }
 
     @After

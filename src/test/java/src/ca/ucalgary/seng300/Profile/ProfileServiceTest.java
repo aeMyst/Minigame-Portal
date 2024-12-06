@@ -570,9 +570,6 @@ public class ProfileServiceTest {
         assertEquals("Profile not found for user1", profile);
     }
 
-
-
-
     @Test
     public void testUpdateProfileBlankFields() {
         String email = "someblank@example.com";
@@ -589,7 +586,5 @@ public class ProfileServiceTest {
         assertEquals("Expected username to remain unchanged", username, updatedUser.getUsername());
         assertEquals("Expected password to remain unchanged", password, updatedUser.getPassword());
     }
-
-
 
 }
