@@ -62,6 +62,7 @@ public class CheckerScreen implements IScreen {
         this.client = client;
         this.match = match;
 
+        // Initialize players
         Player playerOne = match.get(0);
         Player playerTwo = match.get(1);
 
@@ -101,7 +102,7 @@ public class CheckerScreen implements IScreen {
         ;
         chatInput.setOnAction(e -> sendMessage());
 
-        // Send button
+        // Send and emoji buttons
         Button sendButton = new Button("Send");
         sendButton.getStyleClass().add("button-send");
         sendButton.setOnAction(e -> sendMessage());
@@ -186,8 +187,7 @@ public class CheckerScreen implements IScreen {
 
                 controller.showMainMenu(); // Navigate back to the main menu
 
-                https:
-//docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
+// https:docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
                 showAlert(Alert.AlertType.INFORMATION, "The game was Forfeited", "You have Loss -" + eloLoss + " Elo");
             } else {
                 // User canceled forfeiting
@@ -208,6 +208,7 @@ public class CheckerScreen implements IScreen {
         rootPane.setCenter(layout);
         rootPane.getStyleClass().add("root-pane");
 
+        // Initialize scene
         scene = new Scene(rootPane, 1280, 900);
         scene.getStylesheets().add((getClass().getClassLoader().getResource("GamesStyles.css").toExternalForm()));
     }
@@ -260,7 +261,7 @@ public class CheckerScreen implements IScreen {
     }
 
     /**
-     * Updates the game board with the current state from the game logic.
+     * Updates the board with current game state.
      */
     private void updateBoard() {
         int[][] board = gameLogic.getBoard();
@@ -422,9 +423,7 @@ public class CheckerScreen implements IScreen {
     }
 
     /**
-     * Clears all highlights on the game board.
-     * Resets the background color of each button to its original state
-     * based on the alternating color pattern of the checkers board.
+     * Clears all highlights from the board.
      */
     private void clearHighlights() {
         for (int r = 0; r < 8; r++) {
