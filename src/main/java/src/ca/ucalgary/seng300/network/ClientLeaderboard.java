@@ -44,6 +44,7 @@ public class ClientLeaderboard {
         }).start();
         return connect4LB;
     }
+    // Was written with help of AI(better formatting for output)
 
     public String[][] getCheckersLeaderboard(Runnable callback) {
         Random rand = new Random();
@@ -69,6 +70,7 @@ public class ClientLeaderboard {
         }).start();
         return checkersLeaderboard;
     }
+    // Was written with help of AI(better formatting for output)
 
     public String[][] getTTTLeaderboard(Runnable callback) {
         Random rand = new Random();
@@ -94,6 +96,7 @@ public class ClientLeaderboard {
         }).start();
         return tttLeaderboard;
     }
+    // Was written with help of AI(better formatting for output)
 
     // Helper method to allow mocking in tests
     protected void sleep(int millis) throws InterruptedException {

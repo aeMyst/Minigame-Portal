@@ -111,6 +111,7 @@ public class ProfileService implements ProfileInterface {
 
         System.out.println("Profile updated successfully.");
     }
+    // Was written with help of AI(had issues with formatting)
 
 
     /**

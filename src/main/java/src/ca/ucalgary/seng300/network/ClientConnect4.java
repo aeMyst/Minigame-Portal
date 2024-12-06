@@ -56,4 +56,5 @@ public class ClientConnect4 {
             System.out.println("   -----------------------------");
         }
     }
+    // Was written with help of AI(better formatting for output)
 }
