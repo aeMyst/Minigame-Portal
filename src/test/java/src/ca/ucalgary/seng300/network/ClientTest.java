@@ -128,20 +128,36 @@ public class ClientTest {
         mockLeaderboard = new MockLeaderboard();
         client = new Client(mockAuth, mockProfile, mockLeaderboard);
     }
+    
+    /**
+     * Tests the basic constructor of the Client class.
+     */
 
     @Test
     public void checkBaseConstructor() {
         client = new Client();
     }
 
+     /**
+     * Tests the profile initialization method
+     */
+
     @Test
     public void initializeProfile() {
     }
+
+    /**
+     * Tests for when the client disconnects
+     */
 
     @Test
     public void disconnect() {
         client.disconnect();
     }
+
+    /**
+     * Tests sending a message to the server that requires no filtering
+     */
 
     @Test
     public void sendMessageToServer() {
@@ -149,6 +165,10 @@ public class ClientTest {
         String server_message = client.sendMessageToServer(chat_message, client);
         assertEquals("Expected no Filtering", chat_message, server_message);
     }
+
+    /**
+     * Tests sending a message to the server that does require filtering
+     */
 
     @Test
     public void sendFilteredMessageToServer() {
@@ -158,15 +178,27 @@ public class ClientTest {
         assertEquals("Expected Filtering", expected_message, server_message);
     }
 
+     /**
+     * Test for successful user log in
+     */
+
     @Test
     public void logInUserSuccess() {
         assertTrue("Expected Successful login", client.logInUser("test", "test@123"));
     }
 
+    /**
+     * Test for an unsuccessful user log in due to incorrect password
+     */
+
     @Test
     public void logInUserFailure() {
         assertFalse("Expected Failed login", client.logInUser("test", "test@12"));
     }
+
+    /**
+     * Tests for when a user tries to log out when not even logged in
+     */
 
     @Test
     public void logoutUserNotLoggedIn() {
@@ -174,6 +206,10 @@ public class ClientTest {
         client.logoutUser();
         assertNull("Expected after logout is null", mockAuth.cur_login);
     }
+
+    /**
+     * Test for a successful log out after the user has logged in 
+     */
 
     @Test
     public void logoutUserLoggedIn() {
@@ -184,14 +220,26 @@ public class ClientTest {
         assertNull("Expected after logout is null", mockAuth.cur_login);
     }
 
+    /**
+     * Tests for a new user being registered successfully
+     */
+
     @Test
     public void registerUser() {
         assertTrue("expected valid register", client.registerUser("test2", "test@321", "test2@test.ca"));
     }
 
+     /**
+     * Tests to validate the information that user would need in case they forgot log in details to recover the account
+     */
+
     @Test
     public void validateRecoveryInfo() {
     }
+
+    /**
+     * Test to get the username of the current logged in user
+     */
 
     @Test
     public void getCurrentUsernameLoggedIn() {
@@ -199,25 +247,45 @@ public class ClientTest {
         assertEquals("Expected to get correct username", client.getCurrentUsername(), mockAuth.cur_login.getUsername());
     }
 
+     /**
+     * Test for if someone tried to see username while they are not logged in
+     */
+
     @Test
     public void getCurrentUsernameNotLoggedIn() {
         assertNull("Since not logged in should return null", client.getCurrentUsername());
     }
+
+     /**
+     * Tests to see if you are logged in or not
+     */
 
     @Test
     public void loggedIn() {
         assertNull("Not logged in = null", client.loggedIn());
     }
 
+    /**
+     * Tests for getting the profile of whoever is currently logged in
+     */
+
     @Test
     public void getCurrentUserProfile() {
         assertEquals("Since the mock just return works", client.getCurrentUserProfile(), "Works");
     }
 
+    /**
+     * Test to find information about the profile
+     */
+
     @Test
     public void findProfileInfo() {
         assertEquals("Just returns the same string", client.findProfileInfo("test"), "test");
     }
+
+    /**
+     * Test to allow the user to edit information in their profile
+     */
 
     @Test
     public void editProfile() {
@@ -228,25 +296,45 @@ public class ClientTest {
         assertEquals("Expected change profile", mockProfile.profile.getProfileDetails(), after_profile);
     }
 
+    /**
+     * Tests to search for a profile
+     */
+
     @Test
     public void searchProfile() {
         assertEquals("Calls profile search", client.searchProfile(""), "What");
     }
+
+    /**
+     * Test connecting the client to the server
+     */
 
     @Test
     public void connectServer() {
         client.connectServer();
     }
 
+    /**
+     * Test disconnecting from the server
+     */
+
     @Test
     public void disconnectServer() {
         client.disconnectServer();
     }
 
+    /**
+     * Test for queuing a game
+     */
+
     @Test
     public void queueGame() {
         client.queueGame();
     }
+
+    /**
+     * Testing for a queue that fails
+     */
 
     @Test
     public void queueGameShouldFail() {
@@ -258,10 +346,18 @@ public class ClientTest {
         }
     }
 
+    /**
+     * Testing for cancelling the queue
+     */
+
     @Test
     public void cancelQueue() {
         client.cancelQueue();
     }
+
+    /**
+     * Test for user disconnecting from the game session
+     */
 
     @Test
     public void disconnectGameSession() {
@@ -273,10 +369,18 @@ public class ClientTest {
     BoardManager bm = new BoardManager();
     PlayerManager pm = new PlayerManager(new HumanPlayer(p1, 'x'), new HumanPlayer(p2, 'o'));
 
+    /**
+     * Test for sending Tic Tac Toe move to the server
+     */
+
     @Test
     public void sendTTTMoveToServerTest() {
         client.sendTTTMoveToServer(bm, pm, "ONGOING", () -> {});
     }
+
+    /**
+     * Test for sending Connect4 move to the server
+     */
 
     @Test
     public void sendC4MoveToServer() {
@@ -285,17 +389,29 @@ public class ClientTest {
         client.sendC4MoveToServer(logic, tm, "ONGOING", () -> {});
     }
 
+    /**
+     * Test for seeing the connect4 leaderboard
+     */
+
     @Test
     public void sendC4LeaderboardToServer() {
         String[][] ret = client.getC4Leaderboard(() -> {});
         assertEquals("Expected to return c4 leaderboard", ret[0][0], "Called c4 lb");
     }
 
+    /**
+     * Test for sending checkers move to the server
+     */
+
     @Test
     public void sendCheckerMoveToServer() {
         CheckersGameLogic gameLogic = new CheckersGameLogic(p1, p2);
         client.sendCheckerMoveToServer(gameLogic, 2, 0, 3, 1, p1, () -> {});
     }
+
+    /**
+     * Test for sending checkers king move to the server
+     */
 
     @Test
     public void sendCheckerKingMoveToServer() {
@@ -308,17 +424,29 @@ public class ClientTest {
         client.sendCheckerMoveToServer(game, 6, 1, 4, 3, p2, () -> {});
     }
 
+    /**
+     * Test for seeing the Checkers leaderboard
+     */
+
     @Test
     public void sendCheckersLeaderboardToServer() {
         String[][] ret = client.getCheckersLeaderboard(() -> {});
         assertEquals("Expected to return checkers leaderboard", ret[0][0], "Called checkers lb");
     }
 
+    /**
+     * Test for seeing the Tic Tac Toe leaderboard 
+     */
+
     @Test
     public void sendTTTLeaderboardToServer() {
         String[][] ret = client.getTTTLeaderboard(() -> {});
         assertEquals("Expected to return ttt leaderboard", ret[0][0], "Called ttt lb");
     }
+
+    /**
+     * Test for the user to see the rules for all 3 of our games
+     */
 
     @Test
     public void getRulesPath() {
@@ -328,6 +456,10 @@ public class ClientTest {
         assertEquals("No File Path for GameType: 3", client.getRulesPath(3));
     }
 
+    /**
+     * Test for the user to get tips for all 3 of our games
+     */
+
     @Test
     public void getTipsPath() {
         assertEquals("src/main/java/src/ca/ucalgary/seng300/database/tictactoe_tips.txt", client.getTipsPath(0));
@@ -336,6 +468,10 @@ public class ClientTest {
         assertEquals("Enjoy and Have Fun!", client.getTipsPath(3));
     }
 
+    /**
+     * Tests to see chat elements such as emojis that can be sent or words that cannot be sent
+     */
+
     @Test
     public void getChatElements() {
         assertEquals("src/main/java/src/ca/ucalgary/seng300/database/banned_words.txt", client.getChatElements(0));
@@ -343,15 +479,27 @@ public class ClientTest {
         assertNull("Should return null if not valid request", client.getChatElements(2));
     }
 
+    /**
+     * Test for the path to your profile to see your stats
+     */
+
     @Test
     public void getStatPath() {
         assertEquals("src/main/java/src/ca/ucalgary/seng300/database/profiles.csv", client.getStatPath());
     }
 
+    /**
+     * Test for the path to your accounts
+     */
+
     @Test
     public void getAccountsPath() {
         assertEquals("src/main/java/src/ca/ucalgary/seng300/database/users.csv", client.getAccountsPath());
     }
+
+    /**
+     * Test for user to see the match history
+     */
 
     @Test
     public void sendMatchHistoryToServerTest() {
@@ -359,13 +507,20 @@ public class ClientTest {
         client.sendMatchHistoryToServer(history, () -> {});
     }
 
+    /**
+     * Test for if the user has not played any matches, for an empty match history to be shown
+     */
+
     @Test
     public void sendEmptyMatchHistoryToServerTest() {
         String[][] history = { };
         client.sendMatchHistoryToServer(history, () -> {});
     }
 
-    // Test to cover the catch block in connectServer
+     /**
+     * Test to cover the catch block in connectServer
+     */
+
     @Test
     public void testConnectServerException() {
         try {
@@ -375,7 +530,10 @@ public class ClientTest {
         }
     }
 
-    // Test to cover the catch block in disconnectServer
+    /**
+     * Test to cover the catch block in disconnectServer
+     */
+
     @Test
     public void testDisconnectServerException() {
         try {
@@ -385,7 +543,10 @@ public class ClientTest {
         }
     }
 
-    // Test to cover the catch block in queueGame
+    /**
+     * Test to cover the catch block in queueGame
+     */
+
     @Test
     public void testQueueGameException() {
         try {
@@ -395,7 +556,10 @@ public class ClientTest {
         }
     }
 
-    // Test to cover the catch block in cancelQueue
+    /**
+     * Test to cover the catch block in cancelQueue
+     */
+
     @Test
     public void testCancelQueueException() {
         try {
@@ -405,7 +569,10 @@ public class ClientTest {
         }
     }
 
-    // Test to cover the catch block in disconnectGameSession
+    /**
+     * Test to cover the catch block in disconnectGameSession
+     */
+
     @Test
     public void testDisconnectGameSessionException() {
         try {
@@ -415,7 +582,10 @@ public class ClientTest {
         }
     }
 
-    // Test to cover the catch block in sendMatchHistoryToServer
+    /**
+     * Test to cover the catch block in sendMatchHistoryToServer
+     */
+    
     @Test
     public void testSendMatchHistoryToServerException() throws InterruptedException {
         String[][] history = { { "" } };
