@@ -167,22 +167,14 @@ public class ClientTest {
     }
 
     /**
-     * Tests for when the user attempts to send an empty message
+     * Tests for when a user tries to send an empty message
      */
 
     @Test
-    public void sendEmptyMessageToServer() {
-    String empty_message = "";
-    String expected_response = "The message needs to be at least 1 character";
-
-    // Directly use the client from the class's setup
-    String server_response = client.sendMessageToServer(empty_message, client);
-
-    // Use assertNotNull to ensure we get a response
-    assertNotNull("Response should not be null", server_response);
-    
-    // Validate that the server's response matches the expected message
-    assertEquals("Expected empty message validation", expected_response, server_response);
+    public void testSendNullMessageToServer() {
+    String nullMessage = null;
+    String result = client.sendMessageToServer(nullMessage, client);
+    assertEquals("The message needs to be atleast 1 character.", result);
     }
 
     /**
