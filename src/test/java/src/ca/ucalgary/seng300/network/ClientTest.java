@@ -168,7 +168,7 @@ public class ClientTest {
 
     /**
      * Tests sending an empty message to the server
-     * The server should respond with a message saying the message needs to be at least 1 character
+     * The server should respond with a message saying the message needs to be at least 1 character.
      */
 
     @Test
