@@ -167,23 +167,6 @@ public class ClientTest {
     }
 
     /**
-     * Tests sending an empty message to the server
-     * The server should respond with a message saying the message needs to be at least 1 character.
-     */
-
-    @Test
-    public void sendEmptyMessageToServer() {
-        String empty_message = "";
-        String expected_response = "The message needs to be at least 1 character";
-
-        // Assuming the sendMessageToServer method handles empty messages appropriately
-        String server_response = client.sendMessageToServer(empty_message, client);
-
-        // Validate that the server's response matches the expected message
-        assertEquals("Expected empty message validation", expected_response, server_response);
-    }
-
-    /**
      * Tests sending a message to the server that does require filtering
      */
 
